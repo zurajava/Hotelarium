@@ -30,7 +30,7 @@ app.get('/*', function(req, res) {
 });
 
 // Get port from environment and store in Express.
-const port = process.env.PORT || '3000';
+const port = '3000';
 app.set('port', port);
 
 // Start the app by listening on the default
@@ -38,4 +38,7 @@ app.set('port', port);
 // Create HTTP server.
 const server = http.createServer(app);
 // Listen on provided port, on all network interfaces.
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+
+server.listen(3000, function(){
+  console.log('listening on *:3000');
+});
