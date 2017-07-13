@@ -10,7 +10,7 @@ import { Router, RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard, AdminGuard] }
+        { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN'] } }
     ])],
     exports: [RouterModule]
 })

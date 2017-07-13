@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
-
+import { DeniedComponent } from './denied.component';
 @NgModule({
     imports: [CommonModule],
-    declarations: [HeaderComponent, FooterComponent],
-    exports: [HeaderComponent, FooterComponent],
+    declarations: [HeaderComponent, FooterComponent, DeniedComponent],
+    exports: [HeaderComponent, FooterComponent, DeniedComponent],
     providers: []
 })
 

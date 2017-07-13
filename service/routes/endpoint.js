@@ -11,7 +11,7 @@ router.post('/authenticate', (req, res) => {
     } else {
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (data[0].password != req.body.password.toLowerCase()) {
+      } else if (data[0].password != req.body.password.toUpperCase()) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
         var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: 60 * 60 * 24 });
@@ -21,7 +21,7 @@ router.post('/authenticate', (req, res) => {
           password: data[0].password,
           firstName: data[0].user_name,
           lastName: data[0].user_name,
-          role_id : "ADMIN",
+          role_id : data[0].ROLE_ID,
           token: token
         });
       }

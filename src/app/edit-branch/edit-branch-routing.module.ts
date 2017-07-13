@@ -4,10 +4,10 @@ import { editOwnerComponent } from './edit-branch.component';
 import { Router, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 @NgModule({
-    imports:[RouterModule.forChild([
-        {path:'editBranch/:id',component:editOwnerComponent,canActivate:[AuthGuard,AdminGuard]}
+    imports: [RouterModule.forChild([
+        { path: 'editBranch/:id', component: editOwnerComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN'] } }
     ])],
-    exports:[RouterModule]
+    exports: [RouterModule]
 })
 
 export class editOwnerRouting {

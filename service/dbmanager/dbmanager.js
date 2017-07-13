@@ -14,7 +14,7 @@ var pool = mysql.createPool({
 
 pool.getUserByUserName = function (username, password, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM `cms-app`.users where user_name=?', [username.toLowerCase()], function (error, row, fields) {
+        connection.query('SELECT * FROM `cms-app`.users where user_name=?', [username.toUpperCase()], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {

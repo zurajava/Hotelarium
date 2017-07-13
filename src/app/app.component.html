@@ -1,38 +1,33 @@
 <app-parking-header (onToggle)="onToggle($event)"></app-parking-header>
 <section class="hero row">
-    <section class="col-lg-2 col-md-2 col-sm-12 col-xs-12 navigation noPadding" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'"
+    <section class="col-lg-2 col-md-2 col-sm-12 col-xs-12 navigation noPadding" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT' || roleID === 'GUEST'"
         [ngClass]="{'activeMenu' : toggleState}">
 
         <div>
-            <div class="navigation__profile text-center" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'">
+            <div class="navigation__profile text-center" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT' || roleID === 'GUEST'">
                 <!--<img class="navigation__profile--circle" src="../assets/images/profile.jpg" />-->
-                <i class="fa fa-user navigation__profile--circle" [ngClass]="{'adminImage': roleID === 'ADMIN'|| roleID === 'RESIDENT'}"></i>
+                <i class="fa fa-user navigation__profile--circle" [ngClass]="{'adminImage': roleID === 'ADMIN'|| roleID === 'RESIDENT' || roleID === 'GUEST'}"></i>
                 <h1>{{residentID}}</h1>
                 <h2>{{roleID}}</h2>
 
             </div>
-            <ul *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'" class="row sidenav">
+            <ul *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT' || roleID === 'GUEST' " class="row sidenav">
 
                 <li (click)="onToggle()" routerLink="/reservation" routerLinkActive="nav-active-link-admin">
                     <a><i class="fa fa-home" aria-hidden="true"></i>Reservation</a>
-
                 </li>
                 <li (click)="onToggle()" routerLink="/branch" routerLinkActive="nav-active-link-admin">
-                   <a><i class="fa fa-users" aria-hidden="true"></i>Add Branch</a>
-
+                    <a><i class="fa fa-users" aria-hidden="true"></i>Add Branch</a>
                 </li>
-                <li (click)="onToggle()" routerLink="/createRoom" routerLinkActive="nav-active-link-admin"><a><i class="fa fa-user-plus" aria-hidden="true"></i>Create Room</a>
-
-
-
-                    <li routerLink="/reports" routerLinkActive="nav-active-link-admin"><a><i class="fa fa-bell-o" aria-hidden="true"></i>Reports</a>
-
-                    </li>
-
-                    <li (click)="onToggle()" routerLink="/dictionary" routerLinkActive="nav-active-link-admin"><a><i class="fa fa-commenting-o" aria-hidden="true"></i>Dictionary</a>
-
-                    </li>
-
+                <li (click)="onToggle()" routerLink="/createRoom" routerLinkActive="nav-active-link-admin">
+                    <a><i class="fa fa-user-plus" aria-hidden="true"></i>Create Room</a>
+                </li>
+                <li routerLink="/reports" routerLinkActive="nav-active-link-admin">
+                    <a><i class="fa fa-bell-o" aria-hidden="true"></i>Reports</a>
+                </li>
+                <li (click)="onToggle()" routerLink="/dictionary" routerLinkActive="nav-active-link-admin">
+                    <a><i class="fa fa-commenting-o" aria-hidden="true"></i>Dictionary</a>
+                </li>
             </ul>
         </div>
     </section>
