@@ -8,11 +8,11 @@ const auth = params.split(':');
 console.log(auth[2].split('@')[0]);
 console.log(auth[1].split('/')[2]);
 var pool = new Pool({
-    host: auth[2].split('@')[1],
-    port: auth[3].split('/')[0],
-    database: auth[3].split('/')[1],
-    user: auth[1].split('/')[2],
-    password: auth[2].split('@')[0],
+    host: 'ec2-54-75-239-190.eu-west-1.compute.amazonaws.com',
+    port: '5432',
+    database: 'dbaui3el13df4',
+    user: 'oyrekqyjnlzajf',
+    password: 'Zz1234567',
     max: 20,
     min: 4,
    // ssl: auth[4],
