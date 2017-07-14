@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+
+
+import { AuthService } from './auth.service';
+
+
 
 @Component({
     moduleId: module.id,
@@ -7,6 +12,12 @@ import { Router, RouterModule } from '@angular/router';
     templateUrl: './denied.html'
 })
 
-export class DeniedComponent {
-
+export class DeniedComponent implements OnInit {
+    constructor(private router: Router, private authservice: AuthService) {
+    }
+    ngOnInit() {
+      //  this.authservice.logout();
+      //  this.router.navigate(['/login']);
+      //  this.authservice.announceLogin();
+    }
 }

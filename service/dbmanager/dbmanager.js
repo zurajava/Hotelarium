@@ -1,53 +1,53 @@
-// Load module
-var mysql = require('mysql');
-// Initialize pool
-var pool = mysql.createPool({
-    connectionLimit: 100,
-    host: '127.0.0.1',
-    user: 'zura',
-    password: 'Zz1234567',
-    database: 'cms-app',
-    debug: false,
-    port: '3306',
-    //port     :  '8889' 
+var Pool = require('pg-pool');
+var dotenv = require('dotenv').config();
+var url = require('url');
+
+const params = process.env.DATABASE_URL;
+const auth = params.split(':');
+
+var pool = new Pool({
+    host: auth[2].split('@')[1],
+    port: auth[3].split('/')[0],
+    database: auth[3].split('/')[1],
+    user: auth[1].split('/')[2],
+    password: auth[2].split('@')[0],
+    max: 20,
+    min: 4,
+    ssl: auth[4],
+    idleTimeoutMillis: 1000,
+    connectionTimeoutMillis: 1000,
 });
 
+
 pool.getUserByUserName = function (username, password, callback) {
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM `cms-app`.users where user_name=?', [username.toUpperCase()], function (error, row, fields) {
-            if (error) {
-                throw error;
+    console.log(username + " " + password);
+    const query = {
+        name: 'fetch-user',
+        text: 'select * from "USERS" where user_name = $1',
+        values: [username]
+    }
+
+    pool.connect((err, client, done) => {
+        if (err) {
+            console.log(err);
+            return done(err);
+        }
+        client.query(query, (err, res) => {
+            done();
+            if (err) {
+                console.log(err);
+                callback(err, null);
             } else {
-                callback(null, row);
+                console.log(res.rows[0]);
+                callback(null, res.rows[0]);
             }
-            connection.release();
-        });
-
-    });
-}
-
-
-pool.registerUser = function (user_name, password, first_name, last_name, email, birthdate, gender, image_url, callback) {
-   
-    console.log((new Date()));
-    pool.getConnection(function (err, connection) {
-        connection.query('INSERT INTO `cms-app`.`users` (`user_name`, `password`, `first_name`, `last_name`, `email`, `birthdate`, `gender`,`image_url`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [user_name, password, first_name, last_name, email, birthdate.split("T")[0], gender, image_url], function (error, result) {
-            if (error) {
-                console.log(error.message);
-                callback(error.message, null);
-            } else {
-                callback(null, result);
-            }
-            connection.release();
-        });
-    });
+        })
+    })
 }
 
 
 pool.getUsers = function (callback) {
-
     pool.getConnection(function (err, connection) {
-
         connection.query('SELECT * FROM `cms-app`.users', function (error, row, fields) {
             if (error) {
                 throw error;
@@ -59,22 +59,5 @@ pool.getUsers = function (callback) {
 
     });
 }
-
-pool.getNews = function (title, description, callback) {
-
-    pool.getConnection(function (err, connection) {
-
-        connection.query('select * from news where title like ? and description like ?', ['%' + title + '%', '%' + description + '%'], function (error, row, fields) {
-            if (error) {
-                throw error;
-            } else {
-                callback(null, row);
-            }
-            connection.release();
-        });
-
-    });
-}
-
 
 module.exports = pool;

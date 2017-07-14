@@ -11,17 +11,12 @@ router.post('/authenticate', (req, res) => {
     } else {
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (data[0].password != req.body.password.toUpperCase()) {
+      } else if (data.password != req.body.password.toUpperCase()) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
-        var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: 60 * 60 * 24 });
+        var token = jwt.sign(data, 'ilovescotchyscotch', { expiresIn: 60 * 60 * 24 });
         res.json({
-          user_id: data[0].user_id,
-          username: data[0].user_name,
-          password: data[0].password,
-          firstName: data[0].user_name,
-          lastName: data[0].user_name,
-          role_id : data[0].ROLE_ID,
+          user: data,
           token: token
         });
       }
@@ -68,19 +63,5 @@ router.get('/users', (req, res) => {
   });
 
 });
-
-/* GET All News. */
-router.get('/getNews', (req, res) => {
-  console.log("getNews");
-  pool.getNews(req.query.title, req.query.description, function (err, data) {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json(data);
-    }
-  });
-
-});
-
 
 module.exports = router;

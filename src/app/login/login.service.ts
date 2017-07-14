@@ -14,15 +14,19 @@ export class LoginService {
     }
     loginUser(details: any) {
         const body = JSON.stringify(details);
-        console.log(body);
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this.http.post('/service/authenticate', body, { headers: headers })
             .map((data: Response) => {
-                console.log(data);
-                const token = data.json() && data.json().token;
-                console.log(token);
-                const user = data.json().role_id;
+                console.log(data.json().user);
+                console.log(data.json().token);
+
+                const token = data.json().token;
+                console.log("token : " +token );
+
+                const user = data.json().user.ROLE_ID;
+                console.log("user : " + user );
+
                 if (token) {
                     this.token = token;
                     localStorage.setItem('parkingUser', JSON.stringify({ token: data.json().token, role_id: user }));
