@@ -13,17 +13,22 @@ export class AdminGuard implements CanActivate {
         console.log(roles);
         let status = this.authservice.getRoleID();// === 'ADMIN';
         console.log(roles.includes(status));
-        this.router.navigate(['denied']);
-        return false;
-      /*  if (status === 'ADMIN') {
-            return true;
-        } else if (status === 'RESIDENT') {
-            return true;
-        } else if (status === 'GUEST') {
+        if (roles.includes(status)) {
             return true;
         } else {
+            this.router.navigate(['denied']);
             return false;
-        } */
+        }
+
+        /*  if (status === 'ADMIN') {
+              return true;
+          } else if (status === 'RESIDENT') {
+              return true;
+          } else if (status === 'GUEST') {
+              return true;
+          } else {
+              return false;
+          } */
 
         //else {
         //   this.router.navigate(['reservation'])

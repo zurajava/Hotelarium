@@ -10,7 +10,7 @@ import { Router, RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'dictionary', component: DictionaryComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN'] } }
+        { path: 'dictionary', component: DictionaryComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['RESIDENT'] } }
     ])],
     exports: [RouterModule]
 })
