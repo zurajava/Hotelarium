@@ -5,6 +5,8 @@ var url = require('url');
 const params = process.env.DATABASE_URL;
 const auth = params.split(':');
 
+console.log(auth[2].split('@')[0]);
+console.log(auth[1].split('/')[2]);
 var pool = new Pool({
     host: auth[2].split('@')[1],
     port: auth[3].split('/')[0],
