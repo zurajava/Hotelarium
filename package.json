@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "ng serve --proxy-config proxy.config.json"
+    "postinstall": "ng build --aot -prod",
+    "start": "node server.js"
   },
   "engines": {
     "node": "6.10.3",
