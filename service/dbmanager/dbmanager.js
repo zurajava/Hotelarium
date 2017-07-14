@@ -15,7 +15,7 @@ var pool = new Pool({
     password: auth[2].split('@')[0],
     max: 20,
     min: 4,
-    ssl: auth[4],
+   // ssl: auth[4],
     idleTimeoutMillis: 1000,
     connectionTimeoutMillis: 1000,
 });
