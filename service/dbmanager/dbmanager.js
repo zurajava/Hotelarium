@@ -5,8 +5,21 @@ var url = require('url');
 const params = process.env.DATABASE_URL;
 const auth = params.split(':');
 
-console.log(auth[2].split('@')[0]);
-console.log(auth[1].split('/')[2]);
+/*
+var pool = new Pool({
+    host: auth[2].split('@')[1],
+    port: auth[3].split('/')[0],
+    database: auth[3].split('/')[1],
+    user: auth[1].split('/')[2],
+    password: auth[2].split('@')[0],
+    max: 20,
+    min: 4,
+    ssl: auth[4],
+    idleTimeoutMillis: 1000,
+    connectionTimeoutMillis: 1000,
+}); */
+
+
 var pool = new Pool({
     host: 'ec2-54-75-239-190.eu-west-1.compute.amazonaws.com',
     port: '5432',
