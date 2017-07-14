@@ -26,7 +26,7 @@ pool.getUserByUserName = function (username, password, callback) {
     const query = {
         name: 'fetch-user',
         text: 'select * from "USERS" where user_name = $1',
-        values: [username]
+        values: [username.toUpperCase()]
     }
 
     pool.connect((err, client, done) => {
