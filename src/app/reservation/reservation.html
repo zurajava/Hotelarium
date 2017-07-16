@@ -4,9 +4,7 @@
         <h2></h2>
     </div>
     <section class="dashboard__metric row">
-
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-
             <div class="dashboard__box">
                 <div class="dashboard__box--color">
                 </div>
@@ -14,17 +12,13 @@
                 <h2>Total Owners</h2>
             </div>
         </div>
-
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-
             <div class="dashboard__box">
                 <h1>05</h1>
                 <h2>Total Complaints</h2>
             </div>
         </div>
-
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-
             <div class="dashboard__box">
                 <h1>12</h1>
                 <h2>Total Request</h2>
@@ -32,18 +26,58 @@
         </div>
 
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-
             <div class="dashboard__box">
                 <h1>21,000</h1>
                 <h2>Total Payment</h2>
             </div>
         </div>
-
-
     </section>
+<div class="fixedHeightContainer">
+    <div class="box-header">
+        <div class="input-group">
+            <input class="form-control" placeholder="From" name="dp1" #myInput [(ngModel)]="dateFrom"   ngbDatepicker #d1="ngbDatepicker">
+            <div class="input-group-addon" (click)="d1.toggle()" >
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+        
+            <input class="form-control" placeholder="To" name="dp2" #myInput [(ngModel)]="dateTo"   ngbDatepicker #d2="ngbDatepicker">
+            <div class="input-group-addon" (click)="d2.toggle()" >
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+            <div>
+                <button  class="button_filter" type="button" (click)="filterRezervation()">Filter</button>
+            </div>
 
-    <div class="dashboard__subHeading">
-        <h1>Payment vs Service</h1>
+
+        </div>
     </div>
- 
+    <div class="timeline-container">
+        <table class="table table-bordered table-striped table-condensed timeline-table">
+          <thead>
+            <tr>
+              <th class="room-title">ოთახები</th>
+              <th *ngFor="let dateSingle of dateRange">
+                <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
+                <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
+                 <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
+              </th>
+            </tr>
+          </thead>   
+          
+          <tbody >
+            <tr>
+              <td colspan="61">CATEGORY</td> 
+            </tr>
+            <tr >
+              <td>SSSSS</td>
+              <td   >ZZZZ</td>
+            </tr>
+            <tr >
+              <td>SSSSS</td>
+              <td   >ZZZZ</td>
+            </tr>
+          </tbody>
+        </table>  
+    </div>
+</div>
 </section>

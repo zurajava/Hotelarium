@@ -45,3 +45,33 @@
     padding: 0rem 0rem;
     font-family: 'Montserrat', sans-serif;
 }
+
+.button_filter {
+    height: 35px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background-color: #fff;
+    color: #35495e;
+    outline: none;
+    border: 1px solid #dcdcdc;
+    border-radius: 15px;
+    width: 100px;
+    cursor: pointer;
+    &:hover {
+        background-color: $primaryColor;
+        color: #fff;
+        border: none;
+    }
+}
+.fixedHeightContainer{
+    //height: 425px;
+}
+.timeline-container {
+  //  height: 500px; 
+  //  overflow: auto;
+   // overflow-y: hidden;
+  
+    overflow:auto;
+    overflow-y: hidden;
+}

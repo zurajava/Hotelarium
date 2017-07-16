@@ -28,7 +28,7 @@ var pool = new Pool({
     password: 'Zz1234567',
     max: 20,
     min: 4,
-   // ssl: auth[4],
+   // ssl: true,
     idleTimeoutMillis: 1000,
     connectionTimeoutMillis: 1000,
 });

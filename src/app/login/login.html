@@ -5,11 +5,11 @@
         </div>
         <form (ngSubmit)="loginUser(login)" #login="ngForm">
             <div class="login__container--fields">
-                <label>Resident ID/ADMIN</label>
-                <input placeholder="enter resident ID" ngModel name="residentID" #residentID="ngModel">
+                <label>Username</label>
+                <input placeholder="enter username" ngModel name="residentID" #residentID="ngModel">
             </div>
             <div class="login__container--fields">
-                <label>Enter your password</label>
+                <label>Password</label>
                 <input placeholder="enter password" type="password" ngModel name="password" #password="ngModel">
             </div>
             <div class="login__action">
