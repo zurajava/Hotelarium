@@ -8,9 +8,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
+import { DatepickerModule } from 'ngx-bootstrap';
+
 
 @NgModule({
-    imports: [ SharedModule, ReservationRouting, ChartsModule, FormsModule, NgbModule],
+    imports: [ SharedModule, ReservationRouting, ChartsModule, FormsModule, NgbModule, DatepickerModule.forRoot()],
     declarations: [ReservationComponent],
     providers: [ReservationService]
 })
