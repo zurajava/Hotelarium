@@ -17,22 +17,26 @@ import * as moment from 'moment';
 })
 
 export class ReservationComponent implements OnInit {
-  rows = [];
-  segment = 60;
-  dateRange = [];
+  public rows = [];
+  public segment = 30;
+  public dateRange = [];
   public dateFrom: Date;
   public dateTo: Date;
 
 
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private dashboardservice: ReservationService) {
     this.toastr.setRootViewContainerRef(vcr);
+    this.dateTo = new Date();
+    this.dateFrom = new Date();
+    this.dateFrom.setDate(this.dateTo.getDate() - 30);
+
   }
   ngOnInit() {
     this.fillDataRange();
   }
 
   fillDataRange() {
-    const currentDate = new Date();
+    const currentDate = this.dateFrom;
     const datesArray = [];
     const datesArrayForHeader = [];
     for (let i = 0; i < this.segment; i++) {
@@ -43,6 +47,9 @@ export class ReservationComponent implements OnInit {
   filterRezervation() {
     console.log(this.dateFrom);
     console.log(this.dateTo);
+    this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
+    console.log(this.segment);
+    this.fillDataRange();
   }
 
 

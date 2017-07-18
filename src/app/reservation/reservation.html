@@ -35,15 +35,14 @@
     <div class="fixedHeightContainer">
         <div class="box-header">
             <div class="input-group">
-
                 
-                    <datepicker [(ngModel)]="dateFrom" [showWeeks]="false"></datepicker>
-                     <datepicker [(ngModel)]="dateTo"  [showWeeks]="false"></datepicker>
-              
-
+                <div class="example-wrapper" style="min-height: 50px">
+                    <kendo-datepicker [(value)]="dateFrom" #datepicker></kendo-datepicker>
+                    <kendo-datepicker [(value)]="dateTo" #datepicker></kendo-datepicker>
+                </div>
 
                 <div>
-                    <button class="button_filter" type="button" (click)="filterRezervation()">Filter</button>
+                    <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
                 </div>
             </div>
         </div>
