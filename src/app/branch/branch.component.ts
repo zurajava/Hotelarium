@@ -18,71 +18,7 @@ export class BranchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allOwner();
   }
 
-
-  tableSetting = {
-    mode: 'external',
-    hideSubHeader: true,
-    delete: {
-      confirmDelete: true
-    },
-    columns: {
-      residentID: {
-        title: 'Resident ID',
-        filter: false
-      },
-      flatNo: {
-        title: 'Flat No',
-        filter: false
-      },
-      name: {
-        title: 'Name',
-        filter: false
-      },
-      phoneNumber: {
-        title: 'Phone Number',
-        filter: false
-      }
-    }
-  }
-  ;
-
-  allOwner() {
-    this.viewownerservice.getAllOwner()
-      .subscribe(
-      data => {
-        this.allOwnerDetails = data;
-      },
-      error => {
-        this.toastr.error(error.message)
-      }
-      )
-  }
-
-  // Edit a Owner 
-
-  editOwner(id) {
-    this.router.navigate(['/editBranch', id.data.parkingSlots[0].ownerID]);
-  }
-
-
-  deleteOwner(event) {
-    if (window.confirm('Are you sure you want to delete?')) {
-      this.viewownerservice.deleteOwner(event.data.userID)
-        .subscribe(
-        data => {
-          this.toastr.success(data.message);
-          this.allOwner();
-        },
-        error => {
-          this.toastr.error(error.message);
-        }
-        )
-    } else {
-      event.confirm.reject();
-    }
-  }
 
 }
