@@ -1,4 +1,3 @@
-import { successModule } from './success/success.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { ReportsModule } from './reports/reports.module';
@@ -33,8 +32,7 @@ import { LoginModule } from './login/login.module';
     editOwnerModule,
     ReportsModule,
     DictionaryModule,
-    ReservationModule,
-    successModule
+    ReservationModule
 
   ],
   providers: [AuthGuard, AuthService, AdminGuard],

@@ -18,19 +18,15 @@ export class LoginService {
         headers.append('Content-Type', 'application/json');
         return this.http.post('/service/authenticate', body, { headers: headers })
             .map((data: Response) => {
-                console.log(data.json().user);
-                console.log(data.json().token);
+                console.log(data);
+                console.log(data.json().success);
 
-                const token = data.json().token;
-                console.log("token : " +token );
+                if (data.json().success == true) {
+                    const token = data.json().token;
+                    const user = data.json().user.ROLE_ID;
 
-                const user = data.json().user.ROLE_ID;
-                console.log("user : " + user );
-
-                if (token) {
                     this.token = token;
                     localStorage.setItem('parkingUser', JSON.stringify({ token: data.json().token, role_id: user }));
-
                     return data.json().data;
                 } else {
                     return data.json().message

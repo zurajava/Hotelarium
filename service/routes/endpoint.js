@@ -16,6 +16,7 @@ router.post('/authenticate', (req, res) => {
       } else {
         var token = jwt.sign(data, 'ilovescotchyscotch', { expiresIn: 60 * 60 * 24 });
         res.json({
+          success: true,
           user: data,
           token: token
         });
