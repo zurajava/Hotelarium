@@ -15,7 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
-
+import { PersonsModule } from './persons/persons.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import { LoginModule } from './login/login.module';
     editOwnerModule,
     ReportsModule,
     DictionaryModule,
-    ReservationModule
+    ReservationModule,
+    PersonsModule
 
   ],
   providers: [AuthGuard, AuthService, AdminGuard],

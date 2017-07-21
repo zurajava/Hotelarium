@@ -1,17 +1,17 @@
 import { AdminGuard } from './../core/admin-guard.service';
-import { BranchComponent } from './branch.component';
 import { Router, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from '../auth-guard.service';
+import { PersonsComponent } from './persons.component';
 
 
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'branch', component: BranchComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT', 'GUEST'] } }
+        { path: 'persons', component: PersonsComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT', 'GUEST'] } }
     ])],
     exports: [RouterModule]
 })
+export class PersonRoutingModule {
 
-export class BranchRoutingModule {
 
 }

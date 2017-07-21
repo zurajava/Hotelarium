@@ -45,21 +45,16 @@ router.use(function (req, res, next) {
   }
 });
 
-/* GET api listing. */
-router.get('/', (req, res) => {
-  console.log("/.......");
-  res.json({ message: 'Welcome to the coolest API on earth!' });
-});
 
-
-/* GET All Users. */
 router.get('/users', (req, res) => {
   console.log("users");
   pool.getUsers(function (err, data) {
     if (err) {
-      res.json(err);
+      res.json({
+        success: false, message: 'Error while load users', error: err
+      });
     } else {
-      res.json(data);
+      res.json({ success: true, message: 'OK', users: data });
     }
   });
 

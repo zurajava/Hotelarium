@@ -28,7 +28,7 @@ var pool = new Pool({
     password: 'Zz1234567',
     max: 20,
     min: 4,
-    //ssl: true,
+ //   ssl: true,
     idleTimeoutMillis: 1000,
     connectionTimeoutMillis: 1000,
 });
@@ -62,17 +62,27 @@ pool.getUserByUserName = function (username, password, callback) {
 
 
 pool.getUsers = function (callback) {
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM `cms-app`.users', function (error, row, fields) {
-            if (error) {
-                throw error;
-            } else {
-                callback(null, row);
-            }
-            connection.release();
-        });
 
-    });
+    console.log("getUsers");
+    const query = {
+        name: 'fetch-user',
+        text: 'select * from "USERS"'
+    }
+
+    pool.connect((err, client, done) => {
+        if (err) {
+            console.log(err);
+            return done(err);
+        }
+        client.query(query, (err, res) => {
+            done();
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, res.rows);
+            }
+        })
+    })
 }
 
 module.exports = pool;
