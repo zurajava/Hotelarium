@@ -13,7 +13,7 @@ import 'rxjs/add/observable/of';
   styleUrls: ['./persons.scss']
 })
 export class PersonsComponent implements OnInit {
-  private selected: any;
+  selected: any;
 
   constructor(private personService: PersonsService, public toastr: ToastsManager, vcr: ViewContainerRef, public http: Http) {
     this.toastr.setRootViewContainerRef(vcr);
