@@ -11,7 +11,7 @@ router.post('/authenticate', (req, res) => {
       res.json(err);
     } else {
       console.log(data.password);
-      if (data.length == 0) { 
+      if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
       } else if (data.password.toUpperCase() != req.body.password.toUpperCase()) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
@@ -48,18 +48,54 @@ router.use(function (req, res, next) {
 });
 
 
-router.get('/users', (req, res) => {
-  console.log("users");
-  pool.getUsers(function (err, data) {
+router.get('/branch', (req, res) => {
+  console.log("branch");
+  pool.getBranch(function (err, data) {
     if (err) {
       res.json({
-        success: false, message: 'Error while load users', error: err
+        success: false, message: 'Error while load branch', error: err
       });
     } else {
-      res.json({ success: true, message: 'OK', users: data });
+      res.json({ success: true, message: 'OK', branch: data });
     }
   });
 
+});
+
+router.post('/branch', (req, res) => {
+  pool.registerBranch(req.body.name, req.body.description, req.body.address, req.body.org_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while register branch', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', branch_id: data.insertId });
+    }
+  });
+});
+
+router.delete('/branch/:id', (req, res) => {
+  pool.deleteBranch(req.params.id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while delete branch', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', branch_id: data.insertId });
+    }
+  });
+});
+
+router.put('/branch/:id', (req, res) => {
+  pool.updateBranch(req.params.id, req.body.name, req.body.description, req.body.address, req.body.org_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while delete branch', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', branch_id: data.insertId });
+    }
+  });
 });
 
 module.exports = router;

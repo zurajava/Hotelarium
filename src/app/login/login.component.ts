@@ -14,10 +14,11 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 export class LoginComponent {
 
-    loginUserDetails: any = {} // Login user details available here
+    loginUserDetails: any = {}; // Login user details available here
     @Output() login: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private loginservice: LoginService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
+    constructor(private loginservice: LoginService, public toastr: ToastsManager,
+        vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
         this.toastr.setRootViewContainerRef(vcr);
 
         if (this.authservice.getIsLoggedIn() === true) {
