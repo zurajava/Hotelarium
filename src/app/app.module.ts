@@ -1,5 +1,4 @@
 import { ReservationModule } from './reservation/reservation.module';
-import { DictionaryModule } from './dictionary/dictionary.module';
 import { ReportsModule } from './reports/reports.module';
 import { AdminGuard } from './core/admin-guard.service';
 import { AuthService } from './core/auth.service';
@@ -16,6 +15,7 @@ import { LoginModule } from './login/login.module';
 import { PersonsModule } from './persons/persons.module';
 import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
+import { ServiceModule } from './service/service.module';
 
 @NgModule({
   declarations: [
@@ -30,11 +30,11 @@ import { CategoryModule } from './category/category.module';
     RoomModule,
     BranchModule,
     ReportsModule,
-    DictionaryModule,
     ReservationModule,
     PersonsModule,
     UsersModule,
-    CategoryModule
+    CategoryModule,
+    ServiceModule
 
   ],
   providers: [AuthGuard, AuthService, AdminGuard],
