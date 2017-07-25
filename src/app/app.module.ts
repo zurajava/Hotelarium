@@ -4,10 +4,8 @@ import { ReportsModule } from './reports/reports.module';
 import { AdminGuard } from './core/admin-guard.service';
 import { AuthService } from './core/auth.service';
 import { AuthGuard } from './auth-guard.service';
-import { editOwnerModule } from './edit-branch/edit-branch.module';
 import { BranchModule } from './branch/branch.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { RoomModule } from './room/room.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -17,6 +15,7 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { PersonsModule } from './persons/persons.module';
 import { UsersModule } from './users/users.module';
+import { CategoryModule } from './category/category.module';
 
 @NgModule({
   declarations: [
@@ -30,12 +29,12 @@ import { UsersModule } from './users/users.module';
     LoginModule,
     RoomModule,
     BranchModule,
-    editOwnerModule,
     ReportsModule,
     DictionaryModule,
     ReservationModule,
     PersonsModule,
-    UsersModule
+    UsersModule,
+    CategoryModule
 
   ],
   providers: [AuthGuard, AuthService, AdminGuard],
