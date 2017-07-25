@@ -11,7 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'reservation', component: ReservationComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN'] } }
+        { path: 'reservation', component: ReservationComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT'] } }
     ])],
     exports: [RouterModule]
 })

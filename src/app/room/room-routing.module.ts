@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { AuthGuard } from '../auth-guard.service';
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'createRoom', component: RegisterComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN'] } }
+        { path: 'createRoom', component: RegisterComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT'] } }
     ])],
     exports: [RouterModule]
 })

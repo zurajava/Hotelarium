@@ -7,7 +7,7 @@ import { PersonsComponent } from './persons.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'persons', component: PersonsComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT', 'GUEST'] } }
+        { path: 'persons', component: PersonsComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT'] } }
     ])],
     exports: [RouterModule]
 })

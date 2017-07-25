@@ -23,7 +23,7 @@ export class LoginService {
 
                 if (data.json().success == true) {
                     const token = data.json().token;
-                    const user = data.json().user.ROLE_ID;
+                    const user = data.json().user.role;
 
                     this.token = token;
                     localStorage.setItem('parkingUser', JSON.stringify({ token: data.json().token, role_id: user }));

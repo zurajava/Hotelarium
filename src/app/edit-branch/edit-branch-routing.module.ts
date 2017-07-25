@@ -5,7 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'editBranch/:id', component: editOwnerComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN'] } }
+        { path: 'editBranch/:id', component: editOwnerComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT'] } }
     ])],
     exports: [RouterModule]
 })

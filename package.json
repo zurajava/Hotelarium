@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "ng build --aot -prod",
-    "start": "node server.js"
+    "start": "ng serve --proxy-config proxy.config.json"
   },
   "engines": {
     "node": "6.11.1",
@@ -41,6 +41,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "morgan": "^1.8.2",
+    "mysql": "github:mysqljs/mysql",
     "ng2-charts": "^1.6.0",
     "ng2-completer": "^1.4.0",
     "ng2-datepicker": "^1.8.3",

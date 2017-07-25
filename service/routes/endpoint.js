@@ -1,17 +1,19 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-const pool = require('../dbmanager/dbmanager.js');
+const pool = require('../dbmanager/dbmanager-mysql.js');
 
 router.post('/authenticate', (req, res) => {
   console.log("authenticate");
   pool.getUserByUserName(req.body.username, req.body.password, function (err, data) {
+    console.log(req.body.username + ' ' + req.body.password)
     if (err) {
       res.json(err);
     } else {
-      if (data.length == 0) {
+      console.log(data.password);
+      if (data.length == 0) { 
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (data.password != req.body.password.toUpperCase()) {
+      } else if (data.password.toUpperCase() != req.body.password.toUpperCase()) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
         var token = jwt.sign(data, 'ilovescotchyscotch', { expiresIn: 60 * 60 * 24 });
