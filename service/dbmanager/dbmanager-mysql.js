@@ -86,4 +86,31 @@ pool.deleteBranch = function (id, callback) {
     });
 }
 
+
+pool.getUserOrganisation = function (user_id,callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('SELECT u.user_id, o.name ,o.id FROM user_organisation u inner join organisation o on u.org_id=o.id where u.user_id=?',[user_id], function (error, row, fields) {
+            if (error) {
+                throw error;
+            } else {
+                callback(null, row);
+            }
+            connection.release();
+        });
+
+    });
+}
+pool.getUserBranch = function (user_id,callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b on u.branch_id=b.id where u.user_id=?',[user_id], function (error, row, fields) {
+            if (error) {
+                throw error;
+            } else {
+                callback(null, row);
+            }
+            connection.release();
+        });
+
+    });
+}
 module.exports = pool;

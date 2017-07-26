@@ -2,7 +2,18 @@
     <div class="commonHeadingAdmin">
         <h1>Branch</h1>
     </div>
-
+    <div class="example-wrapper">
+        <kendo-combobox [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true">
+            <ng-template kendoComboBoxItemTemplate let-dataItem>
+                <span class="template">{{ dataItem.name }}</span>
+            </ng-template>
+        </kendo-combobox>
+        <kendo-combobox [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="branchSelectedValue" [valuePrimitive]="true">
+            <ng-template kendoComboBoxItemTemplate let-dataItem>
+                <span class="template">{{ dataItem.name }}</span>
+            </ng-template>
+        </kendo-combobox>
+    </div>
     <kendo-grid [data]="view" [height]="700" [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
         (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
         (add)="addHandler($event)">

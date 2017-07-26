@@ -28,12 +28,26 @@ export class BranchComponent implements OnInit {
   public pageSize: number = 10;
   public skip: number = 0;
 
+  public userOrganisation: Array<any>;
+  public orgSelectedValue: number;
+
+  public userBranch: Array<any>;
+  public branchSelectedValue: number;
+
   constructor(private branchService: BranchService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router) {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
     this.loadData();
+    this.branchService.getUserBranch('4').subscribe(data => {
+      this.userBranch = data.json().branch;
+      this.branchSelectedValue = this.userBranch[0].id;
+    });;
+    this.branchService.getUserOrganisation('4').subscribe(data => {
+      this.userOrganisation = data.json().organisation;
+      this.orgSelectedValue = this.userOrganisation[0].id
+    });;
   }
 
   public pageChange(event: PageChangeEvent): void {

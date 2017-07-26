@@ -100,4 +100,33 @@ router.put('/branch/:id', (req, res) => {
   });
 });
 
+
+router.get('/userBranch/:id', (req, res) => {
+  console.log("userBranch");
+  pool.getUserBranch(req.params.id,function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while load user branch', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', branch: data });
+    }
+  });
+
+});
+
+router.get('/userOrganisation/:id', (req, res) => {
+  console.log("userOrganisation");
+  pool.getUserOrganisation(req.params.id,function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while load user organisation', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', organisation: data });
+    }
+  });
+
+});
+
 module.exports = router;
