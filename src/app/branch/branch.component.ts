@@ -19,14 +19,14 @@ import { Branch } from './model.js';
 export class BranchComponent implements OnInit {
 
   public view: GridDataResult;
-  private data: Object[];
-  private items: Branch[];
+  public data: Object[];
+  public items: Branch[];
 
   public formGroup: FormGroup;
-  private editedRowIndex: number;
+  public editedRowIndex: number;
 
-  private pageSize: number = 10;
-  private skip: number = 0;
+  public pageSize: number = 10;
+  public skip: number = 0;
 
   constructor(private branchService: BranchService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router) {
     this.toastr.setRootViewContainerRef(vcr);
