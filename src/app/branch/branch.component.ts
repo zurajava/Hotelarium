@@ -36,7 +36,7 @@ export class BranchComponent implements OnInit {
     this.loadData();
   }
 
-  protected pageChange(event: PageChangeEvent): void {
+  public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     this.view = {
       data: this.items.slice(this.skip, this.skip + this.pageSize),
@@ -44,7 +44,7 @@ export class BranchComponent implements OnInit {
     };
   }
 
-  protected addHandler({ sender }) {
+  public addHandler({ sender }) {
     this.closeEditor(sender);
     this.formGroup = new FormGroup({
       'name': new FormControl("", Validators.required),
@@ -55,7 +55,7 @@ export class BranchComponent implements OnInit {
     sender.addRow(this.formGroup);
   }
 
-  protected editHandler({ sender, rowIndex, dataItem }) {
+  public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     this.formGroup = new FormGroup({
       'id': new FormControl(dataItem.id),
@@ -67,17 +67,17 @@ export class BranchComponent implements OnInit {
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);
   }
-  protected cancelHandler({ sender, rowIndex }) {
+  public cancelHandler({ sender, rowIndex }) {
     this.closeEditor(sender, rowIndex);
   }
 
-  private closeEditor(grid, rowIndex = this.editedRowIndex) {
+  public closeEditor(grid, rowIndex = this.editedRowIndex) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
     this.formGroup = undefined;
   }
 
-  protected saveHandler({ sender, rowIndex, formGroup, isNew }) {
+  public saveHandler({ sender, rowIndex, formGroup, isNew }) {
     const product: Branch = formGroup.value;
     if (isNew) {
       this.branchService.addBranch(product).subscribe(data => {
@@ -94,12 +94,12 @@ export class BranchComponent implements OnInit {
     }
   }
 
-  protected removeHandler({ dataItem }) {
+  public removeHandler({ dataItem }) {
     this.branchService.deleteBranch(dataItem.id).subscribe(data => {
       this.loadData();
     });
   }
-  protected loadData() {
+  public loadData() {
     this.branchService.getBranch().subscribe(data => {
       this.items = data.json().branch;
       this.view = {
