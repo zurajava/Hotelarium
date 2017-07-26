@@ -28,7 +28,7 @@ router.post('/authenticate', (req, res) => {
 });
 
 router.use(function (req, res, next) {
-  console.log("middleware : " + req.url);
+  console.log("middleware : " + req.url + " : "+req.method);
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     jwt.verify(token, 'ilovescotchyscotch', function (err, decoded) {
@@ -63,6 +63,7 @@ router.get('/branch', (req, res) => {
 });
 
 router.post('/branch', (req, res) => {
+  console.log("add branch : " + req.body.name);
   pool.registerBranch(req.body.name, req.body.description, req.body.address, req.body.org_id, function (err, data) {
     if (err) {
       res.json({
@@ -75,6 +76,7 @@ router.post('/branch', (req, res) => {
 });
 
 router.delete('/branch/:id', (req, res) => {
+  console.log("delete branch : " + req.params.id);
   pool.deleteBranch(req.params.id, function (err, data) {
     if (err) {
       res.json({
