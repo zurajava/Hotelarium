@@ -184,6 +184,117 @@ router.put('/category/:id', (req, res) => {
   });
 });
 
+router.get('/service/:branch_id', (req, res) => {
+  console.log("service " + req.params.branch_id);
+  pool.getService(req.params.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while load service', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', service: data });
+    }
+  });
+
+});
+
+router.post('/service', (req, res) => {
+  console.log("add service : " + req.body.name);
+  pool.registerService(req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while register service', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', service: data.insertId });
+    }
+  });
+});
+
+router.delete('/service/:id', (req, res) => {
+  console.log("delete service : " + req.params.id);
+  pool.deleteService(req.params.id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while delete service', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', service: data.insertId });
+    }
+  });
+});
+
+router.put('/service/:id', (req, res) => {
+  pool.updateService(req.params.id, req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while update service', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', service: data.insertId });
+    }
+  });
+});
+
+
+
+
+
+
+router.get('/room/:branch_id', (req, res) => {
+  console.log("room " + req.params.branch_id);
+  pool.getRoom(req.params.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while load room', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', room: data });
+    }
+  });
+
+});
+
+router.post('/room', (req, res) => {
+  console.log("add room : " + req.body.name);
+  pool.registerRoom(req.body.name, req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while register room', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', room: data.insertId });
+    }
+  });
+});
+
+router.delete('/room/:id', (req, res) => {
+  console.log("delete room : " + req.params.id);
+  pool.deleteRoom(req.params.id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while delete room', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', room: data.insertId });
+    }
+  });
+});
+
+router.put('/room/:id', (req, res) => {
+  pool.updateRoom(req.params.id, req.body.name,req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while update room', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', room: data.insertId });
+    }
+  });
+});
+
+
+
 
 
 module.exports = router;
