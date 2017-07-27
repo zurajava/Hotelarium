@@ -28,7 +28,7 @@ router.post('/authenticate', (req, res) => {
 });
 
 router.use(function (req, res, next) {
-  console.log("middleware : " + req.url + " : "+req.method);
+  console.log("middleware : " + req.url + " : " + req.method);
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     jwt.verify(token, 'ilovescotchyscotch', function (err, decoded) {
@@ -48,9 +48,9 @@ router.use(function (req, res, next) {
 });
 
 
-router.get('/branch', (req, res) => {
-  console.log("branch");
-  pool.getBranch(function (err, data) {
+router.get('/branch/:org_id', (req, res) => {
+  console.log("branch " + req.params.org_id);
+  pool.getBranch(req.params.org_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while load branch', error: err
@@ -103,7 +103,7 @@ router.put('/branch/:id', (req, res) => {
 
 router.get('/userBranch/:id', (req, res) => {
   console.log("userBranch");
-  pool.getUserBranch(req.params.id,function (err, data) {
+  pool.getUserBranch(req.params.id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while load user branch', error: err
@@ -117,7 +117,7 @@ router.get('/userBranch/:id', (req, res) => {
 
 router.get('/userOrganisation/:id', (req, res) => {
   console.log("userOrganisation");
-  pool.getUserOrganisation(req.params.id,function (err, data) {
+  pool.getUserOrganisation(req.params.id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while load user organisation', error: err
@@ -128,5 +128,62 @@ router.get('/userOrganisation/:id', (req, res) => {
   });
 
 });
+
+router.get('/category/:branch_id', (req, res) => {
+  console.log("category " + req.params.branch_id);
+  pool.getCategory(req.params.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while load category', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', category: data });
+    }
+  });
+
+});
+
+
+router.post('/category', (req, res) => {
+  console.log("add category : " + req.body.name);
+  pool.registerCategory(req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while register category', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', category: data.insertId });
+    }
+  });
+});
+
+
+router.delete('/category/:id', (req, res) => {
+  console.log("delete category : " + req.params.id);
+  pool.deleteCategory(req.params.id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while delete category', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', category: data.insertId });
+    }
+  });
+});
+
+
+router.put('/category/:id', (req, res) => {
+  pool.updateCategory(req.params.id, req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while update category', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', category: data.insertId });
+    }
+  });
+});
+
+
 
 module.exports = router;

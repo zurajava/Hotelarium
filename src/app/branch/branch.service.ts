@@ -12,12 +12,12 @@ export class BranchService {
     constructor(private http: Http) {
     }
 
-    getBranch() {
+    getBranch(org_id: number) {
         const headers = new Headers();
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/branch', { headers: headers })
+        return this.http.get('/service/branch/' + org_id, { headers: headers })
             .catch(this.handleError);
     }
 
@@ -54,7 +54,7 @@ export class BranchService {
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/userBranch/'+user_id, { headers: headers })
+        return this.http.get('/service/userBranch/' + user_id, { headers: headers })
             .catch(this.handleError);
     }
     getUserOrganisation(user_id: string) {
@@ -62,7 +62,7 @@ export class BranchService {
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/userOrganisation/'+user_id, { headers: headers })
+        return this.http.get('/service/userOrganisation/' + user_id, { headers: headers })
             .catch(this.handleError);
     }
     private handleError(error: any) {

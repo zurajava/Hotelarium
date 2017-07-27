@@ -3,16 +3,9 @@
         <h1>Branch</h1>
     </div>
     <div class="example-wrapper">
-        <kendo-combobox [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true">
-            <ng-template kendoComboBoxItemTemplate let-dataItem>
-                <span class="template">{{ dataItem.name }}</span>
-            </ng-template>
-        </kendo-combobox>
-        <kendo-combobox [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="branchSelectedValue" [valuePrimitive]="true">
-            <ng-template kendoComboBoxItemTemplate let-dataItem>
-                <span class="template">{{ dataItem.name }}</span>
-            </ng-template>
-        </kendo-combobox>
+        <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
+            (valueChange)="orgValueChange($event)">
+        </kendo-dropdownlist>
     </div>
     <kendo-grid [data]="view" [height]="700" [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
         (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
@@ -23,7 +16,7 @@
         <kendo-grid-column field="name" title="Name"></kendo-grid-column>
         <kendo-grid-column field="description" title="Description"></kendo-grid-column>
         <kendo-grid-column field="address" title="Address"></kendo-grid-column>
-        <kendo-grid-column field="org_id" title="Organisation"></kendo-grid-column>
+        <kendo-grid-column field="org_name" title="Organisation"></kendo-grid-column>
         <kendo-grid-command-column title="command" width="220">
             <ng-template kendoGridCellTemplate let-isNew="isNew">
                 <button kendoGridEditCommand class="k-primary">Edit</button>

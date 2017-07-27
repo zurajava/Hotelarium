@@ -9,6 +9,7 @@ import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Branch } from './model.js';
+import { AuthService } from './../core/auth.service';
 
 @Component({
   moduleId: module.id,
@@ -31,25 +32,22 @@ export class BranchComponent implements OnInit {
   public userOrganisation: Array<any>;
   public orgSelectedValue: number;
 
-  public userBranch: Array<any>;
-  public branchSelectedValue: number;
-
-  constructor(private branchService: BranchService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router) {
+  constructor(private branchService: BranchService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
-    this.loadData();
-    this.branchService.getUserBranch('4').subscribe(data => {
-      this.userBranch = data.json().branch;
-      this.branchSelectedValue = this.userBranch[0].id;
-    });;
-    this.branchService.getUserOrganisation('4').subscribe(data => {
+    this.branchService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
       this.userOrganisation = data.json().organisation;
       this.orgSelectedValue = this.userOrganisation[0].id
-    });;
+      this.loadData(this.orgSelectedValue);
+    });
   }
-
+  public orgValueChange(value: any): void {
+    this.orgSelectedValue = value;
+    this.loadData(this.orgSelectedValue);
+    console.log("orgValueChange", value + " : " + this.orgSelectedValue);
+  }
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     this.view = {
@@ -63,8 +61,8 @@ export class BranchComponent implements OnInit {
     this.formGroup = new FormGroup({
       'name': new FormControl("", Validators.required),
       'description': new FormControl(),
-      'address': new FormControl("", Validators.required),
-      'org_id': new FormControl("", Validators.required)
+      'address': new FormControl("", Validators.required)
+    //  'org_id': new FormControl("", Validators.required)
     });
     sender.addRow(this.formGroup);
   }
@@ -75,8 +73,8 @@ export class BranchComponent implements OnInit {
       'id': new FormControl(dataItem.id),
       'name': new FormControl(dataItem.name, Validators.required),
       'description': new FormControl(dataItem.description),
-      'address': new FormControl(dataItem.address, Validators.required),
-      'org_id': new FormControl(dataItem.org_id, Validators.required)
+      'address': new FormControl(dataItem.address, Validators.required)
+      //'org_id': new FormControl(dataItem.org_id, Validators.required)
     });
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);
@@ -93,16 +91,17 @@ export class BranchComponent implements OnInit {
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }) {
     const product: Branch = formGroup.value;
+    product.org_id =this.orgSelectedValue.toString();
     if (isNew) {
       this.branchService.addBranch(product).subscribe(data => {
         sender.closeRow(rowIndex);
-        this.loadData();
+        this.loadData(this.orgSelectedValue);
         this.toastr.success("Branch Added");
       });
     } else {
       this.branchService.editBranch(product).subscribe(data => {
         sender.closeRow(rowIndex);
-        this.loadData();
+        this.loadData(this.orgSelectedValue);
         this.toastr.success("Branch Edited");
       });
     }
@@ -110,11 +109,11 @@ export class BranchComponent implements OnInit {
 
   public removeHandler({ dataItem }) {
     this.branchService.deleteBranch(dataItem.id).subscribe(data => {
-      this.loadData();
+      this.loadData(this.orgSelectedValue);
     });
   }
-  public loadData() {
-    this.branchService.getBranch().subscribe(data => {
+  public loadData(org_id: number) {
+    this.branchService.getBranch(org_id).subscribe(data => {
       this.items = data.json().branch;
       this.view = {
         data: this.items.slice(this.skip, this.skip + this.pageSize),

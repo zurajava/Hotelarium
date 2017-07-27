@@ -24,9 +24,10 @@ export class LoginService {
                 if (data.json().success == true) {
                     const token = data.json().token;
                     const user = data.json().user.role;
+                    const user_id = data.json().user.id;
 
                     this.token = token;
-                    localStorage.setItem('parkingUser', JSON.stringify({ token: data.json().token, role_id: user }));
+                    localStorage.setItem('parkingUser', JSON.stringify({ token: data.json().token, role_id: user,user_id:user_id }));
                     return data.json().data;
                 } else {
                     return data.json().message

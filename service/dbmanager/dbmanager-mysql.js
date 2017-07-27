@@ -26,9 +26,9 @@ pool.getUserByUserName = function (username, password, callback) {
 }
 
 
-pool.getBranch = function (callback) {
+pool.getBranch = function (org_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM branch', function (error, row, fields) {
+        connection.query('SELECT b.*,o.name as org_name FROM branch b inner join organisation o on b.org_id=o.id where b.org_id=?', [org_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
@@ -59,7 +59,7 @@ pool.updateBranch = function (id, name, description, address, org_id, callback) 
     pool.getConnection(function (err, connection) {
         connection.query('update branch set name=?, description=?, address=?, org_id=?, update_date=current_timestamp where id=?',
             [name, description, address, org_id, id],
-            function (error, row, fields) { 
+            function (error, row, fields) {
                 if (error) {
                     throw error;
                 } else {
@@ -87,9 +87,9 @@ pool.deleteBranch = function (id, callback) {
 }
 
 
-pool.getUserOrganisation = function (user_id,callback) {
+pool.getUserOrganisation = function (user_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT u.user_id, o.name ,o.id FROM user_organisation u inner join organisation o on u.org_id=o.id where u.user_id=?',[user_id], function (error, row, fields) {
+        connection.query('SELECT u.user_id, o.name ,o.id FROM user_organisation u inner join organisation o on u.org_id=o.id where u.user_id=?', [user_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
@@ -100,9 +100,9 @@ pool.getUserOrganisation = function (user_id,callback) {
 
     });
 }
-pool.getUserBranch = function (user_id,callback) {
+pool.getUserBranch = function (user_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b on u.branch_id=b.id where u.user_id=?',[user_id], function (error, row, fields) {
+        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b on u.branch_id=b.id where u.user_id=?', [user_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
@@ -113,4 +113,67 @@ pool.getUserBranch = function (user_id,callback) {
 
     });
 }
+
+
+pool.getCategory = function (branch_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('SELECT c.*, b.name as branch_name FROM category c inner join branch b on c.branch_id=b.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+            if (error) {
+                throw error;
+            } else {
+                callback(null, row);
+            }
+            connection.release();
+        });
+
+    });
+}
+
+
+pool.registerCategory = function (name, description, branch_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('insert into category(create_date,name,description,branch_id) values(current_timestamp,?,?,?)',
+            [name, description, branch_id],
+            function (error, row, fields) {
+                if (error) {
+                    throw error;
+                } else {
+                    callback(null, row);
+                }
+                connection.release();
+            });
+
+    });
+}
+
+pool.deleteCategory = function (id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('delete from category where id=?', [id], function (error, row, fields) {
+            if (error) {
+                throw error;
+            } else {
+                callback(null, row);
+            }
+            connection.release();
+        });
+
+    });
+}
+
+pool.updateCategory = function (id, name, description,  branch_id, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('update category set name=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
+            [name, description,  branch_id, id],
+            function (error, row, fields) {
+                if (error) {
+                    throw error;
+                } else {
+                    callback(null, row);
+                }
+                connection.release();
+            });
+
+    });
+}
+
 module.exports = pool;

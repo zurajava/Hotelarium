@@ -10,6 +10,7 @@ export class AuthService {
 
     isLoggedIn = false;
     roleID = 'anonymous';
+    user_id = 'anonymous';
 
 
     // Service message commands
@@ -48,6 +49,18 @@ export class AuthService {
             this.roleID = 'anonymous';
         }
         return this.roleID
+
+    }
+        getUserID() {
+        let parkingUser = JSON.parse(localStorage.getItem('parkingUser'));
+        let user_id = parkingUser && parkingUser.user_id;
+
+        if (user_id != undefined) {
+            this.user_id = user_id;
+        } else {
+            this.user_id = 'anonymous';
+        }
+        return this.user_id
 
     }
 }
