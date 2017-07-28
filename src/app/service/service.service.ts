@@ -4,24 +4,24 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { Category } from './model';
+import { Service } from './model';
 
 @Injectable()
-export class CategoryService {
+export class ServiceService {
 
   constructor(private http: Http) {
   }
 
-  getCategory(branch_id: number) {
+  getService(branch_id: number) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/category/' + branch_id, { headers: headers })
+    return this.http.get('/service/service/' + branch_id, { headers: headers })
       .catch(this.handleError);
   }
 
-  addCategory(data: Category) {
+  addService(data: Service) {
     const body = JSON.stringify(data);
     console.log(body);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
@@ -29,23 +29,23 @@ export class CategoryService {
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
     console.log(body);
-    return this.http.post('/service/category', body, { headers: headers }).catch(this.handleError);
+    return this.http.post('/service/service', body, { headers: headers }).catch(this.handleError);
 
   }
-  editCategory(data: Category) {
+  editService(data: Service) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.put('/service/category/' + data.id, JSON.stringify(data), { headers: headers }).catch(this.handleError);
+    return this.http.put('/service/service/' + data.id, JSON.stringify(data), { headers: headers }).catch(this.handleError);
   }
 
-  deleteCategory(id: number) {
+  deleteService(id: number) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.delete('/service/category/' + id, { headers: headers }).catch(this.handleError);
+    return this.http.delete('/service/service/' + id, { headers: headers }).catch(this.handleError);
 
   }
   getUserBranch(user_id: string, org_id: number) {

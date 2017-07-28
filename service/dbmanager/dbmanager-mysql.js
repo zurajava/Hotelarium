@@ -100,9 +100,9 @@ pool.getUserOrganisation = function (user_id, callback) {
 
     });
 }
-pool.getUserBranch = function (user_id, callback) {
+pool.getUserBranch = function (user_id, org_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b on u.branch_id=b.id where u.user_id=?', [user_id], function (error, row, fields) {
+        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b  on u.branch_id=b.id inner join organisation o on b.org_id=o.id where u.user_id=? and o.id=?', [user_id, org_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
@@ -286,10 +286,10 @@ pool.deleteRoom = function (id, callback) {
     });
 }
 
-pool.updateRoom = function (id, name,room_no, description, branch_id, callback) {
+pool.updateRoom = function (id, name, room_no, description, branch_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('update room set name=?,room_no=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name,room_no, description, branch_id, id],
+            [name, room_no, description, branch_id, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;

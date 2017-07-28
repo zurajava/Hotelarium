@@ -101,9 +101,9 @@ router.put('/branch/:id', (req, res) => {
 });
 
 
-router.get('/userBranch/:id', (req, res) => {
-  console.log("userBranch");
-  pool.getUserBranch(req.params.id, function (err, data) {
+router.get('/userBranch/:id/:org_id', (req, res) => {
+  console.log("userBranch : " + req.params.id + " : " + req.params.org_id);
+  pool.getUserBranch(req.params.id, req.params.org_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while load user branch', error: err
@@ -282,7 +282,7 @@ router.delete('/room/:id', (req, res) => {
 });
 
 router.put('/room/:id', (req, res) => {
-  pool.updateRoom(req.params.id, req.body.name,req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
+  pool.updateRoom(req.params.id, req.body.name, req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while update room', error: err
