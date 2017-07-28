@@ -1,8 +1,38 @@
 <section class="register">
     <div class="commonHeadingAdmin">
-        <h1>Create Room</h1>
-        <h2></h2>
+        <h1>Room</h1>
     </div>
-    
+    <div class="example-wrapper">
+        <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
+            (valueChange)="orgValueChange($event)">
+        </kendo-dropdownlist>
+
+        <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+            (valueChange)="brValueChange($event)">
+        </kendo-dropdownlist>
+    </div>
+
+    <kendo-grid [data]="view" [height]="700" [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
+        (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+        (add)="addHandler($event)">
+        <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add Room</button>
+        </ng-template>
+        <kendo-grid-column field="room_no" title="Room No"></kendo-grid-column>
+        <kendo-grid-column field="name" title="Name"></kendo-grid-column>
+        <kendo-grid-column field="price" editor="numeric" title="Price"></kendo-grid-column>
+        <kendo-grid-column field="currency" title="Currency"></kendo-grid-column>
+        <kendo-grid-column field="description" title="Description"></kendo-grid-column>
+        <kendo-grid-column field="branch_name" title="Branch"></kendo-grid-column>
+        <kendo-grid-command-column title="command" width="220">
+            <ng-template kendoGridCellTemplate let-isNew="isNew">
+                <button kendoGridEditCommand class="k-primary">Edit</button>
+                <button kendoGridRemoveCommand>Remove</button>
+                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+                <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+            </ng-template>
+        </kendo-grid-command-column>
+    </kendo-grid>
+
 
 </section>

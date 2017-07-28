@@ -5,5 +5,7 @@ export class Service {
     public name: string;
     public description: string;
     public branch_id: string;
-    public branch_name :string;
+    public branch_name: string;
+    public price: number;
+    public currency: string;
 }

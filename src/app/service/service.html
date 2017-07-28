@@ -16,9 +16,11 @@
     (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
     (add)="addHandler($event)">
     <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand>Add Category</button>
+      <button kendoGridAddCommand>Add Service</button>
     </ng-template>
     <kendo-grid-column field="name" title="Name"></kendo-grid-column>
+    <kendo-grid-column field="price" editor="numeric" title="Price"></kendo-grid-column>
+    <kendo-grid-column field="currency" title="Currency"></kendo-grid-column>
     <kendo-grid-column field="description" title="Description"></kendo-grid-column>
     <kendo-grid-column field="branch_name" title="Branch"></kendo-grid-column>
     <kendo-grid-command-column title="command" width="220">

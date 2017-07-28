@@ -7,7 +7,7 @@ import { ServiceComponent } from './service.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
-        { path: 'service', component: ServiceComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT'] } }
+        { path: 'roomService', component: ServiceComponent, canActivate: [AuthGuard, AdminGuard], data: { roles: ['ADMIN', 'RESIDENT'] } }
     ])],
     exports: [RouterModule]
 })

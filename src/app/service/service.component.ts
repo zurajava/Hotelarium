@@ -76,7 +76,8 @@ export class ServiceComponent implements OnInit {
     this.formGroup = new FormGroup({
       'name': new FormControl("", Validators.required),
       'description': new FormControl(),
-      //  'org_id': new FormControl("", Validators.required)
+      'price': new FormControl("", Validators.required),
+      'currency': new FormControl("", Validators.required),
     });
     sender.addRow(this.formGroup);
   }
@@ -86,8 +87,9 @@ export class ServiceComponent implements OnInit {
     this.formGroup = new FormGroup({
       'id': new FormControl(dataItem.id),
       'name': new FormControl(dataItem.name, Validators.required),
-      'description': new FormControl(dataItem.description),
-      //'org_id': new FormControl(dataItem.org_id, Validators.required)
+      'price': new FormControl(dataItem.price, Validators.required),
+      'currency': new FormControl(dataItem.currency, Validators.required),
+      'description': new FormControl(dataItem.description)
     });
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);

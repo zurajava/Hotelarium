@@ -130,10 +130,10 @@ pool.getCategory = function (branch_id, callback) {
 }
 
 
-pool.registerCategory = function (name, description, branch_id, callback) {
+pool.registerCategory = function (name, price, currency, description, branch_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('insert into category(create_date,name,description,branch_id) values(current_timestamp,?,?,?)',
-            [name, description, branch_id],
+        connection.query('insert into category(create_date,name,price, currency,description,branch_id) values(current_timestamp,?,?,?,?,?)',
+            [name, price, currency, description, branch_id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -160,10 +160,11 @@ pool.deleteCategory = function (id, callback) {
     });
 }
 
-pool.updateCategory = function (id, name, description, branch_id, callback) {
+pool.updateCategory = function (id, name, price, currency, description, branch_id, callback) {
+    console.log(price);
     pool.getConnection(function (err, connection) {
-        connection.query('update category set name=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name, description, branch_id, id],
+        connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
+            [name, price, currency, description, branch_id, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -190,10 +191,10 @@ pool.getService = function (branch_id, callback) {
     });
 }
 
-pool.registerService = function (name, description, branch_id, callback) {
+pool.registerService = function (name, price, currency, description, branch_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('insert into service(create_date,name,description,branch_id) values(current_timestamp,?,?,?)',
-            [name, description, branch_id],
+        connection.query('insert into service(create_date,name,price, currency,description,branch_id) values(current_timestamp,?,?,?,?,?)',
+            [name, price, currency, description, branch_id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -220,10 +221,10 @@ pool.deleteService = function (id, callback) {
     });
 }
 
-pool.updateService = function (id, name, description, branch_id, callback) {
+pool.updateService = function (id, name, price, currency, description, branch_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('update service set name=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name, description, branch_id, id],
+        connection.query('update service set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
+            [name, price, currency, description, branch_id, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -256,10 +257,10 @@ pool.getRoom = function (branch_id, callback) {
     });
 }
 
-pool.registerRoom = function (name, room_no, description, branch_id, callback) {
+pool.registerRoom = function (name, price, currency, room_no, description, branch_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('insert into room(create_date,name,room_no,description,branch_id) values(current_timestamp,?,?,?,?)',
-            [name, room_no, description, branch_id],
+        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id) values(current_timestamp,?,?,?,?,?,?)',
+            [name, price, currency, room_no, description, branch_id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -286,10 +287,10 @@ pool.deleteRoom = function (id, callback) {
     });
 }
 
-pool.updateRoom = function (id, name, room_no, description, branch_id, callback) {
+pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('update room set name=?,room_no=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name, room_no, description, branch_id, id],
+        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
+            [name, price, currency, room_no, description, branch_id, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;

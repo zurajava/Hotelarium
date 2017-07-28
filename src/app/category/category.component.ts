@@ -10,6 +10,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from './model.js';
 import { AuthService } from './../core/auth.service';
 
+const formGroup = dataItem => new FormGroup({
+  'id': new FormControl(dataItem.id),
+  'name': new FormControl(dataItem.name, Validators.required),
+  'price': new FormControl(dataItem.price),
+  'currency': new FormControl(dataItem.currency),
+  'description': new FormControl(dataItem.description)
+});
 
 
 @Component({
@@ -19,6 +26,20 @@ import { AuthService } from './../core/auth.service';
   styleUrls: ['./category.scss']
 })
 export class CategoryComponent implements OnInit {
+
+
+  public currencys: any[] = [{
+    "currencyId": "GEL",
+    "currencyName": "GEL"
+  },
+  {
+    "currencyId": "USD",
+    "currencyName": "USD"
+  },
+  {
+    "currencyId": "EUR",
+    "currencyName": "EUR"
+  }];
 
   public view: GridDataResult;
   public data: Object[];
@@ -38,6 +59,10 @@ export class CategoryComponent implements OnInit {
 
   constructor(private categoryService: CategoryService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
+  }
+
+  public category(id: number): any {
+    return this.currencys.find(x => x.currencyId === id);
   }
 
   ngOnInit() {
@@ -76,20 +101,18 @@ export class CategoryComponent implements OnInit {
 
   public addHandler({ sender }) {
     this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'name': new FormControl("", Validators.required),
-      'description': new FormControl()
+    this.formGroup = formGroup({
+      'name': "",
+      'price': 0,
+      'currency': "",
+      'description': 1
     });
     sender.addRow(this.formGroup);
   }
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'id': new FormControl(dataItem.id),
-      'name': new FormControl(dataItem.name, Validators.required),
-      'description': new FormControl(dataItem.description)
-    });
+    this.formGroup = formGroup(dataItem);
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);
   }

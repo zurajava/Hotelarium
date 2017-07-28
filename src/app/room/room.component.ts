@@ -1,9 +1,16 @@
 import { BranchService } from './../branch/branch.service';
 import { RoomService } from './room.service';
-import { Component, Injectable ,ViewContainerRef ,OnInit, OnDestroy} from '@angular/core';
+import { Component, Injectable, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { NgForm ,FormBuilder, FormGroup} from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Room } from './model';
+
+import { Observable } from 'rxjs/Rx';
+import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { State, process } from '@progress/kendo-data-query';
+import { AuthService } from './../core/auth.service';
+
 
 @Component({
   moduleId: module.id,
@@ -12,102 +19,133 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./room.scss']
 })
 
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RoomComponent implements OnInit {
 
-  selectedUser: number;
-  private sub: any;
+  public view: GridDataResult;
+  public data: Object[];
+  public items: Room[];
 
-  flatno = "DEMO 123";
+  public formGroup: FormGroup;
+  public editedRowIndex: number;
 
+  public pageSize: number = 10;
+  public skip: number = 0;
 
-  registerDetails: any = {} // Details of User Registering
-  // parkingDetails:any = [] // detaisl of parking available for user
-  // parkingInfo:any = {} // tem store of parking details
-  parkingSlotDetails:any = [{id:'PS1'}];
-  selectedOwner:any ;
-  
-  constructor(private registerservice:RoomService,public toastr: ToastsManager,vcr: ViewContainerRef,private route:ActivatedRoute,private viewownerservice:BranchService, public fb: FormBuilder) 
-  {
-      this.toastr.setRootViewContainerRef(vcr);
-  }
+  public userOrganisation: Array<any>;
+  public orgSelectedValue: number;
 
+  public userBranch: Array<any>;
+  public brSelectedValue: number;
 
-
-   ngOnInit() {
-
-  //   this.sub = this.route.params.subscribe(params => {
-  //     debugger
-  //      this.selectedUser = params['id']; // (+) converts string 'id' to a number
-  //      // In a real app: dispatch action to load the details here.
-  //       this.viewownerservice.editOwner(this.selectedUser)
-  //   .subscribe(
-  //     data => {
-  //        this.registerDetails = data;
-  //        this.toastr.success('Fectched Owner Succesfully');
-  //        console.log(this.registerDetails)
-  //     },
-  //     error => {
-  //       this.toastr.error(error.message);
-  //     }
-  //   )
-  //   });
-     
-  }
-
-  ngOnDestroy() {
-    // this.sub.unsubscribe();
-  }
-
-saverange(a) {
-  console.log(a)
-}
-  
-  registerUser(register: NgForm) {
-    this.registerDetails = {
-      name: register.value.name,
-      phoneNumber: register.value.number,
-      blockNo : register.value.block,
-      flatNo : register.value.flatno,
-      residentID : register.value.residentID,
-      password : register.value.password,
-      parkingID : register.value.parkingNumber,
-      parkingType : register.value.parkingType,
-      parkingSlots:this.parkingSlotDetails
-    }
-   this.registerservice.registerUser(this.registerDetails)
-   .subscribe(
-     data => {
-          this.toastr.success(data.message);
-     },
-     error => {
-       this.toastr.error(error.message)
-     }
-   )
-  register.reset();
-  }
-
-  addParkingSlot() {
-    let count = this.parkingSlotDetails.length + 1;
-    this.parkingSlotDetails.push({id:'PS'+count});
-    console.log(this.parkingSlotDetails);
-  }
-  removeParkingSlot() {
-    let lastItem = this.parkingSlotDetails.length -1;
-    this.parkingSlotDetails.splice(lastItem)
-  }
-
-  // Adding Parking Slot 
-
-  // addParkingDetails(item) {
-  //     this.parkingInfo = {
-  //       parkingID : item.value.parkingID,
-  //       parkingType : item.value.parkingType
-  //     }
-  //   this.parkingDetails.push(this.parkingInfo);
-  //   console.log(this.parkingDetails)
-  //   item.reset();
+  constructor(private roomService: RoomService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
+    this.toastr.setRootViewContainerRef(vcr);
     
-  // }
+
+  }
+
+  ngOnInit() {
+    this.roomService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
+      this.userOrganisation = data.json().organisation;
+      this.orgSelectedValue = this.userOrganisation[0].id
+
+      this.roomService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
+
+        this.userBranch = data.json().branch;
+        this.brSelectedValue = this.userBranch[0].id
+
+        this.loadData(this.brSelectedValue);
+      });
+    });
+  }
+  public orgValueChange(value: any): void {
+    this.orgSelectedValue = value;
+    this.roomService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
+      this.userBranch = data.json().branch;
+      this.brSelectedValue = this.userBranch[0].id
+      this.loadData(this.brSelectedValue);
+    });
+  }
+  public brValueChange(value: any): void {
+    this.brSelectedValue = value;
+    this.loadData(this.brSelectedValue);
+  }
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.view = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.formGroup = new FormGroup({
+      'room_no': new FormControl("", Validators.required),
+      'name': new FormControl("", Validators.required),
+      'price': new FormControl("", Validators.required),
+      'currency': new FormControl("", Validators.required),
+      'description': new FormControl()
+    });
+    sender.addRow(this.formGroup);
+  }
+
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
+    this.formGroup = new FormGroup({
+      'id': new FormControl(dataItem.id),
+      'room_no': new FormControl(dataItem.room_no),
+      'name': new FormControl(dataItem.name, Validators.required),
+      'price': new FormControl(dataItem.price, Validators.required),
+      'currency': new FormControl(dataItem.currency, Validators.required),
+      'description': new FormControl(dataItem.description)
+    });
+    this.editedRowIndex = rowIndex;
+    sender.editRow(rowIndex, this.formGroup);
+  }
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+
+  public closeEditor(grid, rowIndex = this.editedRowIndex) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
+    this.formGroup = undefined;
+  }
+
+  public saveHandler({ sender, rowIndex, formGroup, isNew }) {
+    const product: Room = formGroup.value;
+    console.log(product);
+    product.branch_id = this.brSelectedValue.toString();
+    if (isNew) {
+      this.roomService.addRoom(product).subscribe(data => {
+        sender.closeRow(rowIndex);
+        this.loadData(this.brSelectedValue);
+        this.toastr.success("Branch Added");
+      });
+    } else {
+      this.roomService.editRoom(product).subscribe(data => {
+        sender.closeRow(rowIndex);
+        this.loadData(this.brSelectedValue);
+        this.toastr.success("Branch Edited");
+      });
+    }
+  }
+
+  public removeHandler({ dataItem }) {
+    this.roomService.deleteRoom(dataItem.id).subscribe(data => {
+      this.loadData(this.brSelectedValue);
+    });
+  }
+  public loadData(branch_id: number) {
+    this.roomService.getRoom(branch_id).subscribe(data => {
+      this.items = data.json().room;
+      this.view = {
+        data: this.items.slice(this.skip, this.skip + this.pageSize),
+        total: this.items.length
+      };
+    });
+  }
+
 
 
 }

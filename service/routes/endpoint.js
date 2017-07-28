@@ -146,7 +146,7 @@ router.get('/category/:branch_id', (req, res) => {
 
 router.post('/category', (req, res) => {
   console.log("add category : " + req.body.name);
-  pool.registerCategory(req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+  pool.registerCategory(req.body.name, req.body.price, req.body.currency, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while register category', error: err
@@ -173,7 +173,7 @@ router.delete('/category/:id', (req, res) => {
 
 
 router.put('/category/:id', (req, res) => {
-  pool.updateCategory(req.params.id, req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+  pool.updateCategory(req.params.id, req.body.name,req.body.price, req.body.currency, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while update category', error: err
@@ -200,7 +200,7 @@ router.get('/service/:branch_id', (req, res) => {
 
 router.post('/service', (req, res) => {
   console.log("add service : " + req.body.name);
-  pool.registerService(req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+  pool.registerService(req.body.name, req.body.price, req.body.currency, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while register service', error: err
@@ -225,7 +225,7 @@ router.delete('/service/:id', (req, res) => {
 });
 
 router.put('/service/:id', (req, res) => {
-  pool.updateService(req.params.id, req.body.name, req.body.description, req.body.branch_id, function (err, data) {
+  pool.updateService(req.params.id, req.body.name,req.body.price, req.body.currency, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while update service', error: err
@@ -257,7 +257,7 @@ router.get('/room/:branch_id', (req, res) => {
 
 router.post('/room', (req, res) => {
   console.log("add room : " + req.body.name);
-  pool.registerRoom(req.body.name, req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
+  pool.registerRoom(req.body.name, req.body.price, req.body.currency, req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while register room', error: err
@@ -282,7 +282,7 @@ router.delete('/room/:id', (req, res) => {
 });
 
 router.put('/room/:id', (req, res) => {
-  pool.updateRoom(req.params.id, req.body.name, req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
+  pool.updateRoom(req.params.id, req.body.name,req.body.price, req.body.currency, req.body.room_no, req.body.description, req.body.branch_id, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while update room', error: err
