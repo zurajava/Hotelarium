@@ -1,78 +1,91 @@
 <section class="dashboard">
     <div class="dashboard__subHeading">
         <h1>Reservation</h1>
-        <h2></h2>
     </div>
-    <section class="dashboard__metric row">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="dashboard__box">
-                <div class="dashboard__box--color">
-                </div>
-                <h1>150</h1>
-                <h2>Total Owners</h2>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="dashboard__box">
-                <h1>05</h1>
-                <h2>Total Complaints</h2>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="dashboard__box">
-                <h1>12</h1>
-                <h2>Total Request</h2>
-            </div>
-        </div>
+    <div *ngIf="showReservation" class="reservation-container">
+        
+            <form class="k-form-inline">
+                <fieldset>
+                    <legend>Personal Info</legend>
+                    <table style="width:100%; text-align: left;">
+                        <tr>
+                            <td><span>Personal Number</span></td>
+                            <td><input class="k-textbox" placeholder="Personal Number"  ng-model="reservationInfo.person.personal_no"
+                                /></td>
+                            <td><span>First Name</span></td>
+                            <td><input class="k-textbox" placeholder="First Name" ng-model="reservationInfo.person.first_name"
+                                /></td>
+                            <td><span>Last Name</span></td>
+                            <td><input class="k-textbox" placeholder="Last Name" ng-model="reservationInfo.person.last_name"
+                                /></td>
+                            <td><span>Email</span></td>
+                            <td><input class="k-textbox" placeholder="Email" ng-model="reservationInfo.person.email" /></td>
+                        </tr>
+                        <tr>
+                            <td><span>Phone</span></td>
+                            <td><input class="k-textbox" placeholder="Phone" ng-model="reservationInfo.person.phone" /></td>
+                            <td><span>Address</span></td>
+                            <td><input class="k-textbox" placeholder="Address" ng-model="reservationInfo.person.address" /></td>
+                            <td><span>Gender</span></td>
+                            <td><input class="k-textbox" placeholder="Gender" ng-model="reservationInfo.person.gender" /></td>
+                            <td><span>Birth Date</span></td>
+                            <td><input class="k-textbox" placeholder="Birth Date" ng-model="reservationInfo.person.birthdate"
+                                /></td>
+                        </tr>
+                    </table>
 
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-            <div class="dashboard__box">
-                <h1>21,000</h1>
-                <h2>Total Payment</h2>
+
+                </fieldset>
+                <fieldset>
+                    <legend>Reservation Info</legend>
+                </fieldset>
+                <fieldset>
+                    <legend>operations</legend>
+                    <div>
+                        <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
+                    </div>
+                </fieldset>
+            </form>
+    </div>
+    <div class="box-header">
+        <div class="input-group">
+
+            <div class="example-wrapper" style="min-height: 50px">
+                <kendo-datepicker [(value)]="dateFrom" #datepicker></kendo-datepicker>
+                <kendo-datepicker [(value)]="dateTo" #datepicker></kendo-datepicker>
+            </div>
+
+            <div>
+                <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
             </div>
         </div>
-    </section>
-    <div class="fixedHeightContainer">
-        <div class="box-header">
-            <div class="input-group">
-                
-                <div class="example-wrapper" style="min-height: 50px">
-                    <kendo-datepicker [(value)]="dateFrom" #datepicker></kendo-datepicker>
-                    <kendo-datepicker [(value)]="dateTo" #datepicker></kendo-datepicker>
-                </div>
+    </div>
+    <div class="timeline-container">
+        <table class="table table-bordered table-striped table-condensed timeline-table">
+            <thead>
+                <tr>
+                    <th class="room-title">ოთახები</th>
+                    <th *ngFor="let dateSingle of dateRange">
+                        <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
+                        <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
+                        <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
+                    </th>
+                </tr>
+            </thead>
 
-                <div>
-                    <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
-                </div>
-            </div>
-        </div>
-        <div class="timeline-container">
-            <table class="table table-bordered table-striped table-condensed timeline-table">
-                <thead>
-                    <tr>
-                        <th class="room-title">ოთახები</th>
-                        <th *ngFor="let dateSingle of dateRange">
-                            <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
-                            <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
-                            <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td colspan="61">CATEGORY {{segment}}</td>
-                    </tr>
-                    <tr>
-                        <td>SSSSS</td>
-                        <td>ZZZZ</td>
-                    </tr>
-                    <tr>
-                        <td>SSSSS</td>
-                        <td>ZZZZ</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <tbody>
+                <tr>
+                    <td [colSpan]="segment">CATEGORY {{segment}}</td>
+                </tr>
+                <tr>
+                    <td (click)="openReservationForm()">SSSSS</td>
+                    <td>ZZZZ</td>
+                </tr>
+                <tr>
+                    <td>SSSSS</td>
+                    <td>ZZZZ</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </section>

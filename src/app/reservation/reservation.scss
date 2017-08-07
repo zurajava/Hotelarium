@@ -56,17 +56,16 @@
         border: none;
     }
 }
-.fixedHeightContainer{
-    //height: 425px;
-}
+
 .timeline-container {
-  //  height: 500px; 
-  //  overflow: auto;
-   // overflow-y: hidden;
-  
     overflow:auto;
     overflow-y: hidden;
 }
 .k-calendar {
     margin: 0 auto;
+}
+.reservation-container {
+    overflow:auto;
+    overflow-y: hidden;
+   // background-color:  #e6e6e6;
 }

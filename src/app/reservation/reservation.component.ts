@@ -4,7 +4,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
-
+import { ReservationInfo } from './model';
 
 
 
@@ -17,6 +17,10 @@ import * as moment from 'moment';
 })
 
 export class ReservationComponent implements OnInit {
+
+  public showReservation: boolean = false;
+  public reservationInfo: ReservationInfo;
+
   public rows = [];
   public segment = 30;
   public dateRange = [];
@@ -29,7 +33,6 @@ export class ReservationComponent implements OnInit {
     this.dateTo = new Date();
     this.dateFrom = new Date();
     this.dateFrom.setDate(this.dateTo.getDate() - 30);
-
   }
   ngOnInit() {
     this.fillDataRange();
@@ -51,6 +54,10 @@ export class ReservationComponent implements OnInit {
     console.log(this.segment);
     this.fillDataRange();
   }
-
-
+  openReservationForm() {
+    this.showReservation = true;
+  }
+  registerReservation() {
+    console.log(this.reservationInfo);
+  }
 }
