@@ -3,49 +3,72 @@
         <h1>Reservation</h1>
     </div>
     <div *ngIf="showReservation" class="reservation-container">
-        
-            <form class="k-form-inline">
-                <fieldset>
-                    <legend>Personal Info</legend>
-                    <table style="width:100%; text-align: left;">
-                        <tr>
-                            <td><span>Personal Number</span></td>
-                            <td><input class="k-textbox" placeholder="Personal Number"  ng-model="reservationInfo.person.personal_no"
-                                /></td>
-                            <td><span>First Name</span></td>
-                            <td><input class="k-textbox" placeholder="First Name" ng-model="reservationInfo.person.first_name"
-                                /></td>
-                            <td><span>Last Name</span></td>
-                            <td><input class="k-textbox" placeholder="Last Name" ng-model="reservationInfo.person.last_name"
-                                /></td>
-                            <td><span>Email</span></td>
-                            <td><input class="k-textbox" placeholder="Email" ng-model="reservationInfo.person.email" /></td>
-                        </tr>
-                        <tr>
-                            <td><span>Phone</span></td>
-                            <td><input class="k-textbox" placeholder="Phone" ng-model="reservationInfo.person.phone" /></td>
-                            <td><span>Address</span></td>
-                            <td><input class="k-textbox" placeholder="Address" ng-model="reservationInfo.person.address" /></td>
-                            <td><span>Gender</span></td>
-                            <td><input class="k-textbox" placeholder="Gender" ng-model="reservationInfo.person.gender" /></td>
-                            <td><span>Birth Date</span></td>
-                            <td><input class="k-textbox" placeholder="Birth Date" ng-model="reservationInfo.person.birthdate"
-                                /></td>
-                        </tr>
-                    </table>
-
-
-                </fieldset>
-                <fieldset>
-                    <legend>Reservation Info</legend>
-                </fieldset>
-                <fieldset>
-                    <legend>operations</legend>
-                    <div>
-                        <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
-                    </div>
-                </fieldset>
-            </form>
+        <form class="k-form-inline">
+            <fieldset>
+                <legend>Personal Info</legend>
+                <table style="width:100%; text-align: left;">
+                    <tr>
+                        <td><span>Personal Number</span></td>
+                        <td><input class="k-textbox" placeholder="Personal Number" name="personal_no" [(ngModel)]="reservationInfo.person.personal_no"
+                            /></td>
+                        <td><span>First Name</span></td>
+                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
+                            /></td>
+                        <td><span>Last Name</span></td>
+                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
+                            /></td>
+                        <td><span>Email</span></td>
+                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
+                            /></td>
+                    </tr>
+                    <tr>
+                        <td><span>Phone</span></td>
+                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
+                            /></td>
+                        <td><span>Address</span></td>
+                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
+                            /></td>
+                        <td><span>Gender</span></td>
+                        <td><input class="k-textbox" placeholder="Gender" name="gender" [(ngModel)]="reservationInfo.person.gender"
+                            /></td>
+                        <td><span>Birth Date</span></td>
+                        <td>
+                            <kendo-datepicker #datepicker name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Reservation Info</legend>
+                <div>
+                    <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>#</th>
+                        <th>Category</th>
+                        <th>Room No</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Remove</th>
+                    </tr>
+                    <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>{{res.id}}</td>
+                        <td>{{res.room_id}}</td>
+                        <td>{{res.start_date | date:'dd-MM-yyyy'}}</td>
+                        <td>{{res.start_date | date:'dd-MM-yyyy'}}</td>
+                        <th><button kendoButton (click)="removeReservation(i)" [primary]="true">Remove</button></th>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>operations</legend>
+                <div>
+                    <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
+                </div>
+            </fieldset>
+        </form>
     </div>
     <div class="box-header">
         <div class="input-group">
@@ -78,7 +101,7 @@
                     <td [colSpan]="segment">CATEGORY {{segment}}</td>
                 </tr>
                 <tr>
-                    <td (click)="openReservationForm()">SSSSS</td>
+                    <td (click)="openReservationForm(10101)">SSSSS</td>
                     <td>ZZZZ</td>
                 </tr>
                 <tr>

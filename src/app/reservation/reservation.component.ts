@@ -4,7 +4,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo } from './model';
+import { ReservationInfo, Person, ReservationDetail, Reservation } from './model';
 
 
 
@@ -33,6 +33,10 @@ export class ReservationComponent implements OnInit {
     this.dateTo = new Date();
     this.dateFrom = new Date();
     this.dateFrom.setDate(this.dateTo.getDate() - 30);
+
+    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', null, ''), new Reservation(null, null, null, null, null, [
+      new ReservationDetail(null, null, null, null, null, null, null, null, null, null)
+    ]));
   }
   ngOnInit() {
     this.fillDataRange();
@@ -48,16 +52,21 @@ export class ReservationComponent implements OnInit {
     this.dateRange = datesArray;
   }
   filterRezervation() {
-    console.log(this.dateFrom);
-    console.log(this.dateTo);
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
-    console.log(this.segment);
     this.fillDataRange();
   }
-  openReservationForm() {
+  openReservationForm(room_no: number) {
+    console.log(room_no);
     this.showReservation = true;
+    this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, room_no, new Date(), new Date(), null, null);
+  }
+  addReservation() {
+    this.reservationInfo.reservation.reservationDetail[1] = new ReservationDetail(null, null, null, null, null, 1101011, new Date(), new Date(), null, null);
+  }
+  removeReservation(id: number) {
+    console.log(id);
   }
   registerReservation() {
-    console.log(this.reservationInfo);
+    console.log(JSON.stringify(this.reservationInfo));
   }
 }

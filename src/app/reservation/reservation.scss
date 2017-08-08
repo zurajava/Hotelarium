@@ -60,6 +60,9 @@
 .timeline-container {
     overflow:auto;
     overflow-y: hidden;
+
+   // width: fit-content; 
+   // height: fit-content;
 }
 .k-calendar {
     margin: 0 auto;
@@ -67,5 +70,9 @@
 .reservation-container {
     overflow:auto;
     overflow-y: hidden;
+    
+  //  width: fit-content; 
+ //   height: fit-content;
+  //  display: inline-block
    // background-color:  #e6e6e6;
 }
