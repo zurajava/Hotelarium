@@ -94,24 +94,21 @@ export class ReservationComponent implements OnInit {
 
     this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
       this.category = data.json().category;
-      console.log("CAT : ", this.category);
     });
 
     this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
       this.room = data.json().room;
-      console.log("ROOM : ", this.room);
     });
 
 
-    this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, room_no, new Date(), new Date(), null, null, null);
+    this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
   }
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
-    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, 1101011, new Date(), new Date(), null, null, null);
+    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
     console.log(this.reservationInfo);
   }
   removeReservation(id: ReservationDetail) {
-    console.log(id);
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (index > -1) {
       this.reservationInfo.reservation.reservationDetail.splice(index, 1);

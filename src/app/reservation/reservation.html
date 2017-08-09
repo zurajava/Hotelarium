@@ -35,7 +35,7 @@
                         </td>
                         <td><span>Birth Date</span></td>
                         <td>
-                            <kendo-datepicker #datepicker name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
+                            <kendo-datepicker id="birthdate" #datepicker name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
                         </td>
                     </tr>
                 </table>
@@ -54,12 +54,12 @@
                         <th>Condition</th>
                     </tr>
                     <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
-                        <td><kendo-combobox name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true">
+                        <td><kendo-combobox name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.category_id">
                             </kendo-combobox></td>
-                        <td><kendo-combobox name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true">
+                        <td><kendo-combobox name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.room_id">
                             </kendo-combobox></td>
-                        <td>{{res.start_date | date:'dd-MM-yyyy'}}</td>
-                        <td>{{res.start_date | date:'dd-MM-yyyy'}}</td>
+                        <td><kendo-datepicker [(value)]="res.start_date" #datepicker id="start_date" name="nstart_date"></kendo-datepicker></td>
+                        <td><kendo-datepicker [(value)]="res.end_date" #datepicker id="end_date" name="nend_date"></kendo-datepicker></td>
                         <th><button kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button></th>
                     </tr>
                 </table>
@@ -81,8 +81,8 @@
                 <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
                     (valueChange)="brValueChange($event)">
                 </kendo-dropdownlist>
-                <kendo-datepicker [(value)]="dateFrom" #datepicker></kendo-datepicker>
-                <kendo-datepicker [(value)]="dateTo" #datepicker></kendo-datepicker>
+                <kendo-datepicker [(value)]="dateFrom" #datepicker id="dateFrom" name="ndateFrom"></kendo-datepicker>
+                <kendo-datepicker [(value)]="dateTo" #datepicker id="dateTo" name="ndateTo"></kendo-datepicker>
             </div>
             <div>
                 <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>

@@ -33,8 +33,6 @@
         </kendo-grid-column>
 
         <kendo-grid-column field="description" title="Description"></kendo-grid-column>
-        
-
         <kendo-grid-column field="category_name" title="Category" width="150">
             <ng-template kendoGridCellTemplate let-dataItem>
                 {{category_id(dataItem.category_name)?.name}}
@@ -44,7 +42,6 @@
                 </kendo-dropdownlist>
             </ng-template>
         </kendo-grid-column>
-
         <kendo-grid-column field="branch_name" title="Branch"></kendo-grid-column>
         <kendo-grid-command-column title="command" width="220">
             <ng-template kendoGridCellTemplate let-isNew="isNew">
