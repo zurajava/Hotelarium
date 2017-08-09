@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "ng build --aot -prod",
-    "start": "ng serve --proxy-config proxy.config.json"
+    "start": "node server.js"
   },
   "engines": {
     "node": "6.11.1",
