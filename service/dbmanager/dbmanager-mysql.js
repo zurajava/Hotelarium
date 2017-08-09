@@ -298,7 +298,13 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
     });
 }
 
+pool.registerReservation = function (reservation, callback) {
+    pool.getConnection(function (err, connection) {
 
+        console.log(reservation);
+        callback(null, reservation);
+    });
+}
 
 
 module.exports = pool;

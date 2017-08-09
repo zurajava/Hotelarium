@@ -294,7 +294,20 @@ router.put('/room/:id', (req, res) => {
 });
 
 
-
+router.post('/reservation', (req, res) => {
+  console.log("add reservation : " + req.body);
+  var reserv = req.body;
+  console.log(reserv.person.address);
+  pool.registerReservation(reserv, function (err, data) {
+    if (err) {
+      res.json({
+        success: false, message: 'Error while register reservation', error: err
+      });
+    } else {
+      res.json({ success: true, message: 'OK', reservation: data });
+    }
+  });
+});
 
 
 module.exports = router;
