@@ -29,8 +29,10 @@
                         <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
                             /></td>
                         <td><span>Gender</span></td>
-                        <td><input class="k-textbox" placeholder="Gender" name="gender" [(ngModel)]="reservationInfo.person.gender"
-                            /></td>
+                        <td>
+                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                            </kendo-combobox>
+                        </td>
                         <td><span>Birth Date</span></td>
                         <td>
                             <kendo-datepicker #datepicker name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
@@ -45,20 +47,20 @@
                 </div>
                 <table class="table">
                     <tr>
-                        <th>#</th>
                         <th>Category</th>
                         <th>Room No</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Remove</th>
+                        <th>Condition</th>
                     </tr>
                     <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
-                        <td>{{i + 1}}</td>
-                        <td>{{res.id}}</td>
-                        <td>{{res.room_id}}</td>
+                        <td><kendo-combobox name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true">
+                            </kendo-combobox></td>
+                        <td><kendo-combobox name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true">
+                            </kendo-combobox></td>
                         <td>{{res.start_date | date:'dd-MM-yyyy'}}</td>
                         <td>{{res.start_date | date:'dd-MM-yyyy'}}</td>
-                        <th><button kendoButton (click)="removeReservation(i)" [primary]="true">Remove</button></th>
+                        <th><button kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button></th>
                     </tr>
                 </table>
             </fieldset>
@@ -72,12 +74,16 @@
     </div>
     <div class="box-header">
         <div class="input-group">
-
             <div class="example-wrapper" style="min-height: 50px">
+                <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
+                    (valueChange)="orgValueChange($event)">
+                </kendo-dropdownlist>
+                <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+                    (valueChange)="brValueChange($event)">
+                </kendo-dropdownlist>
                 <kendo-datepicker [(value)]="dateFrom" #datepicker></kendo-datepicker>
                 <kendo-datepicker [(value)]="dateTo" #datepicker></kendo-datepicker>
             </div>
-
             <div>
                 <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
             </div>

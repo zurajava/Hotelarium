@@ -10,12 +10,32 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Service } from './model.js';
 import { AuthService } from './../core/auth.service';
 
+const formGroup = dataItem => new FormGroup({
+  'id': new FormControl(dataItem.id),
+  'name': new FormControl(dataItem.name, Validators.required),
+  'price': new FormControl(dataItem.price, Validators.required),
+  'currency': new FormControl(dataItem.currency, Validators.required),
+  'description': new FormControl(dataItem.description)
+});
+
 @Component({
   selector: 'app-service',
   templateUrl: './service.html',
   styleUrls: ['./service.scss']
 })
 export class ServiceComponent implements OnInit {
+  public currencys: any[] = [{
+    "currencyId": "GEL",
+    "currencyName": "GEL"
+  },
+  {
+    "currencyId": "USD",
+    "currencyName": "USD"
+  },
+  {
+    "currencyId": "EUR",
+    "currencyName": "EUR"
+  }];
 
   public view: GridDataResult;
   public data: Object[];
@@ -51,6 +71,9 @@ export class ServiceComponent implements OnInit {
       });
     });
   }
+  public category(id: number): any {
+    return this.currencys.find(x => x.currencyId === id);
+  }
   public orgValueChange(value: any): void {
     this.orgSelectedValue = value;
     this.serviceService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
@@ -73,24 +96,19 @@ export class ServiceComponent implements OnInit {
 
   public addHandler({ sender }) {
     this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'name': new FormControl("", Validators.required),
-      'description': new FormControl(),
-      'price': new FormControl("", Validators.required),
-      'currency': new FormControl("", Validators.required),
+    this.formGroup = formGroup({
+      'name': "",
+      'description': "",
+      'price': 0,
+      'currency': "",
     });
+
     sender.addRow(this.formGroup);
   }
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'id': new FormControl(dataItem.id),
-      'name': new FormControl(dataItem.name, Validators.required),
-      'price': new FormControl(dataItem.price, Validators.required),
-      'currency': new FormControl(dataItem.currency, Validators.required),
-      'description': new FormControl(dataItem.description)
-    });
+    this.formGroup = formGroup(dataItem);
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);
   }
@@ -107,7 +125,7 @@ export class ServiceComponent implements OnInit {
   public saveHandler({ sender, rowIndex, formGroup, isNew }) {
     const product: Service = formGroup.value;
     console.log(product);
-     product.branch_id = this.brSelectedValue.toString();
+    product.branch_id = this.brSelectedValue.toString();
     if (isNew) {
       this.serviceService.addService(product).subscribe(data => {
         sender.closeRow(rowIndex);

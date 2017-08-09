@@ -14,15 +14,36 @@ export class ReservationService {
 
   }
 
-  requestDetails() {
+  getCategory(branch_id: number) {
     const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
-    headers.append("Authorization", "Bearer " + key);
-    return this.http.get(AppSettings.API_ENDPOINT + '/amenity/book', { headers: headers })
-      .map((data: Response) => {
-        return data.json()
-      })
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/category/' + branch_id, { headers: headers })
+      .catch(this.handleError);
+  }
+  getRoom(branch_id: number) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/room/' + branch_id, { headers: headers })
+      .catch(this.handleError);
+  }
+  getUserBranch(user_id: string, org_id: number) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/userBranch/' + user_id + "/" + org_id, { headers: headers })
+      .catch(this.handleError);
+  }
+  getUserOrganisation(user_id: string) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/userOrganisation/' + user_id, { headers: headers })
       .catch(this.handleError);
   }
 

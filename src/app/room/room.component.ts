@@ -11,6 +11,16 @@ import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
 import { AuthService } from './../core/auth.service';
 
+const formGroup = dataItem => new FormGroup({
+  'id': new FormControl(dataItem.id),
+  'room_no': new FormControl(dataItem.room_no),
+  'name': new FormControl(dataItem.name, Validators.required),
+  'price': new FormControl(dataItem.price, Validators.required),
+  'currency': new FormControl(dataItem.currency, Validators.required),
+  'category_name': new FormControl(dataItem.category_name, Validators.required),
+  'description': new FormControl(dataItem.description)
+});
+
 
 @Component({
   moduleId: module.id,
@@ -20,6 +30,21 @@ import { AuthService } from './../core/auth.service';
 })
 
 export class RoomComponent implements OnInit {
+
+  public currencys: any[] = [{
+    "currencyId": "GEL",
+    "currencyName": "GEL"
+  },
+  {
+    "currencyId": "USD",
+    "currencyName": "USD"
+  },
+  {
+    "currencyId": "EUR",
+    "currencyName": "EUR"
+  }];
+
+  public room_category: any[];
 
   public view: GridDataResult;
   public data: Object[];
@@ -39,8 +64,6 @@ export class RoomComponent implements OnInit {
 
   constructor(private roomService: RoomService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
-    
-
   }
 
   ngOnInit() {
@@ -52,10 +75,19 @@ export class RoomComponent implements OnInit {
 
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id
+        this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
+          this.room_category = data.json().category;
+          this.loadData(this.brSelectedValue);
+        });
 
-        this.loadData(this.brSelectedValue);
       });
     });
+  }
+  public category(id: number): any {
+    return this.currencys.find(x => x.currencyId === id);
+  }
+  public category_id(id: number): any {
+    return this.room_category.find(x => x.name === id);
   }
   public orgValueChange(value: any): void {
     this.orgSelectedValue = value;
@@ -79,26 +111,21 @@ export class RoomComponent implements OnInit {
 
   public addHandler({ sender }) {
     this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'room_no': new FormControl("", Validators.required),
-      'name': new FormControl("", Validators.required),
-      'price': new FormControl("", Validators.required),
-      'currency': new FormControl("", Validators.required),
-      'description': new FormControl()
+    this.formGroup = formGroup({
+      'room_no': "",
+      'name': "",
+      'price': 0,
+      'currency': "",
+      'category_name': "",
+      'description': ""
     });
+
     sender.addRow(this.formGroup);
   }
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'id': new FormControl(dataItem.id),
-      'room_no': new FormControl(dataItem.room_no),
-      'name': new FormControl(dataItem.name, Validators.required),
-      'price': new FormControl(dataItem.price, Validators.required),
-      'currency': new FormControl(dataItem.currency, Validators.required),
-      'description': new FormControl(dataItem.description)
-    });
+    this.formGroup = formGroup(dataItem);
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);
   }
@@ -113,17 +140,17 @@ export class RoomComponent implements OnInit {
   }
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }) {
-    const product: Room = formGroup.value;
-    console.log(product);
-    product.branch_id = this.brSelectedValue.toString();
+    const room: Room = formGroup.value;
+    console.log(room);
+    room.branch_id = this.brSelectedValue.toString();
     if (isNew) {
-      this.roomService.addRoom(product).subscribe(data => {
+      this.roomService.addRoom(room).subscribe(data => {
         sender.closeRow(rowIndex);
         this.loadData(this.brSelectedValue);
         this.toastr.success("Branch Added");
       });
     } else {
-      this.roomService.editRoom(product).subscribe(data => {
+      this.roomService.editRoom(room).subscribe(data => {
         sender.closeRow(rowIndex);
         this.loadData(this.brSelectedValue);
         this.toastr.success("Branch Edited");

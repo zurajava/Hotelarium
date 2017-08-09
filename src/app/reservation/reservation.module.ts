@@ -14,9 +14,12 @@ import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { IntlModule } from '@progress/kendo-angular-intl';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { HttpModule } from '@angular/http';
+import { ComboBoxModule } from '@progress/kendo-angular-dropdowns';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 
 @NgModule({
-    imports: [SharedModule, ReservationRouting, ChartsModule, FormsModule, NgbModule, BrowserModule, IntlModule, HttpModule, BrowserAnimationsModule, DateInputsModule, ButtonsModule],
+    imports: [SharedModule, ReservationRouting,DropDownsModule,DropDownListModule,ChartsModule, FormsModule, NgbModule, BrowserModule, IntlModule, HttpModule, BrowserAnimationsModule, DateInputsModule, ButtonsModule,ComboBoxModule],
     declarations: [ReservationComponent],
     providers: [ReservationService]
 })

@@ -8,10 +8,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-    imports: [RoomRoutingModule, SharedModule, BrowserModule, BrowserAnimationsModule, GridModule, DropDownsModule],
+    imports: [RoomRoutingModule, SharedModule, BrowserModule, BrowserAnimationsModule, GridModule, DropDownsModule,DropDownListModule,ReactiveFormsModule],
     declarations: [RoomComponent],
     providers: [RoomService]
 })

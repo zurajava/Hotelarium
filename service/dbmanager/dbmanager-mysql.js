@@ -238,14 +238,9 @@ pool.updateService = function (id, name, price, currency, description, branch_id
 }
 
 
-
-
-
-
-
 pool.getRoom = function (branch_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT c.*, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+        connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
@@ -257,10 +252,10 @@ pool.getRoom = function (branch_id, callback) {
     });
 }
 
-pool.registerRoom = function (name, price, currency, room_no, description, branch_id, callback) {
+pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id) values(current_timestamp,?,?,?,?,?,?)',
-            [name, price, currency, room_no, description, branch_id],
+        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id) values(current_timestamp,?,?,?,?,?,?,?)',
+            [name, price, currency, room_no, description, branch_id, category_id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -287,10 +282,10 @@ pool.deleteRoom = function (id, callback) {
     });
 }
 
-pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, callback) {
+pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, category_name, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name, price, currency, room_no, description, branch_id, id],
+        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? where id=?',
+            [name, price, currency, room_no, description, branch_id, category_name, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;

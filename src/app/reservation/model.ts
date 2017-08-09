@@ -49,10 +49,11 @@ export class ReservationDetail {
     public room_id: number;
     public start_date: Date;
     public end_date: Date;
+    public category_id : number;
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationService>;
 
-    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date,
+    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id : number,
         reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationService>) {
         this.id = id;
         this.reservation_id = reservation_id;
@@ -62,6 +63,7 @@ export class ReservationDetail {
         this.room_id = room_id;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.category_id = category_id;
         this.reservationPerson = reservationPerson;
         this.reservationService = reservationService;
     }

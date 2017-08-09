@@ -8,11 +8,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   imports: [
-    CommonModule, ServiceRoutingModule,BrowserModule, BrowserAnimationsModule, GridModule, DropDownsModule
+    CommonModule, ServiceRoutingModule,BrowserModule, BrowserAnimationsModule, GridModule, DropDownsModule,DropDownListModule,ReactiveFormsModule
   ],
   declarations: [ServiceComponent],
   providers: [ServiceService]

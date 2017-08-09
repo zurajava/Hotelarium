@@ -9,4 +9,6 @@ export class Room {
     public branch_name: string;
     public price: number;
     public currency: string;
+    public category_id : number;
+    public category_name : string;
 }

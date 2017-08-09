@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import {Room} from './model';
+import { Room } from './model';
 
 
 @Injectable()
@@ -63,6 +63,14 @@ export class RoomService {
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
         return this.http.get('/service/userOrganisation/' + user_id, { headers: headers })
+            .catch(this.handleError);
+    }
+    getCategory(branch_id: number) {
+        const headers = new Headers();
+        let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+        headers.append("x-access-token", key);
+        headers.append('Content-Type', 'application/json');
+        return this.http.get('/service/category/' + branch_id, { headers: headers })
             .catch(this.handleError);
     }
     private handleError(error: any) {
