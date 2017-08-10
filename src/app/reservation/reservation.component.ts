@@ -1,6 +1,6 @@
 import { ReservationService } from './reservation.service';
 import { ToastModule, ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
@@ -9,6 +9,9 @@ import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Room } from '../room/model.js';
 
+
+
+enableProdMode();
 @Component({
   moduleId: module.id,
   selector: 'parking-dashboard',
