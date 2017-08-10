@@ -99,14 +99,11 @@ export class ReservationComponent implements OnInit {
     this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
       this.room = data.json().room;
     });
-
-
     this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
   }
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
     this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
-    console.log(this.reservationInfo);
   }
   removeReservation(id: ReservationDetail) {
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
@@ -116,5 +113,9 @@ export class ReservationComponent implements OnInit {
   }
   registerReservation() {
     console.log(JSON.stringify(this.reservationInfo));
+
+    this.reservationService.addReservation(this.reservationInfo).subscribe(data => {
+      this.toastr.success("Reservation Added");
+    });
   }
 }

@@ -282,7 +282,7 @@ router.delete('/room/:id', (req, res) => {
 });
 
 router.put('/room/:id', (req, res) => {
-  pool.updateRoom(req.params.id, req.body.name, req.body.price, req.body.currency, req.body.room_no, req.body.description, req.body.branch_id,req.body.category_name, function (err, data) {
+  pool.updateRoom(req.params.id, req.body.name, req.body.price, req.body.currency, req.body.room_no, req.body.description, req.body.branch_id, req.body.category_name, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while update room', error: err
@@ -297,14 +297,21 @@ router.put('/room/:id', (req, res) => {
 router.post('/reservation', (req, res) => {
   console.log("add reservation : " + req.body);
   var reserv = req.body;
-  console.log(reserv.person.address);
+
+  if (reserv == null || reserv.person == null || reserv.reservation == null || reserv.reservation.reservationDetail == null || reserv.reservation.reservationDetail.length == 0) {
+    return res.json({
+      success: false, message: 'Person is not present', error: null
+    });
+  }
+
   pool.registerReservation(reserv, function (err, data) {
     if (err) {
-      res.json({
+      console.log("registerReservation : ", err);
+      return res.json({
         success: false, message: 'Error while register reservation', error: err
       });
     } else {
-      res.json({ success: true, message: 'OK', reservation: data });
+      return res.json({ success: true, message: 'OK', data: data });
     }
   });
 });

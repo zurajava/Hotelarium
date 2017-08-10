@@ -16,7 +16,6 @@ pool.getUserByUserName = function (username, password, callback) {
             if (error) {
                 throw error;
             } else {
-                console.log(row[0]);
                 callback(null, row[0]);
             }
             connection.release();
@@ -300,9 +299,65 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
 
 pool.registerReservation = function (reservation, callback) {
     pool.getConnection(function (err, connection) {
+        var person = reservation.person;
 
-        console.log(reservation);
-        callback(null, reservation);
+        connection.beginTransaction(function (err) {
+            if (err) {
+                console.log("beginTransaction", err);
+                callback(err, null);
+            }
+
+            connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
+                [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone,], function (error, results, fields) {
+                    if (error) {
+                        return connection.rollback(function () {
+                            console.log("person", error);
+                            callback(err, null);
+                        });
+                    }
+                    connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)', [person.personal_no], function (error, results, fields) {
+                        if (error) {
+                            return connection.rollback(function () {
+                                console.log("reservation", error);
+                                callback(err, null);
+                            });
+                        }
+                        var reservID = results.insertId;
+                        var reservDetails = reservation.reservation.reservationDetail;
+
+                        for (var i = 0; i < reservDetails.length; i++) {
+
+                            console.log(reservDetails[i].room_id);
+                            connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date)values(?,current_timestamp,?,?,?,?)',
+                                [reservID, reservDetails[i].room_id, 1, reservDetails[i].start_date, reservDetails[i].end_date], function (error, results, fields) {
+                                    if (error) {
+                                        return connection.rollback(function () {
+                                            console.log("reservation_detail", error);
+                                            callback(error, null);
+                                        });
+                                    }
+
+                                });
+                        }
+
+                        connection.commit(function (err) {
+                            console.log("commit");
+                            if (err) {
+                                return connection.rollback(function () {
+                                    console.log(err);
+                                    callback(err, null);
+                                });
+                            }
+                            callback(null, "OK");
+
+                        });
+
+
+                    });
+                });
+
+
+        });
     });
 }
 

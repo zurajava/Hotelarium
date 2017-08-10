@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-
+import { ReservationInfo } from './model';
 
 @Injectable()
 export class ReservationService {
@@ -13,7 +13,17 @@ export class ReservationService {
   constructor(private http: Http) {
 
   }
+  addReservation(data: ReservationInfo) {
+    const body = JSON.stringify(data);
+    console.log(body);
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    console.log(body);
+    return this.http.post('/service/reservation', body, { headers: headers }).catch(this.handleError);
 
+  }
   getCategory(branch_id: number) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
