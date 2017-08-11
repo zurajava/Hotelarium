@@ -10,9 +10,7 @@ export class AdminGuard implements CanActivate {
 
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         let roles = route.data["roles"] as Array<string>;
-        console.log(roles);
         let status = this.authservice.getRoleID();// === 'ADMIN';
-        console.log(roles.includes(status));
         if (roles.includes(status)) {
             return true;
         } else {

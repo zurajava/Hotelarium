@@ -329,7 +329,7 @@ pool.registerReservation = function (reservation, callback) {
 
                             console.log(reservDetails[i].room_id);
                             connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date)values(?,current_timestamp,?,?,?,?)',
-                                [reservID, reservDetails[i].room_id, 1, reservDetails[i].start_date, reservDetails[i].end_date], function (error, results, fields) {
+                                [reservID, reservDetails[i].room_id, reservDetails[i].status_id, reservDetails[i].start_date, reservDetails[i].end_date], function (error, results, fields) {
                                     if (error) {
                                         return connection.rollback(function () {
                                             console.log("reservation_detail", error);
