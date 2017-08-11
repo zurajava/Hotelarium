@@ -361,5 +361,17 @@ pool.registerReservation = function (reservation, callback) {
     });
 }
 
+pool.getPerson = function (person_no, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('SELECT * FROM person where personal_no like ?', ['%' + person_no + '%'], function (error, row, fields) {
+            if (error) {
+                throw error;
+            } else {
+                callback(null, row);
+            }
+            connection.release();
+        });
 
+    });
+}
 module.exports = pool;
