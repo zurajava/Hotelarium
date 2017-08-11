@@ -55,6 +55,15 @@ export class ReservationService {
       .catch(this.handleError);
   }
 
+  getPerson(person_no: string) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/person/' + person_no, { headers: headers })
+      .catch(this.handleError);
+  }
+
   private handleError(error: any) {
     return Observable.throw(error.json());
   }
