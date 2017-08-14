@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.26",
-    "@ngui/auto-complete": "^0.13.3",
+    "@ngui/auto-complete": "^0.13.5",
     "@progress/kendo-angular-buttons": "^1.0.5",
     "@progress/kendo-angular-dateinputs": "^1.0.5",
     "@progress/kendo-angular-dropdowns": "^1.1.2",

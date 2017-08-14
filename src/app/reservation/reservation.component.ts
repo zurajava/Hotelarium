@@ -9,7 +9,7 @@ import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Room } from '../room/model.js';
 import { IntlService } from '@progress/kendo-angular-intl';
-
+import { SafeHtml } from "@angular/platform-browser";
 
 
 enableProdMode();
@@ -22,6 +22,8 @@ enableProdMode();
 })
 
 export class ReservationComponent implements OnInit {
+  public persons: Person[];
+
   public genders: Array<{ text: string }> = [
     { text: "Male" },
     { text: "Female" },
@@ -69,6 +71,11 @@ export class ReservationComponent implements OnInit {
         this.fillDataRange();
       });
     });
+
+    this.reservationService.getPerson('').subscribe(data => {
+      this.persons = data.json().person;
+    });
+
   }
   public orgValueChange(value: any): void {
     this.orgSelectedValue = value;
@@ -140,5 +147,15 @@ export class ReservationComponent implements OnInit {
 
   public handleChangeEndDate(value: Date, index: number) {
     this.reservationInfo.reservation.reservationDetail[index].end_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
+  }
+
+
+  valueChanged(newVal) {
+    var birthdate = newVal.birthdate;
+    newVal.birthdate = new Date(this.intl.formatDate(birthdate, 'yyyy-MM-dd'));
+    this.reservationInfo.person = newVal;
+  }
+  autoCompliteListFormatter(data: any): string {
+    return `${data.personal_no} ${data.first_name}`;
   }
 }
