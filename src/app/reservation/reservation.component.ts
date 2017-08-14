@@ -4,7 +4,7 @@ import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/co
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo, Person, ReservationDetail, Reservation } from './model';
+import { ReservationInfo, Person, ReservationDetail, Reservation, ReservationSchedule } from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Room } from '../room/model.js';
@@ -23,6 +23,7 @@ enableProdMode();
 
 export class ReservationComponent implements OnInit {
   public persons: Person[];
+  public reservations: ReservationSchedule[];
 
   public genders: Array<{ text: string }> = [
     { text: "Male" },
@@ -74,6 +75,11 @@ export class ReservationComponent implements OnInit {
 
     this.reservationService.getPerson('').subscribe(data => {
       this.persons = data.json().person;
+    });
+
+    this.reservationService.getReservation(this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).subscribe(data => {
+      this.reservations = data.json().data;
+      console.log(this.reservations);
     });
 
   }
@@ -133,7 +139,6 @@ export class ReservationComponent implements OnInit {
     console.log(JSON.stringify(this.reservationInfo));
 
     this.reservationService.addReservation(this.reservationInfo).subscribe(data => {
-      console.log(data);
       this.toastr.success("Reservation Added");
     });
   }

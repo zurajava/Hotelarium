@@ -316,6 +316,22 @@ router.post('/reservation', (req, res) => {
   });
 });
 
+router.get('/reservation', (req, res) => {
+  console.log("get reservation : " + req.query.start_date + " " + + req.query.end_date);
+  var reserv = req.body;
+
+  pool.getReservation(req.query.start_date, req.query.end_date, function (err, data) {
+    if (err) {
+      console.log("get reservation : ", err);
+      return res.json({
+        success: false, message: 'Error while get reservation', error: err
+      });
+    } else {
+      return res.json({ success: true, message: 'OK', data: data });
+    }
+  });
+});
+
 
 
 router.get('/person', (req, res) => {
@@ -326,7 +342,6 @@ router.get('/person', (req, res) => {
         success: false, message: 'Error while load person', error: err
       });
     } else {
-      console.log(data);
       res.json({ success: true, message: 'OK', person: data });
     }
   });

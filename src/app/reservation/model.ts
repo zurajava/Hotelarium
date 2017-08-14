@@ -49,11 +49,11 @@ export class ReservationDetail {
     public room_id: number;
     public start_date: Date;
     public end_date: Date;
-    public category_id : number;
+    public category_id: number;
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationService>;
 
-    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id : number,
+    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
         reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationService>) {
         this.id = id;
         this.reservation_id = reservation_id;
@@ -98,5 +98,29 @@ export class ReservationInfo {
         this.person = person;
         this.reservation = reservation;
     }
+
+}
+
+export class ReservationSchedule {
+    public id: number;
+    public reservation_id: number;
+    public create_date: Date;
+    public update_date: Date;
+    public room_id: string;
+    public start_date: Date;
+    public end_date: Date;
+    public status_id: number;
+    public status_name: string;
+    public branch_id: number;
+    public category_id: number;
+    public category_name: string;
+    public category_price: string;
+    public room_no: string;
+    public room_name: string;
+    public room_price: string;
+    public person_no: string;
+    public first_name: string;
+    public last_name: string;
+    public email: string;
 
 }
