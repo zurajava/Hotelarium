@@ -318,9 +318,9 @@ router.post('/reservation', (req, res) => {
 
 
 
-router.get('/person/:person_no', (req, res) => {
-  console.log("person " + req.params.person_no);
-  pool.getPerson(req.params.person_no, function (err, data) {
+router.get('/person', (req, res) => {
+  console.log("person :" + req.query.person_no);
+  pool.getPerson(req.query.person_no, function (err, data) {
     if (err) {
       res.json({
         success: false, message: 'Error while load person', error: err

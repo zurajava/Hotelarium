@@ -310,10 +310,13 @@ pool.registerReservation = function (reservation, callback) {
             connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
                 [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone,], function (error, results, fields) {
                     if (error) {
-                        return connection.rollback(function () {
-                            console.log("person", error);
-                            callback(err, null);
-                        });
+                        if (error.code != 'ER_DUP_ENTRY') {
+                            return connection.rollback(function () {
+                                console.log("person", error.code);
+                                callback(err, null);
+                            });
+                        }
+
                     }
                     connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)', [person.personal_no], function (error, results, fields) {
                         if (error) {

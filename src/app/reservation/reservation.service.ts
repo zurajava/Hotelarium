@@ -60,7 +60,7 @@ export class ReservationService {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/person/' + person_no, { headers: headers })
+    return this.http.get('/service/person?person_no' + person_no, { headers: headers })
       .catch(this.handleError);
   }
 
