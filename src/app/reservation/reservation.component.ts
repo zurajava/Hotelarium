@@ -70,6 +70,11 @@ export class ReservationComponent implements OnInit {
         this.brSelectedValue = this.userBranch[0].id
         // TO DO
         this.fillDataRange();
+
+        this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).subscribe(data => {
+          this.reservations = data.json().data;
+          console.log(this.reservations);
+        });
       });
     });
 
@@ -77,10 +82,7 @@ export class ReservationComponent implements OnInit {
       this.persons = data.json().person;
     });
 
-    this.reservationService.getReservation(this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).subscribe(data => {
-      this.reservations = data.json().data;
-      console.log(this.reservations);
-    });
+
 
   }
   public orgValueChange(value: any): void {

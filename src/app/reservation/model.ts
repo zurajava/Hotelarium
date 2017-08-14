@@ -124,3 +124,39 @@ export class ReservationSchedule {
     public email: string;
 
 }
+
+export class Schedule {
+    public id: number;
+    public status: number;
+    public startDate: Date;
+    public endDate: Date;
+    public cycleId: number;
+    public paymentType: string;
+    public firstName: string;
+    public personCode: string;
+    public dayDiff: number;
+    public currentDate: Date;
+    public action: string;
+    public isAvailable: string;
+    public shedule: string;
+    public branch: string;
+    constructor(id: number, status: number, startDate: Date, endDate: Date, cycleId: number, 
+        paymentType: string, firstName: string, personCode: string,
+         dayDiff: number, currentDate: Date, action: string, isAvailable: string, shedule: string, branch: string) {
+        this.id = id;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.cycleId = cycleId;
+        this.paymentType = paymentType;
+        this.firstName = firstName;
+        this.personCode = personCode;
+        this.dayDiff = dayDiff;
+        this.currentDate = currentDate;
+        this.action = action;
+        this.isAvailable = isAvailable;
+        this.shedule = shedule;
+        this.branch = branch;
+    }
+
+}

@@ -63,12 +63,12 @@ export class ReservationService {
     return this.http.get('/service/person?person_no' + person_no, { headers: headers })
       .catch(this.handleError);
   }
-  getReservation(start_date: string, end_date: string) {
+  getReservation(branch_id:String,start_date: string, end_date: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date, { headers: headers })
+    return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date +'&branch_id='+branch_id, { headers: headers })
       .catch(this.handleError);
   }
 

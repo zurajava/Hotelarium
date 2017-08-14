@@ -364,15 +364,15 @@ pool.registerReservation = function (reservation, callback) {
     });
 }
 
-pool.getReservation = function (start_date, end_date, callback) {
+pool.getReservation = function (branch_id,start_date, end_date, callback) {
     var query = 'SELECT r.id,r.reservation_id,r.create_date,r.update_date,r.room_id,r.start_date,r.end_date,r.status_id,s.name as status_name,m.branch_id,m.category_id,c.name as category_name,' +
         'c.price as category_price, m.room_no, m.name as room_name, m.price as room_price,' +
         ' a.person_no as person_no, p.first_name,p.last_name,p.email' +
         ' FROM reservation_detail r  inner join reservation_status s on r.status_id=s.id inner join heroku_8c0c9eba2ff6cfd.room m on  r.room_id=m.id ' +
         ' inner join category c on m.category_id=c.id inner join reservation a on r.reservation_id=a.id inner join person p on a.person_no=p.personal_no' +
-        ' where start_date>? and start_date<?';
+        ' where m.branch_id=? and start_date>? and start_date<?';
     pool.getConnection(function (err, connection) {
-        connection.query(query, [start_date, end_date], function (error, row, fields) {
+        connection.query(query, [branch_id,start_date, end_date], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
