@@ -317,10 +317,10 @@ router.post('/reservation', (req, res) => {
 });
 
 router.get('/reservation', (req, res) => {
-  console.log("get reservation : " + req.query.start_date + " "  + req.query.end_date +" "+req.query.branch_id);
+  console.log("get reservation : " + req.query.start_date + " " + req.query.end_date + " " + req.query.branch_id);
   var reserv = req.body;
 
-  pool.getReservation(req.query.branch_id,req.query.start_date, req.query.end_date, function (err, data) {
+  pool.getReservation(req.query.branch_id, req.query.start_date, req.query.end_date, function (err, data) {
     if (err) {
       console.log("get reservation : ", err);
       return res.json({

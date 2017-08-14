@@ -364,24 +364,57 @@ pool.registerReservation = function (reservation, callback) {
     });
 }
 
-pool.getReservation = function (branch_id,start_date, end_date, callback) {
-    var query = 'SELECT r.id,r.reservation_id,r.create_date,r.update_date,r.room_id,r.start_date,r.end_date,r.status_id,s.name as status_name,m.branch_id,m.category_id,c.name as category_name,' +
-        'c.price as category_price, m.room_no, m.name as room_name, m.price as room_price,' +
-        ' a.person_no as person_no, p.first_name,p.last_name,p.email' +
-        ' FROM reservation_detail r  inner join reservation_status s on r.status_id=s.id inner join heroku_8c0c9eba2ff6cfd.room m on  r.room_id=m.id ' +
-        ' inner join category c on m.category_id=c.id inner join reservation a on r.reservation_id=a.id inner join person p on a.person_no=p.personal_no' +
-        ' where m.branch_id=? and start_date>? and start_date<?';
+pool.getReservation = function (branch_id, start_date, end_date, callback) {
+    var categoryData;
+    var roomData;
+    var reservationData;
+    var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
+
     pool.getConnection(function (err, connection) {
-        connection.query(query, [branch_id,start_date, end_date], function (error, row, fields) {
+
+        connection.query(query, [branch_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
-                callback(null, row);
+                categoryData = row;
+                console.log(categoryData);
+                for (var i = 0; i < categoryData.length; i++) {
+                    var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
+                    connection.query(roomSql, [branch_id, categoryData[i].id], function (error, row, fields) {
+                        if (error) {
+                            throw error;
+                        } else {
+                            roomData = row;
+                            console.log(roomData);
+                            for (var i = 0; i < roomData.length; i++) {
+                                var reservationSql = 'SELECT d.id,d.create_date,d.update_date,d.room_id,d.status_id,d.start_date,d.end_date, ' +
+                                    ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email ' +
+                                    ' FROM heroku_8c0c9eba2ff6cfd.reservation_detail d ' +
+                                    ' inner join heroku_8c0c9eba2ff6cfd.reservation_status s on d.status_id=s.id ' +
+                                    ' inner join heroku_8c0c9eba2ff6cfd.reservation a on d.reservation_id=a.id ' +
+                                    ' inner join heroku_8c0c9eba2ff6cfd.person p on a.person_no=p.personal_no ' +
+                                    ' where d.room_id=? and d.start_date >? and d.start_date<?';
+                                connection.query(reservationSql, [roomData[i].id, start_date, end_date], function (error, row, fields) {
+                                    if (error) {
+                                        throw error;
+                                    } else {
+                                        reservationData = row;
+                                        console.log(reservationData);
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+
             }
             connection.release();
         });
 
+
     });
+    callback(null, reservationData);
 }
 
 pool.getPerson = function (person_no, callback) {
