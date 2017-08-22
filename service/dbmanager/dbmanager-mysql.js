@@ -1,4 +1,6 @@
 var mysql = require('mysql');
+var Q = require('q');
+
 var pool = mysql.createPool({
     connectionLimit: 100,
     host: 'eu-cdbr-west-01.cleardb.com',
@@ -375,6 +377,7 @@ getCategory = function (branch_id, callback) {
                 categoryData = row;
                 callback(null, categoryData);
             }
+            connection.release();
         });
     });
 }
@@ -390,6 +393,7 @@ getRoom = function (branch_id, categoryID, callback) {
                 roomData = row;
                 callback(null, roomData);
             }
+            connection.release();
         });
     });
 }
@@ -411,6 +415,7 @@ getReservationL = function (room_id, start_date, end_date, callback) {
                 reservationData = row;
                 callback(null, reservationData);
             }
+            connection.release();
         });
     });
 }
@@ -421,35 +426,6 @@ pool.getReservation = function (branch_id, start_date, end_date, callback) {
     var categoryData;
     var roomData;
     var reservationData;
-    getCategory(branch_id, function (err, data) {
-        if (err) {
-            callback(err, categoryData);
-        } else {
-            categoryData = data;
-            console.log('c', categoryData);
-            //callback(null, categoryData);
-
-            getRoom(branch_id, categoryData[0].id, function (err, data) {
-                if (err) {
-                    callback(err, null);
-                } else {
-                    console.log('r', data);
-                    //callback(null, data);
-
-                    getReservationL(data[0].id, data[0].start_date, data[0].end_date, function (err, data) {
-                        if (err) {
-                            callback(err, null);
-                        } else {
-                            console.log('res', data);
-                            callback(null, data);
-                        }
-                    });
-                }
-
-            });
-
-        }
-    });
 
 }
 
