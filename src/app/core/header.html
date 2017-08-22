@@ -1,6 +1,6 @@
 <section class="header row" *ngIf="roleID != 'anonymous'" [ngClass]="{'adminHeader': roleID === 'ADMIN' || roleID === 'RESIDENT'}">
     <div class="header__left col-xs-6 col-sm-6 col-lg-6 col-md-6 header__left">
-        <button type="button" id="toggleMenu" class="toggle_menu" (click)="toggleMenu()">
+    <button type="button" id="toggleMenu" class="toggle_menu" (click)="toggleMenu()">
       <i class="fa fa-bars"></i>
     </button>
         <h1>Hotelarium</h1>

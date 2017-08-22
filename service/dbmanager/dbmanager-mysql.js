@@ -366,20 +366,22 @@ pool.registerReservation = function (reservation, callback) {
     });
 }
 
-getCategory = function (branch_id, callback) {
+getCategory = function (branch_id) {
+    var deferred = q.defer();
     var categoryData;
     var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [branch_id], function (error, row, fields) {
             if (error) {
-                callback(error, null);
+                deferred.reject(err);
             } else {
-                categoryData = row;
-                callback(null, categoryData);
+
+                connection.release();
+                deferred.resolve(row);
             }
-            connection.release();
         });
     });
+    return deferred.promise;
 }
 
 getRoom = function (branch_id, categoryID, callback) {
@@ -426,6 +428,12 @@ pool.getReservation = function (branch_id, start_date, end_date, callback) {
     var categoryData;
     var roomData;
     var reservationData;
+    getCategory(branch_id)
+        .then(function (rows) {
+            console.log(rows);
+        }, function (error) {
+            console.log(error);
+        });
 
 }
 
