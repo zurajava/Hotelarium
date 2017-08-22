@@ -1,7 +1,7 @@
 :host {
     /deep/ {
         * {
-            box-sizing: border-box;
+           // box-sizing: border-box;
         }
         button,
         input,
@@ -26,7 +26,7 @@
                 th {
                     font-weight: 300 !important;
                     font-size: 12px !important;
-                    text-transform: uppercase;
+                    
                 }
                 section {
                     font-size: 12px;
@@ -36,10 +36,8 @@
                 th {
                     font-weight: 300 !important;
                     font-size: 12px !important;
-                    text-transform: uppercase;
                     margin: 0;
                     padding: 0.5em 1em;
-                    border: 1px solid #999;
                     @media only screen and (min-width: 320px) and (max-width: 768px) {
                         font-size: 10px !important;
                     }
