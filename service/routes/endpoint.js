@@ -2,7 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const pool = require('../dbmanager/dbmanager-mysql.js');
-var Q = require('q');
+var q = require('q');
 
 router.post('/authenticate', (req, res) => {
   console.log("authenticate");

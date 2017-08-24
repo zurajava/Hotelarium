@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var Q = require('q');
+var q = require('q');
 
 var pool = mysql.createPool({
     connectionLimit: 100,
@@ -373,9 +373,8 @@ getCategory = function (branch_id) {
     pool.getConnection(function (err, connection) {
         connection.query(query, [branch_id], function (error, row, fields) {
             if (error) {
-                deferred.reject(err);
+                deferred.reject(error);
             } else {
-
                 connection.release();
                 deferred.resolve(row);
             }
@@ -384,23 +383,25 @@ getCategory = function (branch_id) {
     return deferred.promise;
 }
 
-getRoom = function (branch_id, categoryID, callback) {
+getRoom = function (branch_id, categoryID) {
+    var deferred = q.defer();
     var roomData;
     var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(roomSql, [branch_id, categoryID], function (error, row, fields) {
             if (err) {
-                callback(err, null);
+                deferred.reject(err);
             } else {
-                roomData = row;
-                callback(null, roomData);
+                connection.release();
+                deferred.resolve(row);
             }
-            connection.release();
         });
     });
+    return deferred.promise;
 }
 
-getReservationL = function (room_id, start_date, end_date, callback) {
+getReservationL = function (room_id, start_date, end_date) {
+    var deferred = q.defer();
     var reservationData;
     var reservationSql = 'SELECT d.id,d.create_date,d.update_date,d.room_id,d.status_id,d.start_date,d.end_date, ' +
         ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email ' +
@@ -412,14 +413,14 @@ getReservationL = function (room_id, start_date, end_date, callback) {
     pool.getConnection(function (err, connection) {
         connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
             if (err) {
-                callback(err, null);
+                deferred.reject(err);
             } else {
-                reservationData = row;
-                callback(null, reservationData);
+                connection.release();
+                deferred.resolve(row);
             }
-            connection.release();
         });
     });
+    return deferred.promise;
 }
 
 
@@ -428,12 +429,24 @@ pool.getReservation = function (branch_id, start_date, end_date, callback) {
     var categoryData;
     var roomData;
     var reservationData;
-    getCategory(branch_id)
-        .then(function (rows) {
-            console.log(rows);
-        }, function (error) {
-            console.log(error);
+
+    getCategory(branch_id).then(firstRecords => {
+        let promises = firstRecords.map(function (record) {
+            return getRoom(branch_id, record.id)
+                .then(roomData => {
+                    Object.assign({}, record, { room: roomData })
+                })
         });
+        return Promise.all(promises);
+    }).then(secondRecords => {
+        console.log('secondRecords: ', JSON.stringify(secondRecords));
+
+        let promises = secondRecords.map(record => getReservationL(secondRecords.room_id, start_date, end_date));
+        return Promise.all(promises);
+    }).then(thirdRecords => {
+        console.log('thirdRecords: ', thirdRecords);
+    })
+
 
 }
 
