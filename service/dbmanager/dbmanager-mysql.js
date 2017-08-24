@@ -426,28 +426,30 @@ getReservationL = function (room_id, start_date, end_date) {
 
 
 pool.getReservation = function (branch_id, start_date, end_date, callback) {
-    var categoryData;
-    var roomData;
-    var reservationData;
 
     getCategory(branch_id).then(firstRecords => {
         let promises = firstRecords.map(function (record) {
             return getRoom(branch_id, record.id)
                 .then(roomData => {
-                    Object.assign({}, record, { room: roomData })
+                    var res = Object.assign({}, record, { room: roomData });
+                    return res;
                 })
         });
         return Promise.all(promises);
     }).then(secondRecords => {
-        console.log('secondRecords: ', JSON.stringify(secondRecords));
-
-        let promises = secondRecords.map(record => getReservationL(secondRecords.room_id, start_date, end_date));
+        let promises = secondRecords.map(function (category) {
+            return category.room;
+        }).map(function (rooms) {
+            console.log('SECOND', JSON.stringify(rooms));
+            return rooms;
+        }).map(function (reservation) {
+            console.log('THERD', JSON.stringify(reservation));
+            return reservation;
+        })
         return Promise.all(promises);
-    }).then(thirdRecords => {
-        console.log('thirdRecords: ', thirdRecords);
+    }).then(reservation => {
+        console.log("Reservation", JSON.stringify(reservation));
     })
-
-
 }
 
 pool.getPerson = function (person_no, callback) {
