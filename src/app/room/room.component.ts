@@ -28,7 +28,7 @@ const formGroup = dataItem => {
   return new FormGroup({
     'id': new FormControl(dataItem.id),
     'room_no': new FormControl(dataItem.room_no),
-    'category_name': new FormControl(dataItem.category_name, Validators.required),
+    'category_name': new FormControl(dataItem.category_id, Validators.required),
     'price': new FormControl(dataItem.price, Validators.required),
     'currency': new FormControl(dataItem.currency, Validators.required),
     'smoke': new FormControl(smoke),
