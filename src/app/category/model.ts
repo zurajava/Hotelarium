@@ -8,4 +8,5 @@ export class Category {
     public branch_name: string;
     public price: number;
     public currency: string;
+    public parking: string;
 }

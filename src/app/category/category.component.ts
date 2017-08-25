@@ -10,13 +10,22 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from './model.js';
 import { AuthService } from './../core/auth.service';
 
-const formGroup = dataItem => new FormGroup({
-  'id': new FormControl(dataItem.id),
-  'name': new FormControl(dataItem.name, Validators.required),
-  'price': new FormControl(dataItem.price),
-  'currency': new FormControl(dataItem.currency),
-  'description': new FormControl(dataItem.description)
-});
+const formGroup = dataItem => {
+  var parking;
+  if (dataItem.parking === 'YES') {
+    parking = true;
+  } else {
+    parking = false;
+  } 
+  return new FormGroup({
+    'id': new FormControl(dataItem.id),
+    'name': new FormControl(dataItem.name, Validators.required),
+    'price': new FormControl(dataItem.price),
+    'currency': new FormControl(dataItem.currency),
+    'description': new FormControl(dataItem.description),
+    'parking': new FormControl(parking)
+  })
+};
 
 
 @Component({
@@ -51,9 +60,6 @@ export class CategoryComponent implements OnInit {
   public pageSize: number = 10;
   public skip: number = 0;
 
-  public userOrganisation: Array<any>;
-  public orgSelectedValue: number;
-
   public userBranch: Array<any>;
   public brSelectedValue: number;
 
@@ -66,26 +72,14 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.categoryService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
-      this.userOrganisation = data.json().organisation;
-      this.orgSelectedValue = this.userOrganisation[0].id
-
-      this.categoryService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
-
+    
+      this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id
-
         this.loadData(this.brSelectedValue);
       });
-    });
-  }
-  public orgValueChange(value: any): void {
-    this.orgSelectedValue = value;
-    this.categoryService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
-      this.userBranch = data.json().branch;
-      this.brSelectedValue = this.userBranch[0].id
-      this.loadData(this.brSelectedValue);
-    });
+  
+
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
@@ -105,7 +99,8 @@ export class CategoryComponent implements OnInit {
       'name': "",
       'price': 0,
       'currency': "",
-      'description': 1
+      'description': "",
+      'parking': 'YES'
     });
     sender.addRow(this.formGroup);
   }
@@ -134,13 +129,13 @@ export class CategoryComponent implements OnInit {
       this.categoryService.addCategory(product).subscribe(data => {
         sender.closeRow(rowIndex);
         this.loadData(this.brSelectedValue);
-        this.toastr.success("Branch Added");
+        this.toastr.success("Category Added");
       });
     } else {
       this.categoryService.editCategory(product).subscribe(data => {
         sender.closeRow(rowIndex);
         this.loadData(this.brSelectedValue);
-        this.toastr.success("Branch Edited");
+        this.toastr.success("Category Edited");
       });
     }
   }

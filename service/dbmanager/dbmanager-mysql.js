@@ -40,10 +40,10 @@ pool.getBranch = function (org_id, callback) {
 
     });
 }
-pool.registerBranch = function (name, description, address, org_id, callback) {
+pool.registerBranch = function (name, description, address, org_id, mail, phone, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('insert into branch(create_date,name,description,address,org_id) values(current_timestamp,?,?,?,?)',
-            [name, description, address, org_id],
+        connection.query('insert into branch(create_date,name,description,address,org_id,mail,phone) values(current_timestamp,?,?,?,?,?,?)',
+            [name, description, address, org_id, mail, phone],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -56,10 +56,10 @@ pool.registerBranch = function (name, description, address, org_id, callback) {
     });
 }
 
-pool.updateBranch = function (id, name, description, address, org_id, callback) {
+pool.updateBranch = function (id, name, description, address, org_id, mail, phone, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('update branch set name=?, description=?, address=?, org_id=?, update_date=current_timestamp where id=?',
-            [name, description, address, org_id, id],
+        connection.query('update branch set name=?, description=?, address=?, org_id=?, update_date=current_timestamp,mail=?, phone=? where id=?',
+            [name, description, address, org_id, mail, phone, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -101,9 +101,9 @@ pool.getUserOrganisation = function (user_id, callback) {
 
     });
 }
-pool.getUserBranch = function (user_id, org_id, callback) {
+pool.getUserBranch = function (user_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b  on u.branch_id=b.id inner join organisation o on b.org_id=o.id where u.user_id=? and o.id=?', [user_id, org_id], function (error, row, fields) {
+        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b  on u.branch_id=b.id inner join organisation o on b.org_id=o.id where u.user_id=?', [user_id], function (error, row, fields) {
             if (error) {
                 throw error;
             } else {
@@ -131,10 +131,16 @@ pool.getCategory = function (branch_id, callback) {
 }
 
 
-pool.registerCategory = function (name, price, currency, description, branch_id, callback) {
+pool.registerCategory = function (name, price, currency, description, branch_id, parking, callback) {
+    var parkingValue;
+    if (parking === true) {
+        parkingValue = 'YES';
+    } else {
+        parkingValue = 'NO';
+    }
     pool.getConnection(function (err, connection) {
-        connection.query('insert into category(create_date,name,price, currency,description,branch_id) values(current_timestamp,?,?,?,?,?)',
-            [name, price, currency, description, branch_id],
+        connection.query('insert into category(create_date,name,price, currency,description,branch_id,parking) values(current_timestamp,?,?,?,?,?,?)',
+            [name, price, currency, description, branch_id, parkingValue],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -161,11 +167,16 @@ pool.deleteCategory = function (id, callback) {
     });
 }
 
-pool.updateCategory = function (id, name, price, currency, description, branch_id, callback) {
-    console.log(price);
+pool.updateCategory = function (id, name, price, currency, description, branch_id, parking, callback) {
+    var parkingValue;
+    if (parking === true) {
+        parkingValue = 'YES';
+    } else {
+        parkingValue = 'NO';
+    }
     pool.getConnection(function (err, connection) {
-        connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name, price, currency, description, branch_id, id],
+        connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp ,parking =? where id=?',
+            [name, price, currency, description, branch_id, parkingValue, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -253,10 +264,23 @@ pool.getRoom = function (branch_id, callback) {
     });
 }
 
-pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, callback) {
+pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag, callback) {
+    var smokeValue;
+    if (smoke === true) {
+        smokeValue = 'YES';
+    } else {
+        smokeValue = 'NO';
+    }
+    var wifiValue;
+    if (wifi === true) {
+        wifiValue = 'YES';
+    } else {
+        wifiValue = 'NO';
+    }
+
     pool.getConnection(function (err, connection) {
-        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id) values(current_timestamp,?,?,?,?,?,?,?)',
-            [name, price, currency, room_no, description, branch_id, category_id],
+        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag) values(current_timestamp,?,?,?,?,?,?,?,?,?,?)',
+            [name, price, currency, room_no, description, branch_id, category_id, smokeValue, wifiValue, tag],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -283,10 +307,23 @@ pool.deleteRoom = function (id, callback) {
     });
 }
 
-pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, category_name, callback) {
+pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag, callback) {
+    var smokeValue;
+    if (smoke === true) {
+        smokeValue = 'YES';
+    } else {
+        smokeValue = 'NO';
+    }
+    var wifiValue;
+    if (wifi === true) {
+        wifiValue = 'YES';
+    } else {
+        wifiValue = 'NO';
+    }
+    console.log(category_name);
     pool.getConnection(function (err, connection) {
-        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? where id=?',
-            [name, price, currency, room_no, description, branch_id, category_name, id],
+        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=? where id=?',
+            [name, price, currency, room_no, description, branch_id, category_name, smokeValue, wifiValue, tag, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -384,6 +421,7 @@ getCategory = function (branch_id) {
 }
 
 getRoom = function (branch_id, categoryID) {
+
     var deferred = q.defer();
     var roomData;
     var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
@@ -425,31 +463,39 @@ getReservationL = function (room_id, start_date, end_date) {
 
 
 
-pool.getReservation = function (branch_id, start_date, end_date, callback) {
+pool.getReservation = function (branch_id, start_date, end_date) {
+    var deferred = q.defer();
 
-    getCategory(branch_id).then(firstRecords => {
-        let promises = firstRecords.map(function (record) {
-            return getRoom(branch_id, record.id)
-                .then(roomData => {
-                    var res = Object.assign({}, record, { room: roomData });
-                    return res;
-                })
+
+    getCategory(branch_id).then(categories => {
+        let roomPromises = categories.map(function (category) {
+            return getRoom(branch_id, category.id)
+                .then(rooms => Object.assign({}, category, { rooms }))
         });
-        return Promise.all(promises);
-    }).then(secondRecords => {
-        let promises = secondRecords.map(function (category) {
-            return category.room;
-        }).map(function (rooms) {
-            console.log('SECOND', JSON.stringify(rooms));
-            return rooms;
-        }).map(function (reservation) {
-            console.log('THERD', JSON.stringify(reservation));
-            return reservation;
-        })
-        return Promise.all(promises);
-    }).then(reservation => {
-        console.log("Reservation", JSON.stringify(reservation));
+        return Promise.all(roomPromises);
+    }).then(category_rooms => {
+
+        return finalPromise = category_rooms.map(category => {
+
+            let reservationPromises = category.rooms.map(room => {
+                return getReservationL(room.id, start_date, end_date)
+                    .then(reservations => {
+                        return Object.assign({}, room, { reservations });
+                    })
+            })
+            return Promise.all(reservationPromises)
+                .then(room_reservations => {
+                    console.log(JSON.stringify(Object.assign({}, category, { rooms: room_reservations })));
+                    return Object.assign({}, category, { rooms: room_reservations });
+                });
+        });
+        return Promise.all(finalPromise)
+    }).then(data => {
+        deferred.resolve(data);
+    }).catch(function (error) {
+        deferred.reject(err);
     })
+    return deferred.promise;
 }
 
 pool.getPerson = function (person_no, callback) {

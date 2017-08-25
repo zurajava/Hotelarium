@@ -61,8 +61,9 @@ export class BranchComponent implements OnInit {
     this.formGroup = new FormGroup({
       'name': new FormControl("", Validators.required),
       'description': new FormControl(),
-      'address': new FormControl("", Validators.required)
-    //  'org_id': new FormControl("", Validators.required)
+      'address': new FormControl("", Validators.required),
+      'mail': new FormControl("", Validators.required),
+      'phone': new FormControl("", Validators.required)
     });
     sender.addRow(this.formGroup);
   }
@@ -73,8 +74,9 @@ export class BranchComponent implements OnInit {
       'id': new FormControl(dataItem.id),
       'name': new FormControl(dataItem.name, Validators.required),
       'description': new FormControl(dataItem.description),
-      'address': new FormControl(dataItem.address, Validators.required)
-      //'org_id': new FormControl(dataItem.org_id, Validators.required)
+      'address': new FormControl(dataItem.address, Validators.required),
+      'mail': new FormControl(dataItem.mail, Validators.required),
+      'phone': new FormControl(dataItem.phone, Validators.required)
     });
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.formGroup);

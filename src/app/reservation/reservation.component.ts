@@ -44,9 +44,6 @@ export class ReservationComponent implements OnInit {
   public dateFrom: Date;
   public dateTo: Date;
 
-  public userOrganisation: Array<any>;
-  public orgSelectedValue: number;
-
   public userBranch: Array<any>;
   public brSelectedValue: number;
 
@@ -61,22 +58,19 @@ export class ReservationComponent implements OnInit {
     ]));
   }
   ngOnInit() {
-    this.reservationService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
-      this.userOrganisation = data.json().organisation;
-      this.orgSelectedValue = this.userOrganisation[0].id
 
-      this.reservationService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id
-        // TO DO
-        this.fillDataRange();
+    this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
+      this.userBranch = data.json().branch;
+      this.brSelectedValue = this.userBranch[0].id
+      // TO DO
+      this.fillDataRange();
 
-        this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).subscribe(data => {
-          this.reservations = data.json().data;
-          console.log(this.reservations);
-        });
+      this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).subscribe(data => {
+        this.reservations = data.json().data;
+        console.log(this.reservations);
       });
     });
+
 
     this.reservationService.getPerson('').subscribe(data => {
       this.persons = data.json().person;
@@ -85,15 +79,7 @@ export class ReservationComponent implements OnInit {
 
 
   }
-  public orgValueChange(value: any): void {
-    this.orgSelectedValue = value;
-    this.reservationService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
-      this.userBranch = data.json().branch;
-      this.brSelectedValue = this.userBranch[0].id;
-      // TO DO
-      this.fillDataRange();
-    });
-  }
+
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
     // TO DO

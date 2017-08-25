@@ -3,10 +3,6 @@
     <h1>Service</h1>
   </div>
   <div class="example-wrapper">
-    <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
-      (valueChange)="orgValueChange($event)">
-    </kendo-dropdownlist>
-
     <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
       (valueChange)="brValueChange($event)">
     </kendo-dropdownlist>

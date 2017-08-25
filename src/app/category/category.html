@@ -3,10 +3,6 @@
     <h1>Category</h1>
   </div>
   <div class="example-wrapper">
-    <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
-      (valueChange)="orgValueChange($event)">
-    </kendo-dropdownlist>
-
     <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
       (valueChange)="brValueChange($event)">
     </kendo-dropdownlist>
@@ -30,8 +26,8 @@
         </kendo-dropdownlist>
       </ng-template>
     </kendo-grid-column>
-
     <kendo-grid-column field="description" title="Description"></kendo-grid-column>
+    <kendo-grid-column field="parking" editor="boolean" title="Parking"></kendo-grid-column>
     <kendo-grid-column field="branch_name" title="Branch"></kendo-grid-column>
     <kendo-grid-command-column title="command" width="220">
       <ng-template kendoGridCellTemplate let-isNew="isNew">

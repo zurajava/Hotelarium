@@ -6,4 +6,6 @@ export class Branch {
     public description: string;
     public address: string;
     public org_id: string;
+    public mail: string;
+    public phone: string;
 }

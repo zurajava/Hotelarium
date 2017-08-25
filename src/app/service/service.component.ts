@@ -47,9 +47,6 @@ export class ServiceComponent implements OnInit {
   public pageSize: number = 10;
   public skip: number = 0;
 
-  public userOrganisation: Array<any>;
-  public orgSelectedValue: number;
-
   public userBranch: Array<any>;
   public brSelectedValue: number;
 
@@ -58,29 +55,17 @@ export class ServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.serviceService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
-      this.userOrganisation = data.json().organisation;
-      this.orgSelectedValue = this.userOrganisation[0].id
 
-      this.serviceService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
+    this.serviceService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
 
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id
+      this.userBranch = data.json().branch;
+      this.brSelectedValue = this.userBranch[0].id
 
-        this.loadData(this.brSelectedValue);
-      });
+      this.loadData(this.brSelectedValue);
     });
   }
   public category(id: number): any {
     return this.currencys.find(x => x.currencyId === id);
-  }
-  public orgValueChange(value: any): void {
-    this.orgSelectedValue = value;
-    this.serviceService.getUserBranch(this.authservice.getUserID(), this.orgSelectedValue).subscribe(data => {
-      this.userBranch = data.json().branch;
-      this.brSelectedValue = this.userBranch[0].id
-      this.loadData(this.brSelectedValue);
-    });
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
