@@ -320,7 +320,6 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
     } else {
         wifiValue = 'NO';
     }
-    console.log(category_name);
     pool.getConnection(function (err, connection) {
         connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=? where id=?',
             [name, price, currency, room_no, description, branch_id, category_name, smokeValue, wifiValue, tag, id],

@@ -27,7 +27,7 @@ const formGroup = dataItem => {
 
   return new FormGroup({
     'id': new FormControl(dataItem.id),
-    'room_no': new FormControl(dataItem.room_no),
+    'room_no': new FormControl(dataItem.room_no, Validators.required),
     'category_name': new FormControl(dataItem.category_id, Validators.required),
     'price': new FormControl(dataItem.price, Validators.required),
     'currency': new FormControl(dataItem.currency, Validators.required),
@@ -62,6 +62,8 @@ export class RoomComponent implements OnInit {
   }];
 
   public room_category: any[];
+  public dataCategory: any[];
+
 
   public view: GridDataResult;
   public data: Object[];
@@ -95,12 +97,19 @@ export class RoomComponent implements OnInit {
     return this.currencys.find(x => x.currencyId === id);
   }
   public category_id(id: number): any {
-    return this.room_category.find(x => x.name === id);
+    return this.room_category.find(x => {
+      return x.name === id;
+    });
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
     this.loadData(this.brSelectedValue);
   }
+  public brCategoryValueChange(value: any): void {
+    var priceValue;
+  }
+
+
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     this.view = {

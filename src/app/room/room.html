@@ -22,7 +22,7 @@
                 {{category_id(dataItem.category_name)?.name}}
             </ng-template>
             <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-formGroup="formGroup">
-                <kendo-dropdownlist [data]="room_category" textField="name" valueField="id" [valuePrimitive]="true" [formControl]="formGroup.get('category_name')">
+                <kendo-dropdownlist [data]="room_category" textField="name" valueField="id" [valuePrimitive]="true" [formControl]="formGroup.get('category_name')" (valueChange)="brCategoryValueChange($event)">
                 </kendo-dropdownlist>
             </ng-template>
         </kendo-grid-column>
