@@ -97,14 +97,18 @@ export class ReservationComponent implements OnInit {
               var d = a;
               var sumDayFiff = 0;
               for (var t = 0; t < this.data[i].rooms[j].reservations.length; t++) {
-                var sheduleFrom = new Date(this.data[i].rooms[j].reservations[t].startDate);
-                var sheduleTo = new Date(this.data[i].rooms[j].reservations[t].endDate);
-                var status = this.data[i].rooms[j].reservations[t].status;
+                var sheduleFrom = new Date(this.data[i].rooms[j].reservations[t].start_date);
+                var sheduleTo = new Date(this.data[i].rooms[j].reservations[t].end_date);
+                var status = this.data[i].rooms[j].reservations[t].status_name;
                 var oneDay = 24 * 60 * 60 * 1000;
                 var diffDays = Math.round(Math.abs((sheduleFrom.getTime() - sheduleTo.getTime()) / (oneDay)));
+                
                 for (a; a < this.segment; a++) {
-                  var current = new Date(datesArray[d]);
+                  
+                  var current = new Date(datesArray[d-1]);
+                  console.log(current);
                   if (current >= sheduleFrom && current <= sheduleTo) {
+                    
                     sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, diffDays, current, "reservationModal('" + current + "')", 'false', this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id);
                     a++;
                     d = d + diffDays;
