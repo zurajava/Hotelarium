@@ -122,7 +122,9 @@
                 </tr>
                 <tr *ngFor="let room of caterory.rooms" >
                     <td>{{room.room_no}}</td>
-                    <td [colSpan]="schedule?.dayDiff" ng-repeat="schedule in room.reservations">{{schedule?.firstName}}</td>
+                    <td [colSpan]="schedule?.dayDiff" [className]="schedule.status" *ngFor="let schedule of room.reservations">
+                        {{schedule?.firstName}}
+                    </td>
                 </tr>
             </tbody>
         </table>

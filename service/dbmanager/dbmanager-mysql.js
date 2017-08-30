@@ -446,7 +446,7 @@ getReservationL = function (room_id, start_date, end_date) {
         ' inner join heroku_8c0c9eba2ff6cfd.reservation_status s on d.status_id=s.id ' +
         ' inner join heroku_8c0c9eba2ff6cfd.reservation a on d.reservation_id=a.id ' +
         ' inner join heroku_8c0c9eba2ff6cfd.person p on a.person_no=p.personal_no ' +
-        ' where d.room_id=? and d.start_date >? and d.start_date<?';
+        ' where d.room_id=? and d.start_date >? and d.start_date<? order by d.start_date asc';
     pool.getConnection(function (err, connection) {
         connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
             if (err) {

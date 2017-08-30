@@ -97,51 +97,54 @@ export class ReservationComponent implements OnInit {
               var d = a;
               var sumDayFiff = 0;
               for (var t = 0; t < this.data[i].rooms[j].reservations.length; t++) {
+
                 var sheduleFrom = new Date(this.data[i].rooms[j].reservations[t].start_date);
                 var sheduleTo = new Date(this.data[i].rooms[j].reservations[t].end_date);
                 var status = this.data[i].rooms[j].reservations[t].status_name;
                 var oneDay = 24 * 60 * 60 * 1000;
                 var diffDays = Math.round(Math.abs((sheduleFrom.getTime() - sheduleTo.getTime()) / (oneDay)));
-                
+
                 for (a; a < this.segment; a++) {
-                  
-                  var current = new Date(datesArray[d-1]);
-                  console.log(current);
+                  console.log(this.data[i].rooms[j].reservations[t].id);
+                  var current = new Date(datesArray[d - 1]);
                   if (current >= sheduleFrom && current <= sheduleTo) {
-                    
+
                     sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, diffDays, current, "reservationModal('" + current + "')", 'false', this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id);
                     a++;
                     d = d + diffDays;
                     sumDayFiff = sumDayFiff + diffDays;
                     break;
                   } else {
-                    sheduleArray[a] = new Schedule("", 1, new Date(), new Date(), 1, "", "", "", 1, current, "reservationModal('" + current + "')", 'true', null, null);
+                    sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), 1, "", "", "", 1, current, "reservationModal('" + current + "')", 'true', null, null);
                   }
                   d++;
                 }
                 sumDayFiff--;
               }
-              for (a; a < this.segment - sumDayFiff; a++) {
-                sheduleArray[a] = new Schedule("", 1, new Date(), new Date(), 1, "", "", "", 1, datesArray[d + 1], "reservationModal('" + 1 + "')", 'true', null, null);
+              for (a; a < this.segment - 1 - sumDayFiff; a++) {
+                sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), 1, "", "", "", 1, datesArray[d + 1], "reservationModal('" + 1 + "')", 'true', null, null);
                 d++;
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
-              for (var f = 0; f < this.segment; f++) {
-                this.data[i].rooms[j].reservations[f] = new Schedule("", 1, new Date(), new Date(), 1, "", "", "", 1, datesArray[f], "reservationModal('" + 1 + "')", '', null, null);
+              for (var f = 0; f < this.segment - 1; f++) {
+                this.data[i].rooms[j].reservations[f] = new Schedule("", 'FREE', new Date(), new Date(), 1, "", "", "", 1, datesArray[f], "reservationModal('" + 1 + "')", '', null, null);
               }
             }
           }
         }
       }
-
-
-
-      console.log("End", JSON.stringify(this.data));
+      /*  for (let i = 0; i < this.data.length; i++) {
+          console.log(this.data[i].name)
+          for (let j = 0; j < this.data[i].rooms.length; j++) {
+            console.log(this.data[i].rooms[j].room_no);
+            for (let a = 0; a < this.data[i].rooms[j].reservations.length; a++) {
+              console.log(this.data[i].rooms[j].reservations[a].status);
+            }
+  
+          }
+        }*/
     });
-
-
-
   }
   filterRezervation() {
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
