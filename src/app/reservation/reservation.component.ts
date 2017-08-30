@@ -4,13 +4,12 @@ import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/co
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo, Person, ReservationDetail, Reservation, ReservationSchedule } from './model';
+import { ReservationInfo, Person, ReservationDetail, Reservation, ReservationSchedule, Schedule } from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Room } from '../room/model.js';
 import { IntlService } from '@progress/kendo-angular-intl';
 import { SafeHtml } from "@angular/platform-browser";
-
 
 enableProdMode();
 @Component({
@@ -23,8 +22,6 @@ enableProdMode();
 
 export class ReservationComponent implements OnInit {
   public persons: Person[];
-  public reservations: ReservationSchedule[];
-
   public genders: Array<{ text: string }> = [
     { text: "Male" },
     { text: "Female" },
@@ -40,6 +37,7 @@ export class ReservationComponent implements OnInit {
   public reservationInfo: ReservationInfo;
   public rows = [];
   public segment = 30;
+  public data: any;
   public dateRange = [];
   public dateFrom: Date;
   public dateTo: Date;
@@ -62,21 +60,13 @@ export class ReservationComponent implements OnInit {
     this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       this.userBranch = data.json().branch;
       this.brSelectedValue = this.userBranch[0].id
+
+      this.reservationService.getPerson('').subscribe(data => {
+        this.persons = data.json().person;
+      });
       // TO DO
       this.fillDataRange();
-
-      this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).subscribe(data => {
-        this.reservations = data.json().data;
-        console.log(this.reservations);
-      });
     });
-
-
-    this.reservationService.getPerson('').subscribe(data => {
-      this.persons = data.json().person;
-    });
-
-
 
   }
 
@@ -93,6 +83,63 @@ export class ReservationComponent implements OnInit {
       datesArray[i] = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000 * i));
     }
     this.dateRange = datesArray;
+
+
+    this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+      this.data = data;
+      console.log("Start", this.data);
+
+
+      for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
+        if (this.data[i].rooms.length > 0) {
+          for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category
+            if (this.data[i].rooms[j].reservations.length > 0) {
+              var sheduleArray = [];
+              var a = 0;
+              var d = a;
+              var sumDayFiff = 0;
+              for (var t = 0; t < this.data[i].rooms[j].reservations.length; t++) {
+                var sheduleFrom = new Date(this.data[i].rooms[j].reservations[t].startDate);
+                var sheduleTo = new Date(this.data[i].rooms[j].reservations[t].endDate);
+                var status = this.data[i].rooms[j].reservations[t].status;
+                var oneDay = 24 * 60 * 60 * 1000;
+                var diffDays = Math.round(Math.abs((sheduleFrom.getTime() - sheduleTo.getTime()) / (oneDay)));
+                for (a; a < this.segment; a++) {
+                  var current = new Date(datesArray[d]);
+                  if (current >= sheduleFrom && current <= sheduleTo) {
+                    sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, diffDays, current, "reservationModal('" + current + "')", 'false', this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id);
+                    a++;
+                    d = d + diffDays;
+                    sumDayFiff = sumDayFiff + diffDays;
+                    break;
+                  } else {
+                    sheduleArray[a] = new Schedule("", 1, new Date(), new Date(), 1, "", "", "", 1, current, "reservationModal('" + current + "')", 'true', null, null);
+                  }
+                  d++;
+                }
+                sumDayFiff--;
+              }
+              for (a; a < this.segment - sumDayFiff; a++) {
+                sheduleArray[a] = new Schedule("", 1, new Date(), new Date(), 1, "", "", "", 1, datesArray[d + 1], "reservationModal('" + 1 + "')", 'true', null, null);
+                d++;
+              }
+              this.data[i].rooms[j].reservations = sheduleArray;
+            } else {
+              for (var f = 0; f < this.segment; f++) {
+                this.data[i].rooms[j].reservations[f] = new Schedule("", 1, new Date(), new Date(), 1, "", "", "", 1, datesArray[f], "reservationModal('" + 1 + "')", '', null, null);
+              }
+            }
+          }
+        }
+      }
+
+
+
+      console.log("End", JSON.stringify(this.data));
+    });
+
+
+
   }
   filterRezervation() {
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));

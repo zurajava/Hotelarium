@@ -466,34 +466,43 @@ pool.getReservation = function (branch_id, start_date, end_date) {
     var deferred = q.defer();
 
 
-    getCategory(branch_id).then(categories => {
-        let roomPromises = categories.map(function (category) {
-            return getRoom(branch_id, category.id)
-                .then(rooms => Object.assign({}, category, { rooms }))
-        });
-        return Promise.all(roomPromises);
-    }).then(category_rooms => {
+    getCategory(branch_id)
+        .then(categories => {
 
-        return finalPromise = category_rooms.map(category => {
+            let roomPromises = categories.map(category => {
+                return getRoom(branch_id, category.id)
+                    .then(rooms => Object.assign({}, category, { rooms }))
+            });
 
-            let reservationPromises = category.rooms.map(room => {
-                return getReservationL(room.id, start_date, end_date)
-                    .then(reservations => {
-                        return Object.assign({}, room, { reservations });
-                    })
+            return Promise.all(roomPromises)
+        })
+        .then(category_rooms => {
+
+            let finalPromise = category_rooms.map(category => {
+
+                let reservationPromises = category.rooms.map(room => {
+                    return getReservationL(room.id, start_date, end_date)
+                        .then(reservations => Object.assign({}, room, { reservations }))
+                })
+
+                return Promise.all(reservationPromises)
+                    .then(room_reservations => {
+                        return Object.assign({}, category, { rooms: room_reservations })
+                    });
             })
-            return Promise.all(reservationPromises)
-                .then(room_reservations => {
-                    console.log(JSON.stringify(Object.assign({}, category, { rooms: room_reservations })));
-                    return Object.assign({}, category, { rooms: room_reservations });
-                });
+
+            // const flattenPromise = finalPromise.reduce( (a, b) => a.concat(b), []);
+            // return Promise.all(flattenPromise);
+
+            return Promise.all(finalPromise)
+        })
+        .then(data => {
+            console.log('final: ', data);
+            deferred.resolve(data);
+        })
+        .catch(function (err) {
+            deferred.reject(err);
         });
-        return Promise.all(finalPromise)
-    }).then(data => {
-        deferred.resolve(data);
-    }).catch(function (error) {
-        deferred.reject(err);
-    })
     return deferred.promise;
 }
 
@@ -507,6 +516,26 @@ pool.getPerson = function (person_no, callback) {
             }
             connection.release();
         });
+
+    });
+}
+
+pool.getUserPermission = function (user_id, permission, action, callback) {
+    pool.getConnection(function (err, connection) {
+        connection.query('SELECT a.*' +
+            'FROM user_group u ' +
+            'inner join permission_group p on u.group_id=p.group_id ' +
+            'inner join  permission a on p.permission_id=a.id ' +
+            'inner join user_branch b on a.branch_id=b.branch_id  and b.user_id=u.user_id ' +
+            'where u.user_id=?  and a.name=? and a.action=?', [user_id, permission, action], function (error, row, fields) {
+                if (error) {
+                    throw error;
+                } else {
+                    console.log(row);
+                    callback(null, row);
+                }
+                connection.release();
+            });
 
     });
 }

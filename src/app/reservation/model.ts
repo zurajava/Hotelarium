@@ -126,7 +126,7 @@ export class ReservationSchedule {
 }
 
 export class Schedule {
-    public id: number;
+    public id: string;
     public status: number;
     public startDate: Date;
     public endDate: Date;
@@ -140,7 +140,7 @@ export class Schedule {
     public isAvailable: string;
     public shedule: string;
     public branch: string;
-    constructor(id: number, status: number, startDate: Date, endDate: Date, cycleId: number, 
+    constructor(id: string, status: number, startDate: Date, endDate: Date, cycleId: number, 
         paymentType: string, firstName: string, personCode: string,
          dayDiff: number, currentDate: Date, action: string, isAvailable: string, shedule: string, branch: string) {
         this.id = id;

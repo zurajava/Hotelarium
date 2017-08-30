@@ -10,8 +10,8 @@
                     <tr>
                         <td><span>Personal Number</span></td>
                         <td>
-                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #" name="n_personal_no"
-                                [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
+                                name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
                             />
                         </td>
                         <td><span>First Name</span></td>
@@ -116,17 +116,13 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody ng-repeat="caterory in data">
                 <tr>
-                    <td [colSpan]="segment">CATEGORY {{segment}}</td>
+                    <td [colSpan]="segment">{{ caterory.name }}</td>
                 </tr>
-                <tr>
-                    <td (click)="openReservationForm(10101,null,null)">SSSSS</td>
-                    <td>ZZZZ</td>
-                </tr>
-                <tr>
-                    <td>SSSSS</td>
-                    <td>ZZZZ</td>
+                <tr ng-repeat="room in caterory.rooms">
+                    <td>{{room.room_no}}</td>
+                    <td [colSpan]="schedule.dayDiff" ng-repeat="schedule in room.reservations">{{schedule.firstName}}</td>
                 </tr>
             </tbody>
         </table>

@@ -43,7 +43,7 @@ export class ReservationService {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/userBranch/' + user_id , { headers: headers })
+    return this.http.get('/service/userBranch/' + user_id, { headers: headers })
       .catch(this.handleError);
   }
   getUserOrganisation(user_id: string) {
@@ -63,13 +63,14 @@ export class ReservationService {
     return this.http.get('/service/person?person_no' + person_no, { headers: headers })
       .catch(this.handleError);
   }
-  getReservation(branch_id:String,start_date: string, end_date: string) {
+  getReservation(branch_id: String, start_date: string, end_date: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date +'&branch_id='+branch_id, { headers: headers })
-      .catch(this.handleError);
+    return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date + '&branch_id=' + branch_id, { headers: headers }).toPromise().then(response => {
+      return response.json();
+    }).catch(this.handleError);
   }
 
   private handleError(error: any) {
