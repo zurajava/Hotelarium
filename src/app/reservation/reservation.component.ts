@@ -79,16 +79,14 @@ export class ReservationComponent implements OnInit {
     const currentDate = this.dateFrom;
     const datesArray = [];
     const datesArrayForHeader = [];
-    for (let i = 0; i < this.segment; i++) {
+    for (let i = 0; i < this.segment - 1; i++) {
       datesArray[i] = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000 * i));
     }
     this.dateRange = datesArray;
 
 
     this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
-      this.data = data;
-      console.log("Start", this.data);
-
+      this.data = data.data;
 
       for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
         if (this.data[i].rooms.length > 0) {
