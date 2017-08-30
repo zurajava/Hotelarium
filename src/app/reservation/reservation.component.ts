@@ -87,10 +87,10 @@ export class ReservationComponent implements OnInit {
 
     this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
       this.data = data.data;
-
       for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
         if (this.data[i].rooms.length > 0) {
           for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category
+
             if (this.data[i].rooms[j].reservations.length > 0) {
               var sheduleArray = [];
               var a = 0;
@@ -109,26 +109,26 @@ export class ReservationComponent implements OnInit {
                   var current = new Date(datesArray[d - 1]);
                   if (current >= sheduleFrom && current <= sheduleTo) {
 
-                    sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id, diffDays, current, "reservationModal('" + current + "')", 'false', this.data[i].rooms[j].reservations[t].id, this.data[i].rooms[j].reservations[t].id);
+                    sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, "reservationModal('" + current + "')", 'false');
                     a++;
                     d = d + diffDays;
                     sumDayFiff = sumDayFiff + diffDays;
                     break;
                   } else {
-                    sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), 1, "", "", "", 1, current, "reservationModal('" + current + "')", 'true', null, null);
+                    sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, current, "reservationModal('" + current + "')", 'true');
                   }
                   d++;
                 }
                 sumDayFiff--;
               }
               for (a; a < this.segment - 1 - sumDayFiff; a++) {
-                sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), 1, "", "", "", 1, datesArray[d + 1], "reservationModal('" + 1 + "')", 'true', null, null);
+                sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], "reservationModal('" + 1 + "')", 'true');
                 d++;
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
               for (var f = 0; f < this.segment - 1; f++) {
-                this.data[i].rooms[j].reservations[f] = new Schedule("", 'FREE', new Date(), new Date(), 1, "", "", "", 1, datesArray[f], "reservationModal('" + 1 + "')", '', null, null);
+                this.data[i].rooms[j].reservations[f] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[f], "reservationModal('" + 1 + "')", '');
               }
             }
           }

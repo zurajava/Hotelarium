@@ -1,6 +1,17 @@
 <section class="dashboard">
-    <div class="dashboard__subHeading">
-        <h1>Reservation</h1>
+    <div class="box-header">
+        <div class="input-group">
+            <div class="example-wrapper">
+                <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+                    (valueChange)="brValueChange($event)">
+                </kendo-dropdownlist>
+                <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
+                <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
+            </div>
+            <div>
+                <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
+            </div>
+        </div>
     </div>
     <div *ngIf="showReservation" class="reservation-container">
         <form class="k-form-inline">
@@ -89,20 +100,6 @@
             </fieldset>
         </form>
     </div>
-    <div class="box-header">
-        <div class="input-group">
-            <div class="example-wrapper" style="min-height: 50px">
-                <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-                    (valueChange)="brValueChange($event)">
-                </kendo-dropdownlist>
-                <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
-                <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
-            </div>
-            <div>
-                <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
-            </div>
-        </div>
-    </div>
     <div class="timeline-container">
         <table class="table table-bordered table-striped table-condensed timeline-table">
             <thead>
@@ -120,9 +117,9 @@
                 <tr>
                     <td [colSpan]="segment">{{ caterory.name }}</td>
                 </tr>
-                <tr *ngFor="let room of caterory.rooms" >
+                <tr *ngFor="let room of caterory.rooms">
                     <td>{{room.room_no}}</td>
-                    <td [colSpan]="schedule?.dayDiff" [className]="schedule.status" *ngFor="let schedule of room.reservations">
+                    <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(null,null,null)" [className]="schedule.status" *ngFor="let schedule of room.reservations">
                         {{schedule?.firstName}}
                     </td>
                 </tr>

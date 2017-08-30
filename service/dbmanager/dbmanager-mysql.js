@@ -440,9 +440,9 @@ getRoom = function (branch_id, categoryID) {
 getReservationL = function (room_id, start_date, end_date) {
     var deferred = q.defer();
     var reservationData;
-    var reservationSql = 'SELECT d.id,d.create_date,d.update_date,d.room_id,d.status_id,d.start_date,d.end_date, ' +
+    var reservationSql = 'SELECT d.id,d.create_date,d.payment_type,d.update_date,d.room_id,d.status_id,d.start_date,d.end_date, ' +
         ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email ' +
-        ' d.payment_type FROM heroku_8c0c9eba2ff6cfd.reservation_detail d ' +
+        ' FROM heroku_8c0c9eba2ff6cfd.reservation_detail d ' +
         ' inner join heroku_8c0c9eba2ff6cfd.reservation_status s on d.status_id=s.id ' +
         ' inner join heroku_8c0c9eba2ff6cfd.reservation a on d.reservation_id=a.id ' +
         ' inner join heroku_8c0c9eba2ff6cfd.person p on a.person_no=p.personal_no ' +

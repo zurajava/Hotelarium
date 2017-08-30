@@ -130,7 +130,6 @@ export class Schedule {
     public status: string;
     public startDate: Date;
     public endDate: Date;
-    public cycleId: number;
     public paymentType: string;
     public firstName: string;
     public personCode: string;
@@ -138,16 +137,13 @@ export class Schedule {
     public currentDate: Date;
     public action: string;
     public isAvailable: string;
-    public shedule: string;
-    public branch: string;
-    constructor(id: string, status: string, startDate: Date, endDate: Date, cycleId: number, 
+    constructor(id: string, status: string, startDate: Date, endDate: Date, 
         paymentType: string, firstName: string, personCode: string,
-         dayDiff: number, currentDate: Date, action: string, isAvailable: string, shedule: string, branch: string) {
+         dayDiff: number, currentDate: Date, action: string, isAvailable: string) {
         this.id = id;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.cycleId = cycleId;
         this.paymentType = paymentType;
         this.firstName = firstName;
         this.personCode = personCode;
@@ -155,8 +151,6 @@ export class Schedule {
         this.currentDate = currentDate;
         this.action = action;
         this.isAvailable = isAvailable;
-        this.shedule = shedule;
-        this.branch = branch;
     }
 
 }
