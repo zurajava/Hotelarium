@@ -506,6 +506,126 @@ pool.getReservation = function (branch_id, start_date, end_date) {
     return deferred.promise;
 }
 
+
+getReservation = function (id) {
+    var deferred = q.defer();
+    var categoryData;
+    var query = 'SELECT * FROM reservation  where id=?';
+    pool.getConnection(function (err, connection) {
+        connection.query(query, [id], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                connection.release();
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
+
+getPersonByPersonalNo = function (personal_no) {
+    var deferred = q.defer();
+    var categoryData;
+    var query = 'SELECT * FROM  person where personal_no=?';
+    pool.getConnection(function (err, connection) {
+        connection.query(query, [personal_no], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                connection.release();
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
+
+getReservationsDetails = function (reservation_id) {
+    var deferred = q.defer();
+    var categoryData;
+    var query = 'SELECT r.*,c.id as category_id,c.name as category_name FROM reservation_detail r ' +
+        ' inner join room o on r.room_id=o.id   inner join heroku_8c0c9eba2ff6cfd.category c on o.category_id=c.id  where reservation_id=?';
+    pool.getConnection(function (err, connection) {
+        connection.query(query, [reservation_id], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                connection.release();
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
+getReservationsServices = function (reservation_id) {
+    var deferred = q.defer();
+    var categoryData;
+    var query = 'SELECT r.*, s.name as service_name, s.price as price ' +
+        ' FROM reservation_service r inner join service s on r.service_id=s.id where  reservation_id=?';
+    pool.getConnection(function (err, connection) {
+        connection.query(query, [reservation_id], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                connection.release();
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
+
+getReservationsPersons = function (reservation_id) {
+    var deferred = q.defer();
+    var categoryData;
+    var query = 'SELECT r.*,c.id as category_id,c.name as category_name FROM reservation_detail r ' +
+        ' inner join room o on r.room_id=o.id   inner join heroku_8c0c9eba2ff6cfd.category c on o.category_id=c.id  where reservation_id=?';
+    pool.getConnection(function (err, connection) {
+        connection.query(query, [reservation_id], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                connection.release();
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
+
+
+pool.getReservationById = function (id) {
+    var deferred = q.defer();
+
+    getReservation(id).then(reservation => {
+        return getReservationsDetails(reservation[0].id).then(reservations => {
+            return Object.assign({}, reservation[0], { reservationDetail: reservations });;
+        })
+    })
+    /*.then(reservationsService => {
+        console.log("reservationsService",JSON.stringify(reservationsService));
+
+        let finalPromise = reservationsService.reservationdetail.map(reservationdetail => {
+            return getReservationsServices(reservationdetail.id).then(reservations => {
+                var d = Object.assign({}, reservationdetail, { reservationservice: reservations });
+                return Object.assign({}, reservationsService, { reservationdetail: d });
+            })
+        });
+
+        return Promise.all(finalPromise);
+    })*/.then(reservationPerson => {
+        return getPersonByPersonalNo(reservationPerson.person_no).then(data => {
+            return { "person": data[0], "reservation": reservationPerson };
+        })
+    }).then(reservations => {
+        deferred.resolve(reservations);
+    }).catch(function (err) {
+        deferred.reject(err);
+    });
+    return deferred.promise;
+}
+
 pool.getPerson = function (person_no, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT * FROM person where personal_no like ?', ['%' + person_no + '%'], function (error, row, fields) {

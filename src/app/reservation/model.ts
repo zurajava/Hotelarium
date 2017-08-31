@@ -24,10 +24,14 @@ export class Person {
 }
 export class Reservation {
     public id: number;
-    public personal_no: number;
     public create_date: Date;
     public update_date: Date;
+    public personal_no: number;
     public status_id: string;
+    public payment_status_id: string;
+    public payment_type: string;
+    public comment: string;
+    public res_type: string;
     public reservationDetail: Array<ReservationDetail>;
 
     constructor(id: number, personal_no: number, create_date: Date, update_date: Date, status_id: string, reservationDetail: Array<ReservationDetail>) {
@@ -45,11 +49,18 @@ export class ReservationDetail {
     public reservation_id: number;
     public create_date: Date;
     public update_date: Date;
-    public status_id: string;
     public room_id: number;
+    public status_id: string;
     public start_date: Date;
     public end_date: Date;
+    public payment_type: string;
+    public adult: string;
+    public child: string;
+    public additional_bed: string;
+    public payment_status: string;
     public category_id: number;
+    public category_name: string;
+
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationService>;
 
@@ -83,6 +94,10 @@ export class ReservationPerson {
 export class ReservationService {
     public reservation_id: number;
     public service_id: number;
+    public frequency :string;
+    public additional_comment :string;
+    public service_name: string;
+    public price: string;
 
     constructor(reservation_id: number, service_id: number) {
         this.reservation_id = reservation_id;
@@ -100,31 +115,6 @@ export class ReservationInfo {
     }
 
 }
-
-export class ReservationSchedule {
-    public id: number;
-    public reservation_id: number;
-    public create_date: Date;
-    public update_date: Date;
-    public room_id: string;
-    public start_date: Date;
-    public end_date: Date;
-    public status_id: number;
-    public status_name: string;
-    public branch_id: number;
-    public category_id: number;
-    public category_name: string;
-    public category_price: string;
-    public room_no: string;
-    public room_name: string;
-    public room_price: string;
-    public person_no: string;
-    public first_name: string;
-    public last_name: string;
-    public email: string;
-
-}
-
 export class Schedule {
     public id: string;
     public status: string;
@@ -135,11 +125,10 @@ export class Schedule {
     public personCode: string;
     public dayDiff: number;
     public currentDate: Date;
-    public action: string;
-    public isAvailable: string;
-    constructor(id: string, status: string, startDate: Date, endDate: Date, 
+    public isAvailable: boolean;
+    constructor(id: string, status: string, startDate: Date, endDate: Date,
         paymentType: string, firstName: string, personCode: string,
-         dayDiff: number, currentDate: Date, action: string, isAvailable: string) {
+        dayDiff: number, currentDate: Date, isAvailable: boolean) {
         this.id = id;
         this.status = status;
         this.startDate = startDate;
@@ -149,7 +138,6 @@ export class Schedule {
         this.personCode = personCode;
         this.dayDiff = dayDiff;
         this.currentDate = currentDate;
-        this.action = action;
         this.isAvailable = isAvailable;
     }
 

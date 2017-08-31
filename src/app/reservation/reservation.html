@@ -13,6 +13,7 @@
             </div>
         </div>
     </div>
+    <!-- Register Reservation -->
     <div *ngIf="showReservation" class="reservation-container">
         <form class="k-form-inline">
             <fieldset>
@@ -56,6 +57,94 @@
             </fieldset>
             <fieldset>
                 <legend>Reservation Info</legend>
+                <div class="add_reservation_btn">
+                    <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Category</th>
+                        <th>Room No</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Condition</th>
+                    </tr>
+                    <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
+                        <td>
+                            <kendo-combobox name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.category_id">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <kendo-combobox name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.room_id">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <kendo-datepicker [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date" name="nstart_date"></kendo-datepicker>
+                        </td>
+                        <td>
+                            <kendo-datepicker [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date" name="nend_date"></kendo-datepicker>
+                        </td>
+                        <td>
+                            <kendo-combobox name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'" [valuePrimitive]="true"
+                                [(value)]="res.status_id">
+                            </kendo-combobox>
+                        </td>
+                        <th><button class="add_reservation_btn" kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button></th>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>operations</legend>
+                <div>
+                    <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- Edit Reservation -->
+    <div *ngIf="showReservationPayment" class="reservation-container">
+        <form class="k-form-inline">
+            <fieldset>
+                <legend>Personal Info E</legend>
+                <table style="width:100%; text-align: left;">
+                    <tr>
+                        <td><span>Personal Number</span></td>
+                        <td>
+                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
+                                name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                            />
+                        </td>
+                        <td><span>First Name</span></td>
+                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
+                            /></td>
+                        <td><span>Last Name</span></td>
+                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
+                            /></td>
+                        <td><span>Email</span></td>
+                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
+                            /></td>
+                    </tr>
+                    <tr>
+                        <td><span>Phone</span></td>
+                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
+                            /></td>
+                        <td><span>Address</span></td>
+                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
+                            /></td>
+                        <td><span>Gender</span></td>
+                        <td>
+                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                            </kendo-combobox>
+                        </td>
+                        <td><span>Birth Date</span></td>
+                        <td>
+                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Reservation Info E</legend>
                 <div>
                     <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
                 </div>
@@ -93,13 +182,14 @@
                 </table>
             </fieldset>
             <fieldset>
-                <legend>operations</legend>
+                <legend>operations e</legend>
                 <div>
                     <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
                 </div>
             </fieldset>
         </form>
     </div>
+
     <div class="timeline-container">
         <table class="table table-bordered table-striped table-condensed timeline-table">
             <thead>
@@ -119,7 +209,8 @@
                 </tr>
                 <tr *ngFor="let room of caterory.rooms">
                     <td>{{room.room_no}}</td>
-                    <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(null,null,null)" [className]="schedule.status" *ngFor="let schedule of room.reservations">
+                    <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.room_no,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.name)"
+                        [className]="schedule.status" *ngFor="let schedule of room.reservations">
                         {{schedule?.firstName}}
                     </td>
                 </tr>

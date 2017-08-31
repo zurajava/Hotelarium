@@ -81,9 +81,13 @@
 .RESERVED{
     background-color:aqua;
 }
-.OCCUPIED{
+.CHECK_IN{
     background-color: #eb7475;
 }
 .box-header{
     background-color:aliceblue;
+}
+.add_reservation_btn{
+    float: right;
+    margin-right:10px;
 }

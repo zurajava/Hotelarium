@@ -4,7 +4,7 @@ import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/co
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo, Person, ReservationDetail, Reservation, ReservationSchedule, Schedule } from './model';
+import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule } from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Room } from '../room/model.js';
@@ -28,12 +28,13 @@ export class ReservationComponent implements OnInit {
     { text: "Other" }
   ];
   public reservationStatus: Array<{ value: number, text: string }> = [
-    { value: 1, text: "Reserve" },
-    { value: 2, text: "Occupied" }
+    { value: 1, text: "RESERVED" },
+    { value: 2, text: "CHECK_IN" }
   ];
   public category: Category[];
   public room: Room[];
   public showReservation: boolean = false;
+  public showReservationPayment: boolean = false;
   public reservationInfo: ReservationInfo;
   public rows = [];
   public segment = 30;
@@ -44,6 +45,8 @@ export class ReservationComponent implements OnInit {
 
   public userBranch: Array<any>;
   public brSelectedValue: number;
+
+  public reservationInfoEdit: ReservationInfo;
 
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private reservationService: ReservationService, private authservice: AuthService, private intl: IntlService) {
     this.toastr.setRootViewContainerRef(vcr);
@@ -56,7 +59,6 @@ export class ReservationComponent implements OnInit {
     ]));
   }
   ngOnInit() {
-
     this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       this.userBranch = data.json().branch;
       this.brSelectedValue = this.userBranch[0].id
@@ -105,30 +107,29 @@ export class ReservationComponent implements OnInit {
                 var diffDays = Math.round(Math.abs((sheduleFrom.getTime() - sheduleTo.getTime()) / (oneDay)));
 
                 for (a; a < this.segment; a++) {
-                  console.log(this.data[i].rooms[j].reservations[t].id);
                   var current = new Date(datesArray[d - 1]);
                   if (current >= sheduleFrom && current <= sheduleTo) {
 
-                    sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, "reservationModal('" + current + "')", 'false');
+                    sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false);
                     a++;
                     d = d + diffDays;
                     sumDayFiff = sumDayFiff + diffDays;
                     break;
                   } else {
-                    sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, current, "reservationModal('" + current + "')", 'true');
+                    sheduleArray[a] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, current, true);
                   }
                   d++;
                 }
                 sumDayFiff--;
               }
               for (a; a < this.segment - 1 - sumDayFiff; a++) {
-                sheduleArray[a] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], "reservationModal('" + 1 + "')", 'true');
+                sheduleArray[a] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true);
                 d++;
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
               for (var f = 0; f < this.segment - 1; f++) {
-                this.data[i].rooms[j].reservations[f] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[f], "reservationModal('" + 1 + "')", '');
+                this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true);
               }
             }
           }
@@ -150,20 +151,34 @@ export class ReservationComponent implements OnInit {
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.fillDataRange();
   }
-  openReservationForm(room_no: number, starDate: Date, endDate: Date) {
-    this.showReservation = true;
-    starDate = new Date();
-    endDate = new Date();
+  openReservationForm(isReservation: boolean, room_no: number, starDate: Date, endDate: Date, currentDate: Date, status: string, category: string) {
+    console.log(isReservation + ' ' + room_no + ' ' + starDate + ' ' + endDate + ' ' + status + ' ' + category + ' ' + currentDate);
+    if (isReservation) {
+      this.showReservation = true;
+      this.showReservationPayment = false;
+      starDate = new Date();
+      endDate = new Date();
 
-    this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
-      ;
-      this.category = data.json().category;
-    });
+      this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
+        ;
+        this.category = data.json().category;
+      });
 
-    this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
-      this.room = data.json().room;
-    });
-    this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null);
+      this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
+        this.room = data.json().room;
+      });
+      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null);
+    } else {
+      this.showReservation = false;
+      this.showReservationPayment = true;
+
+      this.reservationService.getReservationById('684').then(data => {
+        console.log(data);
+        this.reservationInfoEdit = data.data;
+        console.log(this.reservationInfoEdit);
+      });
+
+    }
   }
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
@@ -179,6 +194,7 @@ export class ReservationComponent implements OnInit {
     console.log(JSON.stringify(this.reservationInfo));
 
     this.reservationService.addReservation(this.reservationInfo).subscribe(data => {
+      this.fillDataRange();
       this.toastr.success("Reservation Added");
     });
   }

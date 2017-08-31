@@ -358,6 +358,19 @@ router.get('/reservation', (req, res) => {
   });
 });
 
+router.get('/reservation/:id', (req, res) => {
+  console.log("get reservation by id: " + req.params.id);
+  var reserv = req.body;
+
+  pool.getReservationById(req.params.id).then(data => {
+    return res.json({ success: true, message: 'OK', data: data });
+  }).catch(function (error) {
+    return res.json({
+      success: false, message: 'Error while get reservation', error: err
+    });
+  });
+});
+
 
 
 router.get('/person', (req, res) => {
