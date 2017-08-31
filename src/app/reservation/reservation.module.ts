@@ -18,8 +18,9 @@ import { ComboBoxModule } from '@progress/kendo-angular-dropdowns';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 @NgModule({
-    imports: [NguiAutoCompleteModule,SharedModule, ReservationRouting,DropDownsModule,DropDownListModule,ChartsModule, FormsModule, NgbModule, BrowserModule, IntlModule, HttpModule, BrowserAnimationsModule, DateInputsModule, ButtonsModule,ComboBoxModule],
+    imports: [NguiAutoCompleteModule, InputsModule, SharedModule, ReservationRouting, DropDownsModule, DropDownListModule, ChartsModule, FormsModule, NgbModule, BrowserModule, IntlModule, HttpModule, BrowserAnimationsModule, DateInputsModule, ButtonsModule, ComboBoxModule],
     declarations: [ReservationComponent],
     providers: [ReservationService]
 })

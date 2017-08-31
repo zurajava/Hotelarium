@@ -190,6 +190,25 @@ export class ReservationComponent implements OnInit {
       this.reservationInfo.reservation.reservationDetail.splice(index, 1);
     }
   }
+  addService(id: ReservationDetail) {
+    console.log("addService", id);
+  }
+  addPerson(id: ReservationDetail) {
+    console.log("addPerson", id);
+  }
+  addServiceEdit(id: ReservationDetail) {
+    console.log("addServiceEdit", id);
+  }
+  addPersonEdit(id: ReservationDetail) {
+    console.log("addPersonEdit", id);
+  }
+  updateReservation(id: ReservationDetail) {
+    console.log("updateReservation", id);
+  }
+  updateAllReservation() {
+    console.log("updateAllReservation",JSON.stringify(this.reservationInfo));
+
+  }
   registerReservation() {
     console.log(JSON.stringify(this.reservationInfo));
 

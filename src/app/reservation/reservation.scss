@@ -2,8 +2,9 @@
 @import '../../assets/css/_table.scss';
 
 .dashboard {
-    padding: 0rem 2rem;
-    margin-bottom: 2rem;
+    //padding: 0rem 2rem;
+    //margin-bottom: 2rem;
+    margin-top: 4px;
     font-family: 'Montserrat', sans-serif;
     &__metric {
         padding: 2rem 0;
@@ -61,10 +62,7 @@
 
 .timeline-container {
     overflow:auto;
-    overflow-y: hidden;
-
-   // width: fit-content; 
-   // height: fit-content;
+    overflow-y: hidden; 
 }
 .k-calendar {
     margin: 0 auto;
@@ -72,11 +70,6 @@
 .reservation-container {
     overflow:auto;
     overflow-y: hidden;
-    
-  //  width: fit-content; 
- //   height: fit-content;
-  //  display: inline-block
-   // background-color:  #e6e6e6;
 }
 .RESERVED{
     background-color:aqua;
