@@ -17,7 +17,7 @@ export class BranchService {
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/branch/' + org_id, { headers: headers })
+        return this.http.get('/service/branch/' + org_id + '?currenttimestamp=' + new Date(), { headers: headers })
             .catch(this.handleError);
     }
 

@@ -18,7 +18,7 @@ export class RoomService {
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/room/' + branch_id, { headers: headers })
+        return this.http.get('/service/room/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
             .catch(this.handleError);
     }
 
@@ -57,20 +57,12 @@ export class RoomService {
         return this.http.get('/service/userBranch/' + user_id, { headers: headers })
             .catch(this.handleError);
     }
-    getUserOrganisation(user_id: string) {
-        const headers = new Headers();
-        let key = JSON.parse(localStorage.getItem("parkingUser")).token;
-        headers.append("x-access-token", key);
-        headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/userOrganisation/' + user_id, { headers: headers })
-            .catch(this.handleError);
-    }
     getCategory(branch_id: number) {
         const headers = new Headers();
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('/service/category/' + branch_id, { headers: headers })
+        return this.http.get('/service/category/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
             .catch(this.handleError);
     }
     private handleError(error: any) {
