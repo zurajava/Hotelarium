@@ -9,6 +9,10 @@ const app = express();
 
 const endpoint = require('./service/routes/endpoint');
 
+process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("Node NOT Exiting...");
+});
 
 // Parsers for POST data
 app.use(bodyParser.json());
