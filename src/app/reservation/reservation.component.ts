@@ -172,10 +172,26 @@ export class ReservationComponent implements OnInit {
       this.showReservation = false;
       this.showReservationPayment = true;
 
+      this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
+        ;
+        this.category = data.json().category;
+      });
+
+      this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
+        this.room = data.json().room;
+      });
+
       this.reservationService.getReservationById('684').then(data => {
         console.log(data);
         this.reservationInfoEdit = data.data;
-        console.log(this.reservationInfoEdit);
+
+        for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
+          var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
+          var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
+
+          this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
+          this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
+        }
       });
 
     }
@@ -183,6 +199,17 @@ export class ReservationComponent implements OnInit {
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
     this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
+  }
+  addReservationToExisting() {
+    var size = this.reservationInfoEdit.reservation.reservationDetail.length;
+    this.reservationInfoEdit.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
+  }
+  removeReservationExisting(id: ReservationDetail) {
+    console.log("removeReservationExisting");
+    var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+    if (index > -1) {
+      this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
+    }
   }
   removeReservation(id: ReservationDetail) {
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
@@ -206,7 +233,7 @@ export class ReservationComponent implements OnInit {
     console.log("updateReservation", id);
   }
   updateAllReservation() {
-    console.log("updateAllReservation",JSON.stringify(this.reservationInfo));
+    console.log("updateAllReservation", JSON.stringify(this.reservationInfo));
 
   }
   registerReservation() {
@@ -229,11 +256,36 @@ export class ReservationComponent implements OnInit {
     this.reservationInfo.reservation.reservationDetail[index].end_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
   }
 
+  public handleChangeBirthDateEdit(value: Date) {
+    this.reservationInfoEdit.person.birthdate = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
+  }
+
+  public handleChangeStartDateEdit(value: Date, index: number) {
+    this.reservationInfoEdit.reservation.reservationDetail[index].start_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
+
+  }
+
+  public handleChangeEndDateEdit(value: Date, index: number) {
+    this.reservationInfoEdit.reservation.reservationDetail[index].end_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
+  }
+
 
   valueChanged(newVal) {
+    console.log("valueChanged", newVal.birthdate);
     var birthdate = newVal.birthdate;
     newVal.birthdate = new Date(this.intl.formatDate(birthdate, 'yyyy-MM-dd'));
     this.reservationInfo.person = newVal;
+  }
+
+  valueChangedEdit(newVal) {
+    if (newVal.birthdate === undefined) {
+      this.reservationInfoEdit.person.birthdate = new Date(this.intl.formatDate(this.reservationInfoEdit.person.birthdate, 'yyyy-MM-dd'));;
+    } else {
+      var birthdate = newVal.birthdate;
+      newVal.birthdate = new Date(this.intl.formatDate(birthdate, 'yyyy-MM-dd'));
+      this.reservationInfoEdit.person = newVal;
+    }
+
   }
   autoCompliteListFormatter(data: any): string {
     return `${data.personal_no} ${data.first_name}`;

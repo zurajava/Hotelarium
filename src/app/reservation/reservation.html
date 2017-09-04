@@ -74,18 +74,22 @@
                     </tr>
                     <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
                         <td width="50">
-                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.category_id">
+                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.category_id">
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.room_id">
+                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.room_id">
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date" name="nstart_date"></kendo-datepicker>
+                            <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
+                                name="nstart_date"></kendo-datepicker>
                         </td>
                         <td>
-                            <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date" name="nend_date"></kendo-datepicker>
+                            <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
+                                name="nend_date"></kendo-datepicker>
                         </td>
 
 
@@ -94,7 +98,7 @@
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px" id="ada"  [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
                             </kendo-numerictextbox>
 
                         </td>
@@ -105,11 +109,11 @@
                         </td>
 
                         <td>
-                            <kendo-combobox style="width: 130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'" [valuePrimitive]="true"
-                                [(value)]="res.status_id">
+                            <kendo-combobox style="width: 130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
+                                [valuePrimitive]="true" [(value)]="res.status_id">
                             </kendo-combobox>
                         </td>
-                        <th><button class="add_reservation_btn" kendoButton (click)="addService(res)"  [primary]="true">Service</button>
+                        <th><button class="add_reservation_btn" kendoButton (click)="addService(res)" [primary]="true">Service</button>
                             <button class="add_reservation_btn" kendoButton (click)="addPerson(res)" [primary]="true">Person</button>
                             <button class="add_reservation_btn" kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button></th>
                     </tr>
@@ -124,7 +128,7 @@
         </form>
     </div>
     <!-- Edit Reservation -->
-    <div *ngIf="showReservationPayment" class="reservation-container">
+    <div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
         <form class="k-form-inline">
             <fieldset>
                 <legend>Personal Info E</legend>
@@ -132,35 +136,35 @@
                     <tr>
                         <td><span>Personal Number</span></td>
                         <td>
-                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
-                                name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChangedEdit($event)" placeholder="Personal #"
+                                name="n_personal_no" [(ngModel)]="reservationInfoEdit.person.personal_no" [list-formatter]="autoCompliteListFormatter"
                             />
                         </td>
                         <td><span>First Name</span></td>
-                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
+                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfoEdit.person.first_name"
                             /></td>
                         <td><span>Last Name</span></td>
-                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
+                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfoEdit.person.last_name"
                             /></td>
                         <td><span>Email</span></td>
-                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
+                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfoEdit.person.email"
                             /></td>
                     </tr>
                     <tr>
                         <td><span>Phone</span></td>
-                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
+                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfoEdit.person.phone"
                             /></td>
                         <td><span>Address</span></td>
-                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
+                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfoEdit.person.address"
                             /></td>
                         <td><span>Gender</span></td>
                         <td>
-                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.gender">
                             </kendo-combobox>
                         </td>
                         <td><span>Birth Date</span></td>
                         <td>
-                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
+                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfoEdit.person.birthdate"></kendo-datepicker>
                         </td>
                     </tr>
                 </table>
@@ -168,7 +172,7 @@
             <fieldset>
                 <legend>Reservation Info E</legend>
                 <div>
-                    <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
+                    <button kendoButton (click)="addReservationToExisting()" [primary]="true">Add Reservation</button>
                 </div>
                 <table class="table">
                     <tr>
@@ -182,27 +186,31 @@
                         <th>Status</th>
                         <th>Condition</th>
                     </tr>
-                    <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
+                    <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index">
                         <td>
-                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.category_id">
+                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.category_id">
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.room_id">
+                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.room_id">
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date" name="nstart_date"></kendo-datepicker>
+                            <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
+                                name="nstart_date"></kendo-datepicker>
                         </td>
                         <td>
-                            <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date" name="nend_date"></kendo-datepicker>
+                            <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
+                                name="nend_date"></kendo-datepicker>
                         </td>
                         <td>
                             <kendo-numerictextbox style="width:80px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px" id="ada"  [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
                             </kendo-numerictextbox>
 
                         </td>
@@ -212,14 +220,14 @@
 
                         </td>
                         <td>
-                            <kendo-combobox  style="width:130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'" [valuePrimitive]="true"
-                                [(value)]="res.status_id">
+                            <kendo-combobox style="width:130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
+                                [valuePrimitive]="true" [(value)]="res.status_id">
                             </kendo-combobox>
                         </td>
-                        <th><button class="add_reservation_btn" kendoButton (click)="addServiceEdit(res)"  [primary]="true">Service</button>
+                        <th><button class="add_reservation_btn" kendoButton (click)="addServiceEdit(res)" [primary]="true">Service</button>
                             <button class="add_reservation_btn" kendoButton (click)="addPersonEdit(res)" [primary]="true">Person</button>
                             <button class="add_reservation_btn" kendoButton (click)="updateReservation(res)" [primary]="true">Update</button>
-                            <button kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button></th>
+                            <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button></th>
                     </tr>
                 </table>
             </fieldset>
