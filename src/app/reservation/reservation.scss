@@ -1,5 +1,5 @@
 @import '../../assets/css/_attribute.scss';
-@import '../../assets/css/_table.scss';
+
 
 .dashboard {
     //padding: 0rem 2rem;
@@ -83,4 +83,35 @@
 .add_reservation_btn{
     float: right;
     margin-right:10px;
+}
+table {
+            line-height: 1.5em;
+            border-collapse: collapse;
+            border-spacing: 0;
+            display: table;
+            width: 100%;
+            max-width: 100%;
+            overflow: auto;
+            word-break: normal;
+            word-break: keep-all;  
+            tr {
+                th {
+                    font-weight: 300 !important;
+                    font-size: 12px !important;
+                    
+                }
+                td,
+                th {
+                    font-weight: 600 !important;
+                    font-size: 10px !important;
+                    margin: 0;
+                    padding: 0.5em 1em;
+                    @media only screen and (min-width: 320px) and (max-width: 768px) {
+                        font-size: 10px !important;
+                    }
+                }
+            }
+            th, td {
+                border: 1px solid #ddd;
+            }
 }
