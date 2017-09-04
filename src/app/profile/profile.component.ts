@@ -11,6 +11,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
   styleUrls: ['./profile.scss']
 })
 export class ProfileComponent implements OnInit {
+  public userinfo:any;
 
   constructor(private userService: ProfileService, public toastr: ToastsManager, vcr: ViewContainerRef, public http: Http) {
     this.toastr.setRootViewContainerRef(vcr);
