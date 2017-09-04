@@ -51,7 +51,7 @@ export class AuthService {
         return this.roleID
 
     }
-        getUserID() {
+    getUserID() {
         let parkingUser = JSON.parse(localStorage.getItem('parkingUser'));
         let user_id = parkingUser && parkingUser.user_id;
 

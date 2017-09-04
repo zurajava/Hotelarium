@@ -16,6 +16,7 @@ import { PersonsModule } from './persons/persons.module';
 import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { ServiceModule } from './service/service.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ServiceModule } from './service/service.module';
     PersonsModule,
     UsersModule,
     CategoryModule,
-    ServiceModule
+    ServiceModule,
+    ProfileModule
 
   ],
   providers: [AuthGuard, AuthService, AdminGuard],

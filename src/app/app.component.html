@@ -5,11 +5,8 @@
 
         <div>
             <div class="navigation__profile text-center" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'">
-                <!--<img class="navigation__profile--circle" src="../assets/images/profile.jpg" />-->
                 <i class="fa fa-user navigation__profile--circle" [ngClass]="{'adminImage': roleID === 'ADMIN'|| roleID === 'RESIDENT'}"></i>
-                <h1>{{residentID}}</h1>
-                <h2>{{roleID}}</h2>
-
+                <a routerLink="/profile" routerLinkActive="nav-active-link-admin"><h2>{{roleID}}</h2></a>
             </div>
             <ul *ngIf="roleID === 'ADMIN'" class="row sidenav">
 
