@@ -29,6 +29,19 @@ router.post('/authenticate', (req, res) => {
   });
 });
 
+router.post('/changePassword', (req, res) => {
+  console.log("authenticate :", req.body.username, req.body.password, req.body.newPassword);
+  pool.getUserByUserName(req.body.username, req.body.password, function (err, data) {
+    console.log(req.body.username + ' ' + req.body.password)
+    if (err) {
+      res.json(err);
+    } else {
+      console.log(data.password);
+
+    }
+  });
+});
+
 router.use(function (req, res, next) {
   console.log("middleware : " + req.url + " : " + req.method);
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -47,7 +60,7 @@ router.use(function (req, res, next) {
             if (err) {
               return res.status(403).send({
                 success: false,
-                message: 'Perrmission denid for resource = ' + pathname +', action = ' + req.method
+                message: 'Perrmission denid for resource = ' + pathname + ', action = ' + req.method
               });
             } else {
               if (data.length = 0) {
@@ -344,7 +357,7 @@ router.post('/reservation', (req, res) => {
     }
   });
 });
-  
+
 router.get('/reservation', (req, res) => {
   console.log("get reservation : " + req.query.start_date + " " + req.query.end_date + " " + req.query.branch_id);
   var reserv = req.body;

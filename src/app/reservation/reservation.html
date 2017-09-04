@@ -227,6 +227,7 @@
                         <th><button class="add_reservation_btn" kendoButton (click)="addServiceEdit(res)" [primary]="true">Service</button>
                             <button class="add_reservation_btn" kendoButton (click)="addPersonEdit(res)" [primary]="true">Person</button>
                             <button class="add_reservation_btn" kendoButton (click)="updateReservation(res)" [primary]="true">Update</button>
+                            <button class="add_reservation_btn" kendoButton (click)="paymentReservation(res)" [primary]="true">Pyment</button>
                             <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button></th>
                     </tr>
                 </table>
@@ -234,7 +235,8 @@
             <fieldset>
                 <legend>operations e</legend>
                 <div>
-                    <button kendoButton (click)="updateAllReservation()" [primary]="true">Update</button>
+                    <button kendoButton (click)="updateAllReservation()" [primary]="true">Update All</button>
+                    <button kendoButton (click)="paymentReservationAll()" [primary]="true">Payment All</button>
                 </div>
             </fieldset>
         </form>
