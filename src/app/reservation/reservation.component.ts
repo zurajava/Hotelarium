@@ -49,11 +49,6 @@ export class ReservationComponent implements OnInit {
 
   public reservationInfoEdit: ReservationInfo;
 
-  public expandPerson: boolean = false;
-  public expandService: boolean = false;
-  public expandPayment: boolean = false;
-
-
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private reservationService: ReservationService, private authservice: AuthService, private intl: IntlService) {
     this.toastr.setRootViewContainerRef(vcr);
     this.dateTo = new Date();
@@ -116,49 +111,39 @@ export class ReservationComponent implements OnInit {
                   var current = new Date(datesArray[d - 1]);
                   if (current >= sheduleFrom && current <= sheduleTo) {
 
-                    sheduleArray[a-1] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false);
+                    sheduleArray[a-1] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false,this.data[i].rooms[j].reservations[t].reservation_id);
                     a++;
                     d = d + diffDays;
                     sumDayFiff = sumDayFiff + diffDays;
                     break;
                   } else {
-                    sheduleArray[a-1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, current, true);
+                    sheduleArray[a-1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, current, true,"");
                   }
                   d++;
                 }
                 sumDayFiff--;
               }
               for (a; a < this.segment - sumDayFiff; a++) {
-                sheduleArray[a-1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true);
+                sheduleArray[a-1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true,"");
                 d++;
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
               for (var f = 0; f < this.segment; f++) {
-                this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true);
+                this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true,"");
               }
             }
           }
         }
       }
-      /*  for (let i = 0; i < this.data.length; i++) {
-          console.log(this.data[i].name)
-          for (let j = 0; j < this.data[i].rooms.length; j++) {
-            console.log(this.data[i].rooms[j].room_no);
-            for (let a = 0; a < this.data[i].rooms[j].reservations.length; a++) {
-              console.log(this.data[i].rooms[j].reservations[a].status);
-            }
-  
-          }
-        }*/
     });
   }
   filterRezervation() {
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.fillDataRange();
   }
-  openReservationForm(isReservation: boolean, room_no: number, starDate: Date, endDate: Date, currentDate: Date, status: string, category: string) {
-    console.log(isReservation + ' ' + room_no + ' ' + starDate + ' ' + endDate + ' ' + status + ' ' + category + ' ' + currentDate);
+  openReservationForm(isReservation: boolean, room_no: number, starDate: Date, endDate: Date, currentDate: Date, status: string, category: string,reservation_id:string) {
+    console.log(isReservation + ' ' + room_no + ' ' + starDate + ' ' + endDate + ' ' + status + ' ' + category + ' ' + currentDate +  ' ' + reservation_id);
     if (isReservation) {
       this.showReservation = true;
       this.showReservationPayment = false;
@@ -187,7 +172,7 @@ export class ReservationComponent implements OnInit {
         this.room = data.json().room;
       });
 
-      this.reservationService.getReservationById('684').then(data => {
+      this.reservationService.getReservationById(reservation_id).then(data => {
         console.log(data);
         this.reservationInfoEdit = data.data;
 
@@ -225,24 +210,27 @@ export class ReservationComponent implements OnInit {
   }
   addService(id: ReservationDetail) {
     console.log("addService", id);
+    id.expandService=true;
+    console.log("addService", id);
   }
   addPerson(id: ReservationDetail) {
     console.log("addPerson", id);
+    id.expandPerson=true;
   }
   addServiceEdit(id: ReservationDetail) {
     console.log("addServiceEdit", id);
-    this.expandService = true;
+    id.expandService = true;
   }
   addPersonEdit(id: ReservationDetail) {
     console.log("addPersonEdit", id);
-    this.expandPerson = true;
+    id.expandPerson = true;
   }
   updateReservation(id: ReservationDetail) {
     console.log("updateReservation", id);
   }
   paymentReservation(id: ReservationDetail) {
     console.log("paymentReservation", id);
-    this.expandPayment = true;
+    id.expandPayment = true;
   }
   updateAllReservation() {
     console.log("updateAllReservation", JSON.stringify(this.reservationInfo));

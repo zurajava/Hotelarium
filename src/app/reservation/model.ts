@@ -61,6 +61,10 @@ export class ReservationDetail {
     public category_id: number;
     public category_name: string;
 
+    public expandPerson: boolean = false;
+    public expandService: boolean = false;
+    public expandPayment: boolean = false;
+
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationService>;
 
@@ -94,8 +98,8 @@ export class ReservationPerson {
 export class ReservationService {
     public reservation_id: number;
     public service_id: number;
-    public frequency :string;
-    public additional_comment :string;
+    public frequency: string;
+    public additional_comment: string;
     public service_name: string;
     public price: string;
 
@@ -126,9 +130,10 @@ export class Schedule {
     public dayDiff: number;
     public currentDate: Date;
     public isAvailable: boolean;
+    public reservation_id: string;
     constructor(id: string, status: string, startDate: Date, endDate: Date,
         paymentType: string, firstName: string, personCode: string,
-        dayDiff: number, currentDate: Date, isAvailable: boolean) {
+        dayDiff: number, currentDate: Date, isAvailable: boolean, reservation_id: string) {
         this.id = id;
         this.status = status;
         this.startDate = startDate;
@@ -139,6 +144,7 @@ export class Schedule {
         this.dayDiff = dayDiff;
         this.currentDate = currentDate;
         this.isAvailable = isAvailable;
+        this.reservation_id = reservation_id;
     }
 
 }
