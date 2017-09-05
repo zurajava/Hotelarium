@@ -353,10 +353,17 @@ savePerson = function (branch_id) {
         });
     });
 }
+checkReservation = function (data){
+    //SELECT  count(1) FROM reservation_detail t where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) or (?>DATE(t.start_date)  and ?<=DATE(t.end_date) ))
+
+}
 
 pool.registerReservation = function (reservation) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
+
+
+
             var person = reservation.person;
             connection.beginTransaction(function (err) {
                 if (err) {
