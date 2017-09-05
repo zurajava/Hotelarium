@@ -21,6 +21,7 @@ enableProdMode();
 })
 
 export class ReservationComponent implements OnInit {
+  
   public persons: Person[];
   public genders: Array<{ text: string }> = [
     { text: "Male" },
@@ -47,6 +48,11 @@ export class ReservationComponent implements OnInit {
   public brSelectedValue: number;
 
   public reservationInfoEdit: ReservationInfo;
+
+  public expandPerson: boolean = false;
+  public expandService: boolean = false;
+  public expandPayment: boolean = false;
+
 
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private reservationService: ReservationService, private authservice: AuthService, private intl: IntlService) {
     this.toastr.setRootViewContainerRef(vcr);
@@ -225,15 +231,18 @@ export class ReservationComponent implements OnInit {
   }
   addServiceEdit(id: ReservationDetail) {
     console.log("addServiceEdit", id);
+    this.expandService = true;
   }
   addPersonEdit(id: ReservationDetail) {
     console.log("addPersonEdit", id);
+    this.expandPerson = true;
   }
   updateReservation(id: ReservationDetail) {
     console.log("updateReservation", id);
   }
   paymentReservation(id: ReservationDetail) {
     console.log("paymentReservation", id);
+    this.expandPayment = true;
   }
   updateAllReservation() {
     console.log("updateAllReservation", JSON.stringify(this.reservationInfo));
