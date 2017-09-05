@@ -14,7 +14,11 @@ export class ReservationService {
 
   }
   addReservation(data: ReservationInfo) {
+    for (var i = 0; i < data.reservation.reservationDetail.length; i++) {
+      data.reservation.reservationDetail[i].payment_status = "1";
+    }
     const body = JSON.stringify(data);
+
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

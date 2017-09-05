@@ -282,15 +282,13 @@ router.put('/service/:id', (req, res) => {
 
 
 router.get('/room/:branch_id', (req, res) => {
-  console.log("room " + req.params.branch_id);
-  pool.getRoom(req.params.branch_id, function (err, data) {
-    if (err) {
-      res.json({
-        success: false, message: 'Error while load room', error: err
-      });
-    } else {
-      res.json({ success: true, message: 'OK', room: data });
-    }
+  console.log("room promise: " + req.params.branch_id);
+  pool.getRoom(req.params.branch_id).then(data => {
+    res.json({ success: true, message: 'OK', room: data });
+  }).catch(error => {
+    res.json({
+      success: false, message: 'Error while load room', error: error
+    });
   });
 
 });
@@ -345,17 +343,17 @@ router.post('/reservation', (req, res) => {
       success: false, message: 'Person is not present', error: null
     });
   }
-
-  pool.registerReservation(reserv, function (err, data) {
-    if (err) {
-      console.log("registerReservation : ", err);
-      return res.json({
-        success: false, message: 'Error while register reservation', error: err
-      });
-    } else {
-      return res.json({ success: true, message: 'OK', data: data });
-    }
+  pool.registerReservation(reserv).then(data => {
+    return res.json({ success: true, message: 'OK', data: data });
+  }).catch(error => {
+    return res.json({
+      success: false, message: 'Error while register reservation', error: err
+    });
   });
+
+
+
+
 });
 
 router.get('/reservation', (req, res) => {

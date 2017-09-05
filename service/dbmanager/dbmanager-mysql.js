@@ -250,15 +250,17 @@ pool.updateService = function (id, name, price, currency, description, branch_id
 }
 
 
-pool.getRoom = function (branch_id, callback) {
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
-            if (error) {
-                throw error;
-            } else {
-                callback(null, row);
-            }
-            connection.release();
+pool.getRoom = function (branch_id) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+                if (err) {
+                    reject(err)
+                } else {
+                    connection.release();
+                    resolve(row);
+                }
+            });
         });
 
     });
@@ -331,73 +333,112 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
                 }
                 connection.release();
             });
-
     });
 }
 
-pool.registerReservation = function (reservation, callback) {
-    pool.getConnection(function (err, connection) {
-        var person = reservation.person;
 
-        connection.beginTransaction(function (err) {
-            if (err) {
-                console.log("beginTransaction", err);
-                callback(err, null);
-            }
+savePerson = function (branch_id) {
+    return new Promise(function (resolve, reject) {
+        var categoryData;
+        var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
+        pool.getConnection(function (err, connection) {
+            connection.query(query, [branch_id], function (error, row, fields) {
+                if (error) {
+                    reject(error);
+                } else {
+                    connection.release();
+                    reject(row);
+                }
+            });
+        });
+    });
+}
 
-            connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
-                [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone,], function (error, results, fields) {
-                    if (error) {
-                        if (error.code != 'ER_DUP_ENTRY') {
-                            return connection.rollback(function () {
-                                console.log("person", error.code);
-                                callback(err, null);
-                            });
-                        }
-
-                    }
-                    connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)', [person.personal_no], function (error, results, fields) {
+pool.registerReservation = function (reservation) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            var person = reservation.person;
+            connection.beginTransaction(function (err) {
+                if (err) {
+                    reject(err);
+                }
+                connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
+                    [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone],
+                    function (error, results, fields) {
                         if (error) {
-                            return connection.rollback(function () {
-                                console.log("reservation", error);
-                                callback(err, null);
-                            });
-                        }
-                        var reservID = results.insertId;
-                        var reservDetails = reservation.reservation.reservationDetail;
-
-                        for (var i = 0; i < reservDetails.length; i++) {
-
-                            console.log(reservDetails[i].room_id);
-                            connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date)values(?,current_timestamp,?,?,?,?)',
-                                [reservID, reservDetails[i].room_id, reservDetails[i].status_id, reservDetails[i].start_date, reservDetails[i].end_date], function (error, results, fields) {
-                                    if (error) {
-                                        return connection.rollback(function () {
-                                            console.log("reservation_detail", error);
-                                            callback(error, null);
-                                        });
-                                    }
-
-                                });
-                        }
-
-                        connection.commit(function (err) {
-                            console.log("commit");
-                            if (err) {
+                            if (error.code != 'ER_DUP_ENTRY') {
                                 return connection.rollback(function () {
-                                    console.log(err);
-                                    callback(err, null);
+                                    console.log("person", error.code);
+                                    reject(error);
                                 });
                             }
-                            callback(null, "OK");
 
+                        }
+                        connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)', [person.personal_no], function (error, results, fields) {
+                            if (error) {
+                                return connection.rollback(function () {
+                                    console.log("reservation", error);
+                                    reject(error);
+                                });
+                            }
+                            var reservID = results.insertId;
+                            var reservDetails = reservation.reservation.reservationDetail;
+
+                            reservDetails.map(data => {
+
+                                connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,payment_type,adult,child,additional_bed,payment_status)values(?,current_timestamp,?,?,?,?,?,?,?,?,?)',
+                                    [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
+                                        data.payment_type, data.adult, data.child, data.additional_bed, data.payment_status],
+                                    function (error, results, fields) {
+                                        if (error) {
+                                            return connection.rollback(function () {
+                                                console.log("reservation_detail", error);
+                                                reject(error);
+                                            });
+                                        }
+                                        data.id = results.insertId;
+                                        var id = results.insertId;
+
+                                        data.reservationPerson.map(person => {
+                                            connection.query('insert into reservation_person(reservation_id,person_id)values(?,?)',
+                                                [id, person.person_id],
+                                                function (error, results, fields) {
+                                                    if (error) {
+                                                        return connection.rollback(function () {
+                                                            console.log("person", error.code);
+                                                            reject(error);
+                                                        });
+                                                    }
+                                                });
+                                        });
+                                        data.reservationService.map(service => {
+                                            connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
+                                                [id, service.service_id, service.frequency, service.additional_comment],
+                                                function (error, results, fields) {
+                                                    if (error) {
+                                                        return connection.rollback(function () {
+                                                            console.log("service", error);
+                                                            reject(error);
+                                                        });
+                                                    }
+                                                });
+                                        });
+                                    });
+                            });
+
+                            connection.commit(function (err) {
+                                console.log("commit");
+                                if (err) {
+                                    return connection.rollback(function () {
+                                        console.log(err);
+                                        reject(err);
+                                    });
+                                }
+                                resolve("OK");
+                            });
                         });
-
-
                     });
-                });
-
-
+            });
         });
     });
 }
@@ -490,10 +531,6 @@ pool.getReservation = function (branch_id, start_date, end_date) {
                         return Object.assign({}, category, { rooms: room_reservations })
                     });
             })
-
-            // const flattenPromise = finalPromise.reduce( (a, b) => a.concat(b), []);
-            // return Promise.all(flattenPromise);
-
             return Promise.all(finalPromise)
         })
         .then(data => {
@@ -615,14 +652,14 @@ pool.getReservationById = function (id) {
 
         return Promise.all(finalPromise);
     })*/.then(reservationPerson => {
-        return getPersonByPersonalNo(reservationPerson.person_no).then(data => {
-            return { "person": data[0], "reservation": reservationPerson };
-        })
-    }).then(reservations => {
-        deferred.resolve(reservations);
-    }).catch(function (err) {
-        deferred.reject(err);
-    });
+            return getPersonByPersonalNo(reservationPerson.person_no).then(data => {
+                return { "person": data[0], "reservation": reservationPerson };
+            })
+        }).then(reservations => {
+            deferred.resolve(reservations);
+        }).catch(function (err) {
+            deferred.reject(err);
+        });
     return deferred.promise;
 }
 

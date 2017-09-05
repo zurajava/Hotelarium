@@ -110,25 +110,25 @@ export class ReservationComponent implements OnInit {
                   var current = new Date(datesArray[d - 1]);
                   if (current >= sheduleFrom && current <= sheduleTo) {
 
-                    sheduleArray[a] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false);
+                    sheduleArray[a-1] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false);
                     a++;
                     d = d + diffDays;
                     sumDayFiff = sumDayFiff + diffDays;
                     break;
                   } else {
-                    sheduleArray[a] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, current, true);
+                    sheduleArray[a-1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, current, true);
                   }
                   d++;
                 }
                 sumDayFiff--;
               }
-              for (a; a < this.segment - 1 - sumDayFiff; a++) {
-                sheduleArray[a] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true);
+              for (a; a < this.segment - sumDayFiff; a++) {
+                sheduleArray[a-1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true);
                 d++;
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
-              for (var f = 0; f < this.segment - 1; f++) {
+              for (var f = 0; f < this.segment; f++) {
                 this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true);
               }
             }
