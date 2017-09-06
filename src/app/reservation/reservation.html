@@ -61,12 +61,11 @@
                     <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
                 </div>
                 <table class="table">
-
                     <tr>
                         <div class="person_div_tr">
                             <th>Category</th>
                             <th>Room No</th>
-                            <th>Start Date</th>
+                            <th>Start Date</th>  
                             <th>End Date</th>
                             <th>Adult</th>
                             <th>Child</th>
@@ -80,7 +79,7 @@
                         <div class="person_div_tr">
                             <td width="50">
                                 <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                    [(value)]="res.category_id">
+                                    [(value)]="res.category_id" (valueChange)="categoryValueChange($event)">
                                 </kendo-combobox>
                             </td>
                             <td>

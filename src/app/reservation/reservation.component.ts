@@ -78,6 +78,12 @@ export class ReservationComponent implements OnInit {
     // TO DO
     this.fillDataRange();
   }
+  public categoryValueChange(value: any): void {
+    console.log(value);
+  /*  this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
+      this.room = data.json().room;
+    }); */
+  }
   fillDataRange() {
     const currentDate = this.dateFrom;
     const datesArray = [];
@@ -151,26 +157,26 @@ export class ReservationComponent implements OnInit {
       endDate = new Date();
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
-        ;
         this.category = data.json().category;
+        this.reservationService.getRoom(this.brSelectedValue, null).subscribe(data => {
+          this.room = data.json().room;
+        });
       });
 
-      this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
-        this.room = data.json().room;
-      });
+
       this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null);
     } else {
       this.showReservation = false;
       this.showReservationPayment = true;
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
-        ;
+
         this.category = data.json().category;
+        this.reservationService.getRoom(this.brSelectedValue, this.category[0].id.toString()).subscribe(data => {
+          this.room = data.json().room;
+        });
       });
 
-      this.reservationService.getRoom(this.brSelectedValue).subscribe(data => {
-        this.room = data.json().room;
-      });
 
       this.reservationService.getReservationById(reservation_id).then(data => {
         console.log(data);

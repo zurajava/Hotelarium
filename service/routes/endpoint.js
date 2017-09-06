@@ -282,8 +282,8 @@ router.put('/service/:id', (req, res) => {
 
 
 router.get('/room/:branch_id', (req, res) => {
-  console.log("room promise: " + req.params.branch_id);
-  pool.getRoom(req.params.branch_id).then(data => {
+  console.log("get room promise: " + req.params.branch_id + " " + req.query.category_id);
+  pool.getRoom(req.params.branch_id, req.query.category_id).then(data => {
     res.json({ success: true, message: 'OK', room: data });
   }).catch(error => {
     res.json({

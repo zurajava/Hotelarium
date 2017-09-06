@@ -250,10 +250,11 @@ pool.updateService = function (id, name, price, currency, description, branch_id
 }
 
 
-pool.getRoom = function (branch_id) {
+pool.getRoom = function (branch_id, category_id) {
+    console.log("getRoom sql: ", category_id)
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-            connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+            connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=? and (c.category_id=? or ? is null)', [branch_id, category_id, category_id], function (error, row, fields) {
                 if (err) {
                     reject(err)
                 } else {
