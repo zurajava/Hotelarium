@@ -23,18 +23,8 @@
             word-break: normal;
             word-break: keep-all;
             tr {
-                th {
-                    font-weight: 300 !important;
-                    font-size: 12px !important;
-                    
-                }
-                section {
-                    font-size: 12px;
-                    // font-weight: bold;
-                }
-                td,
-                th {
-                    font-weight: 300 !important;
+                td{
+                    font-weight: 400 !important;
                     font-size: 12px !important;
                     margin: 0;
                     padding: 0.5em 1em;
@@ -42,13 +32,15 @@
                         font-size: 10px !important;
                     }
                 }
-            }
-        }
-        a {
-            color: #000;
-            text-decoration: none;
-            &:hover {
-                text-decoration: underline;
+                th {
+                    font-weight: 800 !important;
+                    font-size: 12px !important;
+                    margin: 0;
+                    padding: 0.5em 1em;
+                    @media only screen and (min-width: 320px) and (max-width: 768px) {
+                        font-size: 10px !important;
+                    }
+                }
             }
         }
     }
