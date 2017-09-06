@@ -353,17 +353,32 @@ savePerson = function (branch_id) {
         });
     });
 }
-checkReservation = function (data){
-    //SELECT  count(1) FROM reservation_detail t where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) or (?>DATE(t.start_date)  and ?<=DATE(t.end_date) ))
-
+pool.checkReservation = function (data) {
+    return new Promise(function (resolve, reject) {
+        var categoryData;
+        var query = 'SELECT  count(1) as count FROM reservation_detail t where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
+            ' or (?>DATE(t.start_date)  and ?<=DATE(t.end_date) ))';
+        pool.getConnection(function (err, connection) {
+            connection.query(query, [data.room_id, data.start_date, data.start_date, data.end_date, data.end_date], function (error, row, fields) {
+                if (error) {
+                    reject(error);
+                } else {
+                    connection.release();
+                    console.log("checkReservation", data.start_date, data.end_date, row[0].count);
+                    if (row[0].count > 0) {
+                        reject('Room ' + data.room_id + ' is not availabe in this period ' + data.start_date + ' - ' + data.end_date);
+                    } else {
+                        resolve('Free');
+                    }
+                }
+            });
+        });
+    });
 }
 
 pool.registerReservation = function (reservation) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-
-
-
             var person = reservation.person;
             connection.beginTransaction(function (err) {
                 if (err) {

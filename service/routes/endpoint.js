@@ -337,23 +337,28 @@ router.put('/room/:id', (req, res) => {
 router.post('/reservation', (req, res) => {
   console.log("add reservation : " + req.body);
   var reserv = req.body;
-
   if (reserv == null || reserv.person == null || reserv.reservation == null || reserv.reservation.reservationDetail == null || reserv.reservation.reservationDetail.length == 0) {
     return res.json({
       success: false, message: 'Person is not present', error: null
     });
   }
-  pool.registerReservation(reserv).then(data => {
-    return res.json({ success: true, message: 'OK', data: data });
+  var reservationDetail = reserv.reservation.reservationDetail;
+  Promise.all(reservationDetail.map(data => {
+    console.log("map", data);
+    return pool.checkReservation(data).then(data => {
+      return data;
+    })
+  })).then(data => {
+    console.log("registerReservation", data);
+    pool.registerReservation(reserv).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    })
   }).catch(error => {
+    console.log("error", error);
     return res.json({
-      success: false, message: 'Error while register reservation', error: err
+      success: false, message: 'Error while register reservation', error: error
     });
   });
-
-
-
-
 });
 
 router.get('/reservation', (req, res) => {
