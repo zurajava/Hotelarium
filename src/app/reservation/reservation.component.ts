@@ -61,14 +61,17 @@ export class ReservationComponent implements OnInit {
   }
   ngOnInit() {
     this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      this.userBranch = data.json().branch;
-      this.brSelectedValue = this.userBranch[0].id
+      if (data.json().success === true) {
+        this.userBranch = data.json().branch;
+        this.brSelectedValue = this.userBranch[0].id
 
-      this.reservationService.getPerson('').subscribe(data => {
-        this.persons = data.json().person;
-      });
-      // TO DO
-      this.fillDataRange();
+        this.reservationService.getPerson('').subscribe(data => {
+          this.persons = data.json().person;
+        });
+        this.fillDataRange();
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
 
   }
@@ -80,9 +83,9 @@ export class ReservationComponent implements OnInit {
   }
   public categoryValueChange(value: any): void {
     console.log(value);
-  /*  this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
-      this.room = data.json().room;
-    }); */
+    /*  this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
+        this.room = data.json().room;
+      }); */
   }
   fillDataRange() {
     const currentDate = this.dateFrom;

@@ -16,7 +16,7 @@ const formGroup = dataItem => {
     parking = true;
   } else {
     parking = false;
-  } 
+  }
   return new FormGroup({
     'id': new FormControl(dataItem.id),
     'name': new FormControl(dataItem.name, Validators.required),
@@ -72,13 +72,17 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-      this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
+
+    this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
+      if (data.json().success === true) {
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id
         this.loadData(this.brSelectedValue);
-      });
-  
+      } else {
+        this.toastr.error(data.json().message);
+      }
+    });
+
 
   }
   public brValueChange(value: any): void {

@@ -84,12 +84,17 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
     this.roomService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      this.userBranch = data.json().branch;
-      this.brSelectedValue = this.userBranch[0].id
-      this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
-        this.room_category = data.json().category;
-        this.loadData(this.brSelectedValue);
-      });
+      if (data.json().success === true) {
+        this.userBranch = data.json().branch;
+        this.brSelectedValue = this.userBranch[0].id
+        this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
+          this.room_category = data.json().category;
+          this.loadData(this.brSelectedValue);
+        });
+      } else {
+        this.toastr.error(data.json().message);
+      }
+
 
     });
   }

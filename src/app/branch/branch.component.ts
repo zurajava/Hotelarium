@@ -38,9 +38,13 @@ export class BranchComponent implements OnInit {
 
   ngOnInit() {
     this.branchService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
-      this.userOrganisation = data.json().organisation;
-      this.orgSelectedValue = this.userOrganisation[0].id
-      this.loadData(this.orgSelectedValue);
+      if (data.json().success === true) {
+        this.userOrganisation = data.json().organisation;
+        this.orgSelectedValue = this.userOrganisation[0].id
+        this.loadData(this.orgSelectedValue);
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
   public orgValueChange(value: any): void {
@@ -93,7 +97,7 @@ export class BranchComponent implements OnInit {
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }) {
     const product: Branch = formGroup.value;
-    product.org_id =this.orgSelectedValue.toString();
+    product.org_id = this.orgSelectedValue.toString();
     if (isNew) {
       this.branchService.addBranch(product).subscribe(data => {
         sender.closeRow(rowIndex);

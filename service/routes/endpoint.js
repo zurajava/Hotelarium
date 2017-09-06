@@ -12,7 +12,6 @@ router.post('/authenticate', (req, res) => {
     if (err) {
       res.json(err);
     } else {
-      console.log(data.password);
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
       } else if (data.password.toUpperCase() != req.body.password.toUpperCase()) {
@@ -48,7 +47,7 @@ router.use(function (req, res, next) {
   if (token) {
     jwt.verify(token, 'ilovescotchyscotch', function (err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });
+        return res.json({ success: false, message: 'Authentication expire, please sing-in again' });
       } else {
         var pathname = url.parse(req.url).pathname.split("/")[1];
         console.log(decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname);

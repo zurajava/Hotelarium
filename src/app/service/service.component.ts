@@ -55,13 +55,14 @@ export class ServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.serviceService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-
-      this.userBranch = data.json().branch;
-      this.brSelectedValue = this.userBranch[0].id
-
-      this.loadData(this.brSelectedValue);
+      if (data.json().success === true) {
+        this.userBranch = data.json().branch;
+        this.brSelectedValue = this.userBranch[0].id
+        this.loadData(this.brSelectedValue);
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
   public category(id: number): any {
