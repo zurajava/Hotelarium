@@ -1,297 +1,293 @@
-<section class="dashboard">
-    <div class="box-header">
-        <div class="input-group">
-            <div class="example-wrapper">
-                <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-                    (valueChange)="brValueChange($event)">
-                </kendo-dropdownlist>
-                <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
-                <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
-            </div>
-            <div>
-                <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
-            </div>
-        </div>
+<div class="box-header">
+    <div class="reservation_filter">
+        <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+            (valueChange)="brValueChange($event)">
+        </kendo-dropdownlist>
+        <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
+        <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
+        <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
     </div>
-    <!-- Register Reservation -->
-    <div *ngIf="showReservation" class="reservation-container">
-        <form class="k-form-inline">
-            <fieldset>
-                <legend>Personal Info</legend>
-                <table style="width:100%; text-align: left;">
-                    <tr>
-                        <td><span>Personal Number</span></td>
-                        <td>
-                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
-                                name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
-                            />
-                        </td>
-                        <td><span>First Name</span></td>
-                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
-                            /></td>
-                        <td><span>Last Name</span></td>
-                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
-                            /></td>
-                        <td><span>Email</span></td>
-                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
-                            /></td>
-                    </tr>
-                    <tr>
-                        <td><span>Phone</span></td>
-                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
-                            /></td>
-                        <td><span>Address</span></td>
-                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
-                            /></td>
-                        <td><span>Gender</span></td>
-                        <td>
-                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
-                            </kendo-combobox>
-                        </td>
-                        <td><span>Birth Date</span></td>
-                        <td>
-                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
-                        </td>
-                    </tr>
-                </table>
-            </fieldset>
-            <fieldset>
-                <legend>Reservation Info</legend>
-                <div class="add_reservation_btn">
-                    <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
-                </div>
-                <table class="table">
-                    <tr>
-                        <div class="person_div_tr">
-                            <th>Category</th>
-                            <th>Room No</th>
-                            <th>Start Date</th>  
-                            <th>End Date</th>
-                            <th>Adult</th>
-                            <th>Child</th>
-                            <th>Additional Bed</th>
-                            <th>Status</th>
-                            <th>Condition</th>
-                        </div>
-                    </tr>
-
-                    <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
-                        <div class="person_div_tr">
-                            <td width="50">
-                                <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                    [(value)]="res.category_id" (valueChange)="categoryValueChange($event)">
-                                </kendo-combobox>
-                            </td>
-                            <td>
-                                <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                    [(value)]="res.room_id">
-                                </kendo-combobox>
-                            </td>
-                            <td>
-                                <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
-                                    name="nstart_date"></kendo-datepicker>
-                            </td>
-                            <td>
-                                <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
-                                    name="nend_date"></kendo-datepicker>
-                            </td>
-
-
-                            <td>
-                                <kendo-numerictextbox style="width:80px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
-                                </kendo-numerictextbox>
-                            </td>
-                            <td>
-                                <kendo-numerictextbox style="width:80px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
-                                </kendo-numerictextbox>
-
-                            </td>
-                            <td>
-                                <kendo-numerictextbox style="width:80px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true">
-                                </kendo-numerictextbox>
-
-                            </td>
-
-                            <td>
-                                <kendo-combobox style="width: 130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
-                                    [valuePrimitive]="true" [(value)]="res.status_id">
-                                </kendo-combobox>
-                            </td>
-                            <th><button class="add_reservation_btn" kendoButton (click)="addService(res)" [primary]="true">Service</button>
-                                <button class="add_reservation_btn" kendoButton (click)="addPerson(res)" [primary]="true">Person</button>
-                                <button class="add_reservation_btn" kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button></th>
-                            <div class="person_div" *ngIf="res.expandPerson">Person
-                            </div>
-                            <div class="service_div" *ngIf="res.expandService">Service
-                            </div>
-                            <div class="payment_div" *ngIf="res.expandPayment">Payment
-                            </div>
-
-                        </div>
-                    </tr>
-                </table>
-            </fieldset>
-            <fieldset>
-                <legend>operations</legend>
-                <div>
-                    <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-    <!-- Edit Reservation -->
-    <div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
-        <form class="k-form-inline">
-            <fieldset>
-                <legend>Personal Info E</legend>
-                <table style="width:100%; text-align: left;">
-                    <tr>
-                        <td><span>Personal Number</span></td>
-                        <td>
-                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChangedEdit($event)" placeholder="Personal #"
-                                name="n_personal_no" [(ngModel)]="reservationInfoEdit.person.personal_no" [list-formatter]="autoCompliteListFormatter"
-                            />
-                        </td>
-                        <td><span>First Name</span></td>
-                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfoEdit.person.first_name"
-                            /></td>
-                        <td><span>Last Name</span></td>
-                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfoEdit.person.last_name"
-                            /></td>
-                        <td><span>Email</span></td>
-                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfoEdit.person.email"
-                            /></td>
-                    </tr>
-                    <tr>
-                        <td><span>Phone</span></td>
-                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfoEdit.person.phone"
-                            /></td>
-                        <td><span>Address</span></td>
-                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfoEdit.person.address"
-                            /></td>
-                        <td><span>Gender</span></td>
-                        <td>
-                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.gender">
-                            </kendo-combobox>
-                        </td>
-                        <td><span>Birth Date</span></td>
-                        <td>
-                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfoEdit.person.birthdate"></kendo-datepicker>
-                        </td>
-                    </tr>
-                </table>
-            </fieldset>
-            <fieldset>
-                <legend>Reservation Info E</legend>
-                <div>
-                    <button kendoButton (click)="addReservationToExisting()" [primary]="true">Add Reservation</button>
-                </div>
-                <table class="table">
-                    <div class="person_div_tr">
-                        <tr>
-                            <th>Category</th>
-                            <th>Room No</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Adult</th>
-                            <th>Child</th>
-                            <th>Additional Bed</th>
-                            <th>Status</th>
-                            <th>Condition</th>
-                        </tr>
-                    </div>
-                    <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index">
-
-                        <div class="person_div_tr">
-                            <td>
-                                <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                    [(value)]="res.category_id">
-                                </kendo-combobox>
-                            </td>
-                            <td>
-                                <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                    [(value)]="res.room_id">
-                                </kendo-combobox>
-                            </td>
-                            <td>
-                                <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
-                                    name="nstart_date"></kendo-datepicker>
-                            </td>
-                            <td>
-                                <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
-                                    name="nend_date"></kendo-datepicker>
-                            </td>
-                            <td>
-                                <kendo-numerictextbox style="width:80px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
-                                </kendo-numerictextbox>
-                            </td>
-                            <td>
-                                <kendo-numerictextbox style="width:80px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
-                                </kendo-numerictextbox>
-
-                            </td>
-                            <td>
-                                <kendo-numerictextbox style="width:80px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true">
-                                </kendo-numerictextbox>
-
-                            </td>
-                            <td>
-                                <kendo-combobox style="width:130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
-                                    [valuePrimitive]="true" [(value)]="res.status_id">
-                                </kendo-combobox>
-                            </td>
-                            <th>
-                                <button class="add_reservation_btn" kendoButton (click)="updateReservation(res)" [primary]="true">Save</button>
-                                <button class="add_reservation_btn" kendoButton (click)="addServiceEdit(res)" [primary]="true">Service</button>
-                                <button class="add_reservation_btn" kendoButton (click)="addPersonEdit(res)" [primary]="true">Person</button>
-                                <button class="add_reservation_btn" kendoButton (click)="paymentReservation(res)" [primary]="true">Payment</button>
-                                <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button></th>
-                            <div class="person_div" *ngIf="res.expandPerson">Person
-                            </div>
-                            <div class="service_div" *ngIf="res.expandService">Service
-                            </div>
-                            <div class="payment_div" *ngIf="res.expandPayment">Payment
-                            </div>
-
-                        </div>
-                    </tr>
-                </table>
-            </fieldset>
-            <fieldset>
-                <legend>operations e</legend>
-                <div>
-                    <button kendoButton (click)="updateAllReservation()" [primary]="true">Update All</button>
-                    <button kendoButton (click)="paymentReservationAll()" [primary]="true">Payment All</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-
-    <div class="timeline-container">
-        <table class="table_class">
-            <thead>
+</div>
+<!-- Register Reservation -->
+<div *ngIf="showReservation" class="reservation-container">
+    <form class="k-form-inline">
+        <fieldset>
+            <legend>Personal Info</legend>
+            <table style="width:100%; text-align: left;">
                 <tr>
-                    <th>ოთახები</th>
-                    <th *ngFor="let dateSingle of dateRange">
-                        <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
-                        <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
-                        <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
-                    </th>
+                    <td><span>Personal Number</span></td>
+                    <td>
+                        <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
+                            name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                        />
+                    </td>
+                    <td><span>First Name</span></td>
+                    <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
+                        /></td>
+                    <td><span>Last Name</span></td>
+                    <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
+                        /></td>
+                    <td><span>Email</span></td>
+                    <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
+                        /></td>
                 </tr>
-            </thead>
-
-            <tbody *ngFor="let caterory of data">
                 <tr>
-                    <td [colSpan]="segment">{{ caterory.name }}</td>
-                </tr>
-                <tr *ngFor="let room of caterory.rooms">
-                    <td>{{room.room_no}}</td>
-                    <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.room_no,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.name,schedule.reservation_id)"
-                        [className]="schedule.status" *ngFor="let schedule of room.reservations">
-                        {{schedule?.firstName}}
+                    <td><span>Phone</span></td>
+                    <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
+                        /></td>
+                    <td><span>Address</span></td>
+                    <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
+                        /></td>
+                    <td><span>Gender</span></td>
+                    <td>
+                        <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                        </kendo-combobox>
+                    </td>
+                    <td><span>Birth Date</span></td>
+                    <td>
+                        <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Reservation Info</legend>
+            <div class="add_reservation_btn">
+                <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
+            </div>
+            <table class="reservation_table">
+                <tr>
+                    <div class="person_div_tr">
+                        <th>Category</th>
+                        <th>Room No</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Adult</th>
+                        <th>Child</th>
+                        <th>Additional Bed</th>
+                        <th>Status</th>
+                        <th>Condition</th>
+                    </div>
+                </tr>
+
+                <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
+                    <div class="person_div_tr">
+                        <td width="50">
+                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.category_id" (valueChange)="categoryValueChange($event)">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.room_id">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
+                                name="nstart_date"></kendo-datepicker>
+                        </td>
+                        <td>
+                            <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
+                                name="nend_date"></kendo-datepicker>
+                        </td>
+
+
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+
+                        </td>
+
+                        <td>
+                            <kendo-combobox style="width: 130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
+                                [valuePrimitive]="true" [(value)]="res.status_id">
+                            </kendo-combobox>
+                        </td>
+                        <td><button  kendoButton (click)="addService(res)" [primary]="true">Service</button>
+                            <button  kendoButton (click)="addPerson(res)" [primary]="true">Person</button>
+                            <button  kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button>
+                        </td>
+                        <div class="person_div" *ngIf="res.expandPerson">Person
+                        </div>
+                        <div class="service_div" *ngIf="res.expandService">Service
+                        </div>
+                        <div class="payment_div" *ngIf="res.expandPayment">Payment
+                        </div>
+
+                    </div>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>operations</legend>
+            <div>
+                <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<!-- Edit Reservation -->
+<div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
+    <form class="k-form-inline">
+        <fieldset>
+            <legend>Personal Info E</legend>
+            <table style="width:100%; text-align: left;">
+                <tr>
+                    <td><span>Personal Number</span></td>
+                    <td>
+                        <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChangedEdit($event)" placeholder="Personal #"
+                            name="n_personal_no" [(ngModel)]="reservationInfoEdit.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                        />
+                    </td>
+                    <td><span>First Name</span></td>
+                    <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfoEdit.person.first_name"
+                        /></td>
+                    <td><span>Last Name</span></td>
+                    <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfoEdit.person.last_name"
+                        /></td>
+                    <td><span>Email</span></td>
+                    <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfoEdit.person.email"
+                        /></td>
+                </tr>
+                <tr>
+                    <td><span>Phone</span></td>
+                    <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfoEdit.person.phone"
+                        /></td>
+                    <td><span>Address</span></td>
+                    <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfoEdit.person.address"
+                        /></td>
+                    <td><span>Gender</span></td>
+                    <td>
+                        <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.gender">
+                        </kendo-combobox>
+                    </td>
+                    <td><span>Birth Date</span></td>
+                    <td>
+                        <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfoEdit.person.birthdate"></kendo-datepicker>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Reservation Info E</legend>
+            <div class="add_reservation_btn">
+                <button kendoButton (click)="addReservationToExisting()" [primary]="true">Add Reservation</button>
+            </div>
+            <table class="reservation_table">
+                <div class="person_div_tr">
+                    <tr>
+                        <th>Category</th>
+                        <th>Room No</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Adult</th>
+                        <th>Child</th>
+                        <th>Additional Bed</th>
+                        <th>Status</th>
+                        <th>Condition</th>
+                    </tr>
+                </div>
+                <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index">
+
+                    <div class="person_div_tr">
+                        <td>
+                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.category_id">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                [(value)]="res.room_id">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
+                                name="nstart_date"></kendo-datepicker>
+                        </td>
+                        <td>
+                            <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
+                                name="nend_date"></kendo-datepicker>
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <kendo-combobox style="width:130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
+                                [valuePrimitive]="true" [(value)]="res.status_id">
+                            </kendo-combobox>
+                        </td>
+                        <td>
+                            <button  kendoButton (click)="updateReservation(res)" [primary]="true">Save</button>
+                            <button  kendoButton (click)="addServiceEdit(res)" [primary]="true">Service</button>
+                            <button  kendoButton (click)="addPersonEdit(res)" [primary]="true">Person</button>
+                            <button  kendoButton (click)="paymentReservation(res)" [primary]="true">Payment</button>
+                            <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button>
+                        </td>
+                        <div class="person_div" *ngIf="res.expandPerson">Person
+                        </div>
+                        <div class="service_div" *ngIf="res.expandService">Service
+                        </div>
+                        <div class="payment_div" *ngIf="res.expandPayment">Payment
+                        </div>
+
+                    </div>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>operations e</legend>
+            <div>
+                <button kendoButton (click)="updateAllReservation()" [primary]="true">Update All</button>
+                <button kendoButton (click)="paymentReservationAll()" [primary]="true">Payment All</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<div class="timeline-container">
+    <table class="time_table_class">
+        <thead>
+            <tr>
+                <th>ოთახები</th>
+                <th *ngFor="let dateSingle of dateRange">
+                    <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
+                    <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
+                    <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody *ngFor="let caterory of data">
+            <tr>
+                <td [colSpan]="segment">{{ caterory.name }}</td>
+            </tr>
+            <tr *ngFor="let room of caterory.rooms">
+                <td>{{room.room_no}}</td>
+                <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.room_no,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.name,schedule.reservation_id)"
+                    [className]="schedule.status" *ngFor="let schedule of room.reservations">
+                    {{schedule?.firstName}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

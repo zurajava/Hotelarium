@@ -26,6 +26,9 @@
         border: none;
     }
 }
+.reservation_filter{
+    overflow:auto;
+}
 
 .timeline-container {
     overflow:auto;
@@ -46,12 +49,12 @@
 }
 .box-header{
     background-color:aliceblue;
+    padding-top: 7px;
 }
 .add_reservation_btn{
     float: right;
-    margin-right:10px;
 }
-.table_class {
+.time_table_class {
             line-height: 1.5em;
             border-collapse: collapse;
             border-spacing: 0;
@@ -82,6 +85,131 @@
                 border: 1px solid #ddd;
             }
 }
+.person_table_class {
+    line-height: 1.5em;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;  
+    tr {
+        th {
+            font-weight: 300 !important;
+            font-size: 12px !important;
+            
+        }
+        td,
+        th {
+            font-weight: 600 !important;
+            font-size: 10px !important;
+            margin: 0;
+            padding: 0.5em 1em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+    }
+    th, td {
+        border: 1px solid #ddd;
+    }
+}
+.service_table_class {
+    line-height: 1.5em;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;  
+    tr {
+        th {
+            font-weight: 300 !important;
+            font-size: 12px !important;
+            
+        }
+        td,
+        th {
+            font-weight: 600 !important;
+            font-size: 10px !important;
+            margin: 0;
+            padding: 0.5em 1em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+    }
+    th, td {
+        border: 1px solid #ddd;
+    }
+}
+.payment_table_class {
+    line-height: 1.5em;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;  
+    tr {
+        th {
+            font-weight: 300 !important;
+            font-size: 12px !important;
+            
+        }
+        td,
+        th {
+            font-weight: 600 !important;
+            font-size: 10px !important;
+            margin: 0;
+            padding: 0.5em 1em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+    }
+    th, td {
+        border: 1px solid #ddd;
+    }
+}
+
+.reservation_table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;  
+    tr {
+        th {
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            padding: 0.1em 2.3em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+        td{
+            font-weight: 400 !important;
+            font-size: 12px !important;
+            margin: 0;
+            padding: 0.1em 0.5em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+    }
+}
+
+
 .person_div_tr{
     background-color: #ddd;
     width: 100%;
