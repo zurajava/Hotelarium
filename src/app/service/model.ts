@@ -8,4 +8,5 @@ export class Service {
     public branch_name: string;
     public price: number;
     public currency: string;
+    public type: string;
 }

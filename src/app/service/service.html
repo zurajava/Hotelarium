@@ -17,19 +17,18 @@
     <kendo-grid-column field="name" title="Name"></kendo-grid-column>
     <kendo-grid-column field="price" editor="numeric" title="Price"></kendo-grid-column>
 
-    <kendo-grid-column field="currency" title="Currency" width="150">
+    <kendo-grid-column field="type" title="Type" width="150">
       <ng-template kendoGridCellTemplate let-dataItem>
-        {{category(dataItem.currency)?.currencyName}}
+        {{category(dataItem.type)?.typeName}}
       </ng-template>
       <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-formGroup="formGroup">
-        <kendo-dropdownlist [data]="currencys" textField="currencyName" valueField="currencyId" [valuePrimitive]="true" [formControl]="formGroup.get('currency')">
+        <kendo-dropdownlist [data]="type" textField="typeName" valueField="typeId" [valuePrimitive]="true" [formControl]="formGroup.get('type')">
         </kendo-dropdownlist>
       </ng-template>
     </kendo-grid-column>
 
 
     <kendo-grid-column field="description" title="Description"></kendo-grid-column>
-    <kendo-grid-column field="branch_name" title="Branch"></kendo-grid-column>
     <kendo-grid-command-column title="command" width="220">
       <ng-template kendoGridCellTemplate let-isNew="isNew">
         <button kendoGridEditCommand class="k-primary">Edit</button>

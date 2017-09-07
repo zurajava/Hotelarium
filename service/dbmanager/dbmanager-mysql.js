@@ -203,10 +203,10 @@ pool.getService = function (branch_id, callback) {
     });
 }
 
-pool.registerService = function (name, price, currency, description, branch_id, callback) {
+pool.registerService = function (name, price, currency, description, branch_id, type, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('insert into service(create_date,name,price, currency,description,branch_id) values(current_timestamp,?,?,?,?,?)',
-            [name, price, currency, description, branch_id],
+        connection.query('insert into service(create_date,name,price, currency,description,branch_id,type) values(current_timestamp,?,?,?,?,?,?)',
+            [name, price, currency, description, branch_id, type],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -233,10 +233,10 @@ pool.deleteService = function (id, callback) {
     });
 }
 
-pool.updateService = function (id, name, price, currency, description, branch_id, callback) {
+pool.updateService = function (id, name, price, currency, description, branch_id, type, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('update service set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp where id=?',
-            [name, price, currency, description, branch_id, id],
+        connection.query('update service set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp,type=? where id=?',
+            [name, price, currency, description, branch_id, type, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;
@@ -267,7 +267,7 @@ pool.getRoom = function (branch_id, category_id) {
     });
 }
 
-pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag, callback) {
+pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
     var smokeValue;
     if (smoke === true) {
         smokeValue = 'YES';
@@ -282,16 +282,18 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
     }
 
     pool.getConnection(function (err, connection) {
-        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag) values(current_timestamp,?,?,?,?,?,?,?,?,?,?)',
-            [name, price, currency, room_no, description, branch_id, category_id, smokeValue, wifiValue, tag],
-            function (error, row, fields) {
-                if (error) {
-                    throw error;
-                } else {
-                    callback(null, row);
-                }
-                connection.release();
-            });
+        connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag,additional_bad,additional_bad_price,extra_person,extra_person_price) values(current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+            [name, price, currency, room_no, description, branch_id, category_id, smokeValue, wifiValue, tag,
+                additional_bad, additional_bad_price, extra_person, extra_person_price], function (error, row, fields) {
+                    if (error) {
+                        console.log(error);
+                        throw error;
+                    } else {
+                        console.log("ok");
+                        callback(null, row);
+                    }
+                    connection.release();
+                });
 
     });
 }
@@ -310,7 +312,8 @@ pool.deleteRoom = function (id, callback) {
     });
 }
 
-pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag, callback) {
+pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag,
+    additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
     var smokeValue;
     if (smoke === true) {
         smokeValue = 'YES';
@@ -324,8 +327,8 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
         wifiValue = 'NO';
     }
     pool.getConnection(function (err, connection) {
-        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=? where id=?',
-            [name, price, currency, room_no, description, branch_id, category_name, smokeValue, wifiValue, tag, id],
+        connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=?,additional_bad=?, additional_bad_price=?, extra_person=?,extra_person_price=? where id=?',
+            [name, price, currency, room_no, description, branch_id, category_name, smokeValue, wifiValue, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, id],
             function (error, row, fields) {
                 if (error) {
                     throw error;

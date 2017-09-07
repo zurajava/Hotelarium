@@ -20,8 +20,6 @@ const formGroup = dataItem => {
   return new FormGroup({
     'id': new FormControl(dataItem.id),
     'name': new FormControl(dataItem.name, Validators.required),
-    'price': new FormControl(dataItem.price),
-    'currency': new FormControl(dataItem.currency),
     'description': new FormControl(dataItem.description),
     'parking': new FormControl(parking)
   })
@@ -35,20 +33,6 @@ const formGroup = dataItem => {
   styleUrls: ['./category.scss']
 })
 export class CategoryComponent implements OnInit {
-
-
-  public currencys: any[] = [{
-    "currencyId": "GEL",
-    "currencyName": "GEL"
-  },
-  {
-    "currencyId": "USD",
-    "currencyName": "USD"
-  },
-  {
-    "currencyId": "EUR",
-    "currencyName": "EUR"
-  }];
 
   public view: GridDataResult;
   public data: Object[];
@@ -65,10 +49,6 @@ export class CategoryComponent implements OnInit {
 
   constructor(private categoryService: CategoryService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
-  }
-
-  public category(id: number): any {
-    return this.currencys.find(x => x.currencyId === id);
   }
 
   ngOnInit() {
@@ -101,8 +81,6 @@ export class CategoryComponent implements OnInit {
     this.closeEditor(sender);
     this.formGroup = formGroup({
       'name': "",
-      'price': 0,
-      'currency': "",
       'description': "",
       'parking': 'YES'
     });

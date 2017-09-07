@@ -30,7 +30,10 @@ const formGroup = dataItem => {
     'room_no': new FormControl(dataItem.room_no, Validators.required),
     'category_name': new FormControl(dataItem.category_id, Validators.required),
     'price': new FormControl(dataItem.price, Validators.required),
-    'currency': new FormControl(dataItem.currency, Validators.required),
+    'additional_bad': new FormControl(dataItem.additional_bad, Validators.required),
+    'additional_bad_price': new FormControl(dataItem.additional_bad_price, Validators.required),
+    'extra_person': new FormControl(dataItem.extra_person, Validators.required),
+    'extra_person_price': new FormControl(dataItem.extra_person_price, Validators.required),
     'smoke': new FormControl(smoke),
     'wifi': new FormControl(wifi),
     'tag': new FormControl(dataItem.tag),
@@ -47,19 +50,6 @@ const formGroup = dataItem => {
 })
 
 export class RoomComponent implements OnInit {
-
-  public currencys: any[] = [{
-    "currencyId": "GEL",
-    "currencyName": "GEL"
-  },
-  {
-    "currencyId": "USD",
-    "currencyName": "USD"
-  },
-  {
-    "currencyId": "EUR",
-    "currencyName": "EUR"
-  }];
 
   public room_category: any[];
   public dataCategory: any[];
@@ -98,9 +88,6 @@ export class RoomComponent implements OnInit {
 
     });
   }
-  public category(id: number): any {
-    return this.currencys.find(x => x.currencyId === id);
-  }
   public category_id(id: number): any {
     return this.room_category.find(x => {
       return x.name === id;
@@ -129,7 +116,10 @@ export class RoomComponent implements OnInit {
       'room_no': "",
       'category_name': "",
       'price': 0,
-      'currency': "",
+      "additional_bad": 0,
+      "additional_bad_price": 0,
+      "extra_person": 0,
+      "extra_person_price": 0,
       'smoke': true,
       'wifi': true,
       'tag': "",
@@ -161,31 +151,48 @@ export class RoomComponent implements OnInit {
     room.branch_id = this.brSelectedValue.toString();
     if (isNew) {
       this.roomService.addRoom(room).subscribe(data => {
-        sender.closeRow(rowIndex);
-        this.loadData(this.brSelectedValue);
-        this.toastr.success("Room Added");
+        if (data.json().success === true) {
+          sender.closeRow(rowIndex);
+          this.loadData(this.brSelectedValue);
+          this.toastr.success("Room Added");
+        } else {
+          this.toastr.error(data.json().message);
+        }
       });
     } else {
       this.roomService.editRoom(room).subscribe(data => {
-        sender.closeRow(rowIndex);
-        this.loadData(this.brSelectedValue);
-        this.toastr.success("Room Edited");
+        if (data.json().success === true) {
+          sender.closeRow(rowIndex);
+          this.loadData(this.brSelectedValue);
+          this.toastr.success("Room Edited");
+        } else {
+          this.toastr.error(data.json().message);
+        }
       });
     }
   }
 
   public removeHandler({ dataItem }) {
     this.roomService.deleteRoom(dataItem.id).subscribe(data => {
-      this.loadData(this.brSelectedValue);
+      if (data.json().success === true) {
+        this.loadData(this.brSelectedValue);
+        this.toastr.success("Room delete");
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
   public loadData(branch_id: number) {
     this.roomService.getRoom(branch_id).subscribe(data => {
-      this.items = data.json().room;
-      this.view = {
-        data: this.items.slice(this.skip, this.skip + this.pageSize),
-        total: this.items.length
-      };
+      if (data.json().success === true) {
+        this.items = data.json().room;
+        this.view = {
+          data: this.items.slice(this.skip, this.skip + this.pageSize),
+          total: this.items.length
+        };
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
 

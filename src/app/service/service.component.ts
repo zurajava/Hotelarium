@@ -14,7 +14,7 @@ const formGroup = dataItem => new FormGroup({
   'id': new FormControl(dataItem.id),
   'name': new FormControl(dataItem.name, Validators.required),
   'price': new FormControl(dataItem.price, Validators.required),
-  'currency': new FormControl(dataItem.currency, Validators.required),
+  'type': new FormControl(dataItem.type, Validators.required),
   'description': new FormControl(dataItem.description)
 });
 
@@ -24,17 +24,13 @@ const formGroup = dataItem => new FormGroup({
   styleUrls: ['./service.scss']
 })
 export class ServiceComponent implements OnInit {
-  public currencys: any[] = [{
-    "currencyId": "GEL",
-    "currencyName": "GEL"
+  public type: any[] = [{
+    "typeId": "DURATIONALL",
+    "typeName": "DURATIONALL"
   },
   {
-    "currencyId": "USD",
-    "currencyName": "USD"
-  },
-  {
-    "currencyId": "EUR",
-    "currencyName": "EUR"
+    "typeId": "QUANTITY",
+    "typeName": "QUANTITY"
   }];
 
   public view: GridDataResult;
@@ -66,7 +62,7 @@ export class ServiceComponent implements OnInit {
     });
   }
   public category(id: number): any {
-    return this.currencys.find(x => x.currencyId === id);
+    return this.type.find(x => x.typeId === id);
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;

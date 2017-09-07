@@ -14,4 +14,9 @@ export class Room {
     public smoke: string;
     public wifi: string;
     public tag: string;
+    public additional_bad: number;
+    public additional_bad_price: number;
+    public extra_person: number;
+    public extra_person_price: number;
+
 }

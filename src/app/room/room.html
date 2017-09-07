@@ -26,18 +26,11 @@
                 </kendo-dropdownlist>
             </ng-template>
         </kendo-grid-column>
-
-
         <kendo-grid-column field="price" editor="numeric" title="Price"></kendo-grid-column>
-        <kendo-grid-column field="currency" title="Currency" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem>
-                {{category(dataItem.currency)?.currencyName}}
-            </ng-template>
-            <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-formGroup="formGroup">
-                <kendo-dropdownlist [data]="currencys" textField="currencyName" valueField="currencyId" [valuePrimitive]="true" [formControl]="formGroup.get('currency')">
-                </kendo-dropdownlist>
-            </ng-template>
-        </kendo-grid-column>
+        <kendo-grid-column field="additional_bad" editor="numeric" title="Additional Bad"></kendo-grid-column>
+        <kendo-grid-column field="additional_bad_price" editor="numeric" title="Additional Bad Price"></kendo-grid-column>
+        <kendo-grid-column field="extra_person" editor="numeric" title="Extra Person"></kendo-grid-column>
+        <kendo-grid-column field="extra_person_price" editor="numeric" title="Extra Person Price"></kendo-grid-column>
         <kendo-grid-column field="smoke" editor="boolean" title="Smoke"></kendo-grid-column>
         <kendo-grid-column field="wifi" editor="boolean" title="WiFi"></kendo-grid-column>
         <kendo-grid-column field="tag" title="Tag"></kendo-grid-column>
