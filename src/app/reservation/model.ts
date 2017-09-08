@@ -60,6 +60,7 @@ export class ReservationDetail {
     public payment_status: string;
     public category_id: number;
     public category_name: string;
+    public extra_person: string;
 
     public expandPerson: boolean = false;
     public expandService: boolean = false;
@@ -88,7 +89,9 @@ export class ReservationDetail {
 export class ReservationPerson {
     public reservation_id: number;
     public person_id: number;
-
+    public first_name: string;
+    public last_name: string;
+    
     constructor(reservation_id: number, person_id: number) {
         this.reservation_id = reservation_id;
         this.person_id = person_id;
