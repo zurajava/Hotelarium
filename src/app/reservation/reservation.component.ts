@@ -4,7 +4,7 @@ import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/co
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule } from './model';
+import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule, ReservationPerson, ReservationServices } from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Room } from '../room/model.js';
@@ -37,6 +37,7 @@ export class ReservationComponent implements OnInit {
   public showReservation: boolean = false;
   public showReservationPayment: boolean = false;
   public reservationInfo: ReservationInfo;
+  public personList: Array<ReservationPerson>;
   public rows = [];
   public segment = 30;
   public data: any;
@@ -56,7 +57,7 @@ export class ReservationComponent implements OnInit {
     this.dateFrom.setDate(this.dateTo.getDate() - 30);
 
     this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null, [
-      new ReservationDetail(null, null, null, null, null, null, null, null, null, null, null)
+      new ReservationDetail(null, null, null, null, null, null, null, null, null, [new ReservationPerson('', '', '')], [new ReservationServices(null, '', '', '', '')])
     ]));
   }
   ngOnInit() {
@@ -165,8 +166,6 @@ export class ReservationComponent implements OnInit {
           this.room = data.json().room;
         });
       });
-
-
       this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null);
     } else {
       this.showReservation = false;
@@ -223,8 +222,17 @@ export class ReservationComponent implements OnInit {
     console.log("addService", id);
   }
   addPerson(id: ReservationDetail) {
-    console.log("addPerson", id);
-    id.expandPerson = true;
+    var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
+    console.log(this.reservationInfo.reservation);
+    if (index > -1) {
+      var personList = this.reservationInfo.reservation.reservationDetail[index].reservationPerson;
+      
+      this.personList[0] = new ReservationPerson("aaa", "vvvv", ":xsxs");
+      
+
+      this.reservationInfo.reservation.reservationDetail[index].reservationPerson[1] = this.personList[0];
+
+    }
   }
   addServiceEdit(id: ReservationDetail) {
     console.log("addServiceEdit", id);

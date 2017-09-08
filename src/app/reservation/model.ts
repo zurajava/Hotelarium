@@ -67,10 +67,10 @@ export class ReservationDetail {
     public expandPayment: boolean = false;
 
     public reservationPerson: Array<ReservationPerson>;
-    public reservationService: Array<ReservationService>;
+    public reservationService: Array<ReservationServices>;
 
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationService>) {
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.create_date = create_date;
@@ -88,17 +88,18 @@ export class ReservationDetail {
 
 export class ReservationPerson {
     public reservation_id: number;
-    public person_id: number;
+    public person_id: string;
     public first_name: string;
     public last_name: string;
-    
-    constructor(reservation_id: number, person_id: number) {
-        this.reservation_id = reservation_id;
+
+    constructor(person_id: string, first_name: string, last_name: string) {
         this.person_id = person_id;
+        this.first_name = first_name;
+        this.last_name = last_name;
     }
 }
 
-export class ReservationService {
+export class ReservationServices {
     public reservation_id: number;
     public service_id: number;
     public frequency: string;
@@ -106,9 +107,12 @@ export class ReservationService {
     public service_name: string;
     public price: string;
 
-    constructor(reservation_id: number, service_id: number) {
-        this.reservation_id = reservation_id;
+    constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: string) {
         this.service_id = service_id;
+        this.frequency = frequency;
+        this.additional_comment = additional_comment;
+        this.service_name = service_name;
+        this.price = price;
     }
 }
 
