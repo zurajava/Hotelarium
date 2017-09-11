@@ -96,8 +96,6 @@ export class ReservationComponent implements OnInit {
       datesArray[i] = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000 * i));
     }
     this.dateRange = datesArray;
-
-
     this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
       this.data = data.data;
       for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
@@ -172,7 +170,6 @@ export class ReservationComponent implements OnInit {
       this.showReservationPayment = true;
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
-
         this.category = data.json().category;
         this.reservationService.getRoom(this.brSelectedValue, this.category[0].id.toString()).subscribe(data => {
           this.room = data.json().room;
@@ -181,18 +178,21 @@ export class ReservationComponent implements OnInit {
 
 
       this.reservationService.getReservationById(reservation_id).then(data => {
-        console.log(data);
-        this.reservationInfoEdit = data.data;
+        console.log(reservation_id,data.success, data);
+        if (data.success === true) {
+          this.reservationInfoEdit = data.data;
+          console.log(this.reservationInfoEdit);
+          for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
+            var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
+            var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
 
-        for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
-          var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
-          var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
-
-          this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
-          this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
+            this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
+            this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
+          }
+        } else {
+          this.toastr.error(data.message);
         }
       });
-
     }
   }
   addReservation() {
@@ -226,9 +226,9 @@ export class ReservationComponent implements OnInit {
     console.log(this.reservationInfo.reservation);
     if (index > -1) {
       var personList = this.reservationInfo.reservation.reservationDetail[index].reservationPerson;
-      
+
       this.personList[0] = new ReservationPerson("aaa", "vvvv", ":xsxs");
-      
+
 
       this.reservationInfo.reservation.reservationDetail[index].reservationPerson[1] = this.personList[0];
 

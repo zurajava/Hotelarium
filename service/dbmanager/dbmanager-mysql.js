@@ -2,7 +2,7 @@ var mysql = require('mysql');
 var q = require('q');
 
 var pool = mysql.createPool({
-    connectionLimit: 100,
+    connectionLimit: 10,
     host: 'eu-cdbr-west-01.cleardb.com',
     user: 'bf0bc9f8df694d',
     password: '16306efb',
@@ -105,11 +105,12 @@ pool.getUserBranch = function (user_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b  on u.branch_id=b.id inner join organisation o on b.org_id=o.id where u.user_id=?', [user_id], function (error, row, fields) {
             if (error) {
+                connection.release();
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -642,8 +643,7 @@ getReservationsServices = function (reservation_id) {
 getReservationsPersons = function (reservation_id) {
     var deferred = q.defer();
     var categoryData;
-    var query = 'SELECT r.*,c.id as category_id,c.name as category_name FROM reservation_detail r ' +
-        ' inner join room o on r.room_id=o.id   inner join heroku_8c0c9eba2ff6cfd.category c on o.category_id=c.id  where reservation_id=?';
+    var query = 'SELECT * FROM reservation_person where reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
             if (error) {
@@ -663,29 +663,38 @@ pool.getReservationById = function (id) {
 
     getReservation(id).then(reservation => {
         return getReservationsDetails(reservation[0].id).then(reservations => {
-            return Object.assign({}, reservation[0], { reservationDetail: reservations });;
+            return Object.assign({}, reservation[0], { reservationDetail: reservations });
         })
-    })
-    /*.then(reservationsService => {
-        console.log("reservationsService",JSON.stringify(reservationsService));
-
-        let finalPromise = reservationsService.reservationdetail.map(reservationdetail => {
-            return getReservationsServices(reservationdetail.id).then(reservations => {
-                var d = Object.assign({}, reservationdetail, { reservationservice: reservations });
-                return Object.assign({}, reservationsService, { reservationdetail: d });
-            })
+    }).then(reservationsService => {
+        let finalPromiseService = reservationsService.reservationDetail.map(reservationdetail => {
+            return getReservationsServices(reservationdetail.id)
+                .then(reservationService => Object.assign({}, reservationdetail, { reservationService }));
         });
 
-        return Promise.all(finalPromise);
-    })*/.then(reservationPerson => {
-            return getPersonByPersonalNo(reservationPerson.person_no).then(data => {
-                return { "person": data[0], "reservation": reservationPerson };
-            })
-        }).then(reservations => {
-            deferred.resolve(reservations);
-        }).catch(function (err) {
-            deferred.reject(err);
+        return Promise.all(finalPromiseService)
+            .then(data => Object.assign({}, reservationsService, { reservationDetail: data }));
+
+        return Promise.all(finalPromiseService);
+    }).then(reservationsPerson => {
+        let finalPromisePersone = reservationsPerson.reservationDetail.map(reservationdetail => {
+            return getReservationsPersons(reservationdetail.id)
+                .then(reservationPerson => Object.assign({}, reservationdetail, { reservationPerson }));
         });
+        return Promise.all(finalPromisePersone)
+            .then(data => Object.assign({}, reservationsPerson, { reservationDetail: data }));
+
+        return Promise.all(finalPromisePersone);
+    }).then(reservationPerson => {
+        return getPersonByPersonalNo(reservationPerson.person_no).then(data => {
+            let person = data[0];
+            let reservation = { "reservation": reservationPerson };
+            return Object.assign({}, reservation, { person });
+        })
+    }).then(reservations => {
+        deferred.resolve(reservations);
+    }).catch(function (err) {
+        deferred.reject(err);
+    });
     return deferred.promise;
 }
 
@@ -693,11 +702,12 @@ pool.getPerson = function (person_no, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT * FROM person where personal_no like ?', ['%' + person_no + '%'], function (error, row, fields) {
             if (error) {
+                connection.release();
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
