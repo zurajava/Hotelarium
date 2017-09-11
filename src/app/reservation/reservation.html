@@ -120,29 +120,46 @@
                             <table class="person_table_class">
                                 <tr>
                                     <th>Personal No</th>
-                                    <th>First name</th>
+                                    <th>First Name</th>
                                     <th>Last Name</th>
                                 </tr>
-
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
-
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" name="1" [(value)]="person.person_id"/>
+                                        <input kendoTextBox style="width:140px" name="1" [(value)]="person.person_id" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="2" [(value)]="person.first_name"/>
+                                        <input kendoTextBox style="width:140px" name="2" [(value)]="person.first_name" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="3" [(value)]="person.last_name"/>
+                                        <input kendoTextBox style="width:140px" name="3" [(value)]="person.last_name" />
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <div class="service_div" *ngIf="res.expandService">Service
+                        <div class="service_div" *ngIf="res.expandService">
+                            <table class="service_table_class">
+                                <tr>
+                                    <th>Service Id</th>
+                                    <th>Frequency</th>
+                                    <th>Additional Comment</th>
+                                    <th>Service Name</th>
+                                </tr>
+                                <tr *ngFor="let service of res.reservationService; let i = index">
+                                    <td width="50">
+                                        <input kendoTextBox style="width:140px" name="1" [(value)]="service.service_id" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="2" [(value)]="service.frequency" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="3" [(value)]="service.additional_comment" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="3" [(value)]="service.service_name" />
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="payment_div" *ngIf="res.expandPayment">Payment
-                        </div>
-
                     </div>
                 </tr>
             </table>
@@ -260,16 +277,52 @@
                             <button kendoButton (click)="updateReservation(res)" [primary]="true">Save</button>
                             <button kendoButton (click)="addServiceEdit(res)" [primary]="true">Service</button>
                             <button kendoButton (click)="addPersonEdit(res)" [primary]="true">Person</button>
-                            <button kendoButton (click)="paymentReservation(res)" [primary]="true">Payment</button>
                             <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button>
                         </td>
-                        <div class="person_div" *ngIf="res.expandPerson">Person
+                        <div class="person_div" *ngIf="res.expandPerson">
+                            <table class="person_table_class">
+                                <tr>
+                                    <th>Personal No</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                </tr>
+                                <tr *ngFor="let person of res.reservationPerson; let i = index">
+                                    <td width="50">
+                                        <input kendoTextBox style="width:140px" name="1" [(value)]="person.person_id" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="2" [(value)]="person.first_name" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="3" [(value)]="person.last_name" />
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="service_div" *ngIf="res.expandService">Service
+                        <div class="service_div" *ngIf="res.expandService">
+                            <table class="service_table_class">
+                                <tr>
+                                    <th>Service Id</th>
+                                    <th>Frequency</th>
+                                    <th>Additional Comment</th>
+                                    <th>Service Name</th>
+                                </tr>
+                                <tr *ngFor="let service of res.reservationService; let i = index">
+                                    <td width="50">
+                                        <input kendoTextBox style="width:140px" name="1" [(value)]="service.service_id" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="2" [(value)]="service.frequency" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="3" [(value)]="service.additional_comment" />
+                                    </td>
+                                    <td>
+                                        <input kendoTextBox style="width:140px" name="3" [(value)]="service.service_name" />
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="payment_div" *ngIf="res.expandPayment">Payment
-                        </div>
-
                     </div>
                 </tr>
             </table>
