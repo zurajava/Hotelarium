@@ -33,9 +33,9 @@ pool.getBranch = function (org_id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -48,9 +48,9 @@ pool.registerBranch = function (name, description, address, org_id, mail, phone,
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
@@ -64,9 +64,9 @@ pool.updateBranch = function (id, name, description, address, org_id, mail, phon
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
@@ -79,9 +79,9 @@ pool.deleteBranch = function (id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -94,9 +94,9 @@ pool.getUserOrganisation = function (user_id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -123,9 +123,9 @@ pool.getCategory = function (branch_id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -146,9 +146,9 @@ pool.registerCategory = function (name, price, currency, description, branch_id,
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
@@ -160,9 +160,9 @@ pool.deleteCategory = function (id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -182,9 +182,9 @@ pool.updateCategory = function (id, name, price, currency, description, branch_i
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
@@ -196,9 +196,9 @@ pool.getService = function (branch_id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -212,9 +212,9 @@ pool.registerService = function (name, price, currency, description, branch_id, 
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
@@ -226,9 +226,9 @@ pool.deleteService = function (id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -242,9 +242,9 @@ pool.updateService = function (id, name, price, currency, description, branch_id
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
@@ -290,10 +290,9 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
                         console.log(error);
                         throw error;
                     } else {
-                        console.log("ok");
+                        connection.release();
                         callback(null, row);
                     }
-                    connection.release();
                 });
 
     });
@@ -305,9 +304,9 @@ pool.deleteRoom = function (id, callback) {
             if (error) {
                 throw error;
             } else {
+                connection.release();
                 callback(null, row);
             }
-            connection.release();
         });
 
     });
@@ -334,9 +333,9 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
                 if (error) {
                     throw error;
                 } else {
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
     });
 }
@@ -724,10 +723,9 @@ pool.getUserPermission = function (user_id, permission, action, callback) {
                 if (error) {
                     throw error;
                 } else {
-                    console.log(row);
+                    connection.release();
                     callback(null, row);
                 }
-                connection.release();
             });
 
     });
