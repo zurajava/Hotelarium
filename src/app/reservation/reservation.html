@@ -323,13 +323,13 @@
                                 </tr>
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_person_id" name="person_id" [(ngModel)]="person.person_id" />
+                                        <input kendoTextBox style="width:140px" id="id_person_id" name="person_id" [(value)]="person.person_id" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_first_name" name="first_name" [(ngModel)]="person.first_name" />
+                                        <input kendoTextBox style="width:140px" id="id_first_name" name="first_name" [(value)]="person.first_name" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_last_name" name="last_name" [(ngModel)]="person.last_name" />{{person.person_id}}
+                                        <input kendoTextBox style="width:140px" id="id_last_name" name="last_name" [(value)]="person.last_name" />{{person.person_id}}
                                         {{person.first_name}} {{person.last_name}} {{i}}
                                     </td>
                                     <td>
@@ -352,16 +352,16 @@
                                 </tr>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="service_id" [(ngModel)]="service.service_id" />
+                                        <input kendoTextBox style="width:140px" id="id_service_id" name="service_id" [(value)]="service.service_id" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="frequency" [(ngModel)]="service.frequency" />
+                                        <input kendoTextBox style="width:140px" id="id_service_id" name="frequency" [(value)]="service.frequency" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="additional_comment" [(ngModel)]="service.additional_comment" />
+                                        <input kendoTextBox style="width:140px" id="id_service_id" name="additional_comment" [(value)]="service.additional_comment" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="service_name" [(ngModel)]="service.service_name" />{{service.service_id}}
+                                        <input kendoTextBox style="width:140px" id="id_service_id" name="service_name" [(value)]="service.service_name" />{{service.service_id}}
                                         {{service.frequency}} {{service.frequency}} {{service.additional_comment}} {{service.service_name}} {{i}}
                                     </td>
                                     <td>
