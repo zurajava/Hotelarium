@@ -37,10 +37,6 @@
 .k-calendar {
     margin: 0 auto;
 }
-.reservation-container {
-    overflow:auto;
-    overflow-y: hidden;
-}
 .RESERVED{
     background-color:aqua;
 }
@@ -147,37 +143,6 @@
         border: 1px solid #ddd;
     }
 }
-.payment_table_class {
-    line-height: 1.5em;
-    border-collapse: collapse;
-    border-spacing: 0;
-    display: table;
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-    word-break: normal;
-    word-break: keep-all;  
-    tr {
-        th {
-            font-weight: 300 !important;
-            font-size: 12px !important;
-            
-        }
-        td,
-        th {
-            font-weight: 600 !important;
-            font-size: 10px !important;
-            margin: 0;
-            padding: 0.5em 1em;
-            @media only screen and (min-width: 320px) and (max-width: 768px) {
-                font-size: 10px !important;
-            }
-        }
-    }
-    th, td {
-        border: 1px solid #ddd;
-    }
-}
 
 .reservation_table {
     border-collapse: collapse;
@@ -209,21 +174,24 @@
     }
 }
 
-
+.reservation-container {
+    overflow:auto;
+    overflow-y: hidden;
+}
+.person_registration_table{
+    background-color: #00ffff;
+    width: 100%;
+}
 .person_div_tr{
-    background-color: #ddd;
+    background-color: #00ffcc;
     width: 100%;
 }
 .person_div{
-    background-color: red;
+    background-color: #00ff99;
     width: 100%;
 }
 .service_div{
-    background-color: yellow;
-    width: 100%;
-}
-.payment_div{
-    background-color: greenyellow;
+    background-color: #00cc99;
     width: 100%;
 }
 .add_service_person_btn{

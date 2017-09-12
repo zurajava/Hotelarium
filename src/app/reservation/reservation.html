@@ -13,42 +13,44 @@
     <form class="k-form-inline">
         <fieldset>
             <legend>Personal Info</legend>
-            <table style="width:100%; text-align: left;">
-                <tr>
-                    <td><span>Personal Number</span></td>
-                    <td>
-                        <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
-                            name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
-                        />
-                    </td>
-                    <td><span>First Name</span></td>
-                    <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
-                        /></td>
-                    <td><span>Last Name</span></td>
-                    <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
-                        /></td>
-                    <td><span>Email</span></td>
-                    <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
-                        /></td>
-                </tr>
-                <tr>
-                    <td><span>Phone</span></td>
-                    <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
-                        /></td>
-                    <td><span>Address</span></td>
-                    <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
-                        /></td>
-                    <td><span>Gender</span></td>
-                    <td>
-                        <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
-                        </kendo-combobox>
-                    </td>
-                    <td><span>Birth Date</span></td>
-                    <td>
-                        <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
-                    </td>
-                </tr>
-            </table>
+            <div class="person_registration_table">
+                <table style="width:100%; text-align: left;">
+                    <tr>
+                        <td><span>Personal Number</span></td>
+                        <td>
+                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
+                                name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                            />
+                        </td>
+                        <td><span>First Name</span></td>
+                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
+                            /></td>
+                        <td><span>Last Name</span></td>
+                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
+                            /></td>
+                        <td><span>Email</span></td>
+                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
+                            /></td>
+                    </tr>
+                    <tr>
+                        <td><span>Phone</span></td>
+                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
+                            /></td>
+                        <td><span>Address</span></td>
+                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfo.person.address"
+                            /></td>
+                        <td><span>Gender</span></td>
+                        <td>
+                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                            </kendo-combobox>
+                        </td>
+                        <td><span>Birth Date</span></td>
+                        <td>
+                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfo.person.birthdate"></kendo-datepicker>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Reservation Info</legend>
@@ -198,42 +200,44 @@
     <form class="k-form-inline">
         <fieldset>
             <legend>Personal Info E</legend>
-            <table style="width:100%; text-align: left;">
-                <tr>
-                    <td><span>Personal Number</span></td>
-                    <td>
-                        <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChangedEdit($event)" placeholder="Personal #"
-                            name="n_personal_no" [(ngModel)]="reservationInfoEdit.person.personal_no" [list-formatter]="autoCompliteListFormatter"
-                        />
-                    </td>
-                    <td><span>First Name</span></td>
-                    <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfoEdit.person.first_name"
-                        /></td>
-                    <td><span>Last Name</span></td>
-                    <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfoEdit.person.last_name"
-                        /></td>
-                    <td><span>Email</span></td>
-                    <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfoEdit.person.email"
-                        /></td>
-                </tr>
-                <tr>
-                    <td><span>Phone</span></td>
-                    <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfoEdit.person.phone"
-                        /></td>
-                    <td><span>Address</span></td>
-                    <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfoEdit.person.address"
-                        /></td>
-                    <td><span>Gender</span></td>
-                    <td>
-                        <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.gender">
-                        </kendo-combobox>
-                    </td>
-                    <td><span>Birth Date</span></td>
-                    <td>
-                        <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfoEdit.person.birthdate"></kendo-datepicker>
-                    </td>
-                </tr>
-            </table>
+            <div class="person_registration_table">
+                <table style="width:100%; text-align: left;">
+                    <tr>
+                        <td><span>Personal Number</span></td>
+                        <td>
+                            <input class="k-textbox" ngui-auto-complete [source]="persons" (valueChanged)="valueChangedEdit($event)" placeholder="Personal #"
+                                name="n_personal_no" [(ngModel)]="reservationInfoEdit.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                            />
+                        </td>
+                        <td><span>First Name</span></td>
+                        <td><input class="k-textbox" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfoEdit.person.first_name"
+                            /></td>
+                        <td><span>Last Name</span></td>
+                        <td><input class="k-textbox" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfoEdit.person.last_name"
+                            /></td>
+                        <td><span>Email</span></td>
+                        <td><input class="k-textbox" placeholder="Email" name="email" [(ngModel)]="reservationInfoEdit.person.email"
+                            /></td>
+                    </tr>
+                    <tr>
+                        <td><span>Phone</span></td>
+                        <td><input class="k-textbox" placeholder="Phone" name="phone" [(ngModel)]="reservationInfoEdit.person.phone"
+                            /></td>
+                        <td><span>Address</span></td>
+                        <td><input class="k-textbox" placeholder="Address" name="address" [(ngModel)]="reservationInfoEdit.person.address"
+                            /></td>
+                        <td><span>Gender</span></td>
+                        <td>
+                            <kendo-combobox name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.gender">
+                            </kendo-combobox>
+                        </td>
+                        <td><span>Birth Date</span></td>
+                        <td>
+                            <kendo-datepicker id="birthdate" name="birthdate" [(ngModel)]="reservationInfoEdit.person.birthdate"></kendo-datepicker>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Reservation Info E</legend>

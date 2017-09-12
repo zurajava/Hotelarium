@@ -64,9 +64,9 @@ export class ReservationComponent implements OnInit {
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id
 
-        /* this.reservationService.getPerson('').subscribe(data => {
-           this.persons = data.json().person;
-         });*/
+        this.reservationService.getPerson('').subscribe(data => {
+          this.persons = data.json().person;
+        });
         this.fillDataRange();
       } else {
         this.toastr.error(data.json().message);
