@@ -5,7 +5,7 @@
         </kendo-dropdownlist>
         <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
         <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
-        <button kendoButton (click)="filterRezervation()" [primary]="true">Filter</button>
+        <button (click)="filterRezervation()" class="reservation_btn"><i class="fa fa-search" style="font-size:14px"></i>Filter</button>
     </div>
 </div>
 <!-- Register Reservation -->
@@ -55,7 +55,7 @@
         <fieldset>
             <legend>Reservation Info</legend>
             <div class="add_reservation_btn">
-                <button kendoButton (click)="addReservation()" [primary]="true">Add Reservation</button>
+                <button class="reservation_btn" (click)="addReservation()"><i class="fa fa-plus" style="font-size:14px"></i>Reservation</button>
             </div>
             <table class="reservation_table">
                 <tr>
@@ -120,13 +120,13 @@
                                 [valuePrimitive]="true" [(value)]="res.status_id">
                             </kendo-combobox>
                         </td>
-                        <td><button kendoButton (click)="addService(res)" [primary]="true">Service</button>
-                            <button kendoButton (click)="addPerson(res)" [primary]="true">Person</button>
-                            <button kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button>
+                        <td><button class="reservation_btn" (click)="addService(res)"><i class="fa fa-gear" style="font-size:14px"></i>Service</button>
+                            <button class="reservation_btn" (click)="addPerson(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Person</button>
+                            <button class="reservation_btn" (click)="removeReservation(res)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                         </td>
                         <div class="person_div" *ngIf="res.expandPerson">
                             <div class="add_service_person_btn">
-                                <button kendoButton (click)="addPersonToReservationPerson(res)" [primary]="true">Add Person</button>
+                                <button class="reservation_btn" (click)="addPersonToReservationPerson(res)"><i class="fa fa-plus" style="font-size:14px"></i>Person</button>
                             </div>
                             <table class="person_table_class">
                                 <tr>
@@ -146,14 +146,14 @@
                                         <input kendoTextBox style="width:140px" name="3" [(value)]="person.last_name" />
                                     </td>
                                     <td>
-                                        <button kendoButton (click)="removeReservationPerson(res,person)" [primary]="true">Remove Person</button>
+                                        <button class="reservation_btn" (click)="removeReservationPerson(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="service_div" *ngIf="res.expandService">
                             <div class="add_service_person_btn">
-                                <button kendoButton (click)="addServiceToReservationService(res)" [primary]="true">Add Service</button>
+                                <button class="reservation_btn" (click)="addServiceToReservationService(res)"><i class="fa fa-plus" style="font-size:14px"></i>Service</button>
                             </div>
                             <table class="service_table_class">
                                 <tr>
@@ -178,7 +178,7 @@
                                         <input kendoTextBox style="width:140px" name="3" [(value)]="service.service_name" />
                                     </td>
                                     <td>
-                                        <button kendoButton (click)="removeReservationService(res,service)" [primary]="true">Remove Service</button>
+                                        <button class="reservation_btn" (click)="removeReservationService(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                     </td>
                                 </tr>
                             </table>
@@ -190,7 +190,7 @@
         <fieldset>
             <legend>operations</legend>
             <div>
-                <button kendoButton (click)="registerReservation()" [primary]="true">Register</button>
+                <button class="reservation_btn" (click)="registerReservation()">Register</button>
             </div>
         </fieldset>
     </form>
@@ -242,7 +242,7 @@
         <fieldset>
             <legend>Reservation Info E</legend>
             <div class="add_reservation_btn">
-                <button kendoButton (click)="addReservationToExisting()" [primary]="true">Add Reservation</button>
+                <button class="reservation_btn" (click)="addReservationToExisting()"><i class="fa fa-plus" style="font-size:14px"></i>Reservation</button>
             </div>
             <table class="reservation_table">
                 <div class="person_div_tr">
@@ -305,14 +305,14 @@
                             </kendo-combobox>
                         </td>
                         <td>
-                            <button kendoButton (click)="updateReservation(res)" [primary]="true">Save</button>
-                            <button kendoButton (click)="addServiceEdit(res)" [primary]="true">Service</button>
-                            <button kendoButton (click)="addPersonEdit(res)" [primary]="true">Person</button>
-                            <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button>
+                            <button class="reservation_btn" (click)="updateReservation(res)">Save</button>
+                            <button class="reservation_btn" (click)="addServiceEdit(res)"><i class="fa fa-gear" style="font-size:14px"></i>Service</button>
+                            <button class="reservation_btn" (click)="addPersonEdit(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Person</button>
+                            <button class="reservation_btn" (click)="removeReservationExisting(res)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                         </td>
                         <div class="person_div" *ngIf="res.expandPerson">
                             <div class="add_service_person_btn">
-                                <button kendoButton (click)="addPersonToReservationPersonExisting(res)" [primary]="true">Add Person</button>
+                                <button class="reservation_btn" (click)="addPersonToReservationPersonExisting(res)"><i class="fa fa-plus" style="font-size:14px"></i>Person</button>
                             </div>
                             <table class="person_table_class">
                                 <tr>
@@ -332,14 +332,14 @@
                                         <input kendoTextBox style="width:140px" id="25" name="3" [(ngModel)]="person.last_name" />
                                     </td>
                                     <td>
-                                        <button kendoButton (click)="removeReservationPersonExisting(res,person)" [primary]="true">Remove Person</button>
+                                        <button class="reservation_btn" (click)="removeReservationPersonExisting(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="service_div" *ngIf="res.expandService">
                             <div class="add_service_person_btn">
-                                <button kendoButton (click)="addServiceToReservationServiceExisting(res)" [primary]="true">Add Service</button>
+                                <button class="reservation_btn" (click)="addServiceToReservationServiceExisting(res)"><i class="fa fa-plus" style="font-size:14px"></i>Service</button>
                             </div>
                             <table class="service_table_class">
                                 <tr>
@@ -363,7 +363,7 @@
                                         <input kendoTextBox style="width:140px" id="236" name="4" [(ngModel)]="service.service_name" />
                                     </td>
                                     <td>
-                                        <button kendoButton (click)="removeReservationServiceExisting(res,service)" [primary]="true">Remove Service</button>
+                                        <button class="reservation_btn" (click)="removeReservationServiceExisting(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                     </td>
                                 </tr>
                             </table>
@@ -375,8 +375,8 @@
         <fieldset>
             <legend>operations e</legend>
             <div>
-                <button kendoButton (click)="updateAllReservation()" [primary]="true">Update All</button>
-                <button kendoButton (click)="paymentReservationAll()" [primary]="true">Payment All</button>
+                <button class="reservation_btn" (click)="updateAllReservation()">Update All</button>
+                <button class="reservation_btn" (click)="paymentReservationAll()">Payment All</button>
             </div>
         </fieldset>
     </form>
