@@ -176,16 +176,17 @@ export class ReservationComponent implements OnInit {
 
 
       this.reservationService.getReservationById(reservation_id).then(data => {
-        console.log(reservation_id, data.success, data);
         if (data.success === true) {
           this.reservationInfoEdit = data.data;
-          console.log(this.reservationInfoEdit);
+          console.log(JSON.stringify(this.reservationInfoEdit));
           for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
             var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
             var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
 
             this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
             this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
+            this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
+            this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
           }
         } else {
           this.toastr.error(data.message);
@@ -245,7 +246,6 @@ export class ReservationComponent implements OnInit {
         this.reservationInfo.reservation.reservationDetail[index].reservationService.splice(indexPerson, 1);
       }
     }
-
   }
   removeReservationServiceExisting(id: ReservationDetail, service: ReservationServices) {
     console.log("removeReservationServiceExisting");
@@ -262,8 +262,8 @@ export class ReservationComponent implements OnInit {
     id.expandService = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationService === null) {
-      var temp = [new ReservationServices(0, 'a', 'a', 'a', 'a')];
-      id.reservationService = temp;
+      var temp = new ReservationServices(0, 'a', 'a', 'a', 'a');
+      id.reservationService = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
     }
@@ -273,8 +273,8 @@ export class ReservationComponent implements OnInit {
     id.expandPerson = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationPerson === null) {
-      var temp = [new ReservationPerson('p', 'p', 'p')];
-      id.reservationPerson = temp;
+      var temp = new ReservationPerson('p', 'p', 'p');
+      id.reservationPerson = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
     }
@@ -298,31 +298,38 @@ export class ReservationComponent implements OnInit {
     console.log("paymentReservationAll", JSON.stringify(this.reservationInfo));
 
   }
+  //ADD PERSON and service
   addPersonToReservationPerson(id: ReservationDetail) {
     console.log("addPersonToReservationPerson", id);
     var size = id.reservationPerson.length;
     var p = new ReservationPerson('', '', '');
     id.reservationPerson[size] = p;
   }
-  addPersonToReservationPersonExisting(id: ReservationDetail) {
-    console.log("addPersonToReservationPersonExisting", id);
-    var size = id.reservationPerson.length;
-    var p = new ReservationPerson('', '', '');
-    id.reservationPerson[size] = p;
-  }
-
   addServiceToReservationService(id: ReservationDetail) {
     console.log("addServiceToReservationService", id);
+
     var size = id.reservationService.length;
     var p = new ReservationServices(null, '', '', '', '');
     id.reservationService[size] = p;
+
+  }
+  //========================================
+  //ADD PERSON AND SERVICE EXISTING
+  addPersonToReservationPersonExisting(id: ReservationDetail) {
+    console.log("addPersonToReservationPersonExisting", id);
+    var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+    var size = id.reservationPerson.length;
+    this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson[size] = new ReservationPerson('', '', '');
+
   }
   addServiceToReservationServiceExisting(id: ReservationDetail) {
     console.log("addServiceToReservationServiceExisting", id);
+
+    var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
     var size = id.reservationService.length;
-    var p = new ReservationServices(null, '', '', '', '');
-    id.reservationService[size] = p;
+    this.reservationInfoEdit.reservation.reservationDetail[index].reservationService[size] = new ReservationServices(null, '', '', '', '');
   }
+  //========================================
   registerReservation() {
     console.log(JSON.stringify(this.reservationInfo));
 
