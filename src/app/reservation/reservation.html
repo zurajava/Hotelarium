@@ -65,8 +65,9 @@
                         <th>Adult</th>
                         <th>Child</th>
                         <th>Additional Bed</th>
+                        <th>Extra Person</th>
                         <th>Status</th>
-                        <th>Condition</th>
+                        <th>Command</th>
                     </div>
                 </tr>
 
@@ -106,6 +107,11 @@
                             </kendo-numerictextbox>
 
                         </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+
+                        </td>
 
                         <td>
                             <kendo-combobox style="width: 130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
@@ -117,11 +123,15 @@
                             <button kendoButton (click)="removeReservation(res)" [primary]="true">Remove</button>
                         </td>
                         <div class="person_div" *ngIf="res.expandPerson">
+                            <div class="add_service_person_btn">
+                                <button kendoButton (click)="addPersonToReservationPerson(res)" [primary]="true">Add Person</button>
+                            </div>
                             <table class="person_table_class">
                                 <tr>
                                     <th>Personal No</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Command</th>
                                 </tr>
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
                                     <td width="50">
@@ -133,18 +143,26 @@
                                     <td>
                                         <input kendoTextBox style="width:140px" name="3" [(value)]="person.last_name" />
                                     </td>
+                                    <td>
+                                        <button kendoButton (click)="removeReservationPerson(res,person)" [primary]="true">Remove Person</button>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="service_div" *ngIf="res.expandService">
+                            <div class="add_service_person_btn">
+                                <button kendoButton (click)="addServiceToReservationService(res)" [primary]="true">Add Service</button>
+                            </div>
                             <table class="service_table_class">
                                 <tr>
                                     <th>Service Id</th>
                                     <th>Frequency</th>
                                     <th>Additional Comment</th>
                                     <th>Service Name</th>
+                                    <th>Command</th>
                                 </tr>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
+
                                     <td width="50">
                                         <input kendoTextBox style="width:140px" name="1" [(value)]="service.service_id" />
                                     </td>
@@ -156,6 +174,9 @@
                                     </td>
                                     <td>
                                         <input kendoTextBox style="width:140px" name="3" [(value)]="service.service_name" />
+                                    </td>
+                                    <td>
+                                        <button kendoButton (click)="removeReservationService(res,service)" [primary]="true">Remove Service</button>
                                     </td>
                                 </tr>
                             </table>
@@ -229,20 +250,21 @@
                         <th>Adult</th>
                         <th>Child</th>
                         <th>Additional Bed</th>
+                        <th>Extra Person</th>
                         <th>Status</th>
-                        <th>Condition</th>
+                        <th>Command</th>
                     </tr>
                 </div>
                 <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index">
 
                     <div class="person_div_tr">
                         <td>
-                            <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                            <kendo-combobox style="width:130px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
                                 [(value)]="res.category_id">
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-combobox style="width:120px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                            <kendo-combobox style="width:110px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
                                 [(value)]="res.room_id">
                             </kendo-combobox>
                         </td>
@@ -269,6 +291,11 @@
 
                         </td>
                         <td>
+                            <kendo-numerictextbox style="width:70px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
                             <kendo-combobox style="width:130px" name="reservationStatus" [data]="reservationStatus" [textField]="'text'" [valueField]="'value'"
                                 [valuePrimitive]="true" [(value)]="res.status_id">
                             </kendo-combobox>
@@ -280,45 +307,59 @@
                             <button kendoButton (click)="removeReservationExisting(res)" [primary]="true">Remove</button>
                         </td>
                         <div class="person_div" *ngIf="res.expandPerson">
+                            <div class="add_service_person_btn">
+                                <button kendoButton (click)="addPersonToReservationPersonExisting(res)" [primary]="true">Add Person</button>
+                            </div>
                             <table class="person_table_class">
                                 <tr>
                                     <th>Personal No</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Command</th>
                                 </tr>
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" name="1" [(value)]="person.person_id" />
+                                        <input kendoTextBox style="width:140px" id="23" name="1" [(ngModel)]="person.person_id" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="2" [(value)]="person.first_name" />
+                                        <input kendoTextBox style="width:140px" id="24" name="2" [(ngModel)]="person.first_name" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="3" [(value)]="person.last_name" />
+                                        <input kendoTextBox style="width:140px" id="25" name="3" [(ngModel)]="person.last_name" />
+                                    </td>
+                                    <td>
+                                        <button kendoButton (click)="removeReservationPersonExisting(res,person)" [primary]="true">Remove Person</button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="service_div" *ngIf="res.expandService">
+                            <div class="add_service_person_btn">
+                                <button kendoButton (click)="addServiceToReservationServiceExisting(res)" [primary]="true">Add Service</button>
+                            </div>
                             <table class="service_table_class">
                                 <tr>
                                     <th>Service Id</th>
                                     <th>Frequency</th>
                                     <th>Additional Comment</th>
                                     <th>Service Name</th>
+                                    <th>Command</th>
                                 </tr>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" name="1" [(value)]="service.service_id" />
+                                        <input kendoTextBox style="width:140px" id="233" name="1" [(ngModel)]="service.service_id" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="2" [(value)]="service.frequency" />
+                                        <input kendoTextBox style="width:140px" id="234" name="2" [(ngModel)]="service.frequency" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="3" [(value)]="service.additional_comment" />
+                                        <input kendoTextBox style="width:140px" id="235" name="3" [(ngModel)]="service.additional_comment" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="3" [(value)]="service.service_name" />
+                                        <input kendoTextBox style="width:140px" id="236" name="4" [(ngModel)]="service.service_name" />
+                                    </td>
+                                    <td>
+                                        <button kendoButton (click)="removeReservationServiceExisting(res,service)" [primary]="true">Remove Service</button>
                                     </td>
                                 </tr>
                             </table>

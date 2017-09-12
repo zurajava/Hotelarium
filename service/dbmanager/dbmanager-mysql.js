@@ -426,8 +426,9 @@ pool.registerReservation = function (reservation) {
                                         var id = results.insertId;
 
                                         data.reservationPerson.map(person => {
-                                            connection.query('insert into reservation_person(reservation_id,person_id)values(?,?)',
-                                                [id, person.person_id],
+                                            console.log("person",JSON.stringify(person));
+                                            connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?)',
+                                                [id, person.person_id,person.first_name,person.last_name],
                                                 function (error, results, fields) {
                                                     if (error) {
                                                         return connection.rollback(function () {
@@ -438,6 +439,7 @@ pool.registerReservation = function (reservation) {
                                                 });
                                         });
                                         data.reservationService.map(service => {
+                                            console.log("service",JSON.stringify(service));
                                             connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
                                                 [id, service.service_id, service.frequency, service.additional_comment],
                                                 function (error, results, fields) {
