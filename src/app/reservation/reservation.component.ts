@@ -57,7 +57,7 @@ export class ReservationComponent implements OnInit {
     this.dateTo = new Date();
     this.dateFrom = new Date();
     this.dateFrom.setDate(this.dateTo.getDate() - 5);
-    this.dateTo.setDate(this.dateFrom.getDate() + 30) 
+    this.dateTo.setDate(this.dateFrom.getDate() + 30)
 
     this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null, [new ReservationDetail(null, null, null, null, null, null, null, null, null, [], [])]));
   }
@@ -273,7 +273,7 @@ export class ReservationComponent implements OnInit {
     id.expandService = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationService === null) {
-      var temp = new ReservationServices(0, 'a', 'a', 'a', 'a');
+      var temp = new ReservationServices(null, '', '', '', '');
       id.reservationService = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
@@ -284,7 +284,7 @@ export class ReservationComponent implements OnInit {
     id.expandPerson = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationPerson === null) {
-      var temp = new ReservationPerson('p', 'p', 'p');
+      var temp = new ReservationPerson('', '', '');
       id.reservationPerson = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
@@ -341,9 +341,26 @@ export class ReservationComponent implements OnInit {
     this.reservationInfoEdit.reservation.reservationDetail[index].reservationService[size] = new ReservationServices(null, '', '', '', '');
   }
   //========================================
-  registerReservation() {
+  reserve() {
     console.log(JSON.stringify(this.reservationInfo));
-
+    for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
+      this.reservationInfo.reservation.reservationDetail[i].status_id = "1";
+    }
+    this.reservationService.addReservation(this.reservationInfo).subscribe(data => {
+      console.log("addReservation", data.json(), data.json().success);
+      if (data.json().success === true) {
+        this.toastr.success("Reservation Added");
+        this.fillDataRange();
+      } else {
+        this.toastr.error(data.json().error);
+      }
+    });
+  }
+  checkin() {
+    console.log(JSON.stringify(this.reservationInfo));
+    for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
+      this.reservationInfo.reservation.reservationDetail[i].status_id = "2";
+    }
     this.reservationService.addReservation(this.reservationInfo).subscribe(data => {
       console.log("addReservation", data.json(), data.json().success);
       if (data.json().success === true) {

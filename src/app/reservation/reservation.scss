@@ -70,6 +70,21 @@
     color: #3b5998;
 }
 
+.reservation_btn_command{
+    border: 2px solid white; 
+    background-color: #3b5998; 
+    border-radius: 6px; 
+    height: 25px;
+    color: white;
+    
+}
+.reservation_btn_command:hover { 
+    border: 2px solid #3b5998; 
+    background-color: white; 
+    border-radius: 6px; 
+    height: 25px;
+    color: #3b5998;
+}
 .time_table_class {
             line-height: 1.5em;
             border-collapse: collapse;
@@ -91,7 +106,8 @@
                     font-weight: 600 !important;
                     font-size: 10px !important;
                     margin: 0;
-                    padding: 0.5em 1em;
+                    padding: 0.1em 0.1em;
+                    
                     @media only screen and (min-width: 320px) and (max-width: 768px) {
                         font-size: 10px !important;
                     }
@@ -171,20 +187,20 @@
     word-break: keep-all;  
     tr {
         th {
-            font-weight: 600 !important;
-            font-size: 14px !important;
+            font-weight: 1000 !important;
+            font-size: 9px !important;
             padding: 0.1em 2.3em;
             @media only screen and (min-width: 320px) and (max-width: 768px) {
-                font-size: 10px !important;
+                font-size: 9px !important;
             }
         }
         td{
-            font-weight: 400 !important;
-            font-size: 12px !important;
+            font-weight: 600 !important;
+            font-size: 8px !important;
             margin: 0;
             padding: 0.1em 0.5em;
             @media only screen and (min-width: 320px) and (max-width: 768px) {
-                font-size: 10px !important;
+                font-size: 8px !important;
             }
         }
     }
