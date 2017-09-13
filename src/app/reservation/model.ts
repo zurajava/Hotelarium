@@ -8,6 +8,10 @@ export class Person {
     public address: string;
     public birthdate: Date;
     public phone: string;
+    public company: string;
+    public company_name: string;
+    public company_code: string;
+
 
     constructor(id: number, personal_no: number, first_name: string, last_name: string, email: string, gender: string, address: string, birthdate: Date, phone: string) {
         this.id = id;

@@ -381,10 +381,11 @@ pool.checkReservation = function (data) {
 }
 
 registerPersonLocal = function (person) {
+    console.log(JSON.stringify(person));
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-            connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
-                [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone],
+            connection.query('insert into person  (first_name,last_name,personal_no,email,gender,phone,company,company_name,company_code)values (?,?,?,?,?,?,?,?,?)',
+                [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.phone, person.company, person.company_name, person.company_code],
                 function (error, results, fields) {
                     if (error) {
                         if (error.code != 'ER_DUP_ENTRY') {

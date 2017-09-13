@@ -29,6 +29,10 @@ export class ReservationComponent implements OnInit {
     { text: "Female" },
     { text: "Other" }
   ];
+    public company: Array<{ text: string }> = [
+    { text: "YES" },
+    { text: "NO" }
+  ];
   public reservationStatus: Array<{ value: number, text: string }> = [
     { value: 1, text: "RESERVED" },
     { value: 2, text: "CHECK_IN" }
@@ -398,9 +402,6 @@ export class ReservationComponent implements OnInit {
 
 
   valueChanged(newVal) {
-    console.log("valueChanged", newVal.birthdate);
-    var birthdate = newVal.birthdate;
-    newVal.birthdate = new Date(this.intl.formatDate(birthdate, 'yyyy-MM-dd'));
     this.reservationInfo.person = newVal;
   }
 
