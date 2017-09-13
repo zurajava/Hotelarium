@@ -137,13 +137,16 @@
                                 </tr>
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="" name="n_person_id" [(value)]="person.person_id" />
+                                        <input kendoTextBox style="width:140px" id="n_person_id" name="n_person_id_name" [value]="person.person_id" (input)="person.person_id = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="n_first_name" [(value)]="person.first_name" />
+                                        <input kendoTextBox style="width:140px" id="n_first_name" name="n_first_name_name" [value]="person.first_name" (input)="person.first_name = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" name="n_last_name" [(value)]="person.last_name" />
+                                        <input kendoTextBox style="width:140px" id="n_last_name" name="n_last_name_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
+                                        />
                                     </td>
                                     <td>
                                         <button class="reservation_btn" (click)="removeReservationPerson(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
@@ -166,16 +169,20 @@
                                 <tr *ngFor="let service of res.reservationService; let i = index">
 
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_n_service_id" name="n_service_id" [(value)]="service.service_id" />
+                                        <input kendoTextBox style="width:140px" id="id_n_service_id" name="n_service_id_name" [value]="service.service_id" (input)="service.service_id = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_n_frequency"  name="n_frequency" [(value)]="service.frequency" />
+                                        <input kendoTextBox style="width:140px" id="id_n_frequency" name="n_frequency_name" [value]="service.frequency" (input)="service.frequency = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_n_additional_comment"  name="n_additional_comment" [(value)]="service.additional_comment" />
+                                        <input kendoTextBox style="width:140px" id="id_n_additional_comment" name="n_additional_comment_name" [value]="service.additional_comment"
+                                            (input)="service.additional_comment = $event.target.value" />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_n_service_name"  name="n_service_name" [(value)]="service.service_name" />
+                                        <input kendoTextBox style="width:140px" id="id_n_service_name" name="n_service_name_name" [value]="service.service_name"
+                                            (input)="service.service_name = $event.target.value" />
                                     </td>
                                     <td>
                                         <button class="reservation_btn" (click)="removeReservationService(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
@@ -323,14 +330,16 @@
                                 </tr>
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_person_id" name="person_id" [(value)]="person.person_id" />
+                                        <input kendoTextBox style="width:140px" id="id_person_id" [value]="person.person_id" (input)="person.person_id = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_first_name" name="first_name" [(value)]="person.first_name" />
+                                        <input kendoTextBox style="width:140px" id="id_first_name" [value]="person.first_name" (input)="person.first_name = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_last_name" name="last_name" [(value)]="person.last_name" />{{person.person_id}}
-                                        {{person.first_name}} {{person.last_name}} {{i}}
+                                        <input kendoTextBox style="width:140px" id="id_last_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
+                                        />
                                     </td>
                                     <td>
                                         <button class="reservation_btn" (click)="removeReservationPersonExisting(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
@@ -352,17 +361,20 @@
                                 </tr>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="service_id" [(value)]="service.service_id" />
+                                        <input kendoTextBox style="width:140px" id="id_service_id" [value]="service.service_id" (input)="service.service_id= $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="frequency" [(value)]="service.frequency" />
+                                        <input kendoTextBox style="width:140px" id="id_service_id" [value]="service.frequency" (input)="service.frequency= $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="additional_comment" [(value)]="service.additional_comment" />
+                                        <input kendoTextBox style="width:140px" id="id_service_id" [value]="service.additional_comment" (input)="service.additional_comment= $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_service_id" name="service_name" [(value)]="service.service_name" />{{service.service_id}}
-                                        {{service.frequency}} {{service.frequency}} {{service.additional_comment}} {{service.service_name}} {{i}}
+                                        <input kendoTextBox style="width:140px" id="id_service_id" [value]="service.service_name" (input)="service.service_name= $event.target.value"
+                                        />
                                     </td>
                                     <td>
                                         <button class="reservation_btn" (click)="removeReservationServiceExisting(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>

@@ -291,7 +291,7 @@ export class ReservationComponent implements OnInit {
     console.log("updateReservation", id);
   }
   updateAllReservation() {
-    console.log("updateAllReservation", JSON.stringify(this.reservationInfo));
+    console.log("updateAllReservation", JSON.stringify(this.reservationInfoEdit));
 
   }
   paymentReservationAll() {
