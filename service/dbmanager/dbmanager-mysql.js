@@ -500,22 +500,26 @@ pool.registerReservation = function (reservation) {
             return Promise.all(reservationDetails);
         }).then(data => {
             let reservationPersonPromise = data.map(reservationData => {
-                return reservationData.reservationPerson.map(person => {
-                    return registerReservationPersonLocal(reservationData.id, person).then(personData => {
-                        return personData;
-                    })
-                });
+                if (reservationData.reservationPerson != null) {
+                    return reservationData.reservationPerson.map(person => {
+                        return registerReservationPersonLocal(reservationData.id, person).then(personData => {
+                            return personData;
+                        })
+                    });
+                }
             });
             return Promise.all(reservationPersonPromise).then(dataPerson => {
                 return data;
             });
         }).then(data => {
             let reservationPersonPromise = data.map(reservationData => {
-                return reservationData.reservationService.map(service => {
-                    return registerReservationServiceLocal(reservationData.id, service).then(serviceData => {
-                        return serviceData;
-                    })
-                });
+                if (reservationData.reservationService != null) {
+                    return reservationData.reservationService.map(service => {
+                        return registerReservationServiceLocal(reservationData.id, service).then(serviceData => {
+                            return serviceData;
+                        })
+                    });
+                }
             });
             return Promise.all(reservationPersonPromise).then(dataService => {
                 return data;
