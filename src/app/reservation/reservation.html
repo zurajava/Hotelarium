@@ -169,8 +169,9 @@
                                 <tr *ngFor="let service of res.reservationService; let i = index">
 
                                     <td>
-                                        <input kendoTextBox id="id_n_service_id" name="n_service_id_name" [value]="service.service_id" (input)="service.service_id = $event.target.value"
-                                        />
+                                        <kendo-combobox id="id_n_service_id" name="n_service_id_name" [data]="serviceData" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                            [(value)]="service.service_id">
+                                        </kendo-combobox>
                                     </td>
                                     <td>
                                         <input kendoTextBox id="id_n_frequency" name="n_frequency_name" [value]="service.frequency" (input)="service.frequency = $event.target.value"
@@ -361,8 +362,8 @@
                                 </tr>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
                                     <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_service_id" [value]="service.service_id" (input)="service.service_id= $event.target.value"
-                                        />
+                                        <kendo-combobox id="id_service_id" [data]="serviceData" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="service.service_id">
+                                        </kendo-combobox>
                                     </td>
                                     <td>
                                         <input kendoTextBox style="width:140px" id="id_service_id" [value]="service.frequency" (input)="service.frequency= $event.target.value"

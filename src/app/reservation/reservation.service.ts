@@ -34,6 +34,14 @@ export class ReservationService {
     return this.http.get('/service/category/' + branch_id, { headers: headers })
       .catch(this.handleError);
   }
+  getService(branch_id: number) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/service/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
+      .catch(this.handleError);
+  }
   getRoom(branch_id: number, category_id: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;

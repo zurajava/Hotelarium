@@ -487,12 +487,10 @@ pool.registerReservation = function (reservation) {
     var person = reservation.person;
     return new Promise(function (resolve, reject) {
         registerPersonLocal(person).then(data => {
-            console.log("registerPerson", data);
             return registerReservationLocal(person).then(data => {
                 return data;
             });
         }).then(data => {
-            console.log("registerReservation", data);
             let reservationDetails = reservation.reservation.reservationDetail.map(reservation => {
                 return registerReservationDetailsLocal(data, reservation).then(data => {
                     reservation.id = data;
@@ -502,7 +500,6 @@ pool.registerReservation = function (reservation) {
             return Promise.all(reservationDetails);
         }).then(data => {
             let reservationPersonPromise = data.map(reservationData => {
-                console.log("mapPerson", reservationData.id);
                 return reservationData.reservationPerson.map(person => {
                     return registerReservationPersonLocal(reservationData.id, person).then(personData => {
                         return personData;
@@ -513,9 +510,7 @@ pool.registerReservation = function (reservation) {
                 return data;
             });
         }).then(data => {
-            console.log("registerReservationService", JSON.stringify(data));
             let reservationPersonPromise = data.map(reservationData => {
-                console.log("mapServiuce", reservationData.id);
                 return reservationData.reservationService.map(service => {
                     return registerReservationServiceLocal(reservationData.id, service).then(serviceData => {
                         return serviceData;
@@ -529,7 +524,7 @@ pool.registerReservation = function (reservation) {
             console.log("final", data);
             resolve(data);
         }).catch(error => {
-            console.log(error);
+            console.log("Catch Error", error);
             reject(error);
         });
     });

@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule, ReservationPerson, ReservationServices } from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
+import { Service } from '../service/model.js';
 import { Room } from '../room/model.js';
 import { IntlService } from '@progress/kendo-angular-intl';
 import { SafeHtml } from "@angular/platform-browser";
@@ -33,6 +34,7 @@ export class ReservationComponent implements OnInit {
     { value: 2, text: "CHECK_IN" }
   ];
   public category: Category[];
+  public serviceData: Service[];
   public room: Room[];
   public showReservation: boolean = false;
   public showReservationPayment: boolean = false;
@@ -54,7 +56,8 @@ export class ReservationComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);
     this.dateTo = new Date();
     this.dateFrom = new Date();
-    this.dateFrom.setDate(this.dateTo.getDate() - 30);
+    this.dateFrom.setDate(this.dateTo.getDate() - 5);
+    this.dateTo.setDate(this.dateFrom.getDate() + 30) 
 
     this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null, [new ReservationDetail(null, null, null, null, null, null, null, null, null, [], [])]));
   }
@@ -135,7 +138,7 @@ export class ReservationComponent implements OnInit {
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
-              for (var f = 0; f < this.segment-1; f++) {
+              for (var f = 0; f < this.segment - 1; f++) {
                 this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true, "");
               }
             }
@@ -161,6 +164,9 @@ export class ReservationComponent implements OnInit {
         this.reservationService.getRoom(this.brSelectedValue, null).subscribe(data => {
           this.room = data.json().room;
         });
+        this.reservationService.getService(this.brSelectedValue).subscribe(data => {
+          this.serviceData = data.json().service;
+        });
       });
       this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null);
     } else {
@@ -171,6 +177,11 @@ export class ReservationComponent implements OnInit {
         this.category = data.json().category;
         this.reservationService.getRoom(this.brSelectedValue, this.category[0].id.toString()).subscribe(data => {
           this.room = data.json().room;
+        });
+
+        this.reservationService.getService(this.brSelectedValue).subscribe(data => {
+          console.log(data);
+          this.serviceData = data.json().service;
         });
       });
 
