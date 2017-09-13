@@ -136,16 +136,16 @@
                                     <th>Command</th>
                                 </tr>
                                 <tr *ngFor="let person of res.reservationPerson; let i = index">
-                                    <td width="50">
-                                        <input kendoTextBox style="width:140px" id="n_person_id" name="n_person_id_name" [value]="person.person_id" (input)="person.person_id = $event.target.value"
+                                    <td>
+                                        <input kendoTextBox id="n_person_id" name="n_person_id_name" [value]="person.person_id" (input)="person.person_id = $event.target.value"
                                         />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="n_first_name" name="n_first_name_name" [value]="person.first_name" (input)="person.first_name = $event.target.value"
+                                        <input kendoTextBox id="n_first_name" name="n_first_name_name" [value]="person.first_name" (input)="person.first_name = $event.target.value"
                                         />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="n_last_name" name="n_last_name_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
+                                        <input kendoTextBox id="n_last_name" name="n_last_name_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
                                         />
                                     </td>
                                     <td>
@@ -168,21 +168,21 @@
                                 </tr>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
 
-                                    <td width="50">
-                                        <input kendoTextBox style="width:140px" id="id_n_service_id" name="n_service_id_name" [value]="service.service_id" (input)="service.service_id = $event.target.value"
+                                    <td>
+                                        <input kendoTextBox id="id_n_service_id" name="n_service_id_name" [value]="service.service_id" (input)="service.service_id = $event.target.value"
                                         />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_n_frequency" name="n_frequency_name" [value]="service.frequency" (input)="service.frequency = $event.target.value"
+                                        <input kendoTextBox id="id_n_frequency" name="n_frequency_name" [value]="service.frequency" (input)="service.frequency = $event.target.value"
                                         />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_n_additional_comment" name="n_additional_comment_name" [value]="service.additional_comment"
-                                            (input)="service.additional_comment = $event.target.value" />
+                                        <input kendoTextBox id="id_n_additional_comment" name="n_additional_comment_name" [value]="service.additional_comment" (input)="service.additional_comment = $event.target.value"
+                                        />
                                     </td>
                                     <td>
-                                        <input kendoTextBox style="width:140px" id="id_n_service_name" name="n_service_name_name" [value]="service.service_name"
-                                            (input)="service.service_name = $event.target.value" />
+                                        <input kendoTextBox id="id_n_service_name" name="n_service_name_name" [value]="service.service_name" (input)="service.service_name = $event.target.value"
+                                        />
                                     </td>
                                     <td>
                                         <button class="reservation_btn" (click)="removeReservationService(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>

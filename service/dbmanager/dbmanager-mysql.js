@@ -380,93 +380,157 @@ pool.checkReservation = function (data) {
     });
 }
 
-pool.registerReservation = function (reservation) {
+registerPersonLocal = function (person) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-            var person = reservation.person;
-            connection.beginTransaction(function (err) {
-                if (err) {
-                    reject(err);
-                }
-                connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
-                    [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone],
-                    function (error, results, fields) {
-                        if (error) {
-                            if (error.code != 'ER_DUP_ENTRY') {
-                                return connection.rollback(function () {
-                                    console.log("person", error.code);
-                                    reject(error);
-                                });
-                            }
-
+            connection.query('insert into person  (first_name,last_name,personal_no,email,gender,address,birthdate,phone)values (?,?,?,?,?,?,?,?)',
+                [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.address, person.birthdate, person.phone],
+                function (error, results, fields) {
+                    if (error) {
+                        if (error.code != 'ER_DUP_ENTRY') {
+                            console.log("person", error.code);
+                            connection.release();
+                            reject(error);
+                        } else {
+                            connection.release();
+                            resolve("OK");
                         }
-                        connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)', [person.personal_no], function (error, results, fields) {
-                            if (error) {
-                                return connection.rollback(function () {
-                                    console.log("reservation", error);
-                                    reject(error);
-                                });
-                            }
-                            var reservID = results.insertId;
-                            var reservDetails = reservation.reservation.reservationDetail;
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
 
-                            reservDetails.map(data => {
+    })
+}
+registerReservationLocal = function (person) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)',
+                [person.personal_no],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("registerReservationLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve(results.insertId);
+                    }
+                });
+        });
 
-                                connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,payment_type,adult,child,additional_bed,payment_status)values(?,current_timestamp,?,?,?,?,?,?,?,?,?)',
-                                    [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
-                                        data.payment_type, data.adult, data.child, data.additional_bed, data.payment_status],
-                                    function (error, results, fields) {
-                                        if (error) {
-                                            return connection.rollback(function () {
-                                                console.log("reservation_detail", error);
-                                                reject(error);
-                                            });
-                                        }
-                                        data.id = results.insertId;
-                                        var id = results.insertId;
+    })
+}
+registerReservationDetailsLocal = function (reservID, data) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,payment_type,adult,child,additional_bed,' +
+                ' payment_status,extra_person)values(?,current_timestamp,?,?,?,?,?,?,?,?,?,?)',
+                [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
+                    data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("registerReservationDetailsLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve(results.insertId);
+                    }
+                });
+        });
 
-                                        data.reservationPerson.map(person => {
-                                            console.log("person",JSON.stringify(person));
-                                            connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?)',
-                                                [id, person.person_id,person.first_name,person.last_name],
-                                                function (error, results, fields) {
-                                                    if (error) {
-                                                        return connection.rollback(function () {
-                                                            console.log("person", error.code);
-                                                            reject(error);
-                                                        });
-                                                    }
-                                                });
-                                        });
-                                        data.reservationService.map(service => {
-                                            console.log("service",JSON.stringify(service));
-                                            connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
-                                                [id, service.service_id, service.frequency, service.additional_comment],
-                                                function (error, results, fields) {
-                                                    if (error) {
-                                                        return connection.rollback(function () {
-                                                            console.log("service", error);
-                                                            reject(error);
-                                                        });
-                                                    }
-                                                });
-                                        });
-                                    });
-                            });
+    })
+}
+registerReservationPersonLocal = function (id, person) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?,?,?)',
+                [id, person.person_id, person.first_name, person.last_name],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("registerReservationPersonLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
 
-                            connection.commit(function (err) {
-                                console.log("commit");
-                                if (err) {
-                                    return connection.rollback(function () {
-                                        console.log(err);
-                                        reject(err);
-                                    });
-                                }
-                                resolve("OK");
-                            });
-                        });
-                    });
+    })
+}
+registerReservationServiceLocal = function (id, service) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
+                [id, service.service_id, service.frequency, service.additional_comment],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("registerReservationServiceLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+pool.registerReservation = function (reservation) {
+    console.log("registerReservation start...");
+    var person = reservation.person;
+    return new Promise(function (resolve, reject) {
+        registerPersonLocal(person).then(data => {
+            console.log("registerPerson", data);
+            return registerReservationLocal(person).then(data => {
+                return data;
             });
+        }).then(data => {
+            console.log("registerReservation", data);
+            let reservationDetails = reservation.reservation.reservationDetail.map(reservation => {
+                return registerReservationDetailsLocal(data, reservation).then(data => {
+                    reservation.id = data;
+                    return reservation;
+                });
+            })
+            return Promise.all(reservationDetails);
+        }).then(data => {
+            let reservationPersonPromise = data.map(reservationData => {
+                console.log("mapPerson", reservationData.id);
+                return reservationData.reservationPerson.map(person => {
+                    return registerReservationPersonLocal(reservationData.id, person).then(personData => {
+                        return personData;
+                    })
+                });
+            });
+            return Promise.all(reservationPersonPromise).then(dataPerson => {
+                return data;
+            });
+        }).then(data => {
+            console.log("registerReservationService", JSON.stringify(data));
+            let reservationPersonPromise = data.map(reservationData => {
+                console.log("mapServiuce", reservationData.id);
+                return reservationData.reservationService.map(service => {
+                    return registerReservationServiceLocal(reservationData.id, service).then(serviceData => {
+                        return serviceData;
+                    })
+                });
+            });
+            return Promise.all(reservationPersonPromise).then(dataService => {
+                return data;
+            });
+        }).then(data => {
+            console.log("final", data);
+            resolve(data);
+        }).catch(error => {
+            console.log(error);
+            reject(error);
         });
     });
 }

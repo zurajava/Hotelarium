@@ -135,7 +135,7 @@ export class ReservationComponent implements OnInit {
               }
               this.data[i].rooms[j].reservations = sheduleArray;
             } else {
-              for (var f = 0; f < this.segment; f++) {
+              for (var f = 0; f < this.segment-1; f++) {
                 this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true, "");
               }
             }
