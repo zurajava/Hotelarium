@@ -37,9 +37,11 @@
                         <td><input class="person_input" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
                             /></td>
 
-                        <td><kendo-combobox class="person_input" name="gender" placeholder="Gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true"
-                                [(ngModel)]="reservationInfo.person.gender">
-                            </kendo-combobox></td>
+                        <td>
+                            <kendo-combobox class="person_input" name="gender" placeholder="Gender" [data]="genders" [textField]="'text'" [valueField]="'text'"
+                                [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                            </kendo-combobox>
+                        </td>
                         <td>
                             <kendo-combobox class="person_input" name="company" placeholder="Company" [data]="company" [textField]="'text'" [valueField]="'text'"
                                 [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.company">
@@ -101,21 +103,25 @@
 
 
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
@@ -231,8 +237,11 @@
                         <td><span class="person_label">Phone</span></td>
                         <td><input class="person_input" placeholder="Phone" name="phone" [(ngModel)]="reservationInfoEdit.person.phone"
                             /></td>
-                        <td><kendo-combobox class="person_input" name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.gender">
-                            </kendo-combobox></td>
+                        <td>
+                            <kendo-combobox class="person_input" name="gender" [data]="genders" [textField]="'text'" [valueField]="'text'" [valuePrimitive]="true"
+                                [(ngModel)]="reservationInfoEdit.person.gender">
+                            </kendo-combobox>
+                        </td>
                         <td>
                             <kendo-combobox class="person_input" name="company" placeholder="Company" [data]="company" [textField]="'text'" [valueField]="'text'"
                                 [valuePrimitive]="true" [(ngModel)]="reservationInfoEdit.person.company">
@@ -245,7 +254,8 @@
                             /></td>
                         <td><span class="person_label">Company Name</span></td>
                         <td>
-                            <input class="person_input" placeholder="Company Name" name="address" [(ngModel)]="reservationInfoEdit.person.company_name" />
+                            <input class="person_input" placeholder="Company Name" name="address" [(ngModel)]="reservationInfoEdit.person.company_name"
+                            />
                         </td>
                     </tr>
                 </table>
@@ -292,26 +302,30 @@
                                 id="end_date" name="nend_date"></kendo-datepicker>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
                         <td>
-                            <button class="reservation_btn_command" (click)="updateReservation(res)">Save</button>
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                [format]="'n0'">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <button class="reservation_btn_command" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'Payment'}}</button>
                             <button class="reservation_btn_command" (click)="addServiceEdit(res)"><i class="fa fa-gear" style="font-size:14px"></i>Service</button>
                             <button class="reservation_btn_command" (click)="addPersonEdit(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Person</button>
                             <button class="reservation_btn_command" (click)="removeReservationExisting(res)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>

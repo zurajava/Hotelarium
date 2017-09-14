@@ -288,7 +288,7 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
                 additional_bad, additional_bad_price, extra_person, extra_person_price], function (error, row, fields) {
                     if (error) {
                         console.log(error);
-                        throw error;
+                        callback(error, null);
                     } else {
                         connection.release();
                         callback(null, row);
@@ -358,6 +358,7 @@ savePerson = function (branch_id) {
     });
 }
 pool.checkReservation = function (data) {
+    console.log("checkReservation start",data.room_id, data.start_date, data.start_date, data.end_date, data.end_date);
     return new Promise(function (resolve, reject) {
         var categoryData;
         var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +

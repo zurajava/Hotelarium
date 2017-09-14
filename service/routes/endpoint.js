@@ -17,7 +17,7 @@ router.post('/authenticate', (req, res) => {
       } else if (data.password.toUpperCase() != req.body.password.toUpperCase()) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
-        var token = jwt.sign(data, 'ilovescotchyscotch', { expiresIn: 60 * 60 * 24 });
+        var token = jwt.sign(data, 'ilovescotchyscotch', { expiresIn: "3d" });
         res.json({
           success: true,
           user: data,
