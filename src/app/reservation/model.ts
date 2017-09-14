@@ -54,6 +54,7 @@ export class ReservationDetail {
     public create_date: Date;
     public update_date: Date;
     public room_id: number;
+    public room_no: number;
     public status_id: string;
     public start_date: Date;
     public end_date: Date;

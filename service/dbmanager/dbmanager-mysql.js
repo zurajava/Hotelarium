@@ -360,7 +360,7 @@ savePerson = function (branch_id) {
 pool.checkReservation = function (data) {
     return new Promise(function (resolve, reject) {
         var categoryData;
-        var query = 'SELECT  count(1) as count FROM reservation_detail t where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
+        var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
             ' or (?>DATE(t.start_date)  and ?<=DATE(t.end_date) ))';
         pool.getConnection(function (err, connection) {
             connection.query(query, [data.room_id, data.start_date, data.start_date, data.end_date, data.end_date], function (error, row, fields) {
@@ -370,7 +370,7 @@ pool.checkReservation = function (data) {
                     connection.release();
                     console.log("checkReservation", data.start_date, data.end_date, row[0].count);
                     if (row[0].count > 0) {
-                        reject('Room ' + data.room_id + ' is not availabe in this period ' + data.start_date + ' - ' + data.end_date);
+                        reject('Room ' + row[0].room_no + ' is not availabe in this period ' + data.start_date + ' - ' + data.end_date);
                     } else {
                         resolve('Free');
                     }
@@ -573,12 +573,13 @@ getRoom = function (branch_id, categoryID) {
 getReservationL = function (room_id, start_date, end_date) {
     var deferred = q.defer();
     var reservationData;
-    var reservationSql = 'SELECT d.id,d.create_date,d.payment_type,d.update_date,d.room_id,d.status_id,d.start_date,d.end_date, ' +
+    var reservationSql = 'SELECT d.id,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
         ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email ' +
-        ' FROM heroku_8c0c9eba2ff6cfd.reservation_detail d ' +
-        ' inner join heroku_8c0c9eba2ff6cfd.reservation_status s on d.status_id=s.id ' +
-        ' inner join heroku_8c0c9eba2ff6cfd.reservation a on d.reservation_id=a.id ' +
-        ' inner join heroku_8c0c9eba2ff6cfd.person p on a.person_no=p.personal_no ' +
+        ' FROM reservation_detail d ' +
+        ' inner join reservation_status s on d.status_id=s.id ' +
+        ' inner join room ro on ro.id=d.room_id ' +
+        ' inner join reservation a on d.reservation_id=a.id ' +
+        ' inner join person p on a.person_no=p.personal_no ' +
         ' where d.room_id=? and d.start_date >? and d.start_date<? order by d.start_date asc';
     pool.getConnection(function (err, connection) {
         connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
@@ -674,7 +675,7 @@ getReservationsDetails = function (reservation_id) {
     var deferred = q.defer();
     var categoryData;
     var query = 'SELECT r.*,c.id as category_id,c.name as category_name FROM reservation_detail r ' +
-        ' inner join room o on r.room_id=o.id   inner join heroku_8c0c9eba2ff6cfd.category c on o.category_id=c.id  where reservation_id=?';
+        ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id  where reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
             if (error) {

@@ -101,21 +101,21 @@
 
 
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
@@ -292,21 +292,21 @@
                                 id="end_date" name="nend_date"></kendo-datepicker>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true">
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                            </kendo-numerictextbox>
+
+                        </td>
+                        <td>
+                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
                             </kendo-numerictextbox>
 
                         </td>
@@ -389,7 +389,7 @@
         <fieldset>
             <legend>operations e</legend>
             <div>
-                <button class="reservation_btn" (click)="updateAllReservation()">Update All</button>
+                <button class="reservation_btn" (click)="updateAllReservation()">CheckIn All</button>
                 <button class="reservation_btn" (click)="paymentReservationAll()">Payment All</button>
             </div>
         </fieldset>
