@@ -326,6 +326,8 @@
                         </td>
                         <td>
                             <button class="reservation_btn_command" (click)="updateReservation(res)"><i class="fa fa-check" style="font-size:14px"></i>{{ res.status_id == 1 ? 'CheckIn' : 'Payment'}}</button>
+                            <button *ngIf="res.showReserveButton" class="reservation_btn_command" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)"><i class="fa fa-check" style="font-size:14px"></i>Reserve</button>
+                            <button *ngIf="res.showCheckInButton" class="reservation_btn_command" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)"><i class="fa fa-check" style="font-size:14px"></i>CheckIn</button>
                             <button class="reservation_btn_command" (click)="addServiceEdit(res)"><i class="fa fa-gear" style="font-size:14px"></i>Service</button>
                             <button class="reservation_btn_command" (click)="addPersonEdit(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Person</button>
                             <button class="reservation_btn_command" (click)="removeReservationExisting(res)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>

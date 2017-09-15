@@ -363,6 +363,26 @@ router.post('/reservation', (req, res) => {
   });
 });
 
+router.post('/reservation/:id', (req, res) => {
+  console.log("add reservation one : " + req.params.id);
+  var reserv = req.body;
+  if (req.params.id == null || reserv == null) {
+    return res.json({
+      success: false, message: 'reservation is not present', error: null
+    });
+  }
+  pool.checkReservation(reserv).then(data => {
+    pool.registerReservationOne(req.params.id, reserv).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    })
+  }).catch(error => {
+    console.log("error", error);
+    return res.json({
+      success: false, message: 'Error while register reservation', error: error
+    });
+  });
+});
+
 router.get('/reservation', (req, res) => {
   console.log("get reservation : " + req.query.start_date + " " + req.query.end_date + " " + req.query.branch_id);
   var reserv = req.body;

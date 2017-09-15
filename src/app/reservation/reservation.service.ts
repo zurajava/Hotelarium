@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { ReservationInfo } from './model';
+import { ReservationInfo, ReservationDetail } from './model';
 
 @Injectable()
 export class ReservationService {
@@ -102,5 +102,16 @@ export class ReservationService {
 
   private handleError(error: any) {
     return Observable.throw(error.json());
+  }
+  addReservationToExsting(data: ReservationDetail, id: number) {
+    //TO DO
+    data.payment_status = "1";
+    const body = JSON.stringify(data);
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.post('/service/reservation/' + id.toString(), body, { headers: headers }).catch(this.handleError);
+
   }
 }

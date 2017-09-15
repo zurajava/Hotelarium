@@ -70,12 +70,14 @@ export class ReservationDetail {
     public expandPerson: boolean = false;
     public expandService: boolean = false;
     public expandPayment: boolean = false;
+    public showReserveButton: boolean = false;
+    public showCheckInButton: boolean = false;
 
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationServices>;
 
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>) {
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, showReserveButton: boolean,showCheckInButton: boolean) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.create_date = create_date;
@@ -87,6 +89,8 @@ export class ReservationDetail {
         this.category_id = category_id;
         this.reservationPerson = reservationPerson;
         this.reservationService = reservationService;
+        this.showReserveButton = showReserveButton;
+        this.showCheckInButton =showCheckInButton;
     }
 
 }

@@ -63,7 +63,7 @@ export class ReservationComponent implements OnInit {
     this.dateFrom.setDate(this.dateTo.getDate() - 5);
     this.dateTo.setDate(this.dateFrom.getDate() + 30)
 
-    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null, [new ReservationDetail(null, null, null, null, null, null, null, null, null, [], [])]));
+    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null, [new ReservationDetail(null, null, null, null, null, null, null, null, null, [], [], false, false)]));
   }
   ngOnInit() {
     this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
@@ -172,7 +172,7 @@ export class ReservationComponent implements OnInit {
           this.serviceData = data.json().service;
         });
       });
-      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null);
+      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null, false, false);
     } else {
       this.showReservation = false;
       this.showReservationPayment = true;
@@ -211,11 +211,11 @@ export class ReservationComponent implements OnInit {
   }
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
-    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, [new ReservationPerson('eee', 'eee', 'eee')], null);
+    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, [new ReservationPerson('eee', 'eee', 'eee')], null, false, false);
   }
   addReservationToExisting() {
     var size = this.reservationInfoEdit.reservation.reservationDetail.length;
-    this.reservationInfoEdit.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null);
+    this.reservationInfoEdit.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null, true, true);
   }
   removeReservation(id: ReservationDetail) {
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
@@ -328,6 +328,34 @@ export class ReservationComponent implements OnInit {
     id.reservationService[size] = p;
 
   }
+  saveReservationReserve(id: ReservationDetail, reservationId: number) {
+    console.log("saveReservationReserve", JSON.stringify(id), reservationId);
+    id.status_id = "1";
+    this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
+      if (data.json().success === true) {
+        this.toastr.success("Reservation Added");
+        id.showCheckInButton = false;
+        id.showReserveButton = false;
+        this.fillDataRange();
+      } else {
+        this.toastr.error(data.json().message);
+      }
+    });
+  }
+  saveReservationCheckIn(id: ReservationDetail, reservationId: number) {
+    console.log("saveReservationCheckIn", JSON.stringify(id), reservationId);
+    id.status_id = "2";
+    this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
+      if (data.json().success === true) {
+        this.toastr.success("Reservation Added");
+        id.showCheckInButton = false;
+        id.showReserveButton = false;
+        this.fillDataRange();
+      } else {
+        this.toastr.error(data.json().message);
+      }
+    });
+  }
   //========================================
   //ADD PERSON AND SERVICE EXISTING
   addPersonToReservationPersonExisting(id: ReservationDetail) {
@@ -354,7 +382,7 @@ export class ReservationComponent implements OnInit {
       this.reservationInfoEdit.reservation.reservationDetail[index] = id;
     }
 
-    
+
   }
   //========================================
   reserve() {

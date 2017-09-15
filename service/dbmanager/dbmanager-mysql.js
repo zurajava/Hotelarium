@@ -358,18 +358,18 @@ savePerson = function (branch_id) {
     });
 }
 pool.checkReservation = function (data) {
-    console.log("checkReservation start",data.room_id, data.start_date, data.start_date, data.end_date, data.end_date);
+    console.log("checkReservation start", data.room_id, data.start_date, data.start_date, data.end_date, data.end_date);
     return new Promise(function (resolve, reject) {
         var categoryData;
         var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
-            ' or (?>DATE(t.start_date)  and ?<=DATE(t.end_date) ))';
+            ' or (?>DATE(t.start_date)  and ? <=DATE(t.end_date) ))';
         pool.getConnection(function (err, connection) {
             connection.query(query, [data.room_id, data.start_date, data.start_date, data.end_date, data.end_date], function (error, row, fields) {
                 if (error) {
                     reject(error);
                 } else {
                     connection.release();
-                    console.log("checkReservation", data.start_date, data.end_date, row[0].count);
+                    console.log("checkReservation not available", data.start_date, data.end_date, row[0].count, row[0].room_no);
                     if (row[0].count > 0) {
                         reject('Room ' + row[0].room_no + ' is not availabe in this period ' + data.start_date + ' - ' + data.end_date);
                     } else {
@@ -485,7 +485,6 @@ registerReservationServiceLocal = function (id, service) {
     })
 }
 pool.registerReservation = function (reservation) {
-    console.log("registerReservation start...");
     var person = reservation.person;
     return new Promise(function (resolve, reject) {
         registerPersonLocal(person).then(data => {
@@ -527,10 +526,44 @@ pool.registerReservation = function (reservation) {
                 return data;
             });
         }).then(data => {
-            console.log("final", data);
             resolve(data);
         }).catch(error => {
-            console.log("Catch Error", error);
+            reject(error);
+        });
+    });
+}
+
+pool.registerReservationOne = function (id, reservation) {
+    return new Promise(function (resolve, reject) {
+        registerReservationDetailsLocal(id, reservation).then(data => {
+            reservation.id = data;
+            let reservationPersonPromise;
+            if (reservation.reservationPerson != null) {
+                reservationPersonPromise = reservation.reservationPerson.map(person => {
+                    return registerReservationPersonLocal(reservation.id, person).then(personData => {
+                        return reservation;
+                    })
+                });
+                return Promise.all(reservationPersonPromise).then(dataService => {
+                    return reservation;
+                });
+            } else {
+                return reservation;
+            }
+        }).then(data => {
+            let reservationServicePromise
+            if (reservation.reservationService != null) {
+                reservationServicePromise = reservation.reservationService.map(service => {
+                    return registerReservationServiceLocal(reservation.id, service).then(serviceData => {
+                        console.log(serviceData);
+                        return serviceData;
+                    })
+                });
+            }
+            return Promise.all(reservationServicePromise);
+        }).then(data => {
+            resolve(data);
+        }).catch(error => {
             reject(error);
         });
     });
