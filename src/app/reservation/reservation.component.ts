@@ -280,8 +280,8 @@ export class ReservationComponent implements OnInit {
   }
   removeReservationServiceExisting(id: ReservationDetail, service: ReservationServices) {
     console.log("removeReservationServiceExisting");
-    this.reservationService.deleteReservationService(id.id,service.service_id).subscribe(data=>{
-      if(data.json().success===true){
+    this.reservationService.deleteReservationService(id.id, service.service_id).subscribe(data => {
+      if (data.json().success === true) {
         var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
         if (index > -1) {
           var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.indexOf(service, 0);
@@ -290,11 +290,11 @@ export class ReservationComponent implements OnInit {
           }
         }
         this.toastr.success("Reservation service deleted");
-      }else{
+      } else {
         this.toastr.error(data.json().message);
       }
     })
-   
+
 
   }
   addService(id: ReservationDetail) {
@@ -327,7 +327,22 @@ export class ReservationComponent implements OnInit {
     id.expandPerson = true;
   }
   updateReservation(id: ReservationDetail) {
-    console.log("updateReservation", id);
+    console.log("updateReservation", id,id.status_id);
+    if (id.status_id == "1") {
+      console.log(id.status_id, id.id);
+      this.reservationService.updateReservation(id.id, "2").subscribe(data => {
+        if (data.json().success === true) {
+          id.status_id = "2";
+          this.fillDataRange();
+          this.toastr.success("Reservation status change : RESERVED TO CHECK-IN");
+        } else {
+          this.toastr.error(data.json().message);
+        }
+      });
+    } else {
+      this.toastr.success("Payment TO DO");
+
+    }
   }
   updateAllReservation() {
     console.log("updateAllReservation", JSON.stringify(this.reservationInfoEdit));

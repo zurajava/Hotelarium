@@ -138,4 +138,12 @@ export class ReservationService {
     return this.http.delete('/service/reservation/' + id.toString() + '?type=2&person_no=' + person_no, { headers: headers }).catch(this.handleError);
 
   }
+  updateReservation(id: number, status_id: string) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.put('/service/reservation/' + id.toString() + '?type=' + status_id + '&token=' + key, { headers: headers }).catch(this.handleError);
+
+  }
 }

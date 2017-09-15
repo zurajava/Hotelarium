@@ -686,6 +686,27 @@ pool.deleteReservation = function (id) {
         })
     })
 }
+
+pool.updateReservation = function (id, status_id) {
+    console.log("updateReservation start...", id, status_id)
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('update reservation_detail set status_id=? where id=? and status_id=1',
+                [status_id, id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("updateReservation", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
 getCategory = function (branch_id) {
     var deferred = q.defer();
     var categoryData;

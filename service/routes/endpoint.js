@@ -423,6 +423,41 @@ router.delete('/reservation/:id', (req, res) => {
   }
 });
 
+
+router.put('/reservation/:id', (req, res) => {
+  console.log("update reservation : " + req.params.id, req.query.type);
+  var reserv = req.body;
+  if (req.params.id == null) {
+    return res.json({
+      success: false, message: 'reservation is not present', error: null
+    });
+  }
+  //delete reservation 2 - ckeck in, 3- Check out
+  if (req.query.type == 2) {
+    pool.updateReservation(req.params.id, req.query.type).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      console.log("error", error);
+      return res.json({
+        success: false, message: 'Error while update reservation', error: error
+      });
+    });
+  } else if (req.query.type == 3) {
+    pool.updateReservation(req.params.id, req.query.type).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      console.log("error", error);
+      return res.json({
+        success: false, message: 'Error while update reservation', error: error
+      });
+    });
+  } else {
+    return res.json({
+      success: false, message: 'Error while update reservation', error: error
+    });
+  }
+});
+
 router.get('/reservation', (req, res) => {
   console.log("get reservation : " + req.query.start_date + " " + req.query.end_date + " " + req.query.branch_id);
   var reserv = req.body;
