@@ -179,7 +179,7 @@ export class ReservationComponent implements OnInit {
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
-        this.reservationService.getRoom(this.brSelectedValue, this.category[0].id.toString()).subscribe(data => {
+        this.reservationService.getRoom(this.brSelectedValue, null).subscribe(data => {
           this.room = data.json().room;
         });
 
@@ -457,5 +457,9 @@ export class ReservationComponent implements OnInit {
   }
   autoCompliteListFormatter(data: any): string {
     return `${data.personal_no} ${data.first_name}`;
+  }
+  categoryChange(val) {
+    console.log("categoryChange", val);
+
   }
 }

@@ -72,6 +72,7 @@ export class ReservationDetail {
     public expandPayment: boolean = false;
     public showReserveButton: boolean = false;
     public showCheckInButton: boolean = false;
+    public showUpdateButton: boolean = false;
 
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationServices>;
