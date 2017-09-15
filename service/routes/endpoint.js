@@ -383,6 +383,46 @@ router.post('/reservation/:id', (req, res) => {
   });
 });
 
+router.delete('/reservation/:id', (req, res) => {
+  console.log("delete reservation : " + req.params.id, req.query.type);
+  var reserv = req.body;
+  if (req.params.id == null) {
+    return res.json({
+      success: false, message: 'reservation is not present', error: null
+    });
+  }
+  //delete reservation 1 - reservation, 2- person 3 - service
+  if (req.query.type == 1) {
+    pool.deleteReservation(req.params.id).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      console.log("error", error);
+      return res.json({
+        success: false, message: 'Error while delete reservation', error: error
+      });
+    });
+  } else if (req.query.type == 2) {
+    pool.deleteReservationPersonLocal(req.params.id, req.query.person_no).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      console.log("error", error);
+      return res.json({
+        success: false, message: 'Error while delete reservation person', error: error
+      });
+    });
+  } else if (req.query.type == 3) {
+    pool.deleteReservationServiceLocal(req.params.id, req.query.service_id).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      console.log("error", error);
+      return res.json({
+        success: false, message: 'Error while delete reservation service', error: error
+      });
+    });
+
+  }
+});
+
 router.get('/reservation', (req, res) => {
   console.log("get reservation : " + req.query.start_date + " " + req.query.end_date + " " + req.query.branch_id);
   var reserv = req.body;

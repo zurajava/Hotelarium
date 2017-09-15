@@ -225,10 +225,18 @@ export class ReservationComponent implements OnInit {
   }
   removeReservationExisting(id: ReservationDetail) {
     console.log("removeReservationExisting");
-    var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-    if (index > -1) {
-      this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
-    }
+    this.reservationService.deleteReservation(id.id).subscribe(data => {
+      if (data.json().success === true) {
+        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+        if (index > -1) {
+          this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
+        }
+        this.fillDataRange();
+        this.toastr.success("Reservation deleted");
+      } else {
+        this.toastr.error(data.json().message);
+      }
+    })
   }
 
   removeReservationPerson(id: ReservationDetail, person: ReservationPerson) {
@@ -243,14 +251,22 @@ export class ReservationComponent implements OnInit {
   }
   removeReservationPersonExisting(id: ReservationDetail, person: ReservationPerson) {
     console.log("removeReservationPersonExisting");
-
-    var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-    if (index > -1) {
-      var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson.indexOf(person, 0);
-      if (indexPerson > -1) {
-        this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson.splice(indexPerson, 1);
+    this.reservationService.deleteReservationPerson(id.id, person.person_id).subscribe(data => {
+      if (data.json().success === true) {
+        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+        if (index > -1) {
+          var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson.indexOf(person, 0);
+          if (indexPerson > -1) {
+            this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson.splice(indexPerson, 1);
+          }
+        }
+        this.toastr.success("Reservation person deleted");
+      } else {
+        this.toastr.error(data.json().message);
       }
-    }
+    })
+
+
   }
   removeReservationService(id: ReservationDetail, service: ReservationServices) {
     console.log("removeReservationService");
@@ -264,13 +280,21 @@ export class ReservationComponent implements OnInit {
   }
   removeReservationServiceExisting(id: ReservationDetail, service: ReservationServices) {
     console.log("removeReservationServiceExisting");
-    var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-    if (index > -1) {
-      var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.indexOf(service, 0);
-      if (indexPerson > -1) {
-        this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.splice(indexPerson, 1);
+    this.reservationService.deleteReservationService(id.id,service.service_id).subscribe(data=>{
+      if(data.json().success===true){
+        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+        if (index > -1) {
+          var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.indexOf(service, 0);
+          if (indexPerson > -1) {
+            this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.splice(indexPerson, 1);
+          }
+        }
+        this.toastr.success("Reservation service deleted");
+      }else{
+        this.toastr.error(data.json().message);
       }
-    }
+    })
+   
 
   }
   addService(id: ReservationDetail) {
@@ -457,9 +481,5 @@ export class ReservationComponent implements OnInit {
   }
   autoCompliteListFormatter(data: any): string {
     return `${data.personal_no} ${data.first_name}`;
-  }
-  categoryChange(val) {
-    console.log("categoryChange", val);
-
   }
 }

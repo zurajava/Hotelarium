@@ -114,4 +114,28 @@ export class ReservationService {
     return this.http.post('/service/reservation/' + id.toString(), body, { headers: headers }).catch(this.handleError);
 
   }
+  deleteReservation(id: number) {
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.delete('/service/reservation/' + id.toString() + '?type=1', { headers: headers }).catch(this.handleError);
+
+  }
+  deleteReservationService(id: number, service_id: number) {
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.delete('/service/reservation/' + id.toString() + '?type=3&service_id=' + service_id.toString(), { headers: headers }).catch(this.handleError);
+
+  }
+  deleteReservationPerson(id: number, person_no: string) {
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.delete('/service/reservation/' + id.toString() + '?type=2&person_no=' + person_no, { headers: headers }).catch(this.handleError);
+
+  }
 }

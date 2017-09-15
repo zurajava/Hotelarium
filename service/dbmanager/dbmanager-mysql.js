@@ -569,6 +569,123 @@ pool.registerReservationOne = function (id, reservation) {
     });
 }
 
+deleteReservationServiceLocal = function (id) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete from reservation_service where reservation_id=?',
+                [id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("deleteReservationServiceLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+pool.deleteReservationServiceLocal = function (id, service_id) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete from reservation_service where reservation_id=? and service_id=?',
+                [id, service_id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("deleteReservationServiceLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+
+deleteReservationPersonLocal = function (id) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete FROM reservation_person where reservation_id=?',
+                [id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("deleteReservationPersonLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+
+pool.deleteReservationPersonLocal = function (id, person_id) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete FROM reservation_person where reservation_id=? and person_id=?',
+                [id, person_id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("deleteReservationPersonLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+deleteReservationLocal = function (id) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete FROM reservation_detail where id=?; ',
+                [id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log("registerReservationServiceLocal", error.code);
+                        connection.release();
+                        reject(error);
+                    } else {
+                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+
+pool.deleteReservation = function (id) {
+    console.log("deleteReservation", id)
+    return new Promise(function (resolve, reject) {
+        deleteReservationServiceLocal(id).then(data => {
+            deleteReservationPersonLocal(id).then(person => {
+                return person;
+            });
+        }).then(data => {
+            deleteReservationLocal(id).then(data => {
+                return "OK";
+            })
+        }).then(data => {
+            resolve("OK");
+        }).catch(error => {
+            console.log("deleteReservation", error);
+            reject(error);
+        })
+    })
+}
 getCategory = function (branch_id) {
     var deferred = q.defer();
     var categoryData;
