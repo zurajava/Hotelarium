@@ -360,6 +360,7 @@
                                         />
                                     </td>
                                     <td>
+                                        <button *ngIf="person.showSave" class="reservation_btn_command" (click)="saveReservationPerson(person,res.id)"><i class="fa fa-check" style="font-size:14px"></i>Save</button>
                                         <button class="reservation_btn" (click)="removeReservationPersonExisting(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                     </td>
                                 </tr>
@@ -396,6 +397,7 @@
                                         />
                                     </td>
                                     <td>
+                                            <button *ngIf="service.showSave" class="reservation_btn_command" (click)="saveReservationService(service,res.id)"><i class="fa fa-check" style="font-size:14px"></i>Save</button>
                                         <button class="reservation_btn" (click)="removeReservationServiceExisting(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                     </td>
                                 </tr>

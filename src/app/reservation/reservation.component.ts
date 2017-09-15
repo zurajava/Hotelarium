@@ -211,7 +211,7 @@ export class ReservationComponent implements OnInit {
   }
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
-    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, [new ReservationPerson('eee', 'eee', 'eee')], null, false, false);
+    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, [new ReservationPerson('', '', '', false)], null, false, false);
   }
   addReservationToExisting() {
     var size = this.reservationInfoEdit.reservation.reservationDetail.length;
@@ -301,7 +301,7 @@ export class ReservationComponent implements OnInit {
     id.expandService = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationService === null) {
-      var temp = new ReservationServices(null, '', '', '', '');
+      var temp = new ReservationServices(null, '', '', '', '', false);
       id.reservationService = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
@@ -312,7 +312,7 @@ export class ReservationComponent implements OnInit {
     id.expandPerson = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationPerson === null) {
-      var temp = new ReservationPerson('', '', '');
+      var temp = new ReservationPerson('', '', '', false);
       id.reservationPerson = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
@@ -327,7 +327,7 @@ export class ReservationComponent implements OnInit {
     id.expandPerson = true;
   }
   updateReservation(id: ReservationDetail) {
-    console.log("updateReservation", id,id.status_id);
+    console.log("updateReservation", id, id.status_id);
     if (id.status_id == "1") {
       console.log(id.status_id, id.id);
       this.reservationService.updateReservation(id.id, "2").subscribe(data => {
@@ -356,14 +356,14 @@ export class ReservationComponent implements OnInit {
   addPersonToReservationPerson(id: ReservationDetail) {
     console.log("addPersonToReservationPerson", id);
     var size = id.reservationPerson.length;
-    var p = new ReservationPerson('', '', '');
+    var p = new ReservationPerson('', '', '', false);
     id.reservationPerson[size] = p;
   }
   addServiceToReservationService(id: ReservationDetail) {
     console.log("addServiceToReservationService", id);
 
     var size = id.reservationService.length;
-    var p = new ReservationServices(null, '', '', '', '');
+    var p = new ReservationServices(null, '', '', '', '', false);
     id.reservationService[size] = p;
 
   }
@@ -402,9 +402,9 @@ export class ReservationComponent implements OnInit {
     var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationPerson) {
       var size = id.reservationPerson.length;
-      this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson[size] = new ReservationPerson('', '', '');
+      this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson[size] = new ReservationPerson('', '', '', true);
     } else {
-      var temp = new ReservationPerson('', '', '');
+      var temp = new ReservationPerson('', '', '', true);
       id.reservationPerson = [temp];
       this.reservationInfoEdit.reservation.reservationDetail[index] = id;
     }
@@ -414,9 +414,9 @@ export class ReservationComponent implements OnInit {
     var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationService) {
       var size = id.reservationService.length;
-      this.reservationInfoEdit.reservation.reservationDetail[index].reservationService[size] = new ReservationServices(null, '', '', '', '');
+      this.reservationInfoEdit.reservation.reservationDetail[index].reservationService[size] = new ReservationServices(null, '', '', '', '', true);
     } else {
-      var temp = new ReservationServices(null, '', '', '', '');
+      var temp = new ReservationServices(null, '', '', '', '', true);
       id.reservationService = [temp];
       this.reservationInfoEdit.reservation.reservationDetail[index] = id;
     }
@@ -496,5 +496,12 @@ export class ReservationComponent implements OnInit {
   }
   autoCompliteListFormatter(data: any): string {
     return `${data.personal_no} ${data.first_name}`;
+  }
+
+  saveReservationPerson(person: ReservationPerson, id: number) {
+    console.log("saveReservationPerson", person, id);
+  }
+  saveReservationService(service: ReservationServices, id: number) {
+    console.log("saveReservationService", service, id);
   }
 }

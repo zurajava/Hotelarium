@@ -78,7 +78,7 @@ export class ReservationDetail {
     public reservationService: Array<ReservationServices>;
 
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, showReserveButton: boolean,showCheckInButton: boolean) {
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, showReserveButton: boolean, showCheckInButton: boolean) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.create_date = create_date;
@@ -91,7 +91,7 @@ export class ReservationDetail {
         this.reservationPerson = reservationPerson;
         this.reservationService = reservationService;
         this.showReserveButton = showReserveButton;
-        this.showCheckInButton =showCheckInButton;
+        this.showCheckInButton = showCheckInButton;
     }
 
 }
@@ -102,10 +102,12 @@ export class ReservationPerson {
     public first_name: string;
     public last_name: string;
 
-    constructor(person_id: string, first_name: string, last_name: string) {
+    public showSave: boolean = false;
+    constructor(person_id: string, first_name: string, last_name: string, showSave: boolean) {
         this.person_id = person_id;
         this.first_name = first_name;
         this.last_name = last_name;
+        this.showSave = showSave;
     }
 }
 
@@ -117,12 +119,15 @@ export class ReservationServices {
     public service_name: string;
     public price: string;
 
-    constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: string) {
+    public showSave: boolean = false;
+
+    constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: string, showSave: boolean) {
         this.service_id = service_id;
         this.frequency = frequency;
         this.additional_comment = additional_comment;
         this.service_name = service_name;
         this.price = price;
+        this.showSave = showSave;
     }
 }
 
