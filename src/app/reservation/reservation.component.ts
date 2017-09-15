@@ -29,7 +29,7 @@ export class ReservationComponent implements OnInit {
     { text: "Female" },
     { text: "Other" }
   ];
-    public company: Array<{ text: string }> = [
+  public company: Array<{ text: string }> = [
     { text: "YES" },
     { text: "NO" }
   ];
@@ -333,16 +333,28 @@ export class ReservationComponent implements OnInit {
   addPersonToReservationPersonExisting(id: ReservationDetail) {
     console.log("addPersonToReservationPersonExisting", id);
     var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-    var size = id.reservationPerson.length;
-    this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson[size] = new ReservationPerson('', '', '');
-
+    if (id.reservationPerson) {
+      var size = id.reservationPerson.length;
+      this.reservationInfoEdit.reservation.reservationDetail[index].reservationPerson[size] = new ReservationPerson('', '', '');
+    } else {
+      var temp = new ReservationPerson('', '', '');
+      id.reservationPerson = [temp];
+      this.reservationInfoEdit.reservation.reservationDetail[index] = id;
+    }
   }
   addServiceToReservationServiceExisting(id: ReservationDetail) {
     console.log("addServiceToReservationServiceExisting", id);
-
     var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-    var size = id.reservationService.length;
-    this.reservationInfoEdit.reservation.reservationDetail[index].reservationService[size] = new ReservationServices(null, '', '', '', '');
+    if (id.reservationService) {
+      var size = id.reservationService.length;
+      this.reservationInfoEdit.reservation.reservationDetail[index].reservationService[size] = new ReservationServices(null, '', '', '', '');
+    } else {
+      var temp = new ReservationServices(null, '', '', '', '');
+      id.reservationService = [temp];
+      this.reservationInfoEdit.reservation.reservationDetail[index] = id;
+    }
+
+    
   }
   //========================================
   reserve() {
