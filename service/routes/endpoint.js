@@ -364,23 +364,46 @@ router.post('/reservation', (req, res) => {
 });
 
 router.post('/reservation/:id', (req, res) => {
-  console.log("add reservation one : " + req.params.id);
+  console.log("add reservation one : " + req.params.id, req.query.type);
   var reserv = req.body;
   if (req.params.id == null || reserv == null) {
     return res.json({
       success: false, message: 'reservation is not present', error: null
     });
   }
-  pool.checkReservation(reserv).then(data => {
-    pool.registerReservationOne(req.params.id, reserv).then(data => {
-      return res.json({ success: true, message: 'OK', data: data });
-    })
-  }).catch(error => {
-    console.log("error", error);
-    return res.json({
-      success: false, message: 'Error while register reservation', error: error
+  //1 = all,2 - Person, 3 - service
+  if (req.query.type == 1) {
+    pool.checkReservation(reserv).then(data => {
+      pool.registerReservationOne(req.params.id, reserv).then(data => {
+        return res.json({ success: true, message: 'OK', data: data });
+      })
+    }).catch(error => {
+      console.log("error", error);
+      return res.json({
+        success: false, message: 'Error while register reservation', error: error
+      });
     });
-  });
+  } else if (req.query.type == 2) {
+    pool.registerReservationPerson(req.params.id, reserv).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      return res.json({
+        success: false, message: 'Error while register reservation person'
+      });
+    });
+  } else if (req.query.type == 3) {
+    pool.registerReservationService(req.params.id, reserv).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      return res.json({
+        success: false, message: 'Error while register reservation service'
+      });
+    });
+  } else {
+    return res.json({
+      success: false, message: 'Error while register reservation params, invalid service type'
+    });
+  }
 });
 
 router.delete('/reservation/:id', (req, res) => {

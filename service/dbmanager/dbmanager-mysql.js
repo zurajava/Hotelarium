@@ -15,12 +15,12 @@ pool.getUserByUserName = function (username, password, callback) {
 
     pool.getConnection(function (err, connection) {
         connection.query('SELECT * FROM users where user_name=?', [username], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
                 callback(null, row[0]);
             }
-            connection.release();
         });
 
     });
@@ -30,10 +30,10 @@ pool.getUserByUserName = function (username, password, callback) {
 pool.getBranch = function (org_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT b.*,o.name as org_name FROM branch b inner join organisation o on b.org_id=o.id where b.org_id=?', [org_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -45,10 +45,10 @@ pool.registerBranch = function (name, description, address, org_id, mail, phone,
         connection.query('insert into branch(create_date,name,description,address,org_id,mail,phone) values(current_timestamp,?,?,?,?,?,?)',
             [name, description, address, org_id, mail, phone],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -61,10 +61,10 @@ pool.updateBranch = function (id, name, description, address, org_id, mail, phon
         connection.query('update branch set name=?, description=?, address=?, org_id=?, update_date=current_timestamp,mail=?, phone=? where id=?',
             [name, description, address, org_id, mail, phone, id],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -76,10 +76,10 @@ pool.updateBranch = function (id, name, description, address, org_id, mail, phon
 pool.deleteBranch = function (id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('delete from branch where id=?', [id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -91,10 +91,10 @@ pool.deleteBranch = function (id, callback) {
 pool.getUserOrganisation = function (user_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT u.user_id, o.name ,o.id FROM user_organisation u inner join organisation o on u.org_id=o.id where u.user_id=?', [user_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -103,15 +103,15 @@ pool.getUserOrganisation = function (user_id, callback) {
 }
 pool.getUserBranch = function (user_id, callback) {
     pool.getConnection(function (err, connection) {
-        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b  on u.branch_id=b.id inner join organisation o on b.org_id=o.id where u.user_id=?', [user_id], function (error, row, fields) {
-            if (error) {
+        connection.query('SELECT u.user_id, b.name ,b.id FROM user_branch u inner join branch b  on u.branch_id=b.id inner join organisation o on b.org_id=o.id where u.user_id=?', [user_id],
+            function (error, row, fields) {
                 connection.release();
-                throw error;
-            } else {
-                connection.release();
-                callback(null, row);
-            }
-        });
+                if (error) {
+                    throw error;
+                } else {
+                    callback(null, row);
+                }
+            });
 
     });
 }
@@ -120,10 +120,10 @@ pool.getUserBranch = function (user_id, callback) {
 pool.getCategory = function (branch_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT c.*, b.name as branch_name FROM category c inner join branch b on c.branch_id=b.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -143,10 +143,10 @@ pool.registerCategory = function (name, price, currency, description, branch_id,
         connection.query('insert into category(create_date,name,price, currency,description,branch_id,parking) values(current_timestamp,?,?,?,?,?,?)',
             [name, price, currency, description, branch_id, parkingValue],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -157,10 +157,10 @@ pool.registerCategory = function (name, price, currency, description, branch_id,
 pool.deleteCategory = function (id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('delete from category where id=?', [id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -179,10 +179,10 @@ pool.updateCategory = function (id, name, price, currency, description, branch_i
         connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp ,parking =? where id=?',
             [name, price, currency, description, branch_id, parkingValue, id],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -193,10 +193,10 @@ pool.updateCategory = function (id, name, price, currency, description, branch_i
 pool.getService = function (branch_id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT c.*, b.name as branch_name FROM service c inner join branch b on c.branch_id=b.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -209,10 +209,10 @@ pool.registerService = function (name, price, currency, description, branch_id, 
         connection.query('insert into service(create_date,name,price, currency,description,branch_id,type) values(current_timestamp,?,?,?,?,?,?)',
             [name, price, currency, description, branch_id, type],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -223,10 +223,10 @@ pool.registerService = function (name, price, currency, description, branch_id, 
 pool.deleteService = function (id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('delete from service where id=?', [id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -239,10 +239,10 @@ pool.updateService = function (id, name, price, currency, description, branch_id
         connection.query('update service set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp,type=? where id=?',
             [name, price, currency, description, branch_id, type, id],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -255,14 +255,15 @@ pool.getRoom = function (branch_id, category_id) {
     console.log("getRoom sql: ", category_id)
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-            connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=? and (c.category_id=? or ? is null)', [branch_id, category_id, category_id], function (error, row, fields) {
-                if (err) {
-                    reject(err)
-                } else {
+            connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=? and (c.category_id=? or ? is null)',
+                [branch_id, category_id, category_id], function (error, row, fields) {
                     connection.release();
-                    resolve(row);
-                }
-            });
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(row);
+                    }
+                });
         });
 
     });
@@ -286,11 +287,11 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
         connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag,additional_bad,additional_bad_price,extra_person,extra_person_price) values(current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
             [name, price, currency, room_no, description, branch_id, category_id, smokeValue, wifiValue, tag,
                 additional_bad, additional_bad_price, extra_person, extra_person_price], function (error, row, fields) {
+                    connection.release();
                     if (error) {
                         console.log(error);
                         callback(error, null);
                     } else {
-                        connection.release();
                         callback(null, row);
                     }
                 });
@@ -301,10 +302,10 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
 pool.deleteRoom = function (id, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('delete from room where id=?', [id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -330,10 +331,10 @@ pool.updateRoom = function (id, name, price, currency, room_no, description, bra
         connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=?,additional_bad=?, additional_bad_price=?, extra_person=?,extra_person_price=? where id=?',
             [name, price, currency, room_no, description, branch_id, category_name, smokeValue, wifiValue, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, id],
             function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });
@@ -347,10 +348,10 @@ savePerson = function (branch_id) {
         var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
         pool.getConnection(function (err, connection) {
             connection.query(query, [branch_id], function (error, row, fields) {
+                connection.release();
                 if (error) {
                     reject(error);
                 } else {
-                    connection.release();
                     reject(row);
                 }
             });
@@ -365,10 +366,10 @@ pool.checkReservation = function (data) {
             ' or (?>DATE(t.start_date)  and ? <=DATE(t.end_date) ))';
         pool.getConnection(function (err, connection) {
             connection.query(query, [data.room_id, data.start_date, data.start_date, data.end_date, data.end_date], function (error, row, fields) {
+                connection.release();
                 if (error) {
                     reject(error);
                 } else {
-                    connection.release();
                     console.log("checkReservation not available", data.start_date, data.end_date, row[0].count, row[0].room_no);
                     if (row[0].count > 0) {
                         reject('Room ' + row[0].room_no + ' is not availabe in this period ' + data.start_date + ' - ' + data.end_date);
@@ -388,17 +389,15 @@ registerPersonLocal = function (person) {
             connection.query('insert into person  (first_name,last_name,personal_no,email,gender,phone,company,company_name,company_code)values (?,?,?,?,?,?,?,?,?)',
                 [person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.phone, person.company, person.company_name, person.company_code],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         if (error.code != 'ER_DUP_ENTRY') {
                             console.log("person", error.code);
-                            connection.release();
                             reject(error);
                         } else {
-                            connection.release();
                             resolve("OK");
                         }
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -412,12 +411,11 @@ registerReservationLocal = function (person) {
             connection.query('insert into reservation (create_date,person_no,status_id)values(current_timestamp,?,1)',
                 [person.personal_no],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("registerReservationLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve(results.insertId);
                     }
                 });
@@ -433,12 +431,11 @@ registerReservationDetailsLocal = function (reservID, data) {
                 [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
                     data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("registerReservationDetailsLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve(results.insertId);
                     }
                 });
@@ -452,12 +449,30 @@ registerReservationPersonLocal = function (id, person) {
             connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?,?,?)',
                 [id, person.person_id, person.first_name, person.last_name],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("registerReservationPersonLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+pool.registerReservationPerson = function (id, person) {
+    console.log("registerReservationPerson", id, JSON.stringify(person));
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?,?,?)',
+                [id, person.person_id, person.first_name, person.last_name],
+                function (error, results, fields) {
+                    connection.release();
+                    if (error) {
+                        console.log("registerReservationPersonLocal", error.code);
+                        reject(error);
+                    } else {
                         resolve("OK");
                     }
                 });
@@ -471,12 +486,30 @@ registerReservationServiceLocal = function (id, service) {
             connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
                 [id, service.service_id, service.frequency, service.additional_comment],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("registerReservationServiceLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+pool.registerReservationService = function (id, service) {
+    console.log("registerReservationService", id, JSON.stringify(service));
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
+                [id, service.service_id, service.frequency, service.additional_comment],
+                function (error, results, fields) {
+                    connection.release();
+                    if (error) {
+                        console.log("registerReservationServiceLocal", error.code);
+                        reject(error);
+                    } else {
                         resolve("OK");
                     }
                 });
@@ -559,10 +592,14 @@ pool.registerReservationOne = function (id, reservation) {
                         return serviceData;
                     })
                 });
+
+                return Promise.all(reservationServicePromise);
+            } else {
+                return data;
             }
-            return Promise.all(reservationServicePromise);
         }).then(data => {
-            resolve(data);
+            console.log(JSON.stringify(reservation.id));
+            resolve(reservation.id);
         }).catch(error => {
             reject(error);
         });
@@ -572,15 +609,13 @@ pool.registerReservationOne = function (id, reservation) {
 deleteReservationServiceLocal = function (id) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-            connection.query('delete from reservation_service where reservation_id=?',
-                [id],
+            connection.query('delete from reservation_service where reservation_id=?', [id],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("deleteReservationServiceLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -594,12 +629,11 @@ pool.deleteReservationServiceLocal = function (id, service_id) {
             connection.query('delete from reservation_service where reservation_id=? and service_id=?',
                 [id, service_id],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("deleteReservationServiceLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -614,12 +648,11 @@ deleteReservationPersonLocal = function (id) {
             connection.query('delete FROM reservation_person where reservation_id=?',
                 [id],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("deleteReservationPersonLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -634,12 +667,11 @@ pool.deleteReservationPersonLocal = function (id, person_id) {
             connection.query('delete FROM reservation_person where reservation_id=? and person_id=?',
                 [id, person_id],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("deleteReservationPersonLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -653,12 +685,11 @@ deleteReservationLocal = function (id) {
             connection.query('delete FROM reservation_detail where id=?; ',
                 [id],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("registerReservationServiceLocal", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -694,12 +725,11 @@ pool.updateReservation = function (id, status_id) {
             connection.query('update reservation_detail set status_id=? where id=? and status_id=1',
                 [status_id, id],
                 function (error, results, fields) {
+                    connection.release();
                     if (error) {
                         console.log("updateReservation", error.code);
-                        connection.release();
                         reject(error);
                     } else {
-                        connection.release();
                         resolve("OK");
                     }
                 });
@@ -713,10 +743,10 @@ getCategory = function (branch_id) {
     var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [branch_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 deferred.reject(error);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -731,10 +761,10 @@ getRoom = function (branch_id, categoryID) {
     var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(roomSql, [branch_id, categoryID], function (error, row, fields) {
+            connection.release();
             if (err) {
                 deferred.reject(err);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -755,10 +785,10 @@ getReservationL = function (room_id, start_date, end_date) {
         ' where d.room_id=? and d.start_date >? and d.start_date<? order by d.start_date asc';
     pool.getConnection(function (err, connection) {
         connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
+            connection.release();
             if (err) {
                 deferred.reject(err);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -815,10 +845,10 @@ getReservation = function (id) {
     var query = 'SELECT * FROM reservation  where id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 deferred.reject(error);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -832,10 +862,10 @@ getPersonByPersonalNo = function (personal_no) {
     var query = 'SELECT * FROM  person where personal_no=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [personal_no], function (error, row, fields) {
+            connection.release();
             if (error) {
                 deferred.reject(error);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -850,10 +880,10 @@ getReservationsDetails = function (reservation_id) {
         ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id  where reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 deferred.reject(error);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -867,10 +897,10 @@ getReservationsServices = function (reservation_id) {
         ' FROM reservation_service r inner join service s on r.service_id=s.id where  reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 deferred.reject(error);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -884,10 +914,10 @@ getReservationsPersons = function (reservation_id) {
     var query = 'SELECT * FROM reservation_person where reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
+            connection.release();
             if (error) {
                 deferred.reject(error);
             } else {
-                connection.release();
                 deferred.resolve(row);
             }
         });
@@ -939,11 +969,10 @@ pool.getReservationById = function (id) {
 pool.getPerson = function (person_no, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT * FROM person where personal_no like ?', ['%' + person_no + '%'], function (error, row, fields) {
+            connection.release();
             if (error) {
-                connection.release();
                 throw error;
             } else {
-                connection.release();
                 callback(null, row);
             }
         });
@@ -959,10 +988,10 @@ pool.getUserPermission = function (user_id, permission, action, callback) {
             'inner join  permission a on p.permission_id=a.id ' +
             'inner join user_branch b on a.branch_id=b.branch_id  and b.user_id=u.user_id ' +
             'where u.user_id=?  and a.name=? and a.action=?', [user_id, permission, action], function (error, row, fields) {
+                connection.release();
                 if (error) {
                     throw error;
                 } else {
-                    connection.release();
                     callback(null, row);
                 }
             });

@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { ReservationInfo, ReservationDetail } from './model';
+import { ReservationInfo, ReservationDetail, ReservationPerson, ReservationServices } from './model';
 
 @Injectable()
 export class ReservationService {
@@ -111,7 +111,25 @@ export class ReservationService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
-    return this.http.post('/service/reservation/' + id.toString(), body, { headers: headers }).catch(this.handleError);
+    return this.http.post('/service/reservation/' + id.toString() + '?type=1', body, { headers: headers }).catch(this.handleError);
+
+  }
+  addReservationPersonToExstingReservation(data: ReservationPerson, id: number) {
+    const body = JSON.stringify(data);
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.post('/service/reservation/' + id.toString() + '?type=2', body, { headers: headers }).catch(this.handleError);
+
+  }
+  addReservationServiceToExstingReservation(data: ReservationServices, id: number) {
+    const body = JSON.stringify(data);
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.post('/service/reservation/' + id.toString() + '?type=3', body, { headers: headers }).catch(this.handleError);
 
   }
   deleteReservation(id: number) {

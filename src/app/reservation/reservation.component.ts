@@ -224,7 +224,7 @@ export class ReservationComponent implements OnInit {
     }
   }
   removeReservationExisting(id: ReservationDetail) {
-    console.log("removeReservationExisting");
+    console.log("removeReservationExisting", id);
     this.reservationService.deleteReservation(id.id).subscribe(data => {
       if (data.json().success === true) {
         var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
@@ -372,6 +372,11 @@ export class ReservationComponent implements OnInit {
     id.status_id = "1";
     this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
       if (data.json().success === true) {
+        id.id = data.json().data;
+        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+        if (index > -1) {
+          this.reservationInfoEdit.reservation.reservationDetail[index] = id;
+        }
         this.toastr.success("Reservation Added");
         id.showCheckInButton = false;
         id.showReserveButton = false;
@@ -386,6 +391,11 @@ export class ReservationComponent implements OnInit {
     id.status_id = "2";
     this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
       if (data.json().success === true) {
+        id.id = data.json().data;
+        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+        if (index > -1) {
+          this.reservationInfoEdit.reservation.reservationDetail[index] = id;
+        }
         this.toastr.success("Reservation Added");
         id.showCheckInButton = false;
         id.showReserveButton = false;
@@ -500,8 +510,26 @@ export class ReservationComponent implements OnInit {
 
   saveReservationPerson(person: ReservationPerson, id: number) {
     console.log("saveReservationPerson", person, id);
+
+    this.reservationService.addReservationPersonToExstingReservation(person, id).subscribe(data => {
+      if (data.json().success === true) {
+        person.showSave = false;
+        this.toastr.success("Reservation Person Added");
+      } else {
+        this.toastr.error(data.json().error);
+      }
+    });
+
   }
   saveReservationService(service: ReservationServices, id: number) {
     console.log("saveReservationService", service, id);
+    this.reservationService.addReservationServiceToExstingReservation(service, id).subscribe(data => {
+      if (data.json().success === true) {
+        service.showSave = false;
+        this.toastr.success("Reservation Service Added");
+      } else {
+        this.toastr.error(data.json().error);
+      }
+    });
   }
 }
