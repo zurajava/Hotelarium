@@ -69,7 +69,7 @@ export class ReservationDetail {
     public price: number;
     public additional_bad_price: number;
     public extra_person_price: number;
-    public day_count :number;
+    public day_count: number;
 
     public expandPerson: boolean = false;
     public expandService: boolean = false;
@@ -77,12 +77,13 @@ export class ReservationDetail {
     public showReserveButton: boolean = false;
     public showCheckInButton: boolean = false;
     public showUpdateButton: boolean = false;
+    public showPaymentCheckInButton: boolean = true;
 
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationServices>;
 
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, showReserveButton: boolean, showCheckInButton: boolean) {
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.create_date = create_date;
@@ -96,6 +97,7 @@ export class ReservationDetail {
         this.reservationService = reservationService;
         this.showReserveButton = showReserveButton;
         this.showCheckInButton = showCheckInButton;
+        this.showPaymentCheckInButton = showPaymentCheckInButton;
     }
 
 }
