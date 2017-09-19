@@ -225,18 +225,26 @@ export class ReservationComponent implements OnInit {
   }
   removeReservationExisting(id: ReservationDetail) {
     console.log("removeReservationExisting", id);
-    this.reservationService.deleteReservation(id.id).subscribe(data => {
-      if (data.json().success === true) {
-        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-        if (index > -1) {
-          this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
+    if (id.id != null) {
+      this.reservationService.deleteReservation(id.id).subscribe(data => {
+        if (data.json().success === true) {
+          var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+          if (index > -1) {
+            this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
+          }
+          this.fillDataRange();
+          this.toastr.success("Reservation deleted");
+        } else {
+          this.toastr.error(data.json().message);
         }
-        this.fillDataRange();
-        this.toastr.success("Reservation deleted");
-      } else {
-        this.toastr.error(data.json().message);
+      })
+    } else {
+      var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+      if (index > -1) {
+        this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
       }
-    })
+    }
+
   }
 
   removeReservationPerson(id: ReservationDetail, person: ReservationPerson) {
