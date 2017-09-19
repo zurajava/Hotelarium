@@ -66,6 +66,10 @@ export class ReservationDetail {
     public category_id: number;
     public category_name: string;
     public extra_person: string;
+    public price: number;
+    public additional_bad_price: number;
+    public extra_person_price: number;
+    public day_count :number;
 
     public expandPerson: boolean = false;
     public expandService: boolean = false;

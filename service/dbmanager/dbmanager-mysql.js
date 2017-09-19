@@ -361,6 +361,9 @@ savePerson = function (branch_id) {
 pool.checkReservation = function (data) {
     console.log("checkReservation start", data.room_id, data.start_date, data.start_date, data.end_date, data.end_date);
     return new Promise(function (resolve, reject) {
+        if (data.end_date <= data.start_date) {
+            reject("CheckIn date should be less than CheckOut date");
+        }
         var categoryData;
         var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
             ' or (?>DATE(t.start_date)  and ? <=DATE(t.end_date) ))';
@@ -776,7 +779,7 @@ getReservationL = function (room_id, start_date, end_date) {
     var deferred = q.defer();
     var reservationData;
     var reservationSql = 'SELECT d.id,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
-        ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email ' +
+        ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email , ro.price ,ro.additional_bad_price, ro.extra_person_price ' +
         ' FROM reservation_detail d ' +
         ' inner join reservation_status s on d.status_id=s.id ' +
         ' inner join room ro on ro.id=d.room_id ' +
@@ -876,7 +879,7 @@ getPersonByPersonalNo = function (personal_no) {
 getReservationsDetails = function (reservation_id) {
     var deferred = q.defer();
     var categoryData;
-    var query = 'SELECT r.*,c.id as category_id,c.name as category_name FROM reservation_detail r ' +
+    var query = 'SELECT r.*,c.id as category_id,c.name as category_name ,o.price,o.additional_bad_price, o.extra_person_price,datediff(r.end_date, r.start_date) as day_count FROM reservation_detail r ' +
         ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id  where reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
