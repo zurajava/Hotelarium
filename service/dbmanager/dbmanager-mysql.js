@@ -832,7 +832,6 @@ pool.getReservation = function (branch_id, start_date, end_date) {
             return Promise.all(finalPromise)
         })
         .then(data => {
-            console.log('final: ', data);
             deferred.resolve(data);
         })
         .catch(function (err) {
@@ -931,11 +930,20 @@ getReservationsPersons = function (reservation_id) {
 
 pool.getReservationById = function (id) {
     var deferred = q.defer();
-
     getReservation(id).then(reservation => {
         return getReservationsDetails(reservation[0].id).then(reservations => {
             return Object.assign({}, reservation[0], { reservationDetail: reservations });
         })
+    }).then(reservationData => {
+        let reservationDataPromise = reservationData.reservationDetail.map(data => {
+            return getPayment(data.id, 'RESERVATION', null).then(payment => {
+                return Object.assign({}, data, { payment })
+            });
+        })
+        return Promise.all(reservationDataPromise).then(data => {
+            return Object.assign({}, reservationData, { reservationDetail: data })
+        });
+
     }).then(reservationsService => {
         let finalPromiseService = reservationsService.reservationDetail.map(reservationdetail => {
             return getReservationsServices(reservationdetail.id)
@@ -946,6 +954,20 @@ pool.getReservationById = function (id) {
             .then(data => Object.assign({}, reservationsService, { reservationDetail: data }));
 
         return Promise.all(finalPromiseService);
+    }).then(reservationsServicePayment => {
+        let reservationsServicePaymentPromise = reservationsServicePayment.reservationDetail.map(reservationDetail => {
+            let reservationsServicePaymentPromiseLocal = reservationDetail.reservationService.map(service => {
+                return getPayment(service.reservation_id, "SERVICE", service.service_id).then(payment => {
+                    return Object.assign({}, service, { payment });
+                })
+            })
+            return Promise.all(reservationsServicePaymentPromiseLocal).then(data => {
+                return Object.assign({}, reservationDetail, { reservationService: data });
+            });
+        });
+        return Promise.all(reservationsServicePaymentPromise).then(data => {
+            return Object.assign({}, reservationsServicePayment, { reservationDetail: data });
+        });
     }).then(reservationsPerson => {
         let finalPromisePersone = reservationsPerson.reservationDetail.map(reservationdetail => {
             return getReservationsPersons(reservationdetail.id)
@@ -1000,5 +1022,22 @@ pool.getUserPermission = function (user_id, permission, action, callback) {
             });
 
     });
+}
+
+getPayment = function (reservation_id, source, service_id) {
+    var deferred = q.defer();
+    var roomData;
+    var roomSql = 'SELECT * FROM  payment where reservation_id=? and source=? and (service_id=? or service_id is null)';
+    pool.getConnection(function (err, connection) {
+        connection.query(roomSql, [reservation_id, source, service_id], function (error, row, fields) {
+            connection.release();
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
 }
 module.exports = pool;

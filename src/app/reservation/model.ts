@@ -26,6 +26,30 @@ export class Person {
     }
 
 }
+export class Payment {
+    public id: number;
+    public reservation_id: number;
+    public amount: number;
+    public create_date: Date;
+    public type: string;
+    public source: string;
+    public ticket: string;
+    public additional_comment: string;
+    public service_id: number;
+
+    constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: string, source: string, ticket: string, additional_comment: string, service_id: number) {
+        this.id = id;
+        this.reservation_id = reservation_id;
+        this.amount = amount;
+        this.create_date = create_date;
+        this.type = type;
+        this.source = source;
+        this.ticket = ticket;
+        this.additional_comment = additional_comment;
+        this.service_id = service_id;
+    }
+
+}
 export class Reservation {
     public id: number;
     public create_date: Date;
@@ -81,9 +105,11 @@ export class ReservationDetail {
 
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationServices>;
+    public payments: Array<Payment>;
 
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>,
+        showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.create_date = create_date;
@@ -126,6 +152,7 @@ export class ReservationServices {
     public price: string;
 
     public showSave: boolean = false;
+    public payments: Array<Payment>;
 
     constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: string, showSave: boolean) {
         this.service_id = service_id;
