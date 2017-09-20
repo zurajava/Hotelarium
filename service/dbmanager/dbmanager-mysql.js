@@ -878,7 +878,12 @@ getPersonByPersonalNo = function (personal_no) {
 getReservationsDetails = function (reservation_id) {
     var deferred = q.defer();
     var categoryData;
-    var query = 'SELECT r.*,c.id as category_id,c.name as category_name ,o.price,o.additional_bad_price, o.extra_person_price,datediff(r.end_date, r.start_date) as day_count FROM reservation_detail r ' +
+    var query = 'SELECT r.*,c.id as category_id,c.name as category_name ,o.price,o.additional_bad_price, o.extra_person_price,datediff(r.end_date, r.start_date) as day_count,' +
+        'o.price * datediff(r.end_date, r.start_date) as reservation_prise_full,' +
+        'r.additional_bed * o.additional_bad_price as additional_bad_price_full,' +
+        'o.extra_person_price * r.extra_person as extra_person_price_full,' +
+        ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full ' +
+        ' FROM reservation_detail r ' +
         ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id  where reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
