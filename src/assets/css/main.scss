@@ -40,7 +40,7 @@ body {
     }
     .navigation {
         background-color: $sidenavBg;
-        box-shadow: 2px 0px 4px 0px #f3f3f3;
+        box-shadow: 2px 0px 4px 0px #3b5998;
         ul {
             margin: 0;
             padding-bottom: 5rem;
@@ -54,15 +54,18 @@ body {
                 cursor: pointer;
                 outline: none;
                 &:hover {
-                    background-color: #F7F7F7;
+                    background-color: #3b5998;
                     transition: all .4s;
                 }
                 &:first-child {
                     border-top: 1px solid white;
                 }
                 a {
-                    font-size: 14px;
-                    font-weight: 300;
+                    font-size: 15px;
+                    font-weight: 700;
+                    font-variant: normal;
+                    font-style: normal;
+                    font-family: "Times New Roman", Times, serif;
                    // text-transform: uppercase;
                     i {
                         margin-right: 10px;
