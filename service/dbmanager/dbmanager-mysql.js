@@ -9,6 +9,7 @@ var pool = mysql.createPool({
     database: 'heroku_8c0c9eba2ff6cfd',
     debug: false,
     port: '3306',
+    multipleStatements: true
 });
 
 pool.getUserByUserName = function (username, password, callback) {
@@ -1040,6 +1041,25 @@ getPayment = function (reservation_id, source, service_id) {
                 deferred.reject(err);
             } else {
                 deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
+
+pool.registerPayment = function (payment) {
+    var deferred = q.defer();
+    var result;
+    var prise_full;
+    var payd_full;
+    var query = "SET @result=0; CALL make_payment(" + payment.reservation_id + ", " + payment.amount + ", '" + payment.type + "', '" + payment.source + "', '" + payment.ticket + "', '" + payment.additional_comment + "', '" + payment.service_id + "', @result); SELECT @result as result;";
+    pool.getConnection(function (err, connection) {
+        connection.query(query, function (error, results, fields) {
+            connection.release();
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(results[2][0].result);
             }
         });
     });

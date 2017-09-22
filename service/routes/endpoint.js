@@ -523,16 +523,14 @@ router.get('/person', (req, res) => {
 
 });
 
-router.get('/payment', (req, res) => {
-  console.log("person :" + req.query.person_no);
-  pool.getPerson(req.query.person_no, function (err, data) {
-    if (err) {
-      res.json({
-        success: false, message: 'Error while load person', error: err
-      });
-    } else {
-      res.json({ success: true, message: 'OK', person: data });
-    }
+router.post('/payment', (req, res) => {
+  console.log("payment :");
+  pool.registerPayment(req.body).then(data => {
+    return res.json({ success: true, message: 'OK', data: data });
+  }).catch(error => {
+    return res.json({
+      success: false, message: 'Error while load person', error: error
+    });
   });
 
 });
