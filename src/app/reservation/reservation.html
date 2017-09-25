@@ -431,11 +431,11 @@
         </thead>
 
         <tbody *ngFor="let caterory of data">
-            <tr>
+            <tr class="reservation_category">
                 <td [colSpan]="segment">{{ caterory.name }}</td>
             </tr>
             <tr *ngFor="let room of caterory.rooms">
-                <td>{{room.room_no}}</td>
+                <td class="reservation_room_no">{{room.room_no}}</td>
                 <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.room_no,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.name,schedule.reservation_id)"
                     [className]="schedule.status" *ngFor="let schedule of room.reservations">
                     {{schedule?.firstName}}
