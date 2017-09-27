@@ -162,9 +162,13 @@ body {
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin-right: -15px;
+    margin-right: 0px;
     margin-left: 0px; 
 }
+.container-fluid {
+   padding: 0px;
+}
+
 .footer {
     width: 100%;
     z-index: 10;

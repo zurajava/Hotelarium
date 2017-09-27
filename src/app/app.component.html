@@ -8,7 +8,7 @@
                 <i class="fa fa-user navigation__profile--circle" [ngClass]="{'adminImage': roleID === 'ADMIN'|| roleID === 'RESIDENT'}"></i>
                 <a routerLink="/profile" routerLinkActive="nav-active-link-admin"><h2>{{roleID}}</h2></a>
             </div>
-            <ul *ngIf="roleID === 'ADMIN'" class="row sidenav">
+            <ul *ngIf="roleID === 'ADMIN'" class="row sidenav list-group">
 
                 <li (click)="onToggle()" routerLink="/reservation" routerLinkActive="nav-active-link-admin">
                     <a><i class="fa fa-home" aria-hidden="true"></i>Reservation</a>
