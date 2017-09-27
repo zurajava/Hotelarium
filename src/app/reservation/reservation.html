@@ -282,7 +282,7 @@
                 </div>
                 <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index">
 
-                    <div class="person_div_tr">
+                    <div class="reservation_info_detail_div">
                         <td>
                             <kendo-combobox style="width:140px;height:25px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'"
                                 [valuePrimitive]="true" [(value)]="res.category_id">
