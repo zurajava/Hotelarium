@@ -332,10 +332,14 @@
                             <button *ngIf="res.showCheckInButton" class="reservation_btn_command" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)"><i class="fa fa-check" style="font-size:14px"></i>CheckIn</button>
                             <button class="reservation_btn_command" (click)="addServiceEdit(res)"><i class="fa fa-gear" style="font-size:14px"></i>Service</button>
                             <button class="reservation_btn_command" (click)="addPersonEdit(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Person</button>
+                            <button class="reservation_btn_command" (click)="showPaymentInfo(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment Info</button>
                             <button *ngIf="res.showUpdateButton" class="reservation_btn_command" (click)="removeReservationExisting(res)"><i class="fa fa-edit" style="font-size:14px;"></i>Update</button>
                             <button class="reservation_btn_command" (click)="removeReservationExisting(res)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                         </td>
-                        <div class="person_div" *ngIf="res.expandPerson"> 
+                        <div class="reservation_payment_div" *ngIf="res.expandPayment">
+                            Payment
+                        </div>
+                        <div class="person_div" *ngIf="res.expandPerson">
                             <div class="add_service_person_btn">
                                 <button class="reservation_btn" (click)="addPersonToReservationPersonExisting(res)"><i class="fa fa-plus" style="font-size:14px"></i>Person</button>
                             </div>
@@ -371,35 +375,43 @@
                                 <button class="reservation_btn" (click)="addServiceToReservationServiceExisting(res)"><i class="fa fa-plus" style="font-size:14px"></i>Service</button>
                             </div>
                             <table class="service_table_class">
-                                <tr>
-                                    <th>Service Id</th>
-                                    <th>Frequency</th>
-                                    <th>Additional Comment</th>
-                                    <th>Service Name</th>
-                                    <th>Command</th>
-                                </tr>
+                                <div>
+                                    <tr>
+                                        <th>Service Id</th>
+                                        <th>Frequency</th>
+                                        <th>Additional Comment</th>
+                                        <th>Service Name</th>
+                                        <th>Command</th>
+                                    </tr>
+                                </div>
                                 <tr *ngFor="let service of res.reservationService; let i = index">
-                                    <td width="50">
-                                        <kendo-combobox style="width:140px;height:25px" id="id_service_id" [data]="serviceData" [textField]="'name'" [valueField]="'id'"
-                                            [valuePrimitive]="true" [(value)]="service.service_id">
-                                        </kendo-combobox>
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.frequency" (input)="service.frequency= $event.target.value"
-                                        />
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.additional_comment" (input)="service.additional_comment= $event.target.value"
-                                        />
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.service_name" (input)="service.service_name= $event.target.value"
-                                        />
-                                    </td>
-                                    <td>
-                                        <button *ngIf="service.showSave" class="reservation_btn_command" (click)="saveReservationService(service,res.id)"><i class="fa fa-check" style="font-size:14px"></i>Save</button>
-                                        <button class="reservation_btn" (click)="removeReservationServiceExisting(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
-                                    </td>
+                                    <div>
+                                        <td width="50">
+                                            <kendo-combobox style="width:140px;height:25px" id="id_service_id" [data]="serviceData" [textField]="'name'" [valueField]="'id'"
+                                                [valuePrimitive]="true" [(value)]="service.service_id">
+                                            </kendo-combobox>
+                                        </td>
+                                        <td>
+                                            <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.frequency" (input)="service.frequency= $event.target.value"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.additional_comment" (input)="service.additional_comment= $event.target.value"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.service_name" (input)="service.service_name= $event.target.value"
+                                            />
+                                        </td>
+                                        <td>
+                                            <button *ngIf="service.showSave" class="reservation_btn_command" (click)="saveReservationService(service,res.id)"><i class="fa fa-check" style="font-size:14px"></i>Save</button>
+                                            <button class="reservation_btn" (click)="showServicePaymentInfo(service)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment Info</button>
+                                            <button class="reservation_btn" (click)="removeReservationServiceExisting(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
+                                        </td>
+                                        <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
+                                            Payment
+                                        </div>
+                                    </div>
                                 </tr>
                             </table>
                         </div>

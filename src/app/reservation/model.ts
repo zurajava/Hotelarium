@@ -94,11 +94,11 @@ export class ReservationDetail {
     public additional_bad_price: number;
     public extra_person_price: number;
     public day_count: number;
-    public reservation_prise_full:number;
-    public additional_bad_price_full:number;
-    public extra_person_price_full:number;
-    public price_full:number;
-    
+    public reservation_prise_full: number;
+    public additional_bad_price_full: number;
+    public extra_person_price_full: number;
+    public price_full: number;
+
 
     public expandPerson: boolean = false;
     public expandService: boolean = false;
@@ -153,11 +153,12 @@ export class ReservationServices {
     public service_id: number;
     public frequency: string;
     public additional_comment: string;
-    public payment_status:string;
+    public payment_status: string;
     public service_name: string;
     public price: string;
 
     public showSave: boolean = false;
+    public expandPayment: boolean = false;
     public payments: Array<Payment>;
 
     constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: string, showSave: boolean) {

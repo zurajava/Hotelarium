@@ -475,6 +475,15 @@ export class ReservationComponent implements OnInit {
       }
     });
   }
+  public showPaymentInfo(reservation: ReservationDetail) {
+    console.log("showPaymentInfo", reservation);
+    reservation.expandPayment = true;
+  }
+  public showServicePaymentInfo(services: ReservationServices) {
+    console.log("showServicePaymentInfo", services);
+    services.expandPayment = true;
+  }
+
   public handleChangeBirthDate(value: Date) {
     this.reservationInfo.person.birthdate = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
   }
