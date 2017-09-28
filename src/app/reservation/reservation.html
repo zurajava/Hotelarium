@@ -327,18 +327,15 @@
 
                         </td>
                         <td>
-                            <button *ngIf="res.showPaymentCheckInButton" class="reservation_btn_command" (click)="updateReservation(res)"><i class="fa fa-check" style="font-size:14px"></i>{{ res.status_id == 1 ? 'CheckIn' : 'Payment'}}</button>
+                            <button *ngIf="res.showPaymentCheckInButton" class="reservation_btn_command" (click)="updateReservation(res)"><i class="fa fa-check" style="font-size:14px"></i>{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
                             <button *ngIf="res.showReserveButton" class="reservation_btn_command" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)"><i class="fa fa-check" style="font-size:14px"></i>Reserve</button>
                             <button *ngIf="res.showCheckInButton" class="reservation_btn_command" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)"><i class="fa fa-check" style="font-size:14px"></i>CheckIn</button>
                             <button class="reservation_btn_command" (click)="addServiceEdit(res)"><i class="fa fa-gear" style="font-size:14px"></i>Service</button>
                             <button class="reservation_btn_command" (click)="addPersonEdit(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Person</button>
-                            <button class="reservation_btn_command" (click)="showPaymentInfo(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment Info</button>
+                            <button class="reservation_btn_command" (click)="showPaymentInfo(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment</button>
                             <button *ngIf="res.showUpdateButton" class="reservation_btn_command" (click)="removeReservationExisting(res)"><i class="fa fa-edit" style="font-size:14px;"></i>Update</button>
                             <button class="reservation_btn_command" (click)="removeReservationExisting(res)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                         </td>
-                        <div class="reservation_payment_div" *ngIf="res.expandPayment">
-                            Payment
-                        </div>
                         <div class="person_div" *ngIf="res.expandPerson">
                             <div class="add_service_person_btn">
                                 <button class="reservation_btn" (click)="addPersonToReservationPersonExisting(res)"><i class="fa fa-plus" style="font-size:14px"></i>Person</button>
@@ -405,13 +402,62 @@
                                         </td>
                                         <td>
                                             <button *ngIf="service.showSave" class="reservation_btn_command" (click)="saveReservationService(service,res.id)"><i class="fa fa-check" style="font-size:14px"></i>Save</button>
-                                            <button class="reservation_btn" (click)="showServicePaymentInfo(service)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment Info</button>
+                                            <button class="reservation_btn" (click)="showServicePaymentInfo(service)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment</button>
                                             <button class="reservation_btn" (click)="removeReservationServiceExisting(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
                                         </td>
                                         <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
                                             Payment
                                         </div>
                                     </div>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="reservation_payment_div" *ngIf="res.expandPayment">
+                            <table style="width:100%; text-align: left;">
+                                <tr>
+                                    <td><span class="person_label">Room Prise</span></td>
+                                    <td> <input class="person_input" name="reservation_prise_full" [(ngModel)]="res.reservation_prise_full"
+                                            disabled="true" /> </td>
+                                    <td><span class="person_label">Additional Bad Price</span></td>
+                                    <td><input class="person_input" name="additional_bad_price_full" [(ngModel)]="res.additional_bad_price_full"
+                                            disabled="true" /></td>
+                                    <td><span class="person_label">Extra Person Price</span></td>
+                                    <td><input class="person_input" name="extra_person_price_full" [(ngModel)]="res.extra_person_price_full"
+                                            disabled="true" /></td>
+                                    <td><span class="person_label">Amount Payd</span></td>
+                                    <td><input class="person_input" name="price_payd" [(ngModel)]="res.price_full" disabled="true"
+                                        /></td>
+                                    <td><span class="person_label">Price Full</span></td>
+                                    <td><input class="person_input" name="price_full" [(ngModel)]="res.price_full" /></td>
+                                    <td><span class="person_label">Payment Type</span></td>
+                                    <td><input class="person_input" name="price_type" [(ngModel)]="res.price_full" /></td>
+                                    <td><span class="person_label">Receipt #</span></td>
+                                    <td><input class="person_input" name="price_receipt" [(ngModel)]="res.price_full" /></td>
+                                    <td><button class="reservation_btn" (click)="payReservation(res)"><i class="fa fa-user-plus" style="font-size:14px"></i>Pay Now</button></td>
+                                </tr>
+                            </table>
+                            <table class="payment_table_class">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Source</th>
+                                    <th>Ticket</th>
+                                    <th>Additional Comment</th>
+                                    <th>Service</th>
+                                    <th>Amount</th>
+                                </tr>
+                                <tr *ngFor="let pay of res.payment; let i = index">
+
+                                    <td width="50">
+                                        {{pay.type}}
+                                    </td>
+                                    <td>{{pay.source}}
+                                    </td>
+                                    <td>{{pay.ticket}}
+                                    </td>
+                                    <td>{{pay.additional_comment}}
+                                    </td>
+                                    <td>{{pay.service_id}}</td>
+                                    <td>{{pay.amount}}</td>
                                 </tr>
                             </table>
                         </div>

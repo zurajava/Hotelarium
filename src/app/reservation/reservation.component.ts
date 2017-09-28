@@ -4,7 +4,7 @@ import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/co
 import { Router, RouterModule } from '@angular/router';
 import { NgForm, FormsModule } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule, ReservationPerson, ReservationServices } from './model';
+import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule, ReservationPerson, ReservationServices, Payment } from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Service } from '../service/model.js';
@@ -475,13 +475,29 @@ export class ReservationComponent implements OnInit {
       }
     });
   }
-  public showPaymentInfo(reservation: ReservationDetail) {
+  showPaymentInfo(reservation: ReservationDetail) {
     console.log("showPaymentInfo", reservation);
-    reservation.expandPayment = true;
+    reservation.expandPayment = true; 
   }
   public showServicePaymentInfo(services: ReservationServices) {
     console.log("showServicePaymentInfo", services);
     services.expandPayment = true;
+  }
+
+
+  public payReservation(res: ReservationDetail) {
+    console.log("payReservation", res);
+    var p = new Payment(res.id, res.id, res.price_full, new Date(), 'CASH', 'RESERVATION', 'ticket test', 'additional_comment test', null);
+
+    this.reservationService.addPaymentToReservation(p).subscribe(data => {
+      console.log("addPaymentToReservation", data.json(), data.json().success);
+      if (data.json().success === true) {
+        this.toastr.success("Payment Added");
+      } else {
+        this.toastr.error(data.json().error);
+      }
+    });
+
   }
 
   public handleChangeBirthDate(value: Date) {

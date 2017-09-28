@@ -1033,7 +1033,7 @@ pool.getUserPermission = function (user_id, permission, action, callback) {
 getPayment = function (reservation_id, source, service_id) {
     var deferred = q.defer();
     var roomData;
-    var roomSql = 'SELECT * FROM  payment where reservation_id=? and source=? and (service_id=? or service_id is null)';
+    var roomSql = 'SELECT * FROM  payment where reservation_id=? and source=? and (service_id=? or service_id is null or service_id =0)';
     pool.getConnection(function (err, connection) {
         connection.query(roomSql, [reservation_id, source, service_id], function (error, row, fields) {
             connection.release();

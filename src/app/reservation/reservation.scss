@@ -183,6 +183,36 @@
     }
 }
 
+.payment_table_class {
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;  
+    tr {
+        th {
+            font-weight: 500 !important;
+            font-size: 12px !important;
+            padding: 0.1em 2.3em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+        td{
+            font-weight: 350 !important;
+            font-size: 10px !important;
+            margin: 0;
+            padding: 0.1em 0.5em;
+            @media only screen and (min-width: 320px) and (max-width: 768px) {
+                font-size: 10px !important;
+            }
+        }
+    }
+}
+
 .reservation_table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -238,7 +268,7 @@
     width: 100%;
 }
 .reservation_payment_div{
-    background-color: red;
+    background-color: #e6e6ff;
     width: 100%;
 }
 .reservation_service_payment_div{
