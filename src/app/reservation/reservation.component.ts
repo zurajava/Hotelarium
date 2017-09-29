@@ -29,6 +29,10 @@ export class ReservationComponent implements OnInit {
     { text: "Female" },
     { text: "Other" }
   ];
+  public payTymes: Array<{ text: string }> = [
+    { text: "Card" },
+    { text: "Cash" }
+  ];
   public company: Array<{ text: string }> = [
     { text: "YES" },
     { text: "NO" }
@@ -203,6 +207,10 @@ export class ReservationComponent implements OnInit {
             this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
             this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
             this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
+
+
+            this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
+
           }
         } else {
           this.toastr.error(data.message);
@@ -336,9 +344,8 @@ export class ReservationComponent implements OnInit {
     id.expandPerson = true;
   }
   updateReservation(id: ReservationDetail) {
-    console.log("updateReservation", id, id.status_id);
+    console.log(id.id);
     if (id.status_id == "1") {
-      console.log(id.status_id, id.id);
       this.reservationService.updateReservation(id.id, "2").subscribe(data => {
         if (data.json().success === true) {
           id.status_id = "2";
@@ -348,9 +355,24 @@ export class ReservationComponent implements OnInit {
           this.toastr.error(data.json().message);
         }
       });
+    } else if (id.status_id == "2") {
+      if (id.payment_status == "3") {
+        this.reservationService.updateReservation(id.id, "3").subscribe(data => {
+          if (data.json().success === true) {
+            id.status_id = "4";
+            this.fillDataRange();
+            this.toastr.success("Reservation status change : CHECK-IN TO CHECK-OUT");
+          } else {
+            this.toastr.error(data.json().message);
+          }
+        });
+      } else if (id.payment_status == "2") {
+        this.toastr.error('Reservation is payd partly');
+      } else {
+        this.toastr.error('Reservation is not payd');
+      }
     } else {
-      this.toastr.success("Payment TO DO");
-
+      this.toastr.error('Check In First');
     }
   }
   updateAllReservation() {
@@ -477,7 +499,7 @@ export class ReservationComponent implements OnInit {
   }
   showPaymentInfo(reservation: ReservationDetail) {
     console.log("showPaymentInfo", reservation);
-    reservation.expandPayment = true; 
+    reservation.expandPayment = true;
   }
   public showServicePaymentInfo(services: ReservationServices) {
     console.log("showServicePaymentInfo", services);
@@ -487,12 +509,34 @@ export class ReservationComponent implements OnInit {
 
   public payReservation(res: ReservationDetail) {
     console.log("payReservation", res);
-    var p = new Payment(res.id, res.id, res.price_full, new Date(), 'CASH', 'RESERVATION', 'ticket test', 'additional_comment test', null);
+    var p = new Payment(res.id, res.id, res.amount_full, new Date(), res.pay_type, 'RESERVATION', 'ticket test', 'additional_comment test', null);
 
     this.reservationService.addPaymentToReservation(p).subscribe(data => {
       console.log("addPaymentToReservation", data.json(), data.json().success);
       if (data.json().success === true) {
         this.toastr.success("Payment Added");
+
+        this.reservationService.getReservationById(res.reservation_id.toString()).then(data => {
+          if (data.success === true) {
+            this.reservationInfoEdit = data.data;
+            for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
+              var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
+              var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
+
+              this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
+              this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
+              this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
+            }
+          } else {
+            this.toastr.error(data.message);
+          }
+        });
+
+
       } else {
         this.toastr.error(data.json().error);
       }

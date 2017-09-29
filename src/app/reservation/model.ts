@@ -82,7 +82,6 @@ export class ReservationDetail {
     public status_id: string;
     public start_date: Date;
     public end_date: Date;
-    public payment_type: string;
     public adult: string;
     public child: string;
     public additional_bed: string;
@@ -98,7 +97,14 @@ export class ReservationDetail {
     public additional_bad_price_full: number;
     public extra_person_price_full: number;
     public price_full: number;
+    public reservation_payd_amount :number;
+    public service_payd_amount :number;
+    public service_price :number;
 
+
+    public pay_type: string;
+    public receipt: string; 
+    public amount_full:number;
 
     public expandPerson: boolean = false;
     public expandService: boolean = false;

@@ -723,11 +723,18 @@ pool.deleteReservation = function (id) {
 }
 
 pool.updateReservation = function (id, status_id) {
-    console.log("updateReservation start...", id, status_id)
+    console.log("updateReservation start...", id, status_id);
+    var existing_status;
+    if (status_id == 2) {
+        existing_status = 1;
+    } else if (status_id == 3) {
+        existing_status = 2;
+    }
+
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
-            connection.query('update reservation_detail set status_id=? where id=? and status_id=1',
-                [status_id, id],
+            connection.query('update reservation_detail set status_id=? where id=? and status_id=?',
+                [status_id, id, existing_status],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {
@@ -786,7 +793,7 @@ getReservationL = function (room_id, start_date, end_date) {
         ' inner join room ro on ro.id=d.room_id ' +
         ' inner join reservation a on d.reservation_id=a.id ' +
         ' inner join person p on a.person_no=p.personal_no ' +
-        ' where d.room_id=? and d.start_date >? and d.start_date<? order by d.start_date asc';
+        ' where d.room_id=? and d.start_date >? and d.start_date<? and d.status_id in(1,2) order by d.start_date asc';
     pool.getConnection(function (err, connection) {
         connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
             connection.release();
@@ -883,7 +890,10 @@ getReservationsDetails = function (reservation_id) {
         'o.price * datediff(r.end_date, r.start_date) as reservation_prise_full,' +
         'r.additional_bed * o.additional_bad_price as additional_bad_price_full,' +
         'o.extra_person_price * r.extra_person as extra_person_price_full,' +
-        ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full ' +
+        ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full, ' +
+        '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'RESERVATION\' AND (p.service_id IS NULL OR p.service_id =0)) AS reservation_payd_amount, ' +
+        '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'SERVICE\' AND p.service_id IS NOT NULL) AS service_payd_amount, ' +
+        ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id) AS service_price' +
         ' FROM reservation_detail r ' +
         ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id  where reservation_id=?';
     pool.getConnection(function (err, connection) {
