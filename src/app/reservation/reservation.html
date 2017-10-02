@@ -327,11 +327,8 @@
                             </kendo-numerictextbox>
 
                         </td>
-                        <td>
-                            <div class="res_status">
-                                <div class="status_circle">{{res.status_id}} </div>
-                                <div class="payment_circle">{{res.payment_status}}</div>
-                            </div>
+                        <td><span class="badge badge-success">{{res.status_id}}</span>
+                            <span class="badge badge-danger">{{res.payment_status}}</span> 
                         </td>
                         <td>
                             <button *ngIf="res.showPaymentCheckInButton" class="reservation_btn_command" (click)="updateReservation(res)"><i class="fa fa-check" style="font-size:14px"></i>{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
