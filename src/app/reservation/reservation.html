@@ -1,213 +1,208 @@
-<div class="box-header">
-    <div class="reservation_filter">
-        <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-            (valueChange)="brValueChange($event)">
-        </kendo-dropdownlist>
-        <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
-        <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
-        <button (click)="filterRezervation()" class="reservation_btn"><i class="fa fa-search" style="font-size:14px"></i>Filter</button>
-    </div>
+<div class="container-fluid">
+    <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+        (valueChange)="brValueChange($event)">
+    </kendo-dropdownlist>
+    <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
+    <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
+    <button (click)="filterRezervation()" class="reservation_btn"><i class="fa fa-search" style="font-size:14px"></i>Filter</button>
 </div>
 <!-- Register Reservation -->
 <div *ngIf="showReservation" class="reservation-container">
-    <form class="k-form-inline">
-        <fieldset>
-            <legend>Personal Info</legend>
-            <div class="person_registration_table">
-                <table style="width:100%; text-align: left;">
-                    <tr>
-                        <td><span class="person_label">Personal Number</span></td>
-                        <td>
-                            <input class="person_input" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
-                                name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
-                            />
-                        </td>
-                        <td><span class="person_label">First Name</span></td>
-                        <td><input class="person_input" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
-                            /></td>
-                        <td><span class="person_label">Last Name</span></td>
-                        <td><input class="person_input" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
-                            /></td>
-                        <td><span class="person_label">Email</span></td>
-                        <td><input class="person_input" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
-                            /></td>
-                    </tr>
-                    <tr>
-                        <td><span class="person_label">Phone</span></td>
-                        <td><input class="person_input" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
-                            /></td>
-
-                        <td>
-                            <kendo-combobox class="person_input" name="gender" placeholder="Gender" [data]="genders" [textField]="'text'" [valueField]="'text'"
-                                [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
-                            </kendo-combobox>
-                        </td>
-                        <td>
-                            <kendo-combobox class="person_input" name="company" placeholder="Company" [data]="company" [textField]="'text'" [valueField]="'text'"
-                                [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.company">
-                            </kendo-combobox>
-                        </td>
-                        <td>
-                            <span class="person_label">Code</span>
-                        </td>
-                        <td><input class="person_input" placeholder="Code" name="address" [(ngModel)]="reservationInfo.person.company_code"
-                            /></td>
-                        <td><span class="person_label">Company Name</span></td>
-                        <td>
-                            <input class="person_input" placeholder="Company Name" name="address" [(ngModel)]="reservationInfo.person.company_name" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Reservation Info</legend>
-            <div class="add_reservation_btn">
-                <button class="reservation_btn" (click)="addReservation()"><i class="fa fa-plus" style="font-size:14px"></i>Reservation</button>
-            </div>
-            <table class="reservation_table">
+    <div class="container-fluid">
+        <div class="person_registration_table">
+            <table style="width:100%; text-align: left;">
                 <tr>
-                    <div class="person_div_tr">
-                        <th style="width:120px;padding-left:2em">Category</th>
-                        <th style="width:120px;padding-left:5em">Room No</th>
-                        <th style="width:110px;padding-left:4em">Start Date</th>
-                        <th style="width:120px;padding-left:6em">End Date</th>
-                        <th style="width:80px;padding-left:7em">Adult</th>
-                        <th style="width:80px;padding-left:5em">Child</th>
-                        <th style="width:130px;padding-left:4em">Additional Bed</th>
-                        <th style="width:130px;padding-left:0em">Extra Person</th>
-                        <th style="width:100px;padding-left:0em">Command</th>
-                    </div>
+                    <td><span class="person_label">Personal Number</span></td>
+                    <td>
+                        <input class="person_input" ngui-auto-complete [source]="persons" (valueChanged)="valueChanged($event)" placeholder="Personal #"
+                            name="n_personal_no" [(ngModel)]="reservationInfo.person.personal_no" [list-formatter]="autoCompliteListFormatter"
+                        />
+                    </td>
+                    <td><span class="person_label">First Name</span></td>
+                    <td><input class="person_input" placeholder="First Name" name="first_name" [(ngModel)]="reservationInfo.person.first_name"
+                        /></td>
+                    <td><span class="person_label">Last Name</span></td>
+                    <td><input class="person_input" placeholder="Last Name" name="last_name" [(ngModel)]="reservationInfo.person.last_name"
+                        /></td>
+                    <td><span class="person_label">Email</span></td>
+                    <td><input class="person_input" placeholder="Email" name="email" [(ngModel)]="reservationInfo.person.email"
+                        /></td>
                 </tr>
+                <tr>
+                    <td><span class="person_label">Phone</span></td>
+                    <td><input class="person_input" placeholder="Phone" name="phone" [(ngModel)]="reservationInfo.person.phone"
+                        /></td>
 
-                <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
-                    <div class="person_div_tr">
-                        <td width="50">
-                            <kendo-combobox style="width:140px;height:25px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'"
-                                [valuePrimitive]="true" [(value)]="res.category_id" (valueChange)="categoryValueChange($event)">
-                            </kendo-combobox>
-                        </td>
-                        <td>
-                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                [(value)]="res.room_id">
-                            </kendo-combobox>
-                        </td>
-                        <td>
-                            <kendo-datepicker style="width:120px;height:25px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)"
-                                id="start_date" name="nstart_date"></kendo-datepicker>
-                        </td>
-                        <td>
-                            <kendo-datepicker style="width:120px;height:25px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)"
-                                id="end_date" name="nend_date"></kendo-datepicker>
-                        </td>
-
-
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true"
-                                [format]="'n0'">
-                            </kendo-numerictextbox>
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true"
-                                [format]="'n0'">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
-                                [format]="'n0'">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
-                                [format]="'n0'">
-                            </kendo-numerictextbox>
-
-                        </td>
-                        <td><button class="reservation_btn_command" (click)="addService(res)"><i class="fa fa-gear" style="font-size:12px"></i>Service</button>
-                            <button class="reservation_btn_command" (click)="addPerson(res)"><i class="fa fa-user-plus" style="font-size:12px"></i>Person</button>
-                            <button class="reservation_btn_command" (click)="removeReservation(res)"><i class="fa fa-close" style="font-size:12px;"></i>Remove</button>
-                        </td>
-                        <div class="person_div" *ngIf="res.expandPerson">
-                            <div class="add_service_person_btn">
-                                <button class="reservation_btn" (click)="addPersonToReservationPerson(res)"><i class="fa fa-plus" style="font-size:14px"></i>Person</button>
-                            </div>
-                            <table class="person_table_class">
-                                <tr>
-                                    <th>Personal No</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Command</th>
-                                </tr>
-                                <tr *ngFor="let person of res.reservationPerson; let i = index">
-                                    <td>
-                                        <input kendoTextBox style="width:130px;height:25px" id="n_person_id" name="n_person_id_name" [value]="person.person_id" (input)="person.person_id = $event.target.value"
-                                        />
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:130px;height:25px" id="n_first_name" name="n_first_name_name" [value]="person.first_name"
-                                            (input)="person.first_name = $event.target.value" />
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:130px;height:25px" id="n_last_name" name="n_last_name_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
-                                        />
-                                    </td>
-                                    <td>
-                                        <button class="reservation_btn" (click)="removeReservationPerson(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="service_div" *ngIf="res.expandService">
-                            <div class="add_service_person_btn">
-                                <button class="reservation_btn" (click)="addServiceToReservationService(res)"><i class="fa fa-plus" style="font-size:14px"></i>Service</button>
-                            </div>
-                            <table class="service_table_class">
-                                <tr>
-                                    <th>Service Id</th>
-                                    <th>Frequency</th>
-                                    <th>Additional Comment</th>
-                                    <th>Service Name</th>
-                                    <th>Command</th>
-                                </tr>
-                                <tr *ngFor="let service of res.reservationService; let i = index">
-
-                                    <td>
-                                        <kendo-combobox style="width:130px;height:25px" id="id_n_service_id" name="n_service_id_name" [data]="serviceData" [textField]="'name'"
-                                            [valueField]="'id'" [valuePrimitive]="true" [(value)]="service.service_id">
-                                        </kendo-combobox>
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:130px;height:25px" id="id_n_frequency" name="n_frequency_name" [value]="service.frequency"
-                                            (input)="service.frequency = $event.target.value" />
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:130px;height:25px" id="id_n_additional_comment" name="n_additional_comment_name" [value]="service.additional_comment"
-                                            (input)="service.additional_comment = $event.target.value" />
-                                    </td>
-                                    <td>
-                                        <input kendoTextBox style="width:130px;height:25px" id="id_n_service_name" name="n_service_name_name" [value]="service.service_name"
-                                            (input)="service.service_name = $event.target.value" />
-                                    </td>
-                                    <td>
-                                        <button class="reservation_btn" (click)="removeReservationService(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                    <td>
+                        <kendo-combobox class="person_input" name="gender" placeholder="Gender" [data]="genders" [textField]="'text'" [valueField]="'text'"
+                            [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.gender">
+                        </kendo-combobox>
+                    </td>
+                    <td>
+                        <kendo-combobox class="person_input" name="company" placeholder="Company" [data]="company" [textField]="'text'" [valueField]="'text'"
+                            [valuePrimitive]="true" [(ngModel)]="reservationInfo.person.company">
+                        </kendo-combobox>
+                    </td>
+                    <td>
+                        <span class="person_label">Code</span>
+                    </td>
+                    <td><input class="person_input" placeholder="Code" name="address" [(ngModel)]="reservationInfo.person.company_code"
+                        /></td>
+                    <td><span class="person_label">Company Name</span></td>
+                    <td>
+                        <input class="person_input" placeholder="Company Name" name="address" [(ngModel)]="reservationInfo.person.company_name" />
+                    </td>
                 </tr>
             </table>
-        </fieldset>
-        <fieldset>
-            <legend>operations</legend>
-            <div>
-                <button class="reservation_btn" (click)="reserve()">Reserve</button>
-                <button class="reservation_btn" (click)="checkin()">Check In</button>
-            </div>
-        </fieldset>
-    </form>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="add_reservation_btn">
+            <button class="reservation_btn" (click)="addReservation()"><i class="fa fa-plus" style="font-size:14px"></i>Reservation</button>
+        </div>
+        <table class="reservation_table">
+            <tr>
+                <div class="person_div_tr">
+                    <th style="width:120px;padding-left:2em">Category</th>
+                    <th style="width:120px;padding-left:5em">Room No</th>
+                    <th style="width:110px;padding-left:4em">Start Date</th>
+                    <th style="width:120px;padding-left:6em">End Date</th>
+                    <th style="width:80px;padding-left:7em">Adult</th>
+                    <th style="width:80px;padding-left:5em">Child</th>
+                    <th style="width:130px;padding-left:4em">Additional Bed</th>
+                    <th style="width:130px;padding-left:0em">Extra Person</th>
+                    <th style="width:100px;padding-left:0em">Command</th>
+                </div>
+            </tr>
+
+            <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
+                <div class="person_div_tr">
+                    <td width="50">
+                        <kendo-combobox style="width:140px;height:25px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'"
+                            [valuePrimitive]="true" [(value)]="res.category_id" (valueChange)="categoryValueChange($event)">
+                        </kendo-combobox>
+                    </td>
+                    <td>
+                        <kendo-combobox style="width:100px;height:25px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                            [(value)]="res.room_id">
+                        </kendo-combobox>
+                    </td>
+                    <td>
+                        <kendo-datepicker style="width:120px;height:25px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)"
+                            id="start_date" name="nstart_date"></kendo-datepicker>
+                    </td>
+                    <td>
+                        <kendo-datepicker style="width:120px;height:25px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)"
+                            id="end_date" name="nend_date"></kendo-datepicker>
+                    </td>
+
+
+                    <td>
+                        <kendo-numerictextbox style="width:80px;height:25px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true"
+                            [format]="'n0'">
+                        </kendo-numerictextbox>
+                    </td>
+                    <td>
+                        <kendo-numerictextbox style="width:80px;height:25px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true"
+                            [format]="'n0'">
+                        </kendo-numerictextbox>
+
+                    </td>
+                    <td>
+                        <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                            [format]="'n0'">
+                        </kendo-numerictextbox>
+
+                    </td>
+                    <td>
+                        <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                            [format]="'n0'">
+                        </kendo-numerictextbox>
+
+                    </td>
+                    <td><button class="reservation_btn_command" (click)="addService(res)"><i class="fa fa-gear" style="font-size:12px"></i>Service</button>
+                        <button class="reservation_btn_command" (click)="addPerson(res)"><i class="fa fa-user-plus" style="font-size:12px"></i>Person</button>
+                        <button class="reservation_btn_command" (click)="removeReservation(res)"><i class="fa fa-close" style="font-size:12px;"></i>Remove</button>
+                    </td>
+                    <div class="person_div" *ngIf="res.expandPerson">
+                        <div class="add_service_person_btn">
+                            <button class="reservation_btn" (click)="addPersonToReservationPerson(res)"><i class="fa fa-plus" style="font-size:14px"></i>Person</button>
+                        </div>
+                        <table class="person_table_class">
+                            <tr>
+                                <th>Personal No</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Command</th>
+                            </tr>
+                            <tr *ngFor="let person of res.reservationPerson; let i = index">
+                                <td>
+                                    <input kendoTextBox style="width:130px;height:25px" id="n_person_id" name="n_person_id_name" [value]="person.person_id" (input)="person.person_id = $event.target.value"
+                                    />
+                                </td>
+                                <td>
+                                    <input kendoTextBox style="width:130px;height:25px" id="n_first_name" name="n_first_name_name" [value]="person.first_name"
+                                        (input)="person.first_name = $event.target.value" />
+                                </td>
+                                <td>
+                                    <input kendoTextBox style="width:130px;height:25px" id="n_last_name" name="n_last_name_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
+                                    />
+                                </td>
+                                <td>
+                                    <button class="reservation_btn" (click)="removeReservationPerson(res,person)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="service_div" *ngIf="res.expandService">
+                        <div class="add_service_person_btn">
+                            <button class="reservation_btn" (click)="addServiceToReservationService(res)"><i class="fa fa-plus" style="font-size:14px"></i>Service</button>
+                        </div>
+                        <table class="service_table_class">
+                            <tr>
+                                <th>Service Id</th>
+                                <th>Frequency</th>
+                                <th>Additional Comment</th>
+                                <th>Service Name</th>
+                                <th>Command</th>
+                            </tr>
+                            <tr *ngFor="let service of res.reservationService; let i = index">
+
+                                <td>
+                                    <kendo-combobox style="width:130px;height:25px" id="id_n_service_id" name="n_service_id_name" [data]="serviceData" [textField]="'name'"
+                                        [valueField]="'id'" [valuePrimitive]="true" [(value)]="service.service_id">
+                                    </kendo-combobox>
+                                </td>
+                                <td>
+                                    <input kendoTextBox style="width:130px;height:25px" id="id_n_frequency" name="n_frequency_name" [value]="service.frequency"
+                                        (input)="service.frequency = $event.target.value" />
+                                </td>
+                                <td>
+                                    <input kendoTextBox style="width:130px;height:25px" id="id_n_additional_comment" name="n_additional_comment_name" [value]="service.additional_comment"
+                                        (input)="service.additional_comment = $event.target.value" />
+                                </td>
+                                <td>
+                                    <input kendoTextBox style="width:130px;height:25px" id="id_n_service_name" name="n_service_name_name" [value]="service.service_name"
+                                        (input)="service.service_name = $event.target.value" />
+                                </td>
+                                <td>
+                                    <button class="reservation_btn" (click)="removeReservationService(res,service)"><i class="fa fa-close" style="font-size:14px;"></i>Remove</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </tr>
+        </table>
+    </div>
+    <fieldset>
+        <legend>operations</legend>
+        <div>
+            <button class="reservation_btn" (click)="reserve()">Reserve</button>
+            <button class="reservation_btn" (click)="checkin()">Check In</button>
+        </div>
+    </fieldset>
 </div>
 <!-- Edit Reservation -->
 <div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
@@ -328,7 +323,7 @@
 
                         </td>
                         <td><span class="badge badge-success">{{res.status_id}}</span>
-                            <span class="badge badge-danger">{{res.payment_status}}</span> 
+                            <span class="badge badge-danger">{{res.payment_status}}</span>
                         </td>
                         <td>
                             <button *ngIf="res.showPaymentCheckInButton" class="reservation_btn_command" (click)="updateReservation(res)"><i class="fa fa-check" style="font-size:14px"></i>{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
