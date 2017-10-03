@@ -570,9 +570,9 @@ export class ReservationComponent implements OnInit {
   }
 
 
-  valueChanged(newVal) {
+ /* valueChanged(newVal) {
     this.reservationInfo.person = newVal;
-  }
+  }*/
 
   valueChangedEdit(newVal) {
     if (newVal.birthdate === undefined) {
