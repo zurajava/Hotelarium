@@ -13,7 +13,7 @@ export class ReservationService {
   constructor(private http: Http) {
 
   }
-  addReservation(data: ReservationInfo) { 
+  addReservation(data: ReservationInfo) {
     const body = JSON.stringify(data);
 
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;

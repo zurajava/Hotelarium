@@ -911,8 +911,10 @@ getReservationsDetails = function (reservation_id) {
 getReservationsServices = function (reservation_id) {
     var deferred = q.defer();
     var categoryData;
-    var query = 'SELECT r.*, s.name as service_name, s.price as price ' +
-        ' FROM reservation_service r inner join service s on r.service_id=s.id where  reservation_id=?';
+    var query = 'SELECT r.*, s.name as service_name, s.price as price,' +
+        '(SELECT IFNULL(SUM(p.amount),0)  ' +
+        'FROM payment p where p.reservation_id=r.reservation_id and p.source=\'SERVICE\' and p.service_id=s.id) as service_payd  ' +
+        'FROM reservation_service r inner join service s on r.service_id=s.id where  reservation_id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [reservation_id], function (error, row, fields) {
             connection.release();

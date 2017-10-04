@@ -421,9 +421,15 @@
                                         </td>
                                         <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
                                             <table style="width:100%; text-align: left;">
+
                                                 <tr>
                                                     <td><span class="person_label">Service Prise</span></td>
                                                     <td> <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price"
+                                                            disabled="true" /> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="person_label">Service Payd</span></td>
+                                                    <td> <input class="person_input" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd"
                                                             disabled="true" /> </td>
                                                 </tr>
                                                 <tr>

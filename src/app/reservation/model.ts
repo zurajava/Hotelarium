@@ -169,6 +169,7 @@ export class ReservationServices {
     public payment_status: string;
     public service_name: string;
     public price: number;
+    public service_payd: number;
     public amount_full: number;
     public pay_type: string;
     public receipt: string;
@@ -177,13 +178,14 @@ export class ReservationServices {
     public expandPayment: boolean = false;
     public payments: Array<Payment>;
 
-    constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: number, showSave: boolean) {
+    constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: number, service_payd: number, showSave: boolean) {
         this.service_id = service_id;
         this.frequency = frequency;
         this.additional_comment = additional_comment;
         this.service_name = service_name;
         this.price = price;
         this.showSave = showSave;
+        this.service_payd = service_payd;
     }
 }
 
