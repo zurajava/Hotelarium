@@ -563,12 +563,12 @@ export class ReservationComponent implements OnInit {
 
   public payService(res: ReservationServices) {
     console.log("payService", res);
-    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', 'SERVICE test', 'SERVICE additional_comment test', null);
+    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', 'SERVICE test', 'SERVICE additional_comment test', res.service_id);
 
     this.reservationService.addPaymentToService(p).subscribe(data => {
       console.log("addPaymentToReservationService", data.json(), data.json().success);
       if (data.json().success === true) {
-        this.toastr.success("Payment Added");
+        this.toastr.success("Service Payment Added");
 
         this.reservationService.getReservationById(res.reservation_id.toString()).then(data => {
           if (data.success === true) {

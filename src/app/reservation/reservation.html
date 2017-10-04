@@ -91,8 +91,8 @@
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                [(value)]="res.room_id">
+                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'"
+                                [valuePrimitive]="true" [(value)]="res.room_id">
                             </kendo-combobox>
                         </td>
                         <td>
@@ -389,6 +389,7 @@
                                         <th>Frequency</th>
                                         <th>Additional Comment</th>
                                         <th>Service Name</th>
+                                        <th>Status</th>
                                         <th>Command</th>
                                     </tr>
                                 </div>
@@ -411,6 +412,8 @@
                                             <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.service_name" (input)="service.service_name= $event.target.value"
                                             />
                                         </td>
+                                        <td> <span class="badge badge-danger">{{service.payment_status}}</span>
+                                        </td>
                                         <td>
                                             <button *ngIf="service.showSave" class="reservation_btn_command" (click)="saveReservationService(service,res.id)"><i class="fa fa-check" style="font-size:14px"></i>Save</button>
                                             <button class="reservation_btn" (click)="showServicePaymentInfo(service)"><i class="fa fa-user-plus" style="font-size:14px"></i>Payment</button>
@@ -422,7 +425,7 @@
                                                     <td><span class="person_label">Service Prise</span></td>
                                                     <td> <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price"
                                                             disabled="true" /> </td>
-                                                </tr>   
+                                                </tr>
                                                 <tr>
                                                     <td><span class="person_label">Amount Total</span></td>
                                                     <td><input class="person_input" name="{{'amount_fullsa'+i}}" [(ngModel)]="service.amount_full"
@@ -436,7 +439,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="person_label">Receipt #</span></td>
-                                                    <td><input class="person_input" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt" /></td>
+                                                    <td><input class="person_input" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt"
+                                                        /></td>
                                                 </tr>
                                                 <tr>
                                                     <td><button class="reservation_btn" (click)="payService(service)"><i class="fa fa-user-plus" style="font-size:14px"></i>Pay Now</button></td>
