@@ -13,10 +13,7 @@ export class ReservationService {
   constructor(private http: Http) {
 
   }
-  addReservation(data: ReservationInfo) {
-    for (var i = 0; i < data.reservation.reservationDetail.length; i++) {
-      data.reservation.reservationDetail[i].payment_status = "1";
-    }
+  addReservation(data: ReservationInfo) { 
     const body = JSON.stringify(data);
 
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
@@ -166,13 +163,19 @@ export class ReservationService {
   }
 
   addPaymentToReservation(payment: Payment) {
-
     const body = JSON.stringify(payment);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
-    return this.http.post('/service/payment', body, { headers: headers }).catch(this.handleError);
-
+    return this.http.post('/service/payment?type=1', body, { headers: headers }).catch(this.handleError);
+  }
+  addPaymentToService(payment: Payment) {
+    const body = JSON.stringify(payment);
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append("x-access-token", key);
+    return this.http.post('/service/payment?type=2', body, { headers: headers }).catch(this.handleError);
   }
 }

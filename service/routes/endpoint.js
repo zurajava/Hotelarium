@@ -524,14 +524,25 @@ router.get('/person', (req, res) => {
 });
 
 router.post('/payment', (req, res) => {
-  console.log("payment :");
-  pool.registerPayment(req.body).then(data => {
-    return res.json({ success: true, message: 'OK', data: data });
-  }).catch(error => {
-    return res.json({
-      success: false, message: 'Error while load person', error: error
+  console.log("payment :", req.query.type);
+  if (req.query.type == 1) {
+    pool.registerPayment(req.body).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      return res.json({
+        success: false, message: 'Error while load person', error: error
+      });
     });
-  });
+  } else if (req.query.type == 2) {
+    pool.registerServicePayment(req.body).then(data => {
+      return res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+      return res.json({
+        success: false, message: 'Error while load person', error: error
+      });
+    });
+  }
+
 
 });
 
