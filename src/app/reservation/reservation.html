@@ -87,11 +87,11 @@
                     <div class="person_div_tr">
                         <td width="50">
                             <kendo-combobox style="width:140px;height:25px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'"
-                                [valuePrimitive]="true" [(value)]="res.category_id" (valueChange)="categoryValueChange($event)">
+                                [valuePrimitive]="true" [(value)]="res.category_id" (valueChange)="categoryValueChange($event,res)">
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
                                 [(value)]="res.room_id">
                             </kendo-combobox>
                         </td>
@@ -293,7 +293,7 @@
                     <div class="reservation_info_detail_div">
                         <td>
                             <kendo-combobox style="width:140px;height:25px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'"
-                                [valuePrimitive]="true" [(value)]="res.category_id">
+                                [valuePrimitive]="true" [(value)]="res.category_id" (valueChange)="categoryValueChangeEdit($event,res)">
                             </kendo-combobox>
                         </td>
                         <td>

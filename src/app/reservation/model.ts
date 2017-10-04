@@ -1,3 +1,5 @@
+import { Room } from '../room/model.js';
+
 export class Person {
     public id: number;
     public personal_no: number;
@@ -97,14 +99,14 @@ export class ReservationDetail {
     public additional_bad_price_full: number;
     public extra_person_price_full: number;
     public price_full: number;
-    public reservation_payd_amount :number;
-    public service_payd_amount :number;
-    public service_price :number;
+    public reservation_payd_amount: number;
+    public service_payd_amount: number;
+    public service_price: number;
 
 
     public pay_type: string;
-    public receipt: string; 
-    public amount_full:number;
+    public receipt: string;
+    public amount_full: number;
 
     public expandPerson: boolean = false;
     public expandService: boolean = false;
@@ -117,9 +119,10 @@ export class ReservationDetail {
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationServices>;
     public payments: Array<Payment>;
+    public room: Room[];
 
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>,
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, room: Room[],
         showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
         this.id = id;
         this.reservation_id = reservation_id;
@@ -135,6 +138,10 @@ export class ReservationDetail {
         this.showReserveButton = showReserveButton;
         this.showCheckInButton = showCheckInButton;
         this.showPaymentCheckInButton = showPaymentCheckInButton;
+        this.room = room;
+    }
+    setRoom(room: Room[]) {
+        this.room = room;
     }
 
 }
