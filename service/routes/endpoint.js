@@ -52,25 +52,23 @@ router.use(function (req, res, next) {
         var pathname = url.parse(req.url).pathname.split("/")[1];
         console.log(decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname);
         req.decoded = decoded;
-
-        //TO DO CHACK USER PERMISSION
         if (pathname != 'userBranch' && pathname != 'userOrganisation') {
-          pool.getUserPermission(decoded.id, pathname, req.method, function (err, data) {
-            if (err) {
+          console.log("Restcrictec path", decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname);
+          pool.getUserPermission(decoded.id, pathname, req.method).then(data => {
+            if (data.length = 0) {
               return res.status(403).send({
                 success: false,
-                message: 'Perrmission denid for resource = ' + pathname + ', action = ' + req.method
+                message: 'Perrmission denid'
               });
             } else {
-              if (data.length = 0) {
-                return res.status(403).send({
-                  success: false,
-                  message: 'Perrmission denid'
-                });
-              } else {
-                next();
-              }
+              next();
             }
+          }).catch(error => {
+            return res.status(403).send({
+              success: false,
+              message: 'Perrmission denid for resource = ' + pathname + ', action = ' + req.method
+            });
+
           });
         } else {
           next();
@@ -498,7 +496,7 @@ router.get('/reservation/:id', (req, res) => {
   console.log("get reservation by id: " + req.params.id);
   var reserv = req.body;
 
-  pool.getReservationById(req.params.id).then(data => { 
+  pool.getReservationById(req.params.id).then(data => {
     return res.json({ success: true, message: 'OK', data: data });
   }).catch(function (error) {
     return res.json({

@@ -471,8 +471,10 @@ export class ReservationComponent implements OnInit {
     for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
       this.reservationInfo.reservation.reservationDetail[i].status_id = "1";
       this.reservationInfo.reservation.reservationDetail[i].payment_status = "1";
-      for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
-        this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+      if (this.reservationInfo.reservation.reservationDetail[i].reservationService != null) {
+        for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
+          this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+        }
       }
     }
     this.reservationService.addReservation(this.reservationInfo).subscribe(data => {
@@ -490,8 +492,10 @@ export class ReservationComponent implements OnInit {
     for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
       this.reservationInfo.reservation.reservationDetail[i].status_id = "2";
       this.reservationInfo.reservation.reservationDetail[i].payment_status = "1";
-      for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
-        this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+      if (this.reservationInfo.reservation.reservationDetail[i].reservationService != null) {
+        for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
+          this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+        }
       }
     }
     this.reservationService.addReservation(this.reservationInfo).subscribe(data => {

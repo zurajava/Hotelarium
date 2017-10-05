@@ -1023,7 +1023,9 @@ pool.getPerson = function (person_no, callback) {
     });
 }
 
-pool.getUserPermission = function (user_id, permission, action, callback) {
+pool.getUserPermission = function (user_id, permission, action) {
+    console.log("getUserPermission");
+    var deferred = q.defer();
     pool.getConnection(function (err, connection) {
         connection.query('SELECT a.*' +
             'FROM user_group u ' +
@@ -1033,13 +1035,14 @@ pool.getUserPermission = function (user_id, permission, action, callback) {
             'where u.user_id=?  and a.name=? and a.action=?', [user_id, permission, action], function (error, row, fields) {
                 connection.release();
                 if (error) {
-                    throw error;
+                    deferred.reject(error);
                 } else {
-                    callback(null, row);
+                    deferred.resolve(row);
                 }
             });
 
     });
+    return deferred.promise;
 }
 
 getPayment = function (reservation_id, source, service_id) {
