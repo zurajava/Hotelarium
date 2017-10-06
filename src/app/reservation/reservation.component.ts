@@ -11,6 +11,7 @@ import { Service } from '../service/model.js';
 import { Room } from '../room/model.js';
 import { IntlService } from '@progress/kendo-angular-intl';
 import { SafeHtml } from "@angular/platform-browser";
+import * as jsPDF from 'jspdf'
 
 enableProdMode();
 @Component({
@@ -18,6 +19,9 @@ enableProdMode();
   selector: 'parking-dashboard',
   templateUrl: 'reservation.html',
   styleUrls: ['./reservation.scss'],
+  providers: [
+    { provide: 'Window', useValue: window }
+  ]
 
 })
 
@@ -695,5 +699,17 @@ export class ReservationComponent implements OnInit {
 
   public generateInvoise(res: ReservationDetail) {
     console.log("generateInvoise", JSON.stringify(res));
+    var doc = new jsPDF();
+    doc.text(20, 20, 'Hotel Managment System');
+    doc.text(20, 40, 'Reservation Prise : ' + res.reservation_prise_full);
+    doc.text(20, 50, 'Extra Person Prise : ' + res.extra_person_price_full);
+    doc.text(20, 60, 'Additional Bad Prise : ' + res.additional_bad_price_full);
+    doc.text(20, 70, 'Service Prise : ' + res.service_price);
+
+    doc.text(20, 90, 'Prise Full: ' + (res.service_price + res.price_full));
+    doc.text(20, 100, 'Amount To Pay: ' + ((res.price_full + res.service_price) - (res.reservation_payd_amount + res.service_payd_amount)));
+    doc.text(20, 110, 'Payd Full: ' + res.reservation_payd_amount);
+    // Save the PDF
+    doc.save('Test.pdf');
   }
 }
