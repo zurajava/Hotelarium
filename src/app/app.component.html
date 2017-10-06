@@ -37,7 +37,7 @@
                 </li>
             </ul>
 
-            <ul *ngIf="roleID === 'RESIDENT'" class="row sidenav">
+            <ul *ngIf="roleID === 'RESIDENT'" class="row sidenav list-group">
 
                 <li (click)="onToggle()" routerLink="/reservation" routerLinkActive="nav-active-link-admin">
                     <a><i class="fa fa-home" aria-hidden="true"></i>Reservation</a>

@@ -692,4 +692,8 @@ export class ReservationComponent implements OnInit {
       }
     });
   }
+
+  public generateInvoise(res: ReservationDetail) {
+    console.log("generateInvoise", JSON.stringify(res));
+  }
 }
