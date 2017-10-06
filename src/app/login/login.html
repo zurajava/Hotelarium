@@ -1,20 +1,15 @@
-<section class="login">
-    <div class="login__container">
-        <div class="login__userImage">
-            <img src="../../assets/images/samplelogo.png" />
+<div class="container">
+    <div class="row_center">
+        <!--<h1 class="text-center login-title">Sign in Hotelarium</h1>-->
+        <div class="account-wall">
+            <img class="profile-img" src="assets/images/samplelogo.png"
+                alt="">
+            <form class="form-signin" (ngSubmit)="loginUser(login)" #login="ngForm">
+                <input type="text" class="form-control" placeholder="Email" required autofocus ngModel name="residentID" #residentID="ngModel">
+                <input type="password" class="form-control" placeholder="Password" required ngModel name="password" #password="ngModel">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    Sign in</button>
+            </form>
         </div>
-        <form (ngSubmit)="loginUser(login)" #login="ngForm">
-            <div class="login__container--fields">
-                <label>Username</label>
-                <input placeholder="enter username" ngModel name="residentID" #residentID="ngModel">
-            </div>
-            <div class="login__container--fields">
-                <label>Password</label>
-                <input placeholder="enter password" type="password" ngModel name="password" #password="ngModel">
-            </div>
-            <div class="login__action">
-                <button>Login</button>
-            </div>
-        </form>
     </div>
-</section>
+</div>
