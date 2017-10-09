@@ -207,8 +207,7 @@ export class ReservationComponent implements OnInit {
 
             this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
             this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-            this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
-            this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
+            this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
             this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
             this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
             for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
@@ -317,35 +316,27 @@ export class ReservationComponent implements OnInit {
 
 
   }
-  addService(id: ReservationDetail) {
-    id.expandService = true;
+  showDetails(id: ReservationDetail) {
+    id.showMoreInfo = true;
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
+
     if (id.reservationService === null) {
       var temp = new ReservationServices(null, '', '', '', null, null, false);
       id.reservationService = [temp];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
     }
-
-  }
-  addPerson(id: ReservationDetail) {
-    id.expandPerson = true;
-    var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (id.reservationPerson === null) {
-      var temp = new ReservationPerson('', '', '', false);
-      id.reservationPerson = [temp];
+      var tempPerson = new ReservationPerson('', '', '', false);
+      id.reservationPerson = [tempPerson];
     } else {
       var personList = this.reservationInfo.reservation.reservationDetail[index];
     }
   }
-  addServiceEdit(id: ReservationDetail) {
-    console.log("addServiceEdit", id);
-    id.expandService = true;
+  showDetailsEdit(id: ReservationDetail) {
+    id.showMoreInfo = true;
   }
-  addPersonEdit(id: ReservationDetail) {
-    console.log("addPersonEdit", id);
-    id.expandPerson = true;
-  }
+
   updateReservation(id: ReservationDetail) {
     console.log(id.id);
     if (id.status_id == "1") {
@@ -540,8 +531,7 @@ export class ReservationComponent implements OnInit {
 
               this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
               this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
@@ -580,8 +570,7 @@ export class ReservationComponent implements OnInit {
 
               this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
               this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
@@ -676,8 +665,7 @@ export class ReservationComponent implements OnInit {
 
               this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
               this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandPerson = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandService = true;
+              this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
               this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);

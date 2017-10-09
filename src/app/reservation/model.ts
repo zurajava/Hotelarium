@@ -108,8 +108,7 @@ export class ReservationDetail {
     public receipt: string;
     public amount_full: number;
 
-    public expandPerson: boolean = false;
-    public expandService: boolean = false;
+    public showMoreInfo: boolean = false;
     public expandPayment: boolean = false;
     public showReserveButton: boolean = false;
     public showCheckInButton: boolean = false;
