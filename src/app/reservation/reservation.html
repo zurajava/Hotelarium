@@ -134,77 +134,72 @@
                         <div *ngIf="res.showMoreInfo">
                             <div class="row">
                                 <div class="col-5">
-                                    <div class="container-fluid">
-                                        <div class="card text-right">
-                                            <div class="card-header" style="height: 40px;">
-                                                <h6 class="card-title">Guest List
-                                                    <button type="button" class="btn btn-success btn-sm" (click)="addPersonToReservationPerson(res)">Person</button>
-                                                </h6>
-                                            </div>
-                                            <div class="card-block">
-                                                <ul class="list-group" *ngFor="let person of res.reservationPerson; let i = index">
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-sm-3">
-                                                                <input kendoTextBox style="width:120px;height:25px" id="n_person_id" name="n_person_id_name" [value]="person.person_id" (input)="person.person_id = $event.target.value"
-                                                                />
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <input kendoTextBox style="width:120px;height:25px" id="n_first_name" name="n_first_name_name" [value]="person.first_name"
-                                                                    (input)="person.first_name = $event.target.value" />
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <input kendoTextBox style="width:120px;height:25px" id="n_last_name" name="n_last_name_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
-                                                                />
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPerson(res,person)">DEL</button>
-                                                            </div>
+                                    <div class="card text-right">
+                                        <div class="card-header" style="height: 40px;">
+                                            <h6 class="card-title">Guest List
+                                                <button type="button" class="btn btn-success btn-sm" (click)="addPersonToReservationPerson(res)">Person</button>
+                                            </h6>
+                                        </div>
+                                        <div class="card-block">
+                                            <ul class="list-group" *ngFor="let person of res.reservationPerson; let i = index">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="n_person_id" placeholder="Personal #" [value]="person.person_id"
+                                                                (input)="person.person_id = $event.target.value">
                                                         </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="n_first_name" placeholder="First Name" [value]="person.first_name"
+                                                                (input)="person.first_name = $event.target.value">
+
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="n_last_name" placeholder="Last Name" [value]="person.last_name"
+                                                                (input)="person.last_name = $event.target.value">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPerson(res,person)">DEL</button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-7">
-                                    <div class="container-fluid">
-                                        <div class="card text-right">
-                                            <div class="card-header" style="height: 40px;">
-                                                <h6 class="card-title">Service Information
-                                                    <button type="button" class="btn btn-success btn-sm"
-                                                        (click)="addServiceToReservationService(res)">Service</button>
-                                                </h6>
-                                            </div>
-                                            <div class="card-block">
-                                                <ul class="list-group" *ngFor="let service of res.reservationService; let i = index">
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-sm-3">
-                                                                <kendo-combobox style="width:130px;height:25px" id="id_n_service_id" name="n_service_id_name" [data]="serviceData" [textField]="'name'"
-                                                                    [valueField]="'id'" [valuePrimitive]="true" [(value)]="service.service_id">
-                                                                </kendo-combobox>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <input kendoTextBox style="width:100px;height:25px" id="id_n_frequency" name="n_frequency_name" [value]="service.frequency"
-                                                                    (input)="service.frequency = $event.target.value" />
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <input kendoTextBox style="width:100px;height:25px" id="id_n_additional_comment" name="n_additional_comment_name" [value]="service.additional_comment"
-                                                                    (input)="service.additional_comment = $event.target.value"
-                                                                />
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <input kendoTextBox style="width:100px;height:25px" id="id_n_service_name" name="n_service_name_name" [value]="service.service_name"
-                                                                    (input)="service.service_name = $event.target.value" />
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationService(res,service)">DEL</button>
-                                                            </div>
+                                    <div class="card text-right">
+                                        <div class="card-header" style="height: 40px;">
+                                            <h6 class="card-title">Service Information
+                                                <button type="button" class="btn btn-success btn-sm" (click)="addServiceToReservationService(res)">Service</button>
+                                            </h6>
+                                        </div>
+                                        <div class="card-block">
+                                            <ul class="list-group" *ngFor="let service of res.reservationService; let i = index">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <kendo-combobox style="width:130px;height:25px" id="id_n_service_id" name="n_service_id_name" [data]="serviceData" [textField]="'name'"
+                                                                [valueField]="'id'" [valuePrimitive]="true" [(value)]="service.service_id">
+                                                            </kendo-combobox>
                                                         </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="n_frequency" placeholder="Frequency" [value]="service.frequency"
+                                                                (input)="service.frequency = $event.target.value">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm" id="n_comment" placeholder="Comment" [value]="service.additional_comment"
+                                                                (input)="service.additional_comment = $event.target.value">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm" id="n_service_name" placeholder="Service Name" [value]="service.service_name"
+                                                                (input)="service.service_name = $event.target.value">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationService(res,service)">DEL</button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -350,7 +345,6 @@
                             <span class="badge badge-danger">{{res.payment_status}}</span>
                         </td>
                         <td>
-
                             <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-info btn-sm" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
                             <button type="button" *ngIf="res.showReserveButton" class="btn btn-info btn-sm" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
                             <button type="button" *ngIf="res.showCheckInButton" class="btn btn-warning btn-sm" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
@@ -358,99 +352,136 @@
                             <button type="button" class="btn btn-warning btn-sm" (click)="showPaymentInfo(res)">Payment</button>
                             <button type="button" *ngIf="res.showUpdateButton" class="btn btn-warning btn-sm" (click)="removeReservationExisting(res)">Update</button>
                             <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationExisting(res)">Remove</button>
-
-
-
                         </td>
                         <div *ngIf="res.showMoreInfo">
                             <div class="row">
-                                <div class="col-6">
-                                    <div class="add_service_person_btn">
-                                        <button type="button" class="btn btn-success btn-sm" (click)="addPersonToReservationPersonExisting(res)">Person</button>
+                                <div class="col-5">
+                                    <div class="card text-right">
+                                        <div class="card-header" style="height: 40px;">
+                                            <h6 class="card-title">Guest List
+                                                <button type="button" class="btn btn-success btn-sm" (click)="addPersonToReservationPersonExisting(res)">Person</button>
+                                            </h6>
+                                        </div>
+                                        <div class="card-block">
+                                            <ul class="list-group" *ngFor="let person of res.reservationPerson; let i = index">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="id_person_id" placeholder="Personal #" [value]="person.person_id"
+                                                                (input)="person.person_id = $event.target.value">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="id_first_name" placeholder="First Name" [value]="person.first_name"
+                                                                (input)="person.first_name = $event.target.value">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-sm" id="id_last_name" placeholder="Last Name" [value]="person.last_name"
+                                                                (input)="person.last_name = $event.target.value">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <button *ngIf="person.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationPerson(person,res.id)">Save</button>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPersonExisting(res,person)">DEL</button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul class="list-group" *ngFor="let person of res.reservationPerson; let i = index">
-                                        <li class="list-group-item">
-                                            <input kendoTextBox style="width:140px;height:25px" id="id_person_id" [value]="person.person_id" (input)="person.person_id = $event.target.value"
-                                            />
-                                            <input kendoTextBox style="width:140px;height:25px" id="id_first_name" [value]="person.first_name" (input)="person.first_name = $event.target.value"
-                                            />
-                                            <input kendoTextBox style="width:140px;height:25px" id="id_last_name" [value]="person.last_name" (input)="person.last_name = $event.target.value"
-                                            />
-                                            <button *ngIf="person.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationPerson(person,res.id)">Save</button>
-                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPersonExisting(res,person)">DEL</button>
-                                        </li>
-                                    </ul>
                                 </div>
-                                <div class="col-6">
-                                    <div class="add_service_person_btn">
-                                        <button type="button" class="btn btn-success btn-sm" (click)="addServiceToReservationServiceExisting(res)">Service</button>
+                                <div class="col-7">
+                                    <div class="card text-right">
+                                        <div class="card-header" style="height: 40px;">
+                                            <h6 class="card-title">Service Information
+                                                <button type="button" class="btn btn-success btn-sm" (click)="addServiceToReservationServiceExisting(res)">Service</button>
+                                            </h6>
+                                        </div>
+                                        <div class="card-block">
+                                            <ul class="list-group" *ngFor="let service of res.reservationService; let i = index">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <kendo-combobox style="height:25px" id="id_service_id" [data]="serviceData" [textField]="'name'" [valueField]="'id'"
+                                                                [valuePrimitive]="true" [(value)]="service.service_id">
+                                                            </kendo-combobox>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm" id="id_service_id1" placeholder="Frequency" [value]="service.frequency"
+                                                                (input)="service.frequency= $event.target.value">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm" id="id_service_id2" placeholder="Comment" [value]="service.additional_comment"
+                                                                (input)="service.additional_comment= $event.target.value">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control form-control-sm" id="id_service_id3" placeholder="Service Name" [value]="service.service_name"
+                                                                (input)="service.service_name= $event.target.value">
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <span class="badge badge-danger">{{service.payment_status}}</span>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationService(service,res.id)">Save</button>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <button type="button" class="btn btn-warning btn-sm" (click)="showServicePaymentInfo(service)">Pay</button>
+                                                        </div>
+                                                        <div class="col-1"> 
+                                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationServiceExisting(res,service)">Del</button>
+                                                        </div>
+                                                        <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
+                                                            <table style="width:100%; text-align: left;">
+                                                                <tr>
+                                                                    <td>
+                                                                        <span class="person_label">Service Prise</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price" disabled="true" />                                                                        </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span class="person_label">Service Payd</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="person_input" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd" disabled="true" />                                                                        </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span class="person_label">Amount Total</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="person_input" name="{{'amount_fullsa'+i}}" [(ngModel)]="service.amount_full" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span class="person_label">Payment Type</span>
+                                                                    </td>
+                                                                    <kendo-combobox class="payment_type_input" name="{{'payTymessa'+i}}" [data]="payTymes" [textField]="'text'" [valueField]="'text'"
+                                                                        [valuePrimitive]="true" [(ngModel)]="service.pay_type">
+                                                                    </kendo-combobox>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span class="person_label">Receipt #</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="person_input" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-warning btn-sm" (click)="payService(service)">Pay Now</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul class="list-group" *ngFor="let service of res.reservationService; let i = index">
-                                        <li class="list-group-item">
-                                            <kendo-combobox style="width:140px;height:25px" id="id_service_id" [data]="serviceData" [textField]="'name'" [valueField]="'id'"
-                                                [valuePrimitive]="true" [(value)]="service.service_id">
-                                            </kendo-combobox>
-                                            <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.frequency" (input)="service.frequency= $event.target.value"
-                                            />
-                                            <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.additional_comment" (input)="service.additional_comment= $event.target.value"
-                                            />
-                                            <input kendoTextBox style="width:140px;height:25px" id="id_service_id" [value]="service.service_name" (input)="service.service_name= $event.target.value"
-                                            />
-                                            <span class="badge badge-danger">{{service.payment_status}}</span>
-                                            <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationService(service,res.id)">Save</button>
-                                            <button type="button" class="btn btn-warning btn-sm" (click)="showServicePaymentInfo(service)">Payment</button>
-                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationServiceExisting(res,service)">DEL</button>
-                                            <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
-                                                <table style="width:100%; text-align: left;">
-
-                                                    <tr>
-                                                        <td>
-                                                            <span class="person_label">Service Prise</span>
-                                                        </td>
-                                                        <td>
-                                                            <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price" disabled="true" /> </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <span class="person_label">Service Payd</span>
-                                                        </td>
-                                                        <td>
-                                                            <input class="person_input" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd" disabled="true" /> </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <span class="person_label">Amount Total</span>
-                                                        </td>
-                                                        <td>
-                                                            <input class="person_input" name="{{'amount_fullsa'+i}}" [(ngModel)]="service.amount_full" />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <span class="person_label">Payment Type</span>
-                                                        </td>
-                                                        <kendo-combobox class="payment_type_input" name="{{'payTymessa'+i}}" [data]="payTymes" [textField]="'text'" [valueField]="'text'"
-                                                            [valuePrimitive]="true" [(ngModel)]="service.pay_type">
-                                                        </kendo-combobox>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <span class="person_label">Receipt #</span>
-                                                        </td>
-                                                        <td>
-                                                            <input class="person_input" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt" />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <button type="button" class="btn btn-warning btn-sm" (click)="payService(service)">Pay Now</button>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </li>
-                                    </ul>
-
                                 </div>
                             </div>
                         </div>
