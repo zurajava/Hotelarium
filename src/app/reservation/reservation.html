@@ -437,7 +437,8 @@
                                                                         <span class="person_label">Service Prise</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price" disabled="true" />
+                                                                        <input type="number" class="form-control form-control-sm" name="{{'reservation_prise_fullsa'+i}}" id="smFormGroupInput" [(ngModel)]="service.price"
+                                                                            disabled="true">
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -445,30 +446,33 @@
                                                                         <span class="person_label">Service Payd</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input class="person_input" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd" disabled="true" /> </td>
+                                                                        <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd"
+                                                                            disabled="true"> </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
                                                                         <span class="person_label">Amount Total</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input class="person_input" name="{{'amount_fullsa'+i}}" [(ngModel)]="service.amount_full" />
+                                                                        <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'amount_fullsa'+i}}" [(ngModel)]="service.amount_full">
+
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
                                                                         <span class="person_label">Payment Type</span>
                                                                     </td>
-                                                                    <kendo-combobox class="payment_type_input" name="{{'payTymessa'+i}}" [data]="payTymes" [textField]="'text'" [valueField]="'text'"
-                                                                        [valuePrimitive]="true" [(ngModel)]="service.pay_type">
-                                                                    </kendo-combobox>
+                                                                    <select class="form-control form-control-sm" name="{{'payTymessa'+i}}" id="exampleSelect111aa" [(ngModel)]="service.pay_type">
+                                                                        <option>Card</option>
+                                                                        <option>Cash</option>
+                                                                    </select>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
                                                                         <span class="person_label">Receipt #</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input class="person_input" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt" />
+                                                                        <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt">
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -493,16 +497,18 @@
                                         <span class="person_label">Room Prise</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'reservation_prise_full'+i}}" [(ngModel)]="res.reservation_prise_full" disabled="true"
-                                        /> </td>
+                                        <input type="number" class="form-control form-control-sm" id="reservation_prise_full" name="{{'reservation_prise_full'+i}}"
+                                            [(ngModel)]="res.reservation_prise_full" disabled="true">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="person_label">Additional Bad Price</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'additional_bad_price_full'+i}}" [(ngModel)]="res.additional_bad_price_full" disabled="true"
-                                        />
+                                        <input type="number" class="form-control form-control-sm" id="additional_bad_price_full" name="{{'additional_bad_price_full'+i}}"
+                                            [(ngModel)]="res.additional_bad_price_full" disabled="true">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -510,8 +516,9 @@
                                         <span class="person_label">Extra Person Price</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'extra_person_price_full'+i}}" [(ngModel)]="res.extra_person_price_full" disabled="true"
-                                        />
+                                        <input type="number" class="form-control form-control-sm" id="extra_person_price_full" name="{{'extra_person_price_full'+i}}"
+                                            [(ngModel)]="res.extra_person_price_full" disabled="true">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -519,8 +526,9 @@
                                         <span class="person_label">Reservation Payd</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'reservation_payd_amount'+i}}" [(ngModel)]="res.reservation_payd_amount" disabled="true"
-                                        />
+
+                                        <input type="number" class="form-control form-control-sm" id="reservation_payd_amount" name="{{'reservation_payd_amount'+i}}"
+                                            [(ngModel)]="res.reservation_payd_amount" disabled="true">
                                     </td>
                                 </tr>
                                 <tr>
@@ -528,7 +536,8 @@
                                         <span class="person_label">Service Payd</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'service_payd_amount'+i}}" [(ngModel)]="res.service_payd_amount" disabled="true" />
+                                        <input type="number" class="form-control form-control-sm" id="service_payd_amount" name="{{'service_payd_amount'+i}}" [(ngModel)]="res.service_payd_amount"
+                                            disabled="true">
                                     </td>
                                 </tr>
                                 <tr>
@@ -536,7 +545,8 @@
                                         <span class="person_label">Reservation Price</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'price_full'+i}}" [(ngModel)]="res.price_full" disabled="true" />
+                                        <input type="number" class="form-control form-control-sm" id="price_full" name="{{'price_full'+i}}" [(ngModel)]="res.price_full"
+                                            disabled="true">
                                     </td>
                                 </tr>
                                 <tr>
@@ -544,7 +554,8 @@
                                         <span class="person_label">Service Price</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'service_price'+i}}" [(ngModel)]="res.service_price" disabled="true" />
+                                        <input type="number" class="form-control form-control-sm" id="service_price" name="{{'service_price'+i}}" [(ngModel)]="res.service_price"
+                                            disabled="true">
                                     </td>
                                 </tr>
                                 <tr>
@@ -552,23 +563,25 @@
                                         <span class="person_label">Amount Total</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full" />
+                                        <input type="number" class="form-control form-control-sm" id="amount_full" name="{{'amount_full'+i}}"
+                                            [(ngModel)]="res.amount_full">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="person_label">Payment Type</span>
                                     </td>
-                                    <kendo-combobox class="payment_type_input" name="{{'payTymes'+i}}" [data]="payTymes" [textField]="'text'" [valueField]="'text'"
-                                        [valuePrimitive]="true" [(ngModel)]="res.pay_type">
-                                    </kendo-combobox>
+                                    <select class="form-control form-control-sm" name="{{'payTymes'+i}}" id="exampleSelect111aas" [(ngModel)]="res.pay_type">
+                                        <option>Card</option>
+                                        <option>Cash</option>
+                                    </select>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="person_label">Receipt #</span>
                                     </td>
                                     <td>
-                                        <input class="person_input" name="{{'receipt'+i}}" [(ngModel)]="res.receipt" />
+                                        <input type="email" class="form-control form-control-sm" id="receipt" name="{{'receipt'+i}}" [(ngModel)]="res.receipt">
                                     </td>
                                 </tr>
                                 <tr>

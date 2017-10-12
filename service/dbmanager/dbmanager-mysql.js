@@ -727,7 +727,7 @@ pool.updateReservation = function (id, status_id) {
     var existing_status;
     if (status_id == 2) {
         existing_status = 1;
-    } else if (status_id == 3) {
+    } else if (status_id == 4) {
         existing_status = 2;
     }
 

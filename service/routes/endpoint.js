@@ -464,7 +464,7 @@ router.put('/reservation/:id', (req, res) => {
       });
     });
   } else if (req.query.type == 3) {
-    pool.updateReservation(req.params.id, req.query.type).then(data => {
+    pool.updateReservation(req.params.id, 4).then(data => {
       return res.json({ success: true, message: 'OK', data: data });
     }).catch(error => {
       console.log("error", error);
