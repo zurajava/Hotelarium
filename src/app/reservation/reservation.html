@@ -178,9 +178,9 @@
                                                 <li class="list-group-item">
                                                     <div class="row">
                                                         <div class="col-3">
-                                                            <kendo-combobox style="width:130px;height:25px" id="id_n_service_id" name="n_service_id_name" [data]="serviceData" [textField]="'name'"
-                                                                [valueField]="'id'" [valuePrimitive]="true" [(value)]="service.service_id">
-                                                            </kendo-combobox>
+                                                            <select class="form-control form-control-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id">
+                                                                <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
+                                                            </select>
                                                         </div>
                                                         <div class="col-3">
                                                             <input type="text" class="form-control form-control-sm" id="n_frequency" placeholder="Frequency" [value]="service.frequency"
@@ -402,9 +402,9 @@
                                                 <li class="list-group-item">
                                                     <div class="row">
                                                         <div class="col-2">
-                                                            <kendo-combobox style="height:25px" id="id_service_id" [data]="serviceData" [textField]="'name'" [valueField]="'id'"
-                                                                [valuePrimitive]="true" [(value)]="service.service_id">
-                                                            </kendo-combobox>
+                                                            <select class="form-control form-control-sm" id="e_id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id">
+                                                                <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
+                                                            </select>
                                                         </div>
                                                         <div class="col-2">
                                                             <input type="text" class="form-control form-control-sm" id="id_service_id1" placeholder="Frequency" [value]="service.frequency"
@@ -427,7 +427,7 @@
                                                         <div class="col-1">
                                                             <button type="button" class="btn btn-warning btn-sm" (click)="showServicePaymentInfo(service)">Pay</button>
                                                         </div>
-                                                        <div class="col-1"> 
+                                                        <div class="col-1">
                                                             <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationServiceExisting(res,service)">Del</button>
                                                         </div>
                                                         <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
@@ -437,14 +437,15 @@
                                                                         <span class="person_label">Service Prise</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price" disabled="true" />                                                                        </td>
+                                                                        <input class="person_input" name="{{'reservation_prise_fullsa'+i}}" [(ngModel)]="service.price" disabled="true" />
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
                                                                         <span class="person_label">Service Payd</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input class="person_input" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd" disabled="true" />                                                                        </td>
+                                                                        <input class="person_input" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd" disabled="true" /> </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>

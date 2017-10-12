@@ -299,22 +299,30 @@ export class ReservationComponent implements OnInit {
   }
   removeReservationServiceExisting(id: ReservationDetail, service: ReservationServices) {
     console.log("removeReservationServiceExisting");
-    this.reservationService.deleteReservationService(id.id, service.service_id).subscribe(data => {
-      if (data.json().success === true) {
-        var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
-        if (index > -1) {
-          var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.indexOf(service, 0);
-          if (indexPerson > -1) {
-            this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.splice(indexPerson, 1);
+    if (service.service_id != null) {
+      this.reservationService.deleteReservationService(id.id, service.service_id).subscribe(data => {
+        if (data.json().success === true) {
+          var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+          if (index > -1) {
+            var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.indexOf(service, 0);
+            if (indexPerson > -1) {
+              this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.splice(indexPerson, 1);
+            }
           }
+          this.toastr.success("Reservation service deleted");
+        } else {
+          this.toastr.error(data.json().message);
         }
-        this.toastr.success("Reservation service deleted");
-      } else {
-        this.toastr.error(data.json().message);
+      })
+    } else {
+      var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
+      if (index > -1) {
+        var indexPerson = this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.indexOf(service, 0);
+        if (indexPerson > -1) {
+          this.reservationInfoEdit.reservation.reservationDetail[index].reservationService.splice(indexPerson, 1);
+        }
       }
-    })
-
-
+    }
   }
   showDetails(id: ReservationDetail) {
     id.showMoreInfo = true;
