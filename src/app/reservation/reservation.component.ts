@@ -523,7 +523,7 @@ export class ReservationComponent implements OnInit {
 
   public payReservation(res: ReservationDetail) {
     console.log("payReservation", res);
-    var p = new Payment(res.id, res.id, res.amount_full, new Date(), res.pay_type, 'RESERVATION', 'ticket test', 'additional_comment test', null);
+    var p = new Payment(res.id, res.id, res.amount_full, new Date(), res.pay_type, 'RESERVATION', res.receipt, 'additional_comment test', null);
 
     this.reservationService.addPaymentToReservation(p).subscribe(data => {
       console.log("addPaymentToReservation", data.json(), data.json().success);
@@ -562,7 +562,7 @@ export class ReservationComponent implements OnInit {
 
   public payService(res: ReservationServices) {
     console.log("payService", res);
-    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', 'SERVICE test', 'SERVICE additional_comment test', res.service_id);
+    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', res.receipt, 'SERVICE additional_comment test', res.service_id);
 
     this.reservationService.addPaymentToService(p).subscribe(data => {
       console.log("addPaymentToReservationService", data.json(), data.json().success);
