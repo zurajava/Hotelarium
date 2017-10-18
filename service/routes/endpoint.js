@@ -343,13 +343,11 @@ router.post('/reservation', (req, res) => {
     });
   }
   var reservationDetail = reserv.reservation.reservationDetail;
-  Promise.all(reservationDetail.map(data => {
-    console.log("map", data);
+  Promise.all(reservationDetail.map(data => { 
     return pool.checkReservation(data).then(data => {
       return data;
     })
-  })).then(data => {
-    console.log("registerReservation", data);
+  })).then(data => { 
     pool.registerReservation(reserv).then(data => {
       return res.json({ success: true, message: 'OK', data: data });
     })

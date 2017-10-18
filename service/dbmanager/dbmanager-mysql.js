@@ -449,20 +449,22 @@ registerReservationDetailsLocal = function (reservID, data) {
 }
 registerReservationPersonLocal = function (id, person) {
     return new Promise(function (resolve, reject) {
-        pool.getConnection(function (err, connection) {
-            connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?,?,?)',
-                [id, person.person_id, person.first_name, person.last_name],
-                function (error, results, fields) {
-                    connection.release();
-                    if (error) {
-                        console.log("registerReservationPersonLocal", error.code);
-                        reject(error);
-                    } else {
-                        resolve("OK");
-                    }
-                });
-        });
-
+        if (person.person_id != null && person.person_id.length() > 0) {
+            pool.getConnection(function (err, connection) {
+                connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?,?,?)',
+                    [id, person.person_id, person.first_name, person.last_name],
+                    function (error, results, fields) {
+                        connection.release();
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve("OK");
+                        }
+                    });
+            });
+        } else {
+            resolve("OK");
+        }
     })
 }
 pool.registerReservationPerson = function (id, person) {
@@ -850,8 +852,8 @@ pool.getReservation = function (branch_id, start_date, end_date) {
 
 
 getReservation = function (id) {
+    console.log("getReservationLocal", id);
     var deferred = q.defer();
-    var categoryData;
     var query = 'SELECT * FROM reservation  where id=?';
     pool.getConnection(function (err, connection) {
         connection.query(query, [id], function (error, row, fields) {
@@ -884,6 +886,7 @@ getPersonByPersonalNo = function (personal_no) {
 }
 
 getReservationsDetails = function (reservation_id) {
+    console.log("getReservationsDetails", reservation_id);
     var deferred = q.defer();
     var categoryData;
     var query = 'SELECT r.*,c.id as category_id,c.name as category_name ,o.price,o.additional_bad_price, o.extra_person_price,datediff(r.end_date, r.start_date) as day_count,' +
@@ -947,6 +950,7 @@ getReservationsPersons = function (reservation_id) {
 
 
 pool.getReservationById = function (id) {
+    console.log("getReservationById", id);
     var deferred = q.defer();
     getReservation(id).then(reservation => {
         return getReservationsDetails(reservation[0].id).then(reservations => {
