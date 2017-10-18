@@ -958,7 +958,7 @@ pool.getReservationById = function (id) {
         })
     }).then(reservationData => {
         let reservationDataPromise = reservationData.reservationDetail.map(data => {
-            return getPayment(data.id, 'RESERVATION', null).then(payment => {
+            return getPayment(data.id, "RESERVATION", null, "1").then(payment => {
                 return Object.assign({}, data, { payment })
             });
         })
@@ -979,7 +979,7 @@ pool.getReservationById = function (id) {
     }).then(reservationsServicePayment => {
         let reservationsServicePaymentPromise = reservationsServicePayment.reservationDetail.map(reservationDetail => {
             let reservationsServicePaymentPromiseLocal = reservationDetail.reservationService.map(service => {
-                return getPayment(service.reservation_id, "SERVICE", service.service_id).then(payment => {
+                return getPayment(service.reservation_id, "SERVICE", service.service_id, "2").then(payment => {
                     return Object.assign({}, service, { payment });
                 })
             })
@@ -1049,21 +1049,41 @@ pool.getUserPermission = function (user_id, permission, action) {
     return deferred.promise;
 }
 
-getPayment = function (reservation_id, source, service_id) {
-    var deferred = q.defer();
-    var roomData;
-    var roomSql = 'SELECT * FROM  payment where reservation_id=? and source=? and (service_id=? or service_id is null or service_id =0)';
-    pool.getConnection(function (err, connection) {
-        connection.query(roomSql, [reservation_id, source, service_id], function (error, row, fields) {
-            connection.release();
-            if (err) {
-                deferred.reject(err);
-            } else {
-                deferred.resolve(row);
-            }
+getPayment = function (reservation_id, source, service_id, type) {
+    console.log("getPayment", source);
+    // type = 1 reservation and service, type = 2 service,
+    if (type == "1") {
+        var deferred = q.defer();
+        var roomSql = 'SELECT * FROM  payment where reservation_id=?';
+        pool.getConnection(function (err, connection) {
+            connection.query(roomSql, [reservation_id], function (error, row, fields) {
+                connection.release();
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    console.log("a", row);
+                    deferred.resolve(row);
+                }
+            });
         });
-    });
-    return deferred.promise;
+        return deferred.promise;
+    } else if (type == "2") {
+        var deferred = q.defer();
+        var roomSql = 'SELECT * FROM  payment where reservation_id=? and source in (?) and (service_id=? or service_id is null or service_id =0)';
+        pool.getConnection(function (err, connection) {
+            connection.query(roomSql, [reservation_id, source, service_id], function (error, row, fields) {
+                connection.release();
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    console.log("a", row);
+                    deferred.resolve(row);
+                }
+            });
+        });
+        return deferred.promise;
+    }
+
 }
 
 pool.registerPayment = function (payment) {

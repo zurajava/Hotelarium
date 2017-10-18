@@ -454,7 +454,8 @@
                                                                         <span class="person_label">Amount Total</span>
                                                                     </td>
                                                                     <td>
-                                                                        <input type="number" class="form-control form-control-sm" id="amount_fullsa_smFormGroupInput" name="{{'amount_fullsa'+i}}" [(ngModel)]="service.amount_full">
+                                                                        <input type="number" class="form-control form-control-sm" id="amount_fullsa_smFormGroupInput" name="{{'amount_fullsa'+i}}"
+                                                                            [(ngModel)]="service.amount_full">
 
                                                                     </td>
                                                                 </tr>
@@ -523,30 +524,21 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="person_label">Reservation Payd</span>
+                                        <span class="person_label">Reservation Price Full</span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm" id="price_full" name="{{'price_full'+i}}" [(ngModel)]="res.price_full"
+                                            disabled="true">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="person_label">Reservation Payd Full</span>
                                     </td>
                                     <td>
 
                                         <input type="number" class="form-control form-control-sm" id="reservation_payd_amount" name="{{'reservation_payd_amount'+i}}"
                                             [(ngModel)]="res.reservation_payd_amount" disabled="true">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="person_label">Service Payd</span>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control form-control-sm" id="service_payd_amount" name="{{'service_payd_amount'+i}}" [(ngModel)]="res.service_payd_amount"
-                                            disabled="true">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="person_label">Reservation Price</span>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control form-control-sm" id="price_full" name="{{'price_full'+i}}" [(ngModel)]="res.price_full"
-                                            disabled="true">
                                     </td>
                                 </tr>
                                 <tr>
@@ -560,11 +552,19 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <span class="person_label">Service Payd</span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm" id="service_payd_amount" name="{{'service_payd_amount'+i}}" [(ngModel)]="res.service_payd_amount"
+                                            disabled="true">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <span class="person_label">Amount Total</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control form-control-sm" id="amount_full" name="{{'amount_full'+i}}"
-                                            [(ngModel)]="res.amount_full">
+                                        <input type="number" class="form-control form-control-sm" id="amount_full" name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full">
                                     </td>
                                 </tr>
                                 <tr>
@@ -593,30 +593,36 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table class="payment_table_class">
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Source</th>
-                                    <th>Ticket</th>
-                                    <th>Additional Comment</th>
-                                    <th>Service</th>
-                                    <th>Amount</th>
-                                </tr>
-                                <tr *ngFor="let pay of res.payment; let i = index">
 
-                                    <td width="50">
-                                        {{pay.type}}
-                                    </td>
-                                    <td>{{pay.source}}
-                                    </td>
-                                    <td>{{pay.ticket}}
-                                    </td>
-                                    <td>{{pay.additional_comment}}
-                                    </td>
-                                    <td>{{pay.service_id}}</td>
-                                    <td>{{pay.amount}}</td>
-                                </tr>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Source</th>
+                                        <th>Ticket</th>
+                                        <th>Additional Comment</th>
+                                        <th>Service</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let pay of res.payment; let i = index">
+                                        <td>
+                                            {{pay.type}}
+                                        </td>
+                                        <td>{{pay.source}}
+                                        </td>
+                                        <td>{{pay.ticket}}
+                                        </td>
+                                        <td>{{pay.additional_comment}}
+                                        </td>
+                                        <td>{{pay.service_id}}</td>
+                                        <td>{{pay.amount}}</td>
+                                    </tr>
+                                </tbody>
                             </table>
+
+
                         </div>
                     </div>
                 </tr>

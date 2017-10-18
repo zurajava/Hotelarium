@@ -582,6 +582,7 @@ export class ReservationComponent implements OnInit {
               this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
               for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
                 this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
+                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].expandPayment = true;
               }
             }
           } else {
@@ -704,6 +705,6 @@ export class ReservationComponent implements OnInit {
     doc.text(20, 100, 'Amount To Pay: ' + ((res.price_full + res.service_price) - (res.reservation_payd_amount + res.service_payd_amount)));
     doc.text(20, 110, 'Payd Full: ' + res.reservation_payd_amount);
     // Save the PDF
-    doc.save('Test.pdf');
+    doc.save(res.id.toString()+'-invoice.pdf');
   }
 }
