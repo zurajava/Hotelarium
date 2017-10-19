@@ -667,6 +667,25 @@ deleteReservationPersonLocal = function (id) {
     })
 }
 
+deleteReservationPaymentLocal = function (id) {
+    console.log("deleteReservationPaymentLocal", id);
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('DELETE FROM  payment where reservation_id=?',
+                [id],
+                function (error, results, fields) {
+                    connection.release();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
+        });
+
+    })
+}
+
 pool.deleteReservationPersonLocal = function (id, person_id) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
@@ -712,13 +731,16 @@ pool.deleteReservation = function (id) {
                 return person;
             });
         }).then(data => {
+            deleteReservationPaymentLocal(id).then(payment => {
+                return payment;
+            })
+        }).then(data => {
             deleteReservationLocal(id).then(data => {
                 return "OK";
             })
         }).then(data => {
             resolve("OK");
         }).catch(error => {
-            console.log("deleteReservation", error);
             reject(error);
         })
     })
