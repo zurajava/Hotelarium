@@ -176,6 +176,7 @@ export class ReservationComponent implements OnInit {
 
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
           this.serviceData = data.json().service;
+          console.log("Service", JSON.stringify(this.serviceData ));
         });
       });
       this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null, null, false, false, true);
