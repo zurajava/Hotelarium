@@ -168,8 +168,8 @@ export class ReservationComponent implements OnInit {
     if (isReservation) {
       this.showReservation = true;
       this.showReservationPayment = false;
-      starDate = new Date();
-      endDate = new Date();
+      starDate = new Date(this.intl.formatDate(new Date(), 'yyyy-MM-dd'));
+      endDate = new Date(this.intl.formatDate(new Date(), 'yyyy-MM-dd'));
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
@@ -403,6 +403,9 @@ export class ReservationComponent implements OnInit {
   saveReservationReserve(id: ReservationDetail, reservationId: number) {
     console.log("saveReservationReserve", JSON.stringify(id), reservationId);
     id.status_id = "1";
+    for (var i = 0; i < id.reservationService.length; i++) {
+      id.reservationService[i].payment_status = "1";
+    }
     this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
       if (data.json().success === true) {
         id.id = data.json().data;
@@ -423,6 +426,9 @@ export class ReservationComponent implements OnInit {
   saveReservationCheckIn(id: ReservationDetail, reservationId: number) {
     console.log("saveReservationCheckIn", JSON.stringify(id), reservationId);
     id.status_id = "2";
+    for (var i = 0; i < id.reservationService.length; i++) {
+      id.reservationService[i].payment_status = "1";
+    }
     this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
       if (data.json().success === true) {
         id.id = data.json().data;
@@ -560,7 +566,7 @@ export class ReservationComponent implements OnInit {
 
   }
 
-  public payService(res: ReservationServices, reservation:ReservationDetail) {
+  public payService(res: ReservationServices, reservation: ReservationDetail) {
     var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', res.receipt, 'SERVICE additional_comment test', res.service_id);
 
     this.reservationService.addPaymentToService(p).subscribe(payment => {
@@ -705,6 +711,6 @@ export class ReservationComponent implements OnInit {
     doc.text(20, 100, 'Amount To Pay: ' + ((res.price_full + res.service_price) - (res.reservation_payd_amount + res.service_payd_amount)));
     doc.text(20, 110, 'Payd Full: ' + res.reservation_payd_amount);
     // Save the PDF
-    doc.save(res.id.toString()+'-invoice.pdf');
+    doc.save(res.id.toString() + '-invoice.pdf');
   }
 }

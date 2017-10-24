@@ -448,8 +448,9 @@ registerReservationDetailsLocal = function (reservID, data) {
     })
 }
 registerReservationPersonLocal = function (id, person) {
+    console.log("registerReservationPersonLocal", JSON.stringify(person));
     return new Promise(function (resolve, reject) {
-        if (person.person_id != null && person.person_id.length() > 0) {
+        if (person.person_id != null && person.person_id !== "") {
             pool.getConnection(function (err, connection) {
                 connection.query('insert into reservation_person(reservation_id,person_id,first_name,last_name)values(?,?,?,?)',
                     [id, person.person_id, person.first_name, person.last_name],
