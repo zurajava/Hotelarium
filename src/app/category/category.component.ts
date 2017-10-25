@@ -129,11 +129,15 @@ export class CategoryComponent implements OnInit {
   }
   public loadData(branch_id: number) {
     this.categoryService.getCategory(branch_id).subscribe(data => {
-      this.items = data.json().category;
-      this.view = {
-        data: this.items.slice(this.skip, this.skip + this.pageSize),
-        total: this.items.length
-      };
+      if (data.json().success === true) {
+        this.items = data.json().category;
+        this.view = {
+          data: this.items.slice(this.skip, this.skip + this.pageSize),
+          total: this.items.length
+        };
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
 }

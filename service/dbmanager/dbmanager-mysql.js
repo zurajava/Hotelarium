@@ -13,7 +13,6 @@ var pool = mysql.createPool({
 });
 
 pool.getUserByUserName = function (username, password, callback) {
-
     pool.getConnection(function (err, connection) {
         connection.query('SELECT * FROM users where user_name=?', [username], function (error, row, fields) {
             connection.release();
@@ -23,7 +22,6 @@ pool.getUserByUserName = function (username, password, callback) {
                 callback(null, row[0]);
             }
         });
-
     });
 }
 
@@ -53,7 +51,6 @@ pool.registerBranch = function (name, description, address, org_id, mail, phone,
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -69,7 +66,6 @@ pool.updateBranch = function (id, name, description, address, org_id, mail, phon
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -84,7 +80,6 @@ pool.deleteBranch = function (id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -99,7 +94,6 @@ pool.getUserOrganisation = function (user_id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 pool.getUserBranch = function (user_id, callback) {
@@ -113,7 +107,6 @@ pool.getUserBranch = function (user_id, callback) {
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -128,7 +121,6 @@ pool.getCategory = function (branch_id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -151,7 +143,6 @@ pool.registerCategory = function (name, price, currency, description, branch_id,
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -165,7 +156,6 @@ pool.deleteCategory = function (id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -187,7 +177,6 @@ pool.updateCategory = function (id, name, price, currency, description, branch_i
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -201,7 +190,6 @@ pool.getService = function (branch_id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -217,7 +205,6 @@ pool.registerService = function (name, price, currency, description, branch_id, 
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -231,7 +218,6 @@ pool.deleteService = function (id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -247,7 +233,6 @@ pool.updateService = function (id, name, price, currency, description, branch_id
                     callback(null, row);
                 }
             });
-
     });
 }
 
@@ -266,7 +251,6 @@ pool.getRoom = function (branch_id, category_id) {
                     }
                 });
         });
-
     });
 }
 
@@ -283,7 +267,6 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
     } else {
         wifiValue = 'NO';
     }
-
     pool.getConnection(function (err, connection) {
         connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag,additional_bad,additional_bad_price,extra_person,extra_person_price) values(current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
             [name, price, currency, room_no, description, branch_id, category_id, smokeValue, wifiValue, tag,
@@ -296,7 +279,6 @@ pool.registerRoom = function (name, price, currency, room_no, description, branc
                         callback(null, row);
                     }
                 });
-
     });
 }
 
@@ -310,7 +292,6 @@ pool.deleteRoom = function (id, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -424,7 +405,6 @@ registerReservationLocal = function (person) {
                     }
                 });
         });
-
     })
 }
 registerReservationDetailsLocal = function (reservID, data) {
@@ -444,7 +424,6 @@ registerReservationDetailsLocal = function (reservID, data) {
                     }
                 });
         });
-
     })
 }
 registerReservationPersonLocal = function (id, person) {
@@ -484,7 +463,6 @@ pool.registerReservationPerson = function (id, person) {
                     }
                 });
         });
-
     })
 }
 registerReservationServiceLocal = function (id, service) {
@@ -502,7 +480,6 @@ registerReservationServiceLocal = function (id, service) {
                     }
                 });
         });
-
     })
 }
 pool.registerReservationService = function (id, service) {
@@ -521,7 +498,6 @@ pool.registerReservationService = function (id, service) {
                     }
                 });
         });
-
     })
 }
 pool.registerReservation = function (reservation) {
@@ -627,7 +603,6 @@ deleteReservationServiceLocal = function (id) {
                     }
                 });
         });
-
     })
 }
 pool.deleteReservationServiceLocal = function (id, service_id) {
@@ -645,7 +620,6 @@ pool.deleteReservationServiceLocal = function (id, service_id) {
                     }
                 });
         });
-
     })
 }
 
@@ -664,7 +638,6 @@ deleteReservationPersonLocal = function (id) {
                     }
                 });
         });
-
     })
 }
 
@@ -683,7 +656,6 @@ deleteReservationPaymentLocal = function (id) {
                     }
                 });
         });
-
     })
 }
 
@@ -702,7 +674,6 @@ pool.deleteReservationPersonLocal = function (id, person_id) {
                     }
                 });
         });
-
     })
 }
 deleteReservationLocal = function (id) {
@@ -720,7 +691,6 @@ deleteReservationLocal = function (id) {
                     }
                 });
         });
-
     })
 }
 
@@ -755,7 +725,6 @@ pool.updateReservation = function (id, status_id) {
     } else if (status_id == 4) {
         existing_status = 2;
     }
-
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
             connection.query('update reservation_detail set status_id=? where id=? and status_id=?',
@@ -770,7 +739,6 @@ pool.updateReservation = function (id, status_id) {
                     }
                 });
         });
-
     })
 }
 getCategory = function (branch_id) {
@@ -836,8 +804,6 @@ getReservationL = function (room_id, start_date, end_date) {
 
 pool.getReservation = function (branch_id, start_date, end_date) {
     var deferred = q.defer();
-
-
     getCategory(branch_id)
         .then(categories => {
 
@@ -1046,7 +1012,6 @@ pool.getPerson = function (person_no, callback) {
                 callback(null, row);
             }
         });
-
     });
 }
 
@@ -1067,7 +1032,6 @@ pool.getUserPermission = function (user_id, permission, action) {
                     deferred.resolve(row);
                 }
             });
-
     });
     return deferred.promise;
 }
@@ -1106,7 +1070,6 @@ getPayment = function (reservation_id, source, service_id, type) {
         });
         return deferred.promise;
     }
-
 }
 
 pool.registerPayment = function (payment) {

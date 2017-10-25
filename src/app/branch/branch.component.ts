@@ -120,11 +120,15 @@ export class BranchComponent implements OnInit {
   }
   public loadData(org_id: number) {
     this.branchService.getBranch(org_id).subscribe(data => {
-      this.items = data.json().branch;
-      this.view = {
-        data: this.items.slice(this.skip, this.skip + this.pageSize),
-        total: this.items.length
-      };
+      if (data.json().success === true) {
+        this.items = data.json().branch;
+        this.view = {
+          data: this.items.slice(this.skip, this.skip + this.pageSize),
+          total: this.items.length
+        };
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
 }

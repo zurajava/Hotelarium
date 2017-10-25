@@ -130,11 +130,15 @@ export class ServiceComponent implements OnInit {
   }
   public loadData(branch_id: number) {
     this.serviceService.getService(branch_id).subscribe(data => {
-      this.items = data.json().service;
-      this.view = {
-        data: this.items.slice(this.skip, this.skip + this.pageSize),
-        total: this.items.length
-      };
+      if (data.json().success === true) {
+        this.items = data.json().service;
+        this.view = {
+          data: this.items.slice(this.skip, this.skip + this.pageSize),
+          total: this.items.length
+        };
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
   }
 

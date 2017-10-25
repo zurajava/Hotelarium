@@ -53,10 +53,11 @@ router.use(function (req, res, next) {
         console.log(decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname);
         req.decoded = decoded;
         if (pathname != 'userBranch' && pathname != 'userOrganisation') {
-          console.log("Restcrictec path", decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname);
+          console.log("Restcrictec path", decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname + " " + req.method);
           pool.getUserPermission(decoded.id, pathname, req.method).then(data => {
-            if (data.length = 0) {
-              return res.status(403).send({
+            console.log("user permission", data, data.length);
+            if (data.length === 0) {
+              return res.status(200).send({
                 success: false,
                 message: 'Perrmission denid'
               });
@@ -64,7 +65,7 @@ router.use(function (req, res, next) {
               next();
             }
           }).catch(error => {
-            return res.status(403).send({
+            return res.status(200).send({
               success: false,
               message: 'Perrmission denid for resource = ' + pathname + ', action = ' + req.method
             });
@@ -78,7 +79,7 @@ router.use(function (req, res, next) {
   } else {
     return res.status(403).send({
       success: false,
-      message: 'No token provided....z'
+      message: 'No token provided....'
     });
   }
 });
@@ -343,11 +344,11 @@ router.post('/reservation', (req, res) => {
     });
   }
   var reservationDetail = reserv.reservation.reservationDetail;
-  Promise.all(reservationDetail.map(data => { 
+  Promise.all(reservationDetail.map(data => {
     return pool.checkReservation(data).then(data => {
       return data;
     })
-  })).then(data => { 
+  })).then(data => {
     pool.registerReservation(reserv).then(data => {
       return res.json({ success: true, message: 'OK', data: data });
     })
