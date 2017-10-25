@@ -447,7 +447,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd"
-                                                                            disabled="true"> </td>
+                                                                            disabled="true">                                                                        </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -497,14 +497,17 @@
                                     <tr>
                                         <th>Type</th>
                                         <th>Amount Full</th>
+                                        <th>Command</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let pay of res.availablePayments; let i = index">
                                         <td>
-                                            {{pay.source}}
+                                            <span class="badge badge-success">{{pay.source}}</span>
                                         </td>
                                         <td>{{pay.price_full}}</td>
+                                        <td> <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
