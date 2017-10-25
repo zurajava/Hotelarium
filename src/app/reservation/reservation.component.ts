@@ -203,6 +203,13 @@ export class ReservationComponent implements OnInit {
         console.log(JSON.stringify(data.data));
         if (data.success === true) {
           this.reservationInfoEdit = data.data;
+
+          var paymentList = Array<Payment>();
+          var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'additional_comment test', null, null, null, null, null, null, 100);
+          var p2 = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'additional_comment test', null, null, null, null, null, null, 200);
+          paymentList.push(p1, p2);
+
+
           for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
             var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
             var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
@@ -212,12 +219,11 @@ export class ReservationComponent implements OnInit {
             this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
             this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
             this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
-
             this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
-
             for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
               this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
             }
+            this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
           }
         } else {
           this.toastr.error(data.message);
@@ -534,7 +540,7 @@ export class ReservationComponent implements OnInit {
 
   public payReservation(res: ReservationDetail) {
     console.log("payReservation", res);
-    var p = new Payment(res.id, res.id, res.amount_full, new Date(), res.pay_type, 'RESERVATION', res.receipt, 'additional_comment test', null);
+    var p = new Payment(res.id, res.id, res.amount_full, new Date(), res.pay_type, 'RESERVATION', res.receipt, 'additional_comment test', null, null, null, null, null, null, null);
 
     this.reservationService.addPaymentToReservation(p).subscribe(data => {
       console.log("addPaymentToReservation", data.json(), data.json().success);
@@ -563,8 +569,6 @@ export class ReservationComponent implements OnInit {
             this.toastr.error(data.message);
           }
         });
-
-
       } else {
         this.toastr.error(data.json().error);
       }
@@ -573,7 +577,7 @@ export class ReservationComponent implements OnInit {
   }
 
   public payService(res: ReservationServices, reservation: ReservationDetail) {
-    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', res.receipt, 'SERVICE additional_comment test', res.service_id);
+    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', res.receipt, 'SERVICE additional_comment test', res.service_id, null, null, null, null, null, null);
 
     this.reservationService.addPaymentToService(p).subscribe(payment => {
       if (payment.json().success === true) {
@@ -602,8 +606,6 @@ export class ReservationComponent implements OnInit {
             this.toastr.error(data.message);
           }
         });
-
-
       } else {
         this.toastr.error(payment.json().error);
       }
@@ -629,27 +631,10 @@ export class ReservationComponent implements OnInit {
 
   public handleChangeStartDateEdit(value: Date, index: number) {
     this.reservationInfoEdit.reservation.reservationDetail[index].start_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
-
   }
 
   public handleChangeEndDateEdit(value: Date, index: number) {
     this.reservationInfoEdit.reservation.reservationDetail[index].end_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
-  }
-
-
-  /* valueChanged(newVal) {
-     this.reservationInfo.person = newVal;
-   }*/
-
-  valueChangedEdit(newVal) {
-    if (newVal.birthdate === undefined) {
-      this.reservationInfoEdit.person.birthdate = new Date(this.intl.formatDate(this.reservationInfoEdit.person.birthdate, 'yyyy-MM-dd'));;
-    } else {
-      var birthdate = newVal.birthdate;
-      newVal.birthdate = new Date(this.intl.formatDate(birthdate, 'yyyy-MM-dd'));
-      this.reservationInfoEdit.person = newVal;
-    }
-
   }
   autoCompliteListFormatter(data: any): string {
     return `${data.personal_no} ${data.first_name}`;
@@ -657,7 +642,6 @@ export class ReservationComponent implements OnInit {
 
   saveReservationPerson(person: ReservationPerson, id: number) {
     console.log("saveReservationPerson", person, id);
-
     this.reservationService.addReservationPersonToExstingReservation(person, id).subscribe(data => {
       if (data.json().success === true) {
         person.showSave = false;
@@ -672,12 +656,8 @@ export class ReservationComponent implements OnInit {
     console.log("saveReservationService", service, id);
     this.reservationService.addReservationServiceToExstingReservation(service, id).subscribe(data => {
       if (data.json().success === true) {
-
-        console.log("sss", id);
         this.reservationService.getReservationById(id.toString()).then(data => {
-          console.log("Reload", data.data);
           if (data.success === true) {
-            console.log("Reloaded", data.data);
             this.reservationInfoEdit = data.data;
             for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
               var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));

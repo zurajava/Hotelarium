@@ -39,7 +39,15 @@ export class Payment {
     public additional_comment: string;
     public service_id: number;
 
-    constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: string, source: string, ticket: string, additional_comment: string, service_id: number) {
+    public room_prise: number; 
+    public additional_bad_price: number;
+    public extra_person_price: number; 
+    public day_count: number;
+    public payd_amount: number;
+    public price_full: number;
+
+    constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: string, source: string, ticket: string, additional_comment: string, service_id: number,
+        room_prise: number,additional_bad_price: number,extra_person_price: number,day_count: number ,payd_amount: number,price_full: number) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.amount = amount;
@@ -49,7 +57,16 @@ export class Payment {
         this.ticket = ticket;
         this.additional_comment = additional_comment;
         this.service_id = service_id;
+
+        this.room_prise = room_prise;
+        this.additional_bad_price = additional_bad_price;
+        this.extra_person_price = extra_person_price;
+        this.day_count = day_count;
+        this.payd_amount = payd_amount;
+        this.price_full = price_full;
     }
+
+    
 
 }
 export class Reservation {
@@ -114,12 +131,11 @@ export class ReservationDetail {
     public showCheckInButton: boolean = false;
     public showUpdateButton: boolean = false;
     public showPaymentCheckInButton: boolean = true;
-
     public reservationPerson: Array<ReservationPerson>;
     public reservationService: Array<ReservationServices>;
     public payments: Array<Payment>;
     public room: Room[];
-
+    public availablePayments: Array<Payment>;
     constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
         reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, room: Room[],
         showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {

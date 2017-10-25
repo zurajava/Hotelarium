@@ -303,8 +303,8 @@
                             </kendo-combobox>
                         </td>
                         <td>
-                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                [(value)]="res.room_id">
+                            <kendo-combobox style="width:100px;height:25px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'"
+                                [valuePrimitive]="true" [(value)]="res.room_id">
                             </kendo-combobox>
                         </td>
                         <td>
@@ -492,6 +492,22 @@
                             </div>
                         </div>
                         <div class="reservation_payment_div" *ngIf="res.expandPayment">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Amount Full</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let pay of res.availablePayments; let i = index">
+                                        <td>
+                                            {{pay.source}}
+                                        </td>
+                                        <td>{{pay.price_full}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <table style="width:100%; text-align: left;">
                                 <tr>
                                     <td>
@@ -621,8 +637,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
-
                         </div>
                     </div>
                 </tr>
