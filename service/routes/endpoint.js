@@ -101,14 +101,13 @@ router.get('/branch/:org_id', (req, res) => {
 
 router.post('/branch', (req, res) => {
   console.log("add branch : " + req.body.name);
-  pool.registerBranch(req.body.name, req.body.description, req.body.address, req.body.org_id, req.body.mail, req.body.phone, function (err, data) {
-    if (err) {
-      res.json({
-        success: false, message: 'Error while register branch', error: err
-      });
-    } else {
-      res.json({ success: true, message: 'OK', branch_id: data.insertId });
-    }
+
+  pool.registerBranch(req.body.name, req.body.description, req.body.address, req.body.org_id, req.body.mail, req.body.phone).then(data => {
+    res.json({ success: true, message: 'OK', room: data });
+  }).catch(error => {
+    res.json({
+      success: true, message: 'OK', branch_id: data.insertId
+    });
   });
 });
 
