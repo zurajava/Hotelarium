@@ -701,4 +701,8 @@ export class ReservationComponent implements OnInit {
     // Save the PDF
     doc.save(res.id.toString() + '-invoice.pdf');
   }
+  paymentReservation(id: ReservationDetail, pay: Payment) {
+    console.log("paymentReservation", JSON.stringify(id), JSON.stringify(pay));
+
+  }
 }
