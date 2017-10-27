@@ -114,8 +114,15 @@ export class BranchComponent implements OnInit {
   }
 
   public removeHandler({ dataItem }) {
+    console.log("removeHandler", dataItem.id);
     this.branchService.deleteBranch(dataItem.id).subscribe(data => {
-      this.loadData(this.orgSelectedValue);
+      console.log("aa",data.json().success);
+      if (data.json().success === true) {
+        this.loadData(this.orgSelectedValue);
+        this.toastr.success("Branch deleted");
+      } else {
+        this.toastr.success("Error while delete branch");
+      }
     });
   }
   public loadData(org_id: number) {

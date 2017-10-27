@@ -57,34 +57,26 @@ registerBranchLocal = function (name, description, address, org_id, mail, phone)
         });
     })
 }
-assigneBranchToUserLocal = function (user_id, branch_id) {
-    console.log("assigneBranchToUserLocal", name);
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (err, connection) {
-            connection.query('insert into  user_branch(user_id,branch_id) values(?,?)',
-                [user_id, branch_id],
-                function (error, results, fields) {
-                    connection.release();
-                    if (error) {
-                        console.log("assigneBranchToUserLocal roor", error.code);
-                        reject(error);
-                    } else {
-                        resolve(results);
-                    }
-                });
-        });
-    })
-}
+
 pool.registerBranch = function (name, description, address, org_id, mail, phone) {
     console.log("registerBranch", name);
     var deferred = q.defer();
     registerBranchLocal(name, description, address, org_id, mail, phone).then(data => {
-
-        return assigneBranchToUserLocal(4, data).then(reservations => {
-            return reservations;
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query('insert into  user_branch(user_id,branch_id) values(?,?)',
+                    [4, data],
+                    function (error, results, fields) {
+                        connection.release();
+                        if (error) {
+                            console.log("assigneBranchToUserLocal roor", error.code);
+                            reject(error);
+                        } else {
+                            resolve(results);
+                        }
+                    });
+            });
         })
-
-
     }).then(data => {
         deferred.resolve(data);
     }).catch(function (err) {
@@ -111,17 +103,57 @@ pool.updateBranch = function (id, name, description, address, org_id, mail, phon
 }
 
 
-pool.deleteBranch = function (id, callback) {
-    pool.getConnection(function (err, connection) {
-        connection.query('delete from branch where id=?', [id], function (error, row, fields) {
-            connection.release();
-            if (error) {
-                throw error;
-            } else {
-                callback(null, row);
-            }
+deleteBranchLocal = function (id) {
+    console.log("deleteBranchLocal", id);
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete from branch where id=?',
+                [id],
+                function (error, results, fields) {
+                    connection.release();
+                    if (error) {
+                        console.log("registerBranchLocal roor", error.code);
+                        reject(error);
+                    } else {
+                        resolve(results.insertId);
+                    }
+                });
         });
+    })
+}
+
+deleteUserBranchLocal = function (id) {
+    console.log("deleteUserBranchLocal", id);
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('delete from user_branch where branch_id=?',
+                [id],
+                function (error, results, fields) {
+                    connection.release();
+                    if (error) {
+                        console.log("delete branch error", error.code);
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                });
+        });
+    })
+}
+
+pool.deleteBranch = function (id) {
+    console.log("deleteBranch", id);
+    var deferred = q.defer();
+    deleteUserBranchLocal(id).then(data => {
+        deleteBranchLocal(id).then(data => {
+            return data;
+        });
+    }).then(data => { 
+        deferred.resolve("OK");
+    }).catch(function (err) { 
+        deferred.reject(err);
     });
+    return deferred.promise;
 }
 
 

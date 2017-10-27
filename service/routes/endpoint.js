@@ -113,14 +113,12 @@ router.post('/branch', (req, res) => {
 
 router.delete('/branch/:id', (req, res) => {
   console.log("delete branch : " + req.params.id);
-  pool.deleteBranch(req.params.id, function (err, data) {
-    if (err) {
-      res.json({
-        success: false, message: 'Error while delete branch', error: err
-      });
-    } else {
-      res.json({ success: true, message: 'OK', branch_id: data.insertId });
-    }
+  pool.deleteBranch(req.params.id).then(data => {
+    res.json({ success: true, message: 'OK', branch_id: data });
+  }).catch(error => {
+    res.json({
+      success: false, message: 'Error while delete branch', error: error
+    });
   });
 });
 

@@ -66,6 +66,7 @@ export class BranchService {
             .catch(this.handleError);
     }
     private handleError(error: any) {
+        console.log("handleError",error);
         return Observable.throw(error.json());
     }
 }
