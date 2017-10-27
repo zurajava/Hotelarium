@@ -78,6 +78,7 @@
                         <th style="width:80px;padding-left:5em">Child</th>
                         <th style="width:130px;padding-left:4em">Additional Bed</th>
                         <th style="width:130px;padding-left:0em">Extra Person</th>
+                        <th style="width:130px;padding-left:0em">Comment</th>
                         <th style="width:100px;padding-left:0em">Command</th>
                     </div>
                 </tr>
@@ -122,10 +123,12 @@
 
                         </td>
                         <td>
-                            <kendo-numerictextbox style="width:80px;height:25px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                            <kendo-numerictextbox style="width:80px;height:25px" id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
                                 [format]="'n0'">
                             </kendo-numerictextbox>
-
+                        </td>
+                        <td>
+                            <input kendoTextBox style="width:80px;height:25px" id="adsa" name="comment" [(value)]="res.comment" />
                         </td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" (click)="showDetails(res)">Details</button>
@@ -290,6 +293,7 @@
                         <th style="width:80px;padding-left:5em">Child</th>
                         <th style="width:130px;padding-left:4em">Additional Bed</th>
                         <th style="width:130px;padding-left:0em">Extra Person</th>
+                        <th style="width:130px;padding-left:0em">Comment</th>
                         <th style="width:130px;padding-left:0em">Status</th>
                         <th style="width:100px;padding-left:0em">Command</th>
                     </tr>
@@ -339,6 +343,9 @@
                                 [format]="'n0'">
                             </kendo-numerictextbox>
 
+                        </td>
+                        <td>
+                            <input kendoTextBox style="width:80px;height:25px" id="adsedit" name="commentEdit" [(value)]="res.comment" />
                         </td>
                         <td>
                             <span class="badge badge-success">{{res.status_id}}</span>
@@ -447,7 +454,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd"
-                                                                            disabled="true">                                                                        </td>
+                                                                            disabled="true"> </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -506,7 +513,8 @@
                                             <span class="badge badge-success">{{pay.source}}</span>
                                         </td>
                                         <td>{{pay.price_full}}</td>
-                                        <td> <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
+                                        <td>
+                                            <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -481,12 +481,13 @@ registerReservationLocal = function (person) {
     })
 }
 registerReservationDetailsLocal = function (reservID, data) {
+    console.log("data.comment",data.comment);
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
             connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,payment_type,adult,child,additional_bed,' +
-                ' payment_status,extra_person)values(?,current_timestamp,?,?,?,?,?,?,?,?,?,?)',
+                ' payment_status,extra_person,comment)values(?,current_timestamp,?,?,?,?,?,?,?,?,?,?,?)',
                 [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
-                    data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person],
+                    data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person,data.comment],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {
@@ -852,7 +853,7 @@ getRoom = function (branch_id, categoryID) {
 getReservationL = function (room_id, start_date, end_date) {
     var deferred = q.defer();
     var reservationData;
-    var reservationSql = 'SELECT d.id,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
+    var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
         ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email , ro.price ,ro.additional_bad_price, ro.extra_person_price ' +
         ' FROM reservation_detail d ' +
         ' inner join reservation_status s on d.status_id=s.id ' +

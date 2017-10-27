@@ -71,7 +71,8 @@ export class ReservationComponent implements OnInit {
     this.dateFrom.setDate(this.dateTo.getDate() - 5);
     this.dateTo.setDate(this.dateFrom.getDate() + 30)
 
-    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null, [new ReservationDetail(null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
+    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null,
+      [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
   ngOnInit() {
     this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
@@ -180,7 +181,7 @@ export class ReservationComponent implements OnInit {
           console.log("Service", JSON.stringify(this.serviceData));
         });
       });
-      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null, null, false, false, true);
+      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null, null, null, false, false, true);
     } else {
       this.showReservation = false;
       this.showReservationPayment = true;
@@ -233,11 +234,11 @@ export class ReservationComponent implements OnInit {
   }
   addReservation() {
     var size = this.reservationInfo.reservation.reservationDetail.length;
-    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, [new ReservationPerson('', '', '', false)], null, null, false, false, true);
+    this.reservationInfo.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, [new ReservationPerson('', '', '', false)], null, null, false, false, true);
   }
   addReservationToExisting() {
     var size = this.reservationInfoEdit.reservation.reservationDetail.length;
-    this.reservationInfoEdit.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null, null, true, true, false);
+    this.reservationInfoEdit.reservation.reservationDetail[size] = new ReservationDetail(null, null, null, null, null, null, new Date(), new Date(), null, null, null, null, null, true, true, false);
   }
   removeReservation(id: ReservationDetail) {
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
@@ -414,8 +415,10 @@ export class ReservationComponent implements OnInit {
   saveReservationReserve(id: ReservationDetail, reservationId: number) {
     console.log("saveReservationReserve", JSON.stringify(id), reservationId);
     id.status_id = "1";
-    for (var i = 0; i < id.reservationService.length; i++) {
-      id.reservationService[i].payment_status = "1";
+    if (id.reservationService != null) {
+      for (var i = 0; i < id.reservationService.length; i++) {
+        id.reservationService[i].payment_status = "1";
+      }
     }
     this.reservationService.addReservationToExsting(id, reservationId).subscribe(data => {
       if (data.json().success === true) {

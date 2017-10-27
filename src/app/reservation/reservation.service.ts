@@ -15,7 +15,7 @@ export class ReservationService {
   }
   addReservation(data: ReservationInfo) {
     const body = JSON.stringify(data);
-
+    console.log("addReservation", body);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

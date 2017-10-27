@@ -39,15 +39,15 @@ export class Payment {
     public additional_comment: string;
     public service_id: number;
 
-    public room_prise: number; 
+    public room_prise: number;
     public additional_bad_price: number;
-    public extra_person_price: number; 
+    public extra_person_price: number;
     public day_count: number;
     public payd_amount: number;
     public price_full: number;
 
     constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: string, source: string, ticket: string, additional_comment: string, service_id: number,
-        room_prise: number,additional_bad_price: number,extra_person_price: number,day_count: number ,payd_amount: number,price_full: number) {
+        room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.amount = amount;
@@ -66,7 +66,7 @@ export class Payment {
         this.price_full = price_full;
     }
 
-    
+
 
 }
 export class Reservation {
@@ -108,6 +108,7 @@ export class ReservationDetail {
     public category_id: number;
     public category_name: string;
     public extra_person: string;
+    public comment: string;
     public price: number;
     public additional_bad_price: number;
     public extra_person_price: number;
@@ -136,7 +137,7 @@ export class ReservationDetail {
     public payments: Array<Payment>;
     public room: Room[];
     public availablePayments: Array<Payment>;
-    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number,
+    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number, comment: string,
         reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, room: Room[],
         showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
         this.id = id;
@@ -154,6 +155,7 @@ export class ReservationDetail {
         this.showCheckInButton = showCheckInButton;
         this.showPaymentCheckInButton = showPaymentCheckInButton;
         this.room = room;
+        this.comment = comment;
     }
     setRoom(room: Room[]) {
         this.room = room;
