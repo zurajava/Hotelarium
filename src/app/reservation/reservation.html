@@ -128,7 +128,8 @@
                             </kendo-numerictextbox>
                         </td>
                         <td>
-                            <input kendoTextBox style="width:80px;height:25px" id="adsa" name="comment" [(value)]="res.comment" />
+                            <input kendoTextBox style="width:80px;height:25px" id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value"
+                            />
                         </td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" (click)="showDetails(res)">Details</button>
@@ -192,10 +193,6 @@
                                                         <div class="col-2">
                                                             <input type="text" class="form-control form-control-sm" id="n_comment" placeholder="Comment" [value]="service.additional_comment"
                                                                 (input)="service.additional_comment = $event.target.value">
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <input type="text" class="form-control form-control-sm" id="n_service_name" placeholder="Service Name" [value]="service.service_name"
-                                                                (input)="service.service_name = $event.target.value">
                                                         </div>
                                                         <div class="col-2">
                                                             <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationService(res,service)">DEL</button>
@@ -345,7 +342,7 @@
 
                         </td>
                         <td>
-                            <input kendoTextBox style="width:80px;height:25px" id="adsedit" name="commentEdit" [(value)]="res.comment" />
+                            <input kendoTextBox style="width:80px;height:25px" id="adsedit" name="commentEdit" [value]="res.comment" (input)="res.comment = $event.target.value" />
                         </td>
                         <td>
                             <span class="badge badge-success">{{res.status_id}}</span>
@@ -420,10 +417,6 @@
                                                         <div class="col-2">
                                                             <input type="text" class="form-control form-control-sm" id="id_service_id2" placeholder="Comment" [value]="service.additional_comment"
                                                                 (input)="service.additional_comment= $event.target.value">
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <input type="text" class="form-control form-control-sm" id="id_service_id3" placeholder="Service Name" [value]="service.service_name"
-                                                                (input)="service.service_name= $event.target.value">
                                                         </div>
                                                         <div class="col-1">
                                                             <span class="badge badge-danger">{{service.payment_status}}</span>
