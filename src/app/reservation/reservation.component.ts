@@ -166,34 +166,36 @@ export class ReservationComponent implements OnInit {
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.fillDataRange();
   }
-  openReservationForm(isReservation: boolean, room_no: number, starDate: Date, endDate: Date, currentDate: Date, status: string, category: string, reservation_id: string) {
+  closeRezervation() {
+    this.showReservation = false;
+    this.showReservationPayment = false;
+  }
+  openReservationForm(isReservation: boolean, room_no: String, starDate: Date, endDate: Date, currentDate: Date, status: string, category: string, reservation_id: string) {
+    console.log("openReservationForm", category, room_no, currentDate);
     if (isReservation) {
       this.showReservation = true;
       this.showReservationPayment = false;
-      starDate = new Date(this.intl.formatDate(new Date(), 'yyyy-MM-dd'));
-      endDate = new Date(this.intl.formatDate(new Date(), 'yyyy-MM-dd'));
+      starDate = new Date(this.intl.formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), (currentDate.getDate() - 2)), 'yyyy-MM-dd'));
+      endDate = new Date(this.intl.formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), (currentDate.getDate() + 1)), 'yyyy-MM-dd'));
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
-
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
           this.serviceData = data.json().service;
-          console.log("Service", JSON.stringify(this.serviceData));
         });
+
       });
-      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, null, starDate, endDate, null, null, null, null, null, false, false, true);
+
+      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, room_no, starDate, endDate, category, null, null, null, null, false, false, true);
     } else {
       this.showReservation = false;
       this.showReservationPayment = true;
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
-
-
         this.reservationService.getRoom(this.brSelectedValue, null).subscribe(data => {
           this.room = data.json().room;
         });
-
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
           this.serviceData = data.json().service;
         });

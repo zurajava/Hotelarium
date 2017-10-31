@@ -5,6 +5,7 @@
     <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
     <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
     <button type="button" class="btn btn-primary btn-sm" (click)="filterRezervation()">Filter</button>
+    <button type="button" class="btn btn-warning btn-sm" (click)="closeRezervation()">Close</button>
 </div>
 <!-- Register Reservation -->
 <div *ngIf="showReservation" class="reservation-container">

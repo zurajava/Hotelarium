@@ -96,7 +96,7 @@ export class ReservationDetail {
     public reservation_id: number;
     public create_date: Date;
     public update_date: Date;
-    public room_id: number;
+    public room_id: String;
     public room_no: number;
     public status_id: string;
     public start_date: Date;
@@ -105,7 +105,7 @@ export class ReservationDetail {
     public child: string;
     public additional_bed: string;
     public payment_status: string;
-    public category_id: number;
+    public category_id: string;
     public category_name: string;
     public extra_person: string;
     public comment: string;
@@ -137,9 +137,10 @@ export class ReservationDetail {
     public payments: Array<Payment>;
     public room: Room[];
     public availablePayments: Array<Payment>;
-    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: number, start_date: Date, end_date: Date, category_id: number, comment: string,
-        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>, room: Room[],
-        showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
+    constructor(id: number, reservation_id: number, create_date: Date, update_date: Date, status_id: string, room_id: String, start_date: Date, end_date: Date,
+        category_id: string, comment: string,
+        reservationPerson: Array<ReservationPerson>, reservationService: Array<ReservationServices>,
+        room: Room[], showReserveButton: boolean, showCheckInButton: boolean, showPaymentCheckInButton: boolean) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.create_date = create_date;
