@@ -93,13 +93,11 @@ export class ReservationComponent implements OnInit {
     this.fillDataRange();
   }
   public categoryValueChange(value: any, reservation: ReservationDetail): void {
-    console.log("categoryValueChange");
     this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
       reservation.room = data.json().room;
     });
   }
   public categoryValueChangeEdit(value: any, reservation: ReservationDetail): void {
-    console.log("categoryValueChangeEdit");
     this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
       reservation.room = data.json().room;
     });
@@ -180,13 +178,18 @@ export class ReservationComponent implements OnInit {
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
+        for (var i = 0; i < this.category.length; i++) {
+          if (this.category[i].name === category) {
+            this.reservationService.getRoom(this.brSelectedValue, this.category[i].id.toString()).subscribe(data => {
+              this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, room_no,
+                starDate, endDate, category, null, null, null, data.json().room, false, false, true);
+            });
+          }
+        }
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
           this.serviceData = data.json().service;
         });
-
       });
-
-      this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, room_no, starDate, endDate, category, null, null, null, null, false, false, true);
     } else {
       this.showReservation = false;
       this.showReservationPayment = true;
