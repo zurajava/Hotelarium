@@ -179,7 +179,7 @@ export class ReservationComponent implements OnInit {
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
         for (var i = 0; i < this.category.length; i++) {
-          if (this.category[i].name === category) {
+          if (this.category[i].id.toString() == category) {
             this.reservationService.getRoom(this.brSelectedValue, this.category[i].id.toString()).subscribe(data => {
               this.reservationInfo.reservation.reservationDetail[0] = new ReservationDetail(null, null, null, null, null, room_no,
                 starDate, endDate, category, null, null, null, data.json().room, false, false, true);
