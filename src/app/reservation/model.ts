@@ -46,6 +46,9 @@ export class Payment {
     public payd_amount: number;
     public price_full: number;
 
+    public pay_type: String;
+    public receipt: String;
+
     constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: string, source: string, ticket: string, additional_comment: string, service_id: number,
         room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number) {
         this.id = id;

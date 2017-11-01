@@ -427,63 +427,7 @@
                                                             <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationService(service,res.id)">Save</button>
                                                         </div>
                                                         <div class="col-1">
-                                                            <button type="button" class="btn btn-warning btn-sm" (click)="showServicePaymentInfo(service)">Pay</button>
-                                                        </div>
-                                                        <div class="col-1">
                                                             <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationServiceExisting(res,service)">Del</button>
-                                                        </div>
-                                                        <div class="reservation_service_payment_div" *ngIf="service.expandPayment">
-                                                            <table style="width:100%; text-align: left;">
-                                                                <tr>
-                                                                    <td>
-                                                                        <span class="person_label">Service Prise</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" class="form-control form-control-sm" name="{{'reservation_prise_fullsa'+i}}" id="smFormGroupInput" [(ngModel)]="service.price"
-                                                                            disabled="true">
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <span class="person_label">Service Payd</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'service_payda'+i}}" [(ngModel)]="service.service_payd"
-                                                                            disabled="true"> </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <span class="person_label">Amount Total</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" class="form-control form-control-sm" id="amount_fullsa_smFormGroupInput" name="{{'amount_fullsa'+i}}"
-                                                                            [(ngModel)]="service.amount_full">
-
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <span class="person_label">Payment Type</span>
-                                                                    </td>
-                                                                    <select class="form-control form-control-sm" name="{{'payTymessa'+i}}" id="exampleSelect111aa" [(ngModel)]="service.pay_type">
-                                                                        <option>Card</option>
-                                                                        <option>Cash</option>
-                                                                    </select>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <span class="person_label">Receipt #</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" class="form-control form-control-sm" id="smFormGroupInput" name="{{'receiptsa'+i}}" [(ngModel)]="service.receipt">
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-warning btn-sm" (click)="payService(service,res)">Pay Now</button>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -498,7 +442,14 @@
                                 <thead>
                                     <tr>
                                         <th>Type</th>
+                                        <th>Day Count</th>
+                                        <th>Reservation Prise</th>
+                                        <th>Additional Bad Price</th>
+                                        <th>Extra Person Price</th>
+                                        <th>Payd Amount</th>
                                         <th>Amount Full</th>
+                                        <th>Payment Type</th>
+                                        <th>Receipt #</th>
                                         <th>Command</th>
                                     </tr>
                                 </thead>
@@ -507,7 +458,24 @@
                                         <td>
                                             <span class="badge badge-success">{{pay.source}}</span>
                                         </td>
-                                        <td>{{pay.price_full}}</td>
+                                        <td>{{pay.day_count}}</td>
+                                        <td>{{pay.room_prise}}</td>
+                                        <td>{{pay.additional_bad_price}}</td>
+                                        <td>{{pay.extra_person_price}}</td>
+                                        <td>{{pay.payd_amount}}</td>
+                                        <td>
+                                            <input type="number" class="form-control form-control-sm" id="amount_full_p"
+                                                [(ngModel)]="pay.price_full">
+                                        </td>
+                                        <th>
+                                            <select class="form-control form-control-sm" id="exampleSelect111aas_p" [(ngModel)]="pay.pay_type">
+                                                <option>Card</option>
+                                                <option>Cash</option>
+                                            </select>
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control form-control-sm" id="receipt_p" [(ngModel)]="pay.receipt">
+                                        </th>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
                                         </td>

@@ -169,7 +169,6 @@ export class ReservationComponent implements OnInit {
     this.showReservationPayment = false;
   }
   openReservationForm(isReservation: boolean, room_no: String, starDate: Date, endDate: Date, currentDate: Date, status: string, category: string, reservation_id: string) {
-    console.log("openReservationForm", category, room_no, currentDate);
     if (isReservation) {
       this.showReservation = true;
       this.showReservationPayment = false;
@@ -210,13 +209,24 @@ export class ReservationComponent implements OnInit {
         if (data.success === true) {
           this.reservationInfoEdit = data.data;
 
+
+
+
+
           var paymentList = Array<Payment>();
-          var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'additional_comment test', null, null, null, null, null, null, 100);
-          var p2 = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'additional_comment test', null, null, null, null, null, null, 200);
-          paymentList.push(p1, p2);
-
-
           for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
+
+            var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null,
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full,
+              this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full,
+              this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full,
+              this.reservationInfoEdit.reservation.reservationDetail[i].day_count,
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount,
+              (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full +
+                this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full +
+                this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full));
+            paymentList.push(p1);
+
             var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
             var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
 
@@ -227,6 +237,12 @@ export class ReservationComponent implements OnInit {
             this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
             this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
             for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
+
+              var p2 = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment', null, null, null, null, null, 
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd, 
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price);
+              paymentList.push(p2);
+
               this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
             }
             this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
@@ -540,11 +556,6 @@ export class ReservationComponent implements OnInit {
     console.log("showPaymentInfo", reservation);
     reservation.expandPayment = true;
   }
-  public showServicePaymentInfo(services: ReservationServices) {
-    console.log("showServicePaymentInfo", services);
-    services.expandPayment = true;
-  }
-
 
   public payReservation(res: ReservationDetail) {
     console.log("payReservation", res);
@@ -581,49 +592,9 @@ export class ReservationComponent implements OnInit {
         this.toastr.error(data.json().error);
       }
     });
-
   }
 
-  public payService(res: ReservationServices, reservation: ReservationDetail) {
-    var p = new Payment(res.reservation_id, res.reservation_id, res.amount_full, new Date(), res.pay_type, 'SERVICE', res.receipt, 'SERVICE additional_comment test', res.service_id, null, null, null, null, null, null);
 
-    this.reservationService.addPaymentToService(p).subscribe(payment => {
-      if (payment.json().success === true) {
-        this.toastr.success("Service Payment Added");
-        this.reservationService.getReservationById(reservation.reservation_id.toString()).then(data => {
-
-          if (data.success === true) {
-            this.reservationInfoEdit = data.data;
-            for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
-              var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
-              var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
-
-              this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
-              this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-              this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
-              this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
-              for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
-                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
-                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].expandPayment = true;
-              }
-            }
-          } else {
-            this.toastr.error(data.message);
-          }
-        });
-      } else {
-        this.toastr.error(payment.json().error);
-      }
-    });
-
-  }
-
-  public handleChangeBirthDate(value: Date) {
-    this.reservationInfo.person.birthdate = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
-  }
   public handleChangeStartDate(value: Date, index: number) {
     this.reservationInfo.reservation.reservationDetail[index].start_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
 
@@ -632,20 +603,12 @@ export class ReservationComponent implements OnInit {
   public handleChangeEndDate(value: Date, index: number) {
     this.reservationInfo.reservation.reservationDetail[index].end_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
   }
-
-  public handleChangeBirthDateEdit(value: Date) {
-    this.reservationInfoEdit.person.birthdate = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
-  }
-
   public handleChangeStartDateEdit(value: Date, index: number) {
     this.reservationInfoEdit.reservation.reservationDetail[index].start_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
   }
 
   public handleChangeEndDateEdit(value: Date, index: number) {
     this.reservationInfoEdit.reservation.reservationDetail[index].end_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
-  }
-  autoCompliteListFormatter(data: any): string {
-    return `${data.personal_no} ${data.first_name}`;
   }
 
   saveReservationPerson(person: ReservationPerson, id: number) {
