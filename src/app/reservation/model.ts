@@ -33,10 +33,10 @@ export class Payment {
     public reservation_id: number;
     public amount: number;
     public create_date: Date;
-    public type: string;
-    public source: string;
-    public ticket: string;
-    public additional_comment: string;
+    public type: String;
+    public source: String;
+    public ticket: String;
+    public additional_comment: String;
     public service_id: number;
 
     public room_prise: number;
@@ -49,7 +49,7 @@ export class Payment {
     public pay_type: String;
     public receipt: String;
 
-    constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: string, source: string, ticket: string, additional_comment: string, service_id: number,
+    constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: String, source: String, ticket: String, additional_comment: String, service_id: number,
         room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number) {
         this.id = id;
         this.reservation_id = reservation_id;
@@ -127,6 +127,7 @@ export class ReservationDetail {
 
     public pay_type: string;
     public receipt: string;
+    public paymentComment:string;
     public amount_full: number;
 
     public showMoreInfo: boolean = false;

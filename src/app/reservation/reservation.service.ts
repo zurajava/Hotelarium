@@ -168,7 +168,10 @@ export class ReservationService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
-    return this.http.post('/service/payment?type=1', body, { headers: headers }).catch(this.handleError);
+
+    return this.http.post('/service/payment?type=1', body, { headers: headers }).toPromise().then(response => {
+      return response.json();
+    }).catch(this.handleError);
   }
   addPaymentToService(payment: Payment) {
     const body = JSON.stringify(payment);
@@ -176,6 +179,9 @@ export class ReservationService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
-    return this.http.post('/service/payment?type=2', body, { headers: headers }).catch(this.handleError);
+
+    return this.http.post('/service/payment?type=2', body, { headers: headers }).toPromise().then(response => {
+      return response.json();
+    }).catch(this.handleError);
   }
 }

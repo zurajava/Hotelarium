@@ -22,9 +22,7 @@ enableProdMode();
   providers: [
     { provide: 'Window', useValue: window }
   ]
-
 })
-
 export class ReservationComponent implements OnInit {
 
   public persons: Person[];
@@ -68,9 +66,9 @@ export class ReservationComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);
     this.dateTo = new Date();
     this.dateFrom = new Date();
-    this.dateFrom.setDate(this.dateTo.getDate() - 5);
-    this.dateTo.setDate(this.dateFrom.getDate() + 30)
-
+    this.dateFrom.setDate(this.dateFrom.getDate() - 5);
+    this.dateTo.setDate(this.dateTo.getDate() + 30)
+    this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null,
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
@@ -161,6 +159,7 @@ export class ReservationComponent implements OnInit {
     });
   }
   filterRezervation() {
+    console.log("filterRezervation");
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.fillDataRange();
   }
@@ -202,55 +201,7 @@ export class ReservationComponent implements OnInit {
           this.serviceData = data.json().service;
         });
       });
-
-
-      this.reservationService.getReservationById(reservation_id).then(data => {
-        console.log(JSON.stringify(data.data));
-        if (data.success === true) {
-          this.reservationInfoEdit = data.data;
-
-
-
-
-
-          var paymentList = Array<Payment>();
-          for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
-
-            var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null,
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full,
-              this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full,
-              this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full,
-              this.reservationInfoEdit.reservation.reservationDetail[i].day_count,
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount,
-              (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full +
-                this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full +
-                this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full));
-            paymentList.push(p1);
-
-            var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
-            var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
-
-            this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
-            this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-            this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
-            this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
-            this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
-            this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
-            for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
-
-              var p2 = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment', null, null, null, null, null, 
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd, 
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price);
-              paymentList.push(p2);
-
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
-            }
-            this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
-          }
-        } else {
-          this.toastr.error(data.message);
-        }
-      });
+      this.getReservationByIdLocal(reservation_id);
     }
   }
   addReservation() {
@@ -414,10 +365,6 @@ export class ReservationComponent implements OnInit {
     console.log("updateAllReservation", JSON.stringify(this.reservationInfoEdit));
 
   }
-  paymentReservationAll() {
-    console.log("paymentReservationAll", JSON.stringify(this.reservationInfo));
-
-  }
   //ADD PERSON and service
   addPersonToReservationPerson(id: ReservationDetail) {
     console.log("addPersonToReservationPerson", id);
@@ -453,6 +400,7 @@ export class ReservationComponent implements OnInit {
         id.showReserveButton = false;
         id.showPaymentCheckInButton = true;
         this.fillDataRange();
+        this.getReservationByIdLocal(reservationId.toString());
       } else {
         this.toastr.error(data.json().message);
       }
@@ -481,8 +429,7 @@ export class ReservationComponent implements OnInit {
       }
     });
   }
-  //========================================
-  //ADD PERSON AND SERVICE EXISTING
+ 
   addPersonToReservationPersonExisting(id: ReservationDetail) {
     console.log("addPersonToReservationPersonExisting", id);
     var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
@@ -508,8 +455,7 @@ export class ReservationComponent implements OnInit {
     }
 
 
-  }
-  //========================================
+  } 
   reserve() {
     console.log(JSON.stringify(this.reservationInfo));
     for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
@@ -557,44 +503,6 @@ export class ReservationComponent implements OnInit {
     reservation.expandPayment = true;
   }
 
-  public payReservation(res: ReservationDetail) {
-    console.log("payReservation", res);
-    var p = new Payment(res.id, res.id, res.amount_full, new Date(), res.pay_type, 'RESERVATION', res.receipt, 'additional_comment test', null, null, null, null, null, null, null);
-
-    this.reservationService.addPaymentToReservation(p).subscribe(data => {
-      console.log("addPaymentToReservation", data.json(), data.json().success);
-      if (data.json().success === true) {
-        this.toastr.success("Payment Added");
-
-        this.reservationService.getReservationById(res.reservation_id.toString()).then(data => {
-          if (data.success === true) {
-            this.reservationInfoEdit = data.data;
-            for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
-              var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
-              var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
-
-              this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
-              this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-              this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
-              this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
-              for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
-                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
-              }
-            }
-          } else {
-            this.toastr.error(data.message);
-          }
-        });
-      } else {
-        this.toastr.error(data.json().error);
-      }
-    });
-  }
-
-
   public handleChangeStartDate(value: Date, index: number) {
     this.reservationInfo.reservation.reservationDetail[index].start_date = new Date(this.intl.formatDate(value, 'yyyy-MM-dd'));
 
@@ -627,28 +535,7 @@ export class ReservationComponent implements OnInit {
     console.log("saveReservationService", service, id);
     this.reservationService.addReservationServiceToExstingReservation(service, id).subscribe(data => {
       if (data.json().success === true) {
-        this.reservationService.getReservationById(id.toString()).then(data => {
-          if (data.success === true) {
-            this.reservationInfoEdit = data.data;
-            for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
-              var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
-              var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
-
-              this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
-              this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-              this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
-              this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
-              this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
-              for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
-                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].amount_full = this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price - this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd;
-              }
-            }
-          } else {
-            this.toastr.error(data.message);
-          }
-        });
+        this.getReservationByIdLocal(id.toString()); 
         service.showSave = false;
         this.toastr.success("Reservation Service Added");
       } else {
@@ -673,7 +560,94 @@ export class ReservationComponent implements OnInit {
     doc.save(res.id.toString() + '-invoice.pdf');
   }
   paymentReservation(id: ReservationDetail, pay: Payment) {
-    console.log("paymentReservation", JSON.stringify(id), JSON.stringify(pay));
+    if (pay.source == "RESERVATION") {
+      var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, null, null, null, null, null);
+      this.reservationService.addPaymentToReservation(p).then(data => {
+        if (data.json().success === true) {
+          this.toastr.success("Payment Added");
+          this.getReservationByIdLocal(id.reservation_id.toString()); 
+        } else {
+          this.toastr.error(data.json().error);
+        }
+      });
+    } else if (pay.source == "SERVICE") {
+      var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'SERVICE', pay.receipt, pay.additional_comment, pay.service_id, null, null, null, null, null, null);
+      this.reservationService.addPaymentToService(p).then(data => {
+        if (data.json().success === true) {
+          this.toastr.success("Payment Added");
+          this.getReservationByIdLocal(id.reservation_id.toString()); 
+        } else {
+          this.toastr.error(data.json().error);
+        }
+      });
+    }
+  }
+  paymentReservationAll(id: ReservationDetail, pay: Payment) {
+    let roomPromises = id.availablePayments.map(payment => {
+      console.log("MAP", payment);
+      if (payment.source == "RESERVATION") {
+        var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'RESERVATION', id.receipt, id.paymentComment,
+          null, null, null, null, null, null, null);
 
+        this.reservationService.addPaymentToReservation(p).then(data => {
+          return data;
+        });
+      } else if (payment.source == "SERVICE") {
+        var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'SERVICE', id.receipt, id.paymentComment, payment.service_id,
+          null, null, null, null, null, null);
+
+        this.reservationService.addPaymentToService(p).then(data => {
+          return data;
+        });
+      }
+    });
+
+    Promise.all(roomPromises).then(data => { 
+      this.getReservationByIdLocal(id.reservation_id.toString());
+    });
+  }
+  public getReservationByIdLocal(id: String) {
+    this.reservationService.getReservationById(id).then(data => {
+      console.log(JSON.stringify(data.data));
+      if (data.success === true) {
+        this.reservationInfoEdit = data.data;
+        var paymentList = Array<Payment>();
+        for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
+
+          var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null,
+            this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full,
+            this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full,
+            this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full,
+            this.reservationInfoEdit.reservation.reservationDetail[i].day_count,
+            this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount,
+            ((this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full +
+              this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full +
+              this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full) -
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount));
+          paymentList.push(p1);
+
+          var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
+          var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
+
+          this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
+          this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
+          this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
+          this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
+          this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
+          this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
+          for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
+            var p2 = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment',
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_id, null, null, null, null,
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd,
+              (this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price -
+                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd));
+            paymentList.push(p2);
+          }
+          this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
+        }
+      } else {
+        this.toastr.error(data.message);
+      }
+    });
   }
 }

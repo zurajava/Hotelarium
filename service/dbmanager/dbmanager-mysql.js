@@ -148,9 +148,9 @@ pool.deleteBranch = function (id) {
         deleteBranchLocal(id).then(data => {
             return data;
         });
-    }).then(data => { 
+    }).then(data => {
         deferred.resolve("OK");
-    }).catch(function (err) { 
+    }).catch(function (err) {
         deferred.reject(err);
     });
     return deferred.promise;
@@ -481,13 +481,13 @@ registerReservationLocal = function (person) {
     })
 }
 registerReservationDetailsLocal = function (reservID, data) {
-    console.log("data.comment",data.comment);
+    console.log("data.comment", data.comment);
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
             connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,payment_type,adult,child,additional_bed,' +
                 ' payment_status,extra_person,comment)values(?,current_timestamp,?,?,?,?,?,?,?,?,?,?,?)',
                 [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
-                    data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person,data.comment],
+                    data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person, data.comment],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {
@@ -851,6 +851,7 @@ getRoom = function (branch_id, categoryID) {
 }
 
 getReservationL = function (room_id, start_date, end_date) {
+    console.log("getReservationL", room_id, start_date, end_date);
     var deferred = q.defer();
     var reservationData;
     var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
@@ -860,7 +861,7 @@ getReservationL = function (room_id, start_date, end_date) {
         ' inner join room ro on ro.id=d.room_id ' +
         ' inner join reservation a on d.reservation_id=a.id ' +
         ' inner join person p on a.person_no=p.personal_no ' +
-        ' where d.room_id=? and d.start_date >? and d.start_date<? and d.status_id in(1,2) order by d.start_date asc';
+        ' where d.room_id=? and d.start_date >=? and d.start_date<=? and d.status_id in(1,2) order by d.start_date asc';
     pool.getConnection(function (err, connection) {
         connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
             connection.release();
