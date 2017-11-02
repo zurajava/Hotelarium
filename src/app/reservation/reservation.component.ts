@@ -610,7 +610,6 @@ export class ReservationComponent implements OnInit {
     this.reservationService.getReservationById(id).then(data => {
       if (data.success === true) {
         this.reservationInfoEdit = data.data;
-        
         for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
           var paymentList = Array<Payment>();
           var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null,
@@ -631,6 +630,7 @@ export class ReservationComponent implements OnInit {
           this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
           this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
           this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
+          this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
           this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
           this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
           this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
@@ -643,7 +643,6 @@ export class ReservationComponent implements OnInit {
             paymentList.push(p2);
           }
           this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
-
         }
         console.log(JSON.stringify(data.data));
       } else {
