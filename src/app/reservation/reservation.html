@@ -456,34 +456,33 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let pay of res.availablePayments; let i = index">
-                                        <td  id="{{'source'+i}}">
+                                        <td>
                                             <span class="badge badge-success">{{pay.source}}</span>
                                         </td>
-                                        <td id="{{'day_count'+i}}">{{pay.day_count}}</td>
-                                        <td id="{{'room_prise'+i}}">{{pay.room_prise}}</td>
-                                        <td id="{{'additional_bad_price'+i}}">{{pay.additional_bad_price}}</td>
-                                        <td id="{{'extra_person_price'+i}}">{{pay.extra_person_price}}</td>
-                                        <td id="{{'payd_amount'+i}}">{{pay.payd_amount}}</td>
-                                        <td id="{{'amount_full_p'+i}}">
+                                        <td>{{pay.day_count}}</td>
+                                        <td>{{pay.room_prise}}</td>
+                                        <td>{{pay.additional_bad_price}}</td>
+                                        <td>{{pay.extra_person_price}}</td>
+                                        <td>{{pay.payd_amount}}</td>
+                                        <td>
                                             <input type="number" class="form-control form-control-sm" id="amount_full_p" [(ngModel)]="pay.price_full">
                                         </td>
-                                        <td id="{{'exampleSelect111aas_p'+i}}">
+                                        <td>
                                             <select class="form-control form-control-sm" id="exampleSelect111aas_p" [(ngModel)]="pay.pay_type">
                                                 <option>Card</option>
                                                 <option>Cash</option>
                                             </select>
                                         </td>
-                                        <td id="{{'receipt_p'+i}}">
+                                        <td>
                                             <input type="text" class="form-control form-control-sm" id="receipt_p" [(ngModel)]="pay.receipt">
                                         </td>
-                                        <td id="{{'additional_comment_p'+i}}">
+                                        <td>
                                             <input type="text" class="form-control form-control-sm" id="additional_comment_p" [(ngModel)]="pay.additional_comment">
                                         </td>
-                                        <td id="{{'day_count'+i}}">
+                                        <td>
                                             <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
                                             <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
                                         </td>
-
                                     </tr>
                                 </tbody>
                             </table>

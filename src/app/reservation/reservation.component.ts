@@ -608,12 +608,11 @@ export class ReservationComponent implements OnInit {
   }
   public getReservationByIdLocal(id: String) {
     this.reservationService.getReservationById(id).then(data => {
-      console.log(JSON.stringify(data.data));
       if (data.success === true) {
         this.reservationInfoEdit = data.data;
-        var paymentList = Array<Payment>();
+        
         for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
-
+          var paymentList = Array<Payment>();
           var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null,
             this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full,
             this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full,
@@ -644,7 +643,9 @@ export class ReservationComponent implements OnInit {
             paymentList.push(p2);
           }
           this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
+
         }
+        console.log(JSON.stringify(data.data));
       } else {
         this.toastr.error(data.message);
       }
