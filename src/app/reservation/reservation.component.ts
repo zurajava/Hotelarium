@@ -56,7 +56,10 @@ export class ReservationComponent implements OnInit {
   public dateRange = [];
   public dateFrom: Date;
   public dateTo: Date;
-
+  public personalNo: string;
+  public reserv: boolean = true;
+  public checkIn: boolean = true;
+  public checkOut: boolean = false;
   public userBranch: Array<any>;
   public brSelectedValue: number;
 
@@ -67,7 +70,8 @@ export class ReservationComponent implements OnInit {
     this.dateTo = new Date();
     this.dateFrom = new Date();
     this.dateFrom.setDate(this.dateFrom.getDate() - 5);
-    this.dateTo.setDate(this.dateTo.getDate() + 30)
+    this.dateTo.setDate(this.dateTo.getDate() + 30);
+    this.personalNo = '';
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null,
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
@@ -108,55 +112,56 @@ export class ReservationComponent implements OnInit {
       datesArray[i] = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000 * i));
     }
     this.dateRange = datesArray;
-    this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'), this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
-      this.data = data.data;
-      for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
-        if (this.data[i].rooms.length > 0) {
-          for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category
+    this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateTo, 'yyyy-MM-dd'), this.reserv, this.checkIn, this.checkOut, this.personalNo).then(data => {
+        this.data = data.data;
+        for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
+          if (this.data[i].rooms.length > 0) {
+            for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category
 
-            if (this.data[i].rooms[j].reservations.length > 0) {
-              var sheduleArray = [];
-              var a = 0;
-              var d = a;
-              var sumDayFiff = 0;
-              for (var t = 0; t < this.data[i].rooms[j].reservations.length; t++) {
+              if (this.data[i].rooms[j].reservations.length > 0) {
+                var sheduleArray = [];
+                var a = 0;
+                var d = a;
+                var sumDayFiff = 0;
+                for (var t = 0; t < this.data[i].rooms[j].reservations.length; t++) {
 
-                var sheduleFrom = new Date(this.data[i].rooms[j].reservations[t].start_date);
-                var sheduleTo = new Date(this.data[i].rooms[j].reservations[t].end_date);
-                var status = this.data[i].rooms[j].reservations[t].status_name;
-                var oneDay = 24 * 60 * 60 * 1000;
-                var diffDays = Math.round(Math.abs((sheduleFrom.getTime() - sheduleTo.getTime()) / (oneDay)));
+                  var sheduleFrom = new Date(this.data[i].rooms[j].reservations[t].start_date);
+                  var sheduleTo = new Date(this.data[i].rooms[j].reservations[t].end_date);
+                  var status = this.data[i].rooms[j].reservations[t].status_name;
+                  var oneDay = 24 * 60 * 60 * 1000;
+                  var diffDays = Math.round(Math.abs((sheduleFrom.getTime() - sheduleTo.getTime()) / (oneDay)));
 
-                for (a; a < this.segment; a++) {
-                  var current = new Date(datesArray[d - 1]);
-                  if (current >= sheduleFrom && current <= sheduleTo) {
+                  for (a; a < this.segment; a++) {
+                    var current = new Date(datesArray[d - 1]);
+                    if (current >= sheduleFrom && current <= sheduleTo) {
 
-                    sheduleArray[a - 1] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false, this.data[i].rooms[j].reservations[t].reservation_id);
-                    a++;
-                    d = d + diffDays;
-                    sumDayFiff = sumDayFiff + diffDays;
-                    break;
-                  } else {
-                    sheduleArray[a - 1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, current, true, "");
+                      sheduleArray[a - 1] = new Schedule(this.data[i].rooms[j].reservations[t].id, status, sheduleFrom, sheduleTo, this.data[i].rooms[j].reservations[t].payment_type, this.data[i].rooms[j].reservations[t].first_name, this.data[i].rooms[j].reservations[t].person_no, diffDays, current, false, this.data[i].rooms[j].reservations[t].reservation_id);
+                      a++;
+                      d = d + diffDays;
+                      sumDayFiff = sumDayFiff + diffDays;
+                      break;
+                    } else {
+                      sheduleArray[a - 1] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, current, true, "");
+                    }
+                    d++;
                   }
+                  sumDayFiff--;
+                }
+                for (a; a < this.segment - sumDayFiff; a++) {
+                  sheduleArray[a - 1] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true, "");
                   d++;
                 }
-                sumDayFiff--;
-              }
-              for (a; a < this.segment - sumDayFiff; a++) {
-                sheduleArray[a - 1] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true, "");
-                d++;
-              }
-              this.data[i].rooms[j].reservations = sheduleArray;
-            } else {
-              for (var f = 0; f < this.segment - 1; f++) {
-                this.data[i].rooms[j].reservations[f] = new Schedule("", 'CHECKED_OUT', new Date(), new Date(), "", "", "", 1, datesArray[f], true, "");
+                this.data[i].rooms[j].reservations = sheduleArray;
+              } else {
+                for (var f = 0; f < this.segment - 1; f++) {
+                  this.data[i].rooms[j].reservations[f] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[f], true, "");
+                }
               }
             }
           }
         }
-      }
-    });
+      });
   }
   filterRezervation() {
     console.log("filterRezervation");
@@ -429,7 +434,7 @@ export class ReservationComponent implements OnInit {
       }
     });
   }
- 
+
   addPersonToReservationPersonExisting(id: ReservationDetail) {
     console.log("addPersonToReservationPersonExisting", id);
     var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
@@ -455,7 +460,7 @@ export class ReservationComponent implements OnInit {
     }
 
 
-  } 
+  }
   reserve() {
     console.log(JSON.stringify(this.reservationInfo));
     for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
@@ -535,7 +540,7 @@ export class ReservationComponent implements OnInit {
     console.log("saveReservationService", service, id);
     this.reservationService.addReservationServiceToExstingReservation(service, id).subscribe(data => {
       if (data.json().success === true) {
-        this.getReservationByIdLocal(id.toString()); 
+        this.getReservationByIdLocal(id.toString());
         service.showSave = false;
         this.toastr.success("Reservation Service Added");
       } else {
@@ -565,7 +570,7 @@ export class ReservationComponent implements OnInit {
       this.reservationService.addPaymentToReservation(p).then(data => {
         if (data.json().success === true) {
           this.toastr.success("Payment Added");
-          this.getReservationByIdLocal(id.reservation_id.toString()); 
+          this.getReservationByIdLocal(id.reservation_id.toString());
         } else {
           this.toastr.error(data.json().error);
         }
@@ -575,7 +580,7 @@ export class ReservationComponent implements OnInit {
       this.reservationService.addPaymentToService(p).then(data => {
         if (data.json().success === true) {
           this.toastr.success("Payment Added");
-          this.getReservationByIdLocal(id.reservation_id.toString()); 
+          this.getReservationByIdLocal(id.reservation_id.toString());
         } else {
           this.toastr.error(data.json().error);
         }
@@ -602,7 +607,7 @@ export class ReservationComponent implements OnInit {
       }
     });
 
-    Promise.all(roomPromises).then(data => { 
+    Promise.all(roomPromises).then(data => {
       this.getReservationByIdLocal(id.reservation_id.toString());
     });
   }

@@ -78,12 +78,29 @@ export class ReservationService {
     return this.http.get('/service/person?person_no' + person_no, { headers: headers })
       .catch(this.handleError);
   }
-  getReservation(branch_id: String, start_date: string, end_date: string) {
+  getReservation(branch_id: String, start_date: string, end_date: string, reserv, checkIn, checkOut, person_no: string) {
+    console.log("R", reserv, "C", checkIn, "O", checkOut);
+    var state = '(5)';
+    if (reserv && checkIn && checkOut) {
+      state = '(1,2,4)';
+    } else if (reserv && checkIn) {
+      state = '(1,2)';
+    } else if (reserv && checkOut) {
+      state = '(1,4)';
+    } else if (checkIn && checkOut) {
+      state = '(2,4)';
+    } else if (reserv) {
+      state = '(1)';
+    } else if (checkIn) {
+      state = '(2)';
+    } else if (checkOut) {
+      state = '(4)';
+    }
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date + '&branch_id=' + branch_id, { headers: headers }).toPromise().then(response => {
+    return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date + '&branch_id=' + branch_id + '&state=' + state + '&person_no=' + person_no, { headers: headers }).toPromise().then(response => {
       return response.json();
     }).catch(this.handleError);
   }

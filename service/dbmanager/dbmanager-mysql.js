@@ -850,10 +850,12 @@ getRoom = function (branch_id, categoryID) {
     return deferred.promise;
 }
 
-getReservationL = function (room_id, start_date, end_date) {
-    console.log("getReservationL", room_id, start_date, end_date);
+getReservationL = function (room_id, start_date, end_date, state, personal_no) {
     var deferred = q.defer();
     var reservationData;
+    if (personal_no == null || personal_no == undefined) {
+        personal_no = "";
+    }
     var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
         ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email , ro.price ,ro.additional_bad_price, ro.extra_person_price ' +
         ' FROM reservation_detail d ' +
@@ -861,9 +863,9 @@ getReservationL = function (room_id, start_date, end_date) {
         ' inner join room ro on ro.id=d.room_id ' +
         ' inner join reservation a on d.reservation_id=a.id ' +
         ' inner join person p on a.person_no=p.personal_no ' +
-        ' where d.room_id=? and d.start_date >=? and d.start_date<=? and d.status_id in(1,2) order by d.start_date asc';
+        ' where d.room_id=? and d.start_date >=? and d.start_date<=? and d.status_id in ' + state + ' and a.person_no like ?  order by d.start_date asc';
     pool.getConnection(function (err, connection) {
-        connection.query(reservationSql, [room_id, start_date, end_date], function (error, row, fields) {
+        connection.query(reservationSql, [room_id, start_date, end_date, ['%' + personal_no + '%']], function (error, row, fields) {
             connection.release();
             if (err) {
                 deferred.reject(err);
@@ -877,7 +879,7 @@ getReservationL = function (room_id, start_date, end_date) {
 
 
 
-pool.getReservation = function (branch_id, start_date, end_date) {
+pool.getReservation = function (branch_id, start_date, end_date, state, person_no) {
     var deferred = q.defer();
     getCategory(branch_id)
         .then(categories => {
@@ -894,7 +896,7 @@ pool.getReservation = function (branch_id, start_date, end_date) {
             let finalPromise = category_rooms.map(category => {
 
                 let reservationPromises = category.rooms.map(room => {
-                    return getReservationL(room.id, start_date, end_date)
+                    return getReservationL(room.id, start_date, end_date, state, person_no)
                         .then(reservations => Object.assign({}, room, { reservations }))
                 })
 

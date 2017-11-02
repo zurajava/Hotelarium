@@ -1,11 +1,47 @@
 <div class="container-fluid">
-    <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-        (valueChange)="brValueChange($event)">
-    </kendo-dropdownlist>
-    <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
-    <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
-    <button type="button" class="btn btn-primary btn-sm" (click)="filterRezervation()">Filter</button>
-    <button type="button" class="btn btn-warning btn-sm" (click)="closeRezervation()">Close</button>
+    <table>
+        <tr>
+            <th>
+                <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+                    (valueChange)="brValueChange($event)">
+                </kendo-dropdownlist>
+            </th>
+            <th>
+                <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
+            </th>
+            <th>
+                <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
+            </th>
+            <th>
+                <input type="text" class="form-control form-control-sm" id="person_no" placeholder="Personal #" [(ngModel)]="personalNo">
+            </th>
+            <th>
+                <div>
+                    <div class="form-check form-check-inline has-success">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="checkboxSuccess" [(ngModel)]="reserv">Reserved
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline has-warning">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="checkboxWarning" [(ngModel)]="checkIn">Check In
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline has-primary">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="checkboxDanger" [(ngModel)]="checkOut">Check Out
+                        </label>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <button type="button" class="btn btn-primary btn-sm" (click)="filterRezervation()">Filter</button>
+            </th>
+            <th>
+                <button type="button" class="btn btn-warning btn-sm" (click)="closeRezervation()">Close</button>
+            </th>
+        </tr>
+    </table>
 </div>
 <!-- Register Reservation -->
 <div *ngIf="showReservation" class="reservation-container">
