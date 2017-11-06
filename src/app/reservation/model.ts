@@ -68,9 +68,6 @@ export class Payment {
         this.payd_amount = payd_amount;
         this.price_full = price_full;
     }
-
-
-
 }
 export class Reservation {
     public id: number;

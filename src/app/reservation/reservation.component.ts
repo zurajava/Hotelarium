@@ -566,7 +566,7 @@ export class ReservationComponent implements OnInit {
   }
   paymentReservation(id: ReservationDetail, pay: Payment) {
     if (pay.source == "RESERVATION") {
-      var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, null, null, null, null, null);
+      var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null);
       this.reservationService.addPaymentToReservation(p).then(data => {
         if (data.json().success === true) {
           this.toastr.success("Payment Added");
@@ -592,7 +592,7 @@ export class ReservationComponent implements OnInit {
       console.log("MAP", payment);
       if (payment.source == "RESERVATION") {
         var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'RESERVATION', id.receipt, id.paymentComment,
-          null, null, null, null, null, null, null);
+          null, null, payment.additional_bad_price, payment.extra_person_price, null, null, null);
 
         this.reservationService.addPaymentToReservation(p).then(data => {
           return data;

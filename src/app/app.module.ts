@@ -17,6 +17,7 @@ import { UsersModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { ServiceModule } from './service/service.module';
 import { ProfileModule } from './profile/profile.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProfileModule } from './profile/profile.module';
     AppRoutingModule,
     CoreModule,
     LoginModule,
+    DashboardModule,
     RoomModule,
     BranchModule,
     ReportsModule,
