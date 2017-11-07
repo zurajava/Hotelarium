@@ -1079,6 +1079,23 @@ pool.getReservationById = function (id) {
     return deferred.promise;
 }
 
+pool.getReservationStatistic = function (branch_id) {
+    console.log("getReservationStatistic", branch_id);
+    var deferred = q.defer();
+     var query = 'SELECT CONCAT(YEAR(a.start_date), \'-\', SUBSTRING(MONTHNAME(a.start_date), 1, 3)) AS date, SUM(a.day_count) AS count FROM (SELECT d.start_date AS start_date,DATEDIFF(d.end_date, d.start_date) AS day_count '+
+     ' FROM reservation_detail d  INNER JOIN room r ON d.room_id = r.id  WHERE  r.branch_id = ? ORDER BY d.start_date) a GROUP BY CONCAT(YEAR(a.start_date), \'-\',   SUBSTRING(MONTHNAME(a.start_date), 1, 3))';
+     pool.getConnection(function (err, connection) {
+        connection.query(query, [branch_id], function (error, row, fields) {
+            connection.release();
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(row);
+            }
+        });
+    });
+    return deferred.promise;
+}
 pool.getPerson = function (person_no, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('SELECT * FROM person where personal_no like ?', ['%' + person_no + '%'], function (error, row, fields) {

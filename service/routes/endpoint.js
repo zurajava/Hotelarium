@@ -501,6 +501,17 @@ router.get('/reservation/:id', (req, res) => {
   });
 });
 
+router.get('/reservation/statistic/:branch_id', (req, res) => {
+  console.log("get reservation statistic: " + req.params.branch_id); 
+  pool.getReservationStatistic(req.params.branch_id).then(data => {
+    return res.json({ success: true, message: 'OK', data: data });
+  }).catch(function (error) {
+    return res.json({
+      success: false, message: 'Error while get reservation statistic', error: err
+    });
+  });
+});
+
 
 
 router.get('/person', (req, res) => {
