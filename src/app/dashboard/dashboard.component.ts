@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels: string[] = ["aa"];
+  public barChartLabels: string[] = [];
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
   public barChartData: any[] = [
@@ -32,24 +32,23 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardService.getUserBranch(this.authservice.getUserID()).then(data => {
+      console.log("ngOnInit");
       if (data.success === true) {
         this.userBranch = data.branch;
         this.brSelectedValue = this.userBranch[0].id
         this.dashboardService.getStatistic(this.brSelectedValue.toString()).then(data => {
-          var dataTemp = data;
-          console.log(JSON.stringify(dataTemp));
+          var dataTemp = data.data;
           for (var i = 0; i < dataTemp.length; i++) {
-            console.log(dataTemp[i]);
-            this.barChartLabels.push(dataTemp[i].date);
-            this.barChartData[0].data.push(dataTemp[i].count);
+            this.barChartLabels[i] = dataTemp[i].date;
+            this.barChartData[0].data[i] = dataTemp[i].count;
           }
-          console.log("aaa", JSON.stringify(this.barChartLabels), JSON.stringify(this.barChartData));
+          this.barChartData = this.barChartData.slice();
+          console.log("ngOnInit", JSON.stringify(this.barChartLabels), JSON.stringify(this.barChartData));
         });
       } else {
         this.toastr.error(data.message);
       }
     });
-    
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
@@ -57,6 +56,7 @@ export class DashboardComponent implements OnInit {
   }
   public chartClicked(e: any): void {
     console.log(e);
+    this.barChartData = this.barChartData.slice();
   }
 
   public chartHovered(e: any): void {
