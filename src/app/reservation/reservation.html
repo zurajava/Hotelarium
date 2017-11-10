@@ -219,7 +219,8 @@
                                                 <li class="list-group-item">
                                                     <div class="row">
                                                         <div class="col-3">
-                                                            <select class="form-control form-control-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id">
+                                                            <select class="form-control form-control-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id"
+                                                            (ngModelChange)="serviceValueChange($event,service)">
                                                                 <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
                                                             </select>
                                                         </div>

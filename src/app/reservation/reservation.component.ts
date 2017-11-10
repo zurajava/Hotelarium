@@ -104,6 +104,13 @@ export class ReservationComponent implements OnInit {
       reservation.room = data.json().room;
     });
   }
+  public serviceValueChange(newValue, service: ReservationServices): void {
+    for (var i = 0; i < this.serviceData.length; i++) {
+      if (newValue == this.serviceData[i].id) {
+        service.frequency = this.serviceData[i].type;
+      }
+    }
+  }
   fillDataRange() {
     const currentDate = this.dateFrom;
     const datesArray = [];
