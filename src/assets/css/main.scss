@@ -148,13 +148,17 @@ body {
                     font-size: 12px;
                     line-height: 50px;
                     color: #fff;
-                    //text-transform: uppercase;
+                    text-transform: uppercase;
                     letter-spacing: 1px;
                     display: inline-block;
                 }
             }
         }
+        
     }
+}
+.col-2{
+    padding: 0px !important; 
 }
 .row {
     display: -webkit-box;
