@@ -233,15 +233,11 @@ pool.deleteCategory = function (id, callback) {
 }
 
 pool.updateCategory = function (id, name, price, currency, description, branch_id, parking, callback) {
-    var parkingValue;
-    if (parking === true) {
-        parkingValue = 'YES';
-    } else {
-        parkingValue = 'NO';
-    }
+ 
+    console.log("updateCategory..........",parking,parkingValue);
     pool.getConnection(function (err, connection) {
         connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp ,parking =? where id=?',
-            [name, price, currency, description, branch_id, parkingValue, id],
+            [name, price, currency, description, branch_id, parking, id],
             function (error, row, fields) {
                 connection.release();
                 if (error) {

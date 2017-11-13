@@ -8,22 +8,58 @@
     </kendo-dropdownlist>
   </div>
 
-  <kendo-grid [data]="view" [height]="700" [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
-    (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
-    (add)="addHandler($event)">
-    <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand>Add Category</button>
-    </ng-template>
-    <kendo-grid-column field="name" title="Name"></kendo-grid-column>
-    <kendo-grid-column field="description" title="Description"></kendo-grid-column>
-    <kendo-grid-column field="parking" editor="boolean" title="Parking"></kendo-grid-column>
-    <kendo-grid-command-column title="command" width="220">
-      <ng-template kendoGridCellTemplate let-isNew="isNew">
-        <button kendoGridEditCommand class="k-primary">Edit</button>
-        <button kendoGridRemoveCommand>Remove</button>
-        <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
-        <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
-      </ng-template>
-    </kendo-grid-command-column>
-  </kendo-grid>
+  <div class="card">
+    <div class="card-header">
+      Category Registration Form
+    </div>
+    <div class="card-block">
+
+
+      <div class="form-group">
+        <label for="email">Name:</label>
+        <input type="text" class="form-control" id="email" [(ngModel)]="selectedCategory.name" >
+      </div>
+      <div class="form-group">
+        <label for="pwd">Description:</label>
+        <input type="text" class="form-control" id="pwd" [(ngModel)]="selectedCategory.description">
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" id="checkboxp" [(ngModel)]="selectedCategory.parkingForm">Parking
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm" (click)="saveCategory()" >{{btnText}}</button>
+      <button type="submit" class="btn btn-warning btn-sm" (click)="resetCategory()" >Reset</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      List Of Category
+    </div>
+    <div class="card-block">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Parking</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let it of items; let i = index">
+            <th scope="row">{{it.id}}</th>
+            <td>{{it.name}}</td>
+            <td>{{it.description}}</td>
+            <td>{{it.parking}}</td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm" (click)="editCategory(it)">Edit</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(it)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>

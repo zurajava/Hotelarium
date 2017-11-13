@@ -9,4 +9,11 @@ export class Category {
     public price: number;
     public currency: string;
     public parking: string;
+    public parkingForm: boolean;
+
+    constructor(name: string, description: string, parkingForm: boolean) {
+        this.name = name;
+        this.description = description;
+        this.parkingForm = parkingForm;
+    }
 }

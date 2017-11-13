@@ -9,10 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, CategoryRoutingModule, BrowserModule, BrowserAnimationsModule, GridModule, DropDownsModule,DropDownListModule,ReactiveFormsModule ],
+  imports: [CommonModule, CategoryRoutingModule, FormsModule, BrowserModule, BrowserAnimationsModule, GridModule, DropDownsModule, DropDownListModule, ReactiveFormsModule],
   declarations: [CategoryComponent],
   providers: [CategoryService]
 })
