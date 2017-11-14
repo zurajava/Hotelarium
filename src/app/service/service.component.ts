@@ -87,6 +87,10 @@ export class ServiceComponent implements OnInit {
   }
   public saveService() {
     this.selectedService.branch_id = this.brSelectedValue.toString();
+    if (this.selectedService.name == null || this.selectedService.name.length <= 0) {
+      this.toastr.error("Name is required");
+      return;
+    }
     if (this.btnText == "ADD") {
       this.serviceService.addService(this.selectedService).subscribe(data => {
         this.loadData(this.brSelectedValue);

@@ -81,6 +81,10 @@ export class CategoryComponent implements OnInit {
     } else {
       this.selectedCategory.parking = "NO";
     }
+    if (this.selectedCategory.name == null || this.selectedCategory.name.length <= 0) {
+      this.toastr.error("Name is required");
+      return;
+    }
     if (this.btnText == "ADD") {
       this.categoryService.addCategory(this.selectedCategory).subscribe(data => {
         this.loadData(this.brSelectedValue);

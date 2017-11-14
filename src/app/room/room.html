@@ -25,7 +25,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="pwd2">Price:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedRoom.price">
+                        <input type="number" min="0" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedRoom.price">
                     </div>
                 </div>
             </div>
@@ -33,19 +33,19 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="pwd5">Extra Person:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd5" [(ngModel)]="selectedRoom.extra_person">
+                        <input type="number" min="0" class="form-control form-control-sm" id="pwd5" [(ngModel)]="selectedRoom.extra_person">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="pwd4">Additional Bad Price:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedRoom.additional_bad_price">
+                        <input type="number" min="0" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedRoom.additional_bad_price">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="pwd3">Additional Bad:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedRoom.additional_bad">
+                        <input type="number" min="0" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedRoom.additional_bad">
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="pwd6">Extra Person Price:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd6" [(ngModel)]="selectedRoom.extra_person_price">
+                        <input type="number" min="0" class="form-control form-control-sm" id="pwd6" [(ngModel)]="selectedRoom.extra_person_price">
                     </div>
                 </div>
                 <div class="col-4">

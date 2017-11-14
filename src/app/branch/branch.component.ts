@@ -69,6 +69,10 @@ export class BranchComponent implements OnInit {
   }
   public saveBranch() {
     this.selectedBranch.org_id = this.orgSelectedValue.toString();
+    if (this.selectedBranch.name == null || this.selectedBranch.name.length <= 0) {
+      this.toastr.error("Name is required");
+      return;
+    }
     if (this.btnText == "ADD") {
       this.branchService.addBranch(this.selectedBranch).subscribe(data => {
         this.loadData(this.orgSelectedValue);
