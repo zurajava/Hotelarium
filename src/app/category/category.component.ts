@@ -32,7 +32,7 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     this.selectedCategory = new Category('', '', false);
-    this.btnText = "ADD"
+    this.btnText = "ADD";
     this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;

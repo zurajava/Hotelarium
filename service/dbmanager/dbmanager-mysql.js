@@ -233,8 +233,6 @@ pool.deleteCategory = function (id, callback) {
 }
 
 pool.updateCategory = function (id, name, price, currency, description, branch_id, parking, callback) {
- 
-    console.log("updateCategory..........",parking,parkingValue);
     pool.getConnection(function (err, connection) {
         connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp ,parking =? where id=?',
             [name, price, currency, description, branch_id, parking, id],
@@ -323,22 +321,11 @@ pool.getRoom = function (branch_id, category_id) {
     });
 }
 
-pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
-    var smokeValue;
-    if (smoke === true) {
-        smokeValue = 'YES';
-    } else {
-        smokeValue = 'NO';
-    }
-    var wifiValue;
-    if (wifi === true) {
-        wifiValue = 'YES';
-    } else {
-        wifiValue = 'NO';
-    }
+pool.registerRoom = function (name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag,
+    additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
     pool.getConnection(function (err, connection) {
         connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag,additional_bad,additional_bad_price,extra_person,extra_person_price) values(current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-            [name, price, currency, room_no, description, branch_id, category_id, smokeValue, wifiValue, tag,
+            [name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag,
                 additional_bad, additional_bad_price, extra_person, extra_person_price], function (error, row, fields) {
                     connection.release();
                     if (error) {
@@ -366,21 +353,9 @@ pool.deleteRoom = function (id, callback) {
 
 pool.updateRoom = function (id, name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag,
     additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
-    var smokeValue;
-    if (smoke === true) {
-        smokeValue = 'YES';
-    } else {
-        smokeValue = 'NO';
-    }
-    var wifiValue;
-    if (wifi === true) {
-        wifiValue = 'YES';
-    } else {
-        wifiValue = 'NO';
-    }
     pool.getConnection(function (err, connection) {
         connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=?,additional_bad=?, additional_bad_price=?, extra_person=?,extra_person_price=? where id=?',
-            [name, price, currency, room_no, description, branch_id, category_name, smokeValue, wifiValue, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, id],
+            [name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, id],
             function (error, row, fields) {
                 connection.release();
                 if (error) {
@@ -1078,9 +1053,9 @@ pool.getReservationById = function (id) {
 pool.getReservationStatistic = function (branch_id) {
     console.log("getReservationStatistic", branch_id);
     var deferred = q.defer();
-     var query = 'SELECT CONCAT(YEAR(a.start_date), \'-\', SUBSTRING(MONTHNAME(a.start_date), 1, 3)) AS date, SUM(a.day_count) AS count FROM (SELECT d.start_date AS start_date,DATEDIFF(d.end_date, d.start_date) AS day_count '+
-     ' FROM reservation_detail d  INNER JOIN room r ON d.room_id = r.id  WHERE  r.branch_id = ? ORDER BY d.start_date) a GROUP BY CONCAT(YEAR(a.start_date), \'-\',   SUBSTRING(MONTHNAME(a.start_date), 1, 3))';
-     pool.getConnection(function (err, connection) {
+    var query = 'SELECT CONCAT(YEAR(a.start_date), \'-\', SUBSTRING(MONTHNAME(a.start_date), 1, 3)) AS date, SUM(a.day_count) AS count FROM (SELECT d.start_date AS start_date,DATEDIFF(d.end_date, d.start_date) AS day_count ' +
+        ' FROM reservation_detail d  INNER JOIN room r ON d.room_id = r.id  WHERE  r.branch_id = ? ORDER BY d.start_date) a GROUP BY CONCAT(YEAR(a.start_date), \'-\',   SUBSTRING(MONTHNAME(a.start_date), 1, 3))';
+    pool.getConnection(function (err, connection) {
         connection.query(query, [branch_id], function (error, row, fields) {
             connection.release();
             if (error) {

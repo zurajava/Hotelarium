@@ -2,64 +2,58 @@
   <div class="commonHeadingAdmin">
     <h1>Category</h1>
   </div>
-  <div class="example-wrapper">
-    <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-      (valueChange)="brValueChange($event)">
-    </kendo-dropdownlist>
-  </div>
-
   <div class="card">
     <div class="card-header">
-      Category Registration Form
+      <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+        (valueChange)="brValueChange($event)">
+      </kendo-dropdownlist>
     </div>
-    <div class="card-block">
-
-
+    <div class="card-block" style="background-color: #DEEFF5;">
       <div class="form-group">
         <label for="email">Name:</label>
-        <input type="text" class="form-control" id="email" [(ngModel)]="selectedCategory.name" >
+        <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedCategory.name">
       </div>
       <div class="form-group">
         <label for="pwd">Description:</label>
-        <input type="text" class="form-control" id="pwd" [(ngModel)]="selectedCategory.description">
+        <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedCategory.description">
       </div>
       <div class="form-check">
         <label class="form-check-label">
           <input class="form-check-input" type="checkbox" id="checkboxp" [(ngModel)]="selectedCategory.parkingForm">Parking
         </label>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm" (click)="saveCategory()" >{{btnText}}</button>
-      <button type="submit" class="btn btn-warning btn-sm" (click)="resetCategory()" >Reset</button>
+      <button type="submit" class="btn btn-primary btn-sm" (click)="saveCategory()">{{btnText}}</button>
+      <button type="submit" class="btn btn-warning btn-sm" (click)="resetCategory()">Reset</button>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      List Of Category
-    </div>
-    <div class="card-block">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Parking</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let it of items; let i = index">
-            <th scope="row">{{it.id}}</th>
-            <td>{{it.name}}</td>
-            <td>{{it.description}}</td>
-            <td>{{it.parking}}</td>
-            <td>
-              <button type="button" class="btn btn-success btn-sm" (click)="editCategory(it)">Edit</button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(it)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <div class="card-header">
+        List Of Category
+      </div>
+      <div class="card-block">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Parking</th>
+              <th>Command</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let it of items; let i = index">
+              <th scope="row">{{it.id}}</th>
+              <td>{{it.name}}</td>
+              <td>{{it.description}}</td>
+              <td>{{it.parking}}</td>
+              <td>
+                <button type="button" class="btn btn-success btn-sm" (click)="editCategory(it)">Edit</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(it)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>

@@ -291,7 +291,7 @@ router.get('/room/:branch_id', (req, res) => {
 router.post('/room', (req, res) => {
   console.log("add room : " + req.body.name);
   pool.registerRoom(req.body.name, req.body.price, req.body.currency, req.body.room_no, req.body.description,
-    req.body.branch_id, req.body.category_name,
+    req.body.branch_id, req.body.category_id,
     req.body.smoke, req.body.wifi, req.body.tag,
     req.body.additional_bad, req.body.additional_bad_price, req.body.extra_person, req.body.extra_person_price, function (err, data) {
       if (err) {
@@ -318,8 +318,8 @@ router.delete('/room/:id', (req, res) => {
 });
 
 router.put('/room/:id', (req, res) => {
-  console.log(req.body);
-  pool.updateRoom(req.params.id, req.body.name, req.body.price, req.body.currency, req.body.room_no, req.body.description, req.body.branch_id, req.body.category_name, req.body.smoke, req.body.wifi, req.body.tag,
+  console.log(req.body,req.body.category_name);
+  pool.updateRoom(req.params.id, req.body.name, req.body.price, req.body.currency, req.body.room_no, req.body.description, req.body.branch_id, req.body.category_id, req.body.smoke, req.body.wifi, req.body.tag,
     req.body.additional_bad, req.body.additional_bad_price, req.body.extra_person, req.body.extra_person_price, function (err, data) {
       if (err) {
         res.json({

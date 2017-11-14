@@ -2,29 +2,85 @@
     <div class="commonHeadingAdmin">
         <h1>Branch</h1>
     </div>
-    <div class="example-wrapper">
-        <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
-            (valueChange)="orgValueChange($event)">
-        </kendo-dropdownlist>
+    <div class="card">
+        <div class="card-header">
+            <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
+                (valueChange)="orgValueChange($event)">
+            </kendo-dropdownlist>
+        </div>
+        <div class="card-block" style="background-color: #DEEFF5;">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="email">Name:</label>
+                        <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedBranch.name">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="pwd">Adress:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedBranch.address">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="pwd">Mail:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedBranch.mail">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="pwd">Phone:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedBranch.phone">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="pwd">Description:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedBranch.description">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" (click)="saveBranch()">{{btnText}}</button>
+            <button type="submit" class="btn btn-warning btn-sm" (click)="resetBranch()">Reset</button>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                List Of Branch
+            </div>
+            <div class="card-block">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Address</th>
+                            <th>Mail</th>
+                            <th>Phone</th>
+                            <th>Command</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let it of items; let i = index">
+                            <th scope="row">{{it.id}}</th>
+                            <td>{{it.name}}</td>
+                            <td>{{it.description}}</td>
+                            <td>{{it.address}}</td>
+                            <td>{{it.mail}}</td>
+                            <td>{{it.phone}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-sm" (click)="editBranch(it)">Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="deleteBranch(it)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <kendo-grid [data]="view" [height]="700" [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
-        (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
-        (add)="addHandler($event)">
-        <ng-template kendoGridToolbarTemplate>
-            <button kendoGridAddCommand>Add Branch</button>
-        </ng-template>
-        <kendo-grid-column field="name" title="Name"></kendo-grid-column>
-        <kendo-grid-column field="description" title="Description"></kendo-grid-column>
-        <kendo-grid-column field="address" title="Address"></kendo-grid-column>
-        <kendo-grid-column field="mail" title="Mail"></kendo-grid-column>
-        <kendo-grid-column field="phone" title="Phone" editor="numeric" format="{0:n}"></kendo-grid-column>
-        <kendo-grid-command-column title="command" width="220">
-            <ng-template kendoGridCellTemplate let-isNew="isNew">
-                <button kendoGridEditCommand class="k-primary">Edit</button>
-                <button kendoGridRemoveCommand>Remove</button>
-                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
-                <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
-            </ng-template>
-        </kendo-grid-command-column>
-    </kendo-grid>
 </section>

@@ -7,16 +7,9 @@ import { Observable } from 'rxjs/Rx';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Service } from './model.js';
+import { Service } from './model';
 import { AuthService } from './../core/auth.service';
 
-const formGroup = dataItem => new FormGroup({
-  'id': new FormControl(dataItem.id),
-  'name': new FormControl(dataItem.name, Validators.required),
-  'price': new FormControl(dataItem.price, Validators.required),
-  'type': new FormControl(dataItem.type, Validators.required),
-  'description': new FormControl(dataItem.description)
-});
 
 @Component({
   selector: 'app-service',
@@ -32,6 +25,8 @@ export class ServiceComponent implements OnInit {
     "typeId": "QUANTITY",
     "typeName": "QUANTITY"
   }];
+  public selectedService: Service;
+  public btnText: string;
 
   public view: GridDataResult;
   public data: Object[];
@@ -51,6 +46,8 @@ export class ServiceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedService = new Service('', '', null, '');
+    this.btnText = "ADD"
     this.serviceService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
@@ -68,78 +65,43 @@ export class ServiceComponent implements OnInit {
     this.brSelectedValue = value;
     this.loadData(this.brSelectedValue);
   }
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
-    this.view = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
-      total: this.items.length
-    };
-  }
 
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.formGroup = formGroup({
-      'name': "",
-      'description': "",
-      'price': 0,
-      'currency': "",
+  public loadData(branch_id: number) {
+    this.serviceService.getService(branch_id).subscribe(data => {
+      if (data.json().success === true) {
+        this.items = data.json().service;
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
-
-    sender.addRow(this.formGroup);
   }
 
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    this.formGroup = formGroup(dataItem);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.formGroup);
+  public editService(category: Service) {
+    this.btnText = "Update";
+    this.selectedService = category;
   }
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
+  public deleteService(category: Service) {
+    this.serviceService.deleteService(category.id).subscribe(data => {
+      this.loadData(this.brSelectedValue);
+    });
   }
-
-  public closeEditor(grid, rowIndex = this.editedRowIndex) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-    this.formGroup = undefined;
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }) {
-    const product: Service = formGroup.value;
-    console.log(product);
-    product.branch_id = this.brSelectedValue.toString();
-    if (isNew) {
-      this.serviceService.addService(product).subscribe(data => {
-        sender.closeRow(rowIndex);
+  public saveService() {
+    this.selectedService.branch_id = this.brSelectedValue.toString();
+    if (this.btnText == "ADD") {
+      this.serviceService.addService(this.selectedService).subscribe(data => {
         this.loadData(this.brSelectedValue);
         this.toastr.success("Branch Added");
       });
-    } else {
-      this.serviceService.editService(product).subscribe(data => {
-        sender.closeRow(rowIndex);
+    } else if (this.btnText == "Update") {
+      this.serviceService.editService(this.selectedService).subscribe(data => {
         this.loadData(this.brSelectedValue);
         this.toastr.success("Branch Edited");
       });
     }
   }
-
-  public removeHandler({ dataItem }) {
-    this.serviceService.deleteService(dataItem.id).subscribe(data => {
-      this.loadData(this.brSelectedValue);
-    });
-  }
-  public loadData(branch_id: number) {
-    this.serviceService.getService(branch_id).subscribe(data => {
-      if (data.json().success === true) {
-        this.items = data.json().service;
-        this.view = {
-          data: this.items.slice(this.skip, this.skip + this.pageSize),
-          total: this.items.length
-        };
-      } else {
-        this.toastr.error(data.json().message);
-      }
-    });
+  public resetService() {
+    this.btnText = "ADD";
+    this.selectedService = new Service('', '', null, '');
   }
 
 }

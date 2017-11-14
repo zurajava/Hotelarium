@@ -24,7 +24,6 @@ export class RoomService {
 
     addRoom(data: Room) {
         const body = JSON.stringify(data);
-        console.log(body);
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');

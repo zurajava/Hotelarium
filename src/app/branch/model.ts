@@ -8,4 +8,11 @@ export class Branch {
     public org_id: string;
     public mail: string;
     public phone: string;
+    constructor(name: string, description: string, address: string, mail: string, phone: string) {
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.mail = mail;
+        this.phone = phone;
+    }
 }

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Rx';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Branch } from './model.js';
+import { Branch } from './model';
 import { AuthService } from './../core/auth.service';
 
 @Component({
@@ -18,16 +18,9 @@ import { AuthService } from './../core/auth.service';
   styleUrls: ['./branch.scss']
 })
 export class BranchComponent implements OnInit {
-
-  public view: GridDataResult;
-  public data: Object[];
   public items: Branch[];
-
-  public formGroup: FormGroup;
-  public editedRowIndex: number;
-
-  public pageSize: number = 10;
-  public skip: number = 0;
+  public selectedBranch: Branch;
+  public btnText: string;
 
   public userOrganisation: Array<any>;
   public orgSelectedValue: number;
@@ -37,6 +30,8 @@ export class BranchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.btnText = "ADD";
+    this.selectedBranch = new Branch('', '', '', '', '');
     this.branchService.getUserOrganisation(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userOrganisation = data.json().organisation;
@@ -52,90 +47,42 @@ export class BranchComponent implements OnInit {
     this.loadData(this.orgSelectedValue);
     console.log("orgValueChange", value + " : " + this.orgSelectedValue);
   }
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
-    this.view = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
-      total: this.items.length
-    };
-  }
 
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'name': new FormControl("", Validators.required),
-      'description': new FormControl(),
-      'address': new FormControl("", Validators.required),
-      'mail': new FormControl("", Validators.required),
-      'phone': new FormControl("", Validators.required)
+  public loadData(org_id: number) {
+    this.branchService.getBranch(org_id).subscribe(data => {
+      if (data.json().success === true) {
+        this.items = data.json().branch;
+      } else {
+        this.toastr.error(data.json().message);
+      }
     });
-    sender.addRow(this.formGroup);
   }
 
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    this.formGroup = new FormGroup({
-      'id': new FormControl(dataItem.id),
-      'name': new FormControl(dataItem.name, Validators.required),
-      'description': new FormControl(dataItem.description),
-      'address': new FormControl(dataItem.address, Validators.required),
-      'mail': new FormControl(dataItem.mail, Validators.required),
-      'phone': new FormControl(dataItem.phone, Validators.required)
+  public editBranch(category: Branch) {
+    this.btnText = "Update";
+    this.selectedBranch = category;
+  }
+  public deleteBranch(category: Branch) {
+    this.branchService.deleteBranch(category.id).subscribe(data => {
+      this.loadData(this.orgSelectedValue);
     });
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.formGroup);
   }
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public closeEditor(grid, rowIndex = this.editedRowIndex) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-    this.formGroup = undefined;
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }) {
-    const product: Branch = formGroup.value;
-    product.org_id = this.orgSelectedValue.toString();
-    if (isNew) {
-      this.branchService.addBranch(product).subscribe(data => {
-        sender.closeRow(rowIndex);
+  public saveBranch() {
+    this.selectedBranch.org_id = this.orgSelectedValue.toString();
+    if (this.btnText == "ADD") {
+      this.branchService.addBranch(this.selectedBranch).subscribe(data => {
         this.loadData(this.orgSelectedValue);
         this.toastr.success("Branch Added");
       });
-    } else {
-      this.branchService.editBranch(product).subscribe(data => {
-        sender.closeRow(rowIndex);
+    } else if (this.btnText == "Update") {
+      this.branchService.editBranch(this.selectedBranch).subscribe(data => {
         this.loadData(this.orgSelectedValue);
         this.toastr.success("Branch Edited");
       });
     }
   }
-
-  public removeHandler({ dataItem }) {
-    console.log("removeHandler", dataItem.id);
-    this.branchService.deleteBranch(dataItem.id).subscribe(data => {
-      console.log("aa",data.json().success);
-      if (data.json().success === true) {
-        this.loadData(this.orgSelectedValue);
-        this.toastr.success("Branch deleted");
-      } else {
-        this.toastr.success("Error while delete branch");
-      }
-    });
-  }
-  public loadData(org_id: number) {
-    this.branchService.getBranch(org_id).subscribe(data => {
-      if (data.json().success === true) {
-        this.items = data.json().branch;
-        this.view = {
-          data: this.items.slice(this.skip, this.skip + this.pageSize),
-          total: this.items.length
-        };
-      } else {
-        this.toastr.error(data.json().message);
-      }
-    });
+  public resetBranch() {
+    this.btnText = "ADD";
+    this.selectedBranch = new Branch('', '', '', '', '');
   }
 }

@@ -2,47 +2,135 @@
     <div class="commonHeadingAdmin">
         <h1>Room</h1>
     </div>
-    <div class="example-wrapper">
-
-        <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-            (valueChange)="brValueChange($event)">
-        </kendo-dropdownlist>
+    <div class="card">
+        <div class="card-header">
+            <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
+                (valueChange)="brValueChange($event)">
+            </kendo-dropdownlist>
+        </div>
+        <div class="card-block" style="background-color: #DEEFF5;">
+            <div class="row">
+                <div class="col-4">
+                    <label for="email">Category:</label>
+                    <select class="form-control form-control-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="selectedRoom.category_id">
+                        <option *ngFor="let x of room_category" [value]="x.id">{{x.name}}</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd1">Room No:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedRoom.room_no">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd2">Price:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedRoom.price">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd5">Extra Person:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd5" [(ngModel)]="selectedRoom.extra_person">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd4">Additional Bad Price:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedRoom.additional_bad_price">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd3">Additional Bad:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedRoom.additional_bad">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd6">Extra Person Price:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd6" [(ngModel)]="selectedRoom.extra_person_price">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd">Tags:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedRoom.tag">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="pwd">Description:</label>
+                        <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedRoom.description">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="exampleSelect1111">Wifi:</label>
+                    <select class="form-control form-control-sm" id="exampleSelect1111" placeholder="Title" [(ngModel)]="selectedRoom.wifi">
+                        <option>YES</option>
+                        <option>NO</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label for="exampleSelect1112">Smoke:</label>
+                    <select class="form-control form-control-sm" id="exampleSelect1112" placeholder="Title" [(ngModel)]="selectedRoom.smoke">
+                        <option>YES</option>
+                        <option>NO</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" (click)="saveRoom()">{{btnText}}</button>
+            <button type="submit" class="btn btn-warning btn-sm" (click)="resetRoom()">Reset</button>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                List Of Rooms
+            </div>
+            <div class="card-block">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Room No</th>
+                            <th>Price</th>
+                            <th>Additional Bad</th>
+                            <th>Additional Bad Price</th>
+                            <th>Extra Person</th>
+                            <th>Extra Person Price</th>
+                            <th>Smoke</th>
+                            <th>WiFi</th>
+                            <th>Tags</th>
+                            <th>Description</th>
+                            <th>Command</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let it of items; let i = index">
+                            <td>{{it.category_name}}</td>
+                            <td>{{it.room_no}}</td>
+                            <td>{{it.price}}</td>
+                            <td>{{it.additional_bad}}</td>
+                            <td>{{it.additional_bad_price}}</td>
+                            <td>{{it.extra_person}}</td>
+                            <td>{{it.extra_person_price}}</td>
+                            <td>{{it.smoke}}</td>
+                            <td>{{it.wifi}}</td>
+                            <td>{{it.tag}}</td>
+                            <td>{{it.description}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-sm" (click)="editRoom(it)">Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm" (click)="deleteRoom(it)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <kendo-grid [data]="view" [height]="700" [pageSize]="pageSize" [skip]="skip" [pageable]="true" (pageChange)="pageChange($event)"
-        (edit)="editHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
-        (add)="addHandler($event)">
-        <ng-template kendoGridToolbarTemplate>
-            <button kendoGridAddCommand>Add Room</button>
-        </ng-template>
-        <kendo-grid-column field="category_name" title="Category" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem>
-                {{category_id(dataItem.category_name)?.name}}
-            </ng-template>
-            <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-formGroup="formGroup">
-                <kendo-dropdownlist [data]="room_category" textField="name" valueField="id" [valuePrimitive]="true" [formControl]="formGroup.get('category_name')" (valueChange)="brCategoryValueChange($event)">
-                </kendo-dropdownlist>
-            </ng-template>
-        </kendo-grid-column>
-        <kendo-grid-column field="room_no" title="Room No"></kendo-grid-column>
-        <kendo-grid-column field="price" editor="numeric" title="Price"></kendo-grid-column>
-        <kendo-grid-column field="additional_bad" editor="numeric" title="Additional Bad" format="{0:n}"></kendo-grid-column>
-        <kendo-grid-column field="additional_bad_price" editor="numeric" title="Additional Bad Price"></kendo-grid-column>
-        <kendo-grid-column field="extra_person" editor="numeric" title="Extra Person" format="{0:n}"></kendo-grid-column>
-        <kendo-grid-column field="extra_person_price" editor="numeric" title="Extra Person Price"></kendo-grid-column>
-        <kendo-grid-column field="smoke" editor="boolean" title="Smoke"></kendo-grid-column>
-        <kendo-grid-column field="wifi" editor="boolean" title="WiFi"></kendo-grid-column>
-        <kendo-grid-column field="tag" title="Tag"></kendo-grid-column>
-        <kendo-grid-column field="description" title="Description"></kendo-grid-column>
-        <kendo-grid-command-column title="command" width="220">
-            <ng-template kendoGridCellTemplate let-isNew="isNew">
-                <button kendoGridEditCommand class="k-primary">Edit</button>
-                <button kendoGridRemoveCommand>Remove</button>
-                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
-                <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
-            </ng-template>
-        </kendo-grid-command-column>
-    </kendo-grid>
-
-
 </section>

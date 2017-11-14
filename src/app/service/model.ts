@@ -9,4 +9,10 @@ export class Service {
     public price: number;
     public currency: string;
     public type: string;
+    constructor(name: string, description: string, price: number, type: string) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.type = type;
+    }
 }
