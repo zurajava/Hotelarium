@@ -136,28 +136,11 @@ body {
     }
     &__right {
         text-align: right;
-        ul {
-            li {
-                i {
-                    display: inline-block;
-                    color: #fff;
-                    vertical-align: middle;
-                }
-                h1 {
-                    margin: 0;
-                    font-size: 12px;
-                    line-height: 50px;
-                    color: #fff;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    display: inline-block;
-                }
-            }
-        }
+        
         
     }
 }
-.col-2{
+.col-3{
     padding: 0px !important; 
 }
 .row {
