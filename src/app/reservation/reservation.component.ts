@@ -73,7 +73,7 @@ export class ReservationComponent implements OnInit {
     this.dateTo.setDate(this.dateTo.getDate() + 30);
     this.personalNo = '';
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
-    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', '', '', new Date(), ''), new Reservation(null, null, null, null, null,
+    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', 'Title', '', new Date(), ''), new Reservation(null, null, null, null, null,
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
   ngOnInit() {
