@@ -42,15 +42,19 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm" (click)="saveBranch()">{{btnText}}</button>
-            <button type="submit" class="btn btn-warning btn-sm" (click)="resetBranch()">Reset</button>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm" (click)="saveBranch()">{{btnText}}</button>
+                    <button type="submit" class="btn btn-warning btn-sm" (click)="resetBranch()">Reset</button>
+                </div>
+            </div>
         </div>
         <div class="card">
             <div class="card-header">
                 List Of Branch
             </div>
             <div class="card-block">
-                <table class="table table-hover">
+                <table class="table table-sm table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
