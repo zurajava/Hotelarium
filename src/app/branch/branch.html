@@ -5,49 +5,47 @@
                 (valueChange)="orgValueChange($event)">
             </kendo-dropdownlist>
         </div>
-        <div class="card-block" style="background-color: #DEEFF5;">
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="email">Name:</label>
-                        <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedBranch.name">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="pwd">Adress:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedBranch.address">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="pwd">Mail:</label>
-                        <input type="email" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedBranch.mail">
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="pwd">Phone:</label>
-                        <input type="tel" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedBranch.phone">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="pwd">Description:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedBranch.description">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary btn-sm" (click)="saveBranch()">{{btnText}}</button>
-                    <button type="submit" class="btn btn-warning btn-sm" (click)="resetBranch()">Reset</button>
-                </div>
-            </div>
+        <div class="card-block">
+            <table class="table table-sm table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedBranch.name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Adress</th>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedBranch.address">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mail</th>
+                        <td>
+                            <input type="email" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedBranch.mail">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td>
+                            <input type="tel" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedBranch.phone">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedBranch.description">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary btn-sm" (click)="saveBranch()">{{btnText}}</button>
+                            <button type="submit" class="btn btn-warning btn-sm" (click)="resetBranch()">Reset</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="card">
             <div class="card-header">

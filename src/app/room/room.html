@@ -5,100 +5,98 @@
                 (valueChange)="brValueChange($event)">
             </kendo-dropdownlist>
         </div>
-        <div class="card-block" style="background-color: #DEEFF5;">
-            <div class="row">
-                <div class="col-4">
-                    <label for="email">Category:</label>
-                    <select class="form-control form-control-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="selectedRoom.category_id">
-                        <option *ngFor="let x of room_category" [value]="x.id">{{x.name}}</option>
-                    </select>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd1">Room No:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedRoom.room_no">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd2">Price:</label>
-                        <input type="number" min="0" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedRoom.price">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd5">Extra Person:</label>
-                        <input type="number" min="0" class="form-control form-control-sm" id="pwd5" [(ngModel)]="selectedRoom.extra_person">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd4">Additional Bad Price:</label>
-                        <input type="number" min="0" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedRoom.additional_bad_price">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd3">Additional Bad:</label>
-                        <input type="number" min="0" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedRoom.additional_bad">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd6">Extra Person Price:</label>
-                        <input type="number" min="0" class="form-control form-control-sm" id="pwd6" [(ngModel)]="selectedRoom.extra_person_price">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd">Tags:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedRoom.tag">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="pwd">Description:</label>
-                        <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedRoom.description">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="exampleSelect1111">Wifi:</label>
-                        <select class="form-control form-control-sm" id="exampleSelect1111" placeholder="Title" [(ngModel)]="selectedRoom.wifi">
-                            <option>YES</option>
-                            <option>NO</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="exampleSelect1112">Smoke:</label>
-                        <select class="form-control form-control-sm" id="exampleSelect1112" placeholder="Title" [(ngModel)]="selectedRoom.smoke">
-                            <option>YES</option>
-                            <option>NO</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary btn-sm" (click)="saveRoom()">{{btnText}}</button>
-                    <button type="submit" class="btn btn-warning btn-sm" (click)="resetRoom()">Reset</button>
-                </div>
-            </div>
+        <div class="card-block">
+            <table class="table table-sm table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th>Category</th>
+                        <td>
+                            <select class="form-control form-control-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="selectedRoom.category_id">
+                                <option *ngFor="let x of room_category" [value]="x.id">{{x.name}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Room No</th>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedRoom.room_no">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Price</th>
+                        <td>
+                            <input type="number" min="0" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedRoom.price">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Extra Person</th>
+                        <td>
+                            <input type="number" min="0" class="form-control form-control-sm" id="pwd5" [(ngModel)]="selectedRoom.extra_person">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Additional Bad Price</th>
+                        <td>
+                            <input type="number" min="0" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedRoom.additional_bad_price">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Additional Bad</th>
+                        <td>
+                            <input type="number" min="0" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedRoom.additional_bad">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Extra Person Price</th>
+                        <td>
+                            <input type="number" min="0" class="form-control form-control-sm" id="pwd6" [(ngModel)]="selectedRoom.extra_person_price">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Tags</th>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedRoom.tag">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Wifi</th>
+                        <td>
+                            <select class="form-control form-control-sm" id="exampleSelect1111" placeholder="Title" [(ngModel)]="selectedRoom.wifi">
+                                <option>YES</option>
+                                <option>NO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Smoke</th>
+                        <td>
+                            <select class="form-control form-control-sm" id="exampleSelect1112" placeholder="Title" [(ngModel)]="selectedRoom.smoke">
+                                <option>YES</option>
+                                <option>NO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedRoom.description">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary btn-sm" (click)="saveRoom()">{{btnText}}</button>
+                            <button type="submit" class="btn btn-warning btn-sm" (click)="resetRoom()">Reset</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="card">
             <div class="card-header">
                 List Of Rooms
             </div>
             <div class="card-block">
-                <table class="table table-sm table-bordered table-striped">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Category</th>

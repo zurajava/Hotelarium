@@ -5,44 +5,44 @@
         (valueChange)="brValueChange($event)">
       </kendo-dropdownlist>
     </div>
-    <div class="card-block" style="background-color: #DEEFF5;">
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <label for="email">Name:</label>
-            <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedService.name">
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label for="pwd">Description:</label>
-            <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedService.description">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <label for="pwd">Price:</label>
-            <input type="number" min="0" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedService.price">
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label for="pwd">Type:</label>
-            <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="selectedService.type">
-              <option>DURATIONALL</option>
-              <option>QUANTITY</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary btn-sm" (click)="saveService()">{{btnText}}</button>
-          <button type="submit" class="btn btn-warning btn-sm" (click)="resetService()">Reset</button>
-        </div>
-      </div>
+    <div class="card-block">
+      <table class="table table-sm table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>
+              <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedService.name">
+            </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>
+              <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedService.description">
+            </td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td>
+              <input type="number" min="0" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedService.price">
+            </td>
+          </tr>
+          <tr>
+            <th>Type</th>
+            <td>
+              <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="selectedService.type">
+                <option>DURATIONALL</option>
+                <option>QUANTITY</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <button type="submit" class="btn btn-primary btn-sm" (click)="saveService()">{{btnText}}</button>
+              <button type="submit" class="btn btn-warning btn-sm" (click)="resetService()">Reset</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="card">
       <div class="card-header">

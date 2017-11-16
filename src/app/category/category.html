@@ -5,22 +5,35 @@
         (valueChange)="brValueChange($event)">
       </kendo-dropdownlist>
     </div>
-    <div class="card-block" style="background-color: #DEEFF5;">
-      <div class="form-group">
-        <label for="email">Name:</label>
-        <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedCategory.name">
-      </div>
-      <div class="form-group">
-        <label for="pwd">Description:</label>
-        <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedCategory.description">
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" id="checkboxp" [(ngModel)]="selectedCategory.parkingForm">Parking
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary btn-sm" (click)="saveCategory()">{{btnText}}</button>
-      <button type="submit" class="btn btn-warning btn-sm" (click)="resetCategory()">Reset</button>
+    <div class="card-block">
+      <table class="table table-sm table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>
+              <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedCategory.name">
+            </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>
+              <input type="text" class="form-control form-control-sm" id="pwd" [(ngModel)]="selectedCategory.description">
+            </td>
+          </tr>
+          <tr>
+            <th>Parking</th>
+            <td>
+              <input class="form-check-input" type="checkbox" id="checkboxp" [(ngModel)]="selectedCategory.parkingForm">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <button type="submit" class="btn btn-primary btn-sm" (click)="saveCategory()">{{btnText}}</button>
+              <button type="submit" class="btn btn-warning btn-sm" (click)="resetCategory()">Reset</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="card">
       <div class="card-header">
@@ -30,7 +43,6 @@
         <table class="table table-sm table-bordered table-striped">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
               <th>Description</th>
               <th>Parking</th>
@@ -39,7 +51,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let it of items; let i = index">
-              <th scope="row">{{it.id}}</th>
               <td>{{it.name}}</td>
               <td>{{it.description}}</td>
               <td>{{it.parking}}</td>
