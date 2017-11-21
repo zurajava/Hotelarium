@@ -4,8 +4,7 @@
 @import "utility";
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Raleway', sans-serif;
+    padding: 0; 
     color: $primaryFontColor;
 }
 
@@ -67,8 +66,7 @@ body {
                     font-weight: 700;
                     font-variant: normal;
                     font-style: normal;
-                    font-family: "Times New Roman", Times, serif;
-                   // text-transform: uppercase;
+                    font-family: 'Lato', sans-serif; 
                     i {
                         margin-right: 10px;
                     }

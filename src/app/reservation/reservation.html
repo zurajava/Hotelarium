@@ -48,49 +48,58 @@
         <div class="card-block">
             <!-- Register Reservation -->
             <div *ngIf="showReservation" class="reservation-container">
-                <div class="card-block" style="background-color: #DEEFF5;">
-                    <div class="row">
-                        <div class="col-4">
-                            <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="reservationInfo.person.gender">
-                                <option>Title</option>
-                                <option>Mr</option>
-                                <option>Mrs</option>
-                                <option>Ms</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput22" placeholder="First Name" [(ngModel)]="reservationInfo.person.first_name">
+                <div class="card-block">
+                    <table class="table table-sm table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="reservationInfo.person.gender">
+                                        <option>Title</option>
+                                        <option>Mr</option>
+                                        <option>Mrs</option>
+                                        <option>Ms</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput22" placeholder="First Name" [(ngModel)]="reservationInfo.person.first_name">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput23" placeholder="Last Name" [(ngModel)]="reservationInfo.person.last_name">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput24" placeholder="Personal #" [(ngModel)]="reservationInfo.person.personal_no">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="email" class="form-control form-control-sm" id="smFormGroupInput1" placeholder="you@mail.com" [(ngModel)]="reservationInfo.person.email">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput2" placeholder="Phone" [(ngModel)]="reservationInfo.person.phone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control form-control-sm" placeholder="Company" id="exampleSelect11" [(ngModel)]="reservationInfo.person.company">
+                                        <option>Company</option>
+                                        <option>YES</option>
+                                        <option>NO</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput4" placeholder="Code" [(ngModel)]="reservationInfo.person.company_code">
 
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput23" placeholder="Last Name" [(ngModel)]="reservationInfo.person.last_name">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput24" placeholder="Personal #" [(ngModel)]="reservationInfo.person.personal_no">
-                        </div>
-                        <div class="col-4">
-                            <input type="email" class="form-control form-control-sm" id="smFormGroupInput1" placeholder="you@mail.com" [(ngModel)]="reservationInfo.person.email">
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput2" placeholder="Phone" [(ngModel)]="reservationInfo.person.phone">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <select class="form-control form-control-sm" id="exampleSelect11" [(ngModel)]="reservationInfo.person.company">
-                                <option>YES</option>
-                                <option>NO</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput4" placeholder="Code" [(ngModel)]="reservationInfo.person.company_code">
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput5" placeholder="Company Name" [(ngModel)]="reservationInfo.person.company_name">
-                        </div>
-                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput5" placeholder="Company Name" [(ngModel)]="reservationInfo.person.company_name">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="container-fluid">
                     <div class="card">
@@ -255,49 +264,67 @@
             </div>
             <!-- Edit Reservation -->
             <div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
-                <div class="card-block" style="background-color: #DEEFF5;">
-                    <div class="row">
-                        <div class="col-4">
-                            <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="reservationInfoEdit.person.gender">
-                                <option>Mr</option>
-                                <option>Mrs</option>
-                                <option>Ms</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput22" placeholder="First Name" [(ngModel)]="reservationInfoEdit.person.first_name">
+                <div class="card-block">
+                    <table class="table table-sm table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td>Title</td>
+                                <td>
+                                    <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="reservationInfoEdit.person.gender">
+                                        <option>Title</option>
+                                        <option>Mr</option>
+                                        <option>Mrs</option>
+                                        <option>Ms</option>
+                                    </select>
+                                </td>
+                                <td>First Name</td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput22" placeholder="First Name" [(ngModel)]="reservationInfoEdit.person.first_name">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput23" placeholder="Last Name" [(ngModel)]="reservationInfoEdit.person.last_name">
+                                </td>
+                                <td>Personal #</td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput24" placeholder="Personal #" [(ngModel)]="reservationInfoEdit.person.personal_no">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>
+                                    <input type="email" class="form-control form-control-sm" id="smFormGroupInput1" placeholder="you@mail.com" [(ngModel)]="reservationInfoEdit.person.email">
+                                </td>
+                                <td>Phone</td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput2" placeholder="Phone" [(ngModel)]="reservationInfoEdit.person.phone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Company</td>
+                                <td>
+                                    <select class="form-control form-control-sm" placeholder="Company" id="exampleSelect11" [(ngModel)]="reservationInfoEdit.person.company">
+                                        <option>Company</option>
+                                        <option>YES</option>
+                                        <option>NO</option>
+                                    </select>
+                                </td>
+                                <td>Code</td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput4" placeholder="Code" [(ngModel)]="reservationInfoEdit.person.company_code">
 
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput23" placeholder="Last Name" [(ngModel)]="reservationInfoEdit.person.last_name">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput24" placeholder="Personal #" [(ngModel)]="reservationInfoEdit.person.personal_no">
-                        </div>
-                        <div class="col-4">
-                            <input type="email" class="form-control form-control-sm" id="smFormGroupInput1" placeholder="you@mail.com" [(ngModel)]="reservationInfoEdit.person.email">
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput2" placeholder="Phone" [(ngModel)]="reservationInfoEdit.person.phone">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <select class="form-control form-control-sm" id="exampleSelect11" placeholder="Company" [(ngModel)]="reservationInfoEdit.person.company">
-                                <option>YES</option>
-                                <option>NO</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput4" placeholder="Code" [(ngModel)]="reservationInfoEdit.person.company_code">
-
-                        </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control form-control-sm" id="smFormGroupInput5" placeholder="Company Name" [(ngModel)]="reservationInfoEdit.person.company_name">
-                        </div>
-                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">Company Name</td>
+                                <td colspan="3">
+                                    <input type="text" class="form-control form-control-sm" id="smFormGroupInput5" placeholder="Company Name" [(ngModel)]="reservationInfoEdit.person.company_name">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="container-fluid">
                     <div class="card">
