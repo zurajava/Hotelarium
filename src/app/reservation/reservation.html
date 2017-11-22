@@ -103,85 +103,86 @@
                 </div>
                 <div class="container-fluid">
                     <div class="card">
-                        <div class="card-header" style="height: 40px;">
-                            <div class="row">
-                                <div class="col-sm-11">
-                                    <h6 class="card-title">Reservation Information</h6>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button type="button" class="btn btn-success btn-sm" (click)="addReservation()">Reservation</button>
-                                </div>
-                            </div>
-                        </div>
-                        <table class="table table-sm table-striped">
+                        <table class="table table-sm table-responsive">
                             <thead>
-                                <div>
-                                    <tr>
-                                        <th style="width:12%" class="text-center">Category</th>
+                                <div style="width: 100%;">
+                                    <tr class="bg-warning">
+                                        <th style="width:10%" class="text-center">Category</th>
                                         <th style="width:10%" class="text-center">Room No</th>
-                                        <th style="width:11%" class="text-center">Start Date</th>
-                                        <th style="width:12%" class="text-center">End Date</th>
+                                        <th style="width:10%" class="text-center">Start Date</th>
+                                        <th style="width:10%" class="text-center">End Date</th>
                                         <th style="width:10%" class="text-center">Adult</th>
                                         <th style="width:10%" class="text-center">Child</th>
-                                        <th style="width:10%" class="text-center">Additional Bed</th>
-                                        <th style="width:10%" class="text-center">Extra Person</th>
-                                        <th style="width:10%" class="text-center">Comment</th>
-                                        <th style="width:10%" class="text-center">Command</th>
+                                        <th style="width:15%" class="text-left">Additional Bed</th>
+                                        <th style="width:10%" class="text-left">Extra Person</th>
+                                        <th style="width:15%" class="text-left">Comment</th>
+                                        <th style="width:15%" class="text-left" colspan="2">
+                                            <button type="button" class="btn btn-success btn-sm" (click)="addReservation()">Reservation</button>
+                                        </th>
                                     </tr>
                                 </div>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index">
-                                    <div>
+                                <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index;let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
+                                    <div style="width: 100%;">
                                         <td>
-                                            <kendo-combobox name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.category_id"
-                                                (valueChange)="categoryValueChange($event,res)">
+                                            <kendo-combobox style="width:140px;height:15%" name="category" [data]="category" [textField]="'name'" [valueField]="'id'"
+                                                [valuePrimitive]="true" [(value)]="res.category_id" (valueChange)="categoryValueChange($event,res)">
                                             </kendo-combobox>
                                         </td>
                                         <td>
-                                            <kendo-combobox name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true" [(value)]="res.room_id">
+                                            <kendo-combobox style="width:140px;height:15%" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'"
+                                                [valuePrimitive]="true" [(value)]="res.room_id">
                                             </kendo-combobox>
                                         </td>
                                         <td>
-                                            <kendo-datepicker [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date" name="nstart_date"></kendo-datepicker>
+                                            <kendo-datepicker style="width:140px;height:15%" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)"
+                                                id="start_date" name="nstart_date"></kendo-datepicker>
                                         </td>
                                         <td>
-                                            <kendo-datepicker [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date" name="nend_date"></kendo-datepicker>
+                                            <kendo-datepicker style="width:140px;height:15%" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
+                                                name="nend_date"></kendo-datepicker>
                                         </td>
 
 
                                         <td>
-                                            <kendo-numerictextbox id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                            <kendo-numerictextbox style="width:140px;height:15%" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true"
+                                                [format]="'n0'">
                                             </kendo-numerictextbox>
                                         </td>
                                         <td>
-                                            <kendo-numerictextbox id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                            </kendo-numerictextbox>
-
-                                        </td>
-                                        <td>
-                                            <kendo-numerictextbox id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                            <kendo-numerictextbox style="width:140px;height:15%" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true"
+                                                [format]="'n0'">
                                             </kendo-numerictextbox>
 
                                         </td>
                                         <td>
-                                            <kendo-numerictextbox id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                            <kendo-numerictextbox style="width:140px;height:15%" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                                [format]="'n0'">
+                                            </kendo-numerictextbox>
+
+                                        </td>
+                                        <td>
+                                            <kendo-numerictextbox style="width:140px;height:15%" id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                                [format]="'n0'">
                                             </kendo-numerictextbox>
                                         </td>
                                         <td>
-                                            <input kendoTextBox id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value" />
+                                            <input kendoTextBox style="width:140px;height:10%" id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value"
+                                            />
                                         </td>
-                                        <td>
+                                        <td style="width:140px;height:10%">
                                             <button type="button" class="btn btn-info btn-sm" (click)="showDetails(res)">Details</button>
+                                        </td>
+                                        <td style="width:140px;height:10%">
                                             <button type="button" class="btn btn-danger btn-sm" (click)="removeReservation(res)">Remove</button>
                                         </td>
-                                        <span></span>
                                         <div *ngIf="res.showMoreInfo" style="display:block;">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <table class="table table-sm">
                                                         <thead>
-                                                            <tr>
+                                                            <tr style="background-color: #f0f4c3">
                                                                 <th colspan="2" class="text-left">
                                                                     <h6 class="card-title">Guest List</h6>
                                                                 </th>
@@ -204,7 +205,7 @@
                                                                     <input type="text" class="form-control form-control-sm" id="n_last_name" placeholder="Last Name" [value]="person.last_name"
                                                                         (input)="person.last_name = $event.target.value">
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-right">
                                                                     <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPerson(res,person)">DEL</button>
                                                                 </td>
                                                             </tr>
@@ -214,11 +215,11 @@
                                                 <div class="col-7">
                                                     <table class="table table-sm">
                                                         <thead>
-                                                            <tr>
-                                                                <th colspan="4" class="text-left">
+                                                            <tr style="background-color: #f0f4c3">
+                                                                <th colspan="2" class="text-left">
                                                                     <h6 class="card-title">Service Information</h6>
                                                                 </th>
-                                                                <th colspan="4" class="text-right">
+                                                                <th colspan="2" class="text-right">
                                                                     <button type="button" class="btn btn-success btn-sm" (click)="addServiceToReservationService(res)">Service</button>
                                                                 </th>
                                                             </tr>
@@ -239,7 +240,7 @@
                                                                     <input type="text" class="form-control form-control-sm" id="n_comment" placeholder="Comment" [value]="service.additional_comment"
                                                                         (input)="service.additional_comment = $event.target.value">
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-right">
                                                                     <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationService(res,service)">DEL</button>
                                                                 </td>
                                                             </tr>
