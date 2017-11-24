@@ -5,9 +5,13 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 
-//app.use(morgan('dev'));
-
 const endpoint = require('./service/routes/endpoint');
+const branchEndPoint = require('./service/routes/branch');
+const categoryEndPoint = require('./service/routes/category');
+const serviceEndPoint = require('./service/routes/service');
+const roomEndPoint = require('./service/routes/room');
+const reservationEndPoint = require('./service/routes/reservation');
+const paymentEndPoint = require('./service/routes/payment');
 
 process.on('uncaughtException', function (err) {
   console.error(err);
@@ -16,7 +20,7 @@ process.on('uncaughtException', function (err) {
 
 // Parsers for POST data
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false ,limit: '50mb'}));
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 
 // Run the app by serving the static files
 // in the dist directory
@@ -25,11 +29,16 @@ app.use(express.static(__dirname + '/dist'));
 
 
 app.use('/service', endpoint);
-
+app.use('/service/branch', branchEndPoint);
+app.use('/service/category', categoryEndPoint);
+app.use('/service/service', serviceEndPoint);
+app.use('/service/room', roomEndPoint);
+app.use('/service/reservation', reservationEndPoint);
+app.use('/service/payment', paymentEndPoint);
 
 // For all GET requests, send back index.html
 // so that PathLocationStrategy can be used
-app.get('/*', function(req, res) {
+app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
