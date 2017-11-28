@@ -2,9 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 var url = require("url");
-const pool = require('../dbmanager/dbmanager-mysql.js');
-var q = require('q');
-
+const Category = require('../model/category.js');
+var pool = new Category(); 
 
 router.get('/:branch_id', (req, res) => {
     console.log("category " + req.params.branch_id);
@@ -17,7 +16,6 @@ router.get('/:branch_id', (req, res) => {
             res.json({ success: true, message: 'OK', category: data });
         }
     });
-
 });
 
 

@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0; 
     color: $primaryFontColor;
+    font-family: 'Lato', sans-serif;
 }
 
 * {
@@ -364,7 +365,7 @@ body {
     position: absolute;
     top: 95px;
     left: 8px;
-    font-family: Arial;
+    font-family: 'Lato', sans-serif;
     text-transform: uppercase;
     color: #888;
     animation: opaa 10s infinite;

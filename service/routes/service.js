@@ -1,9 +1,9 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-var url = require("url");
-const pool = require('../dbmanager/dbmanager-mysql.js');
-var q = require('q');
+var url = require("url"); 
+const Service = require('../model/service.js');
+var pool = new Service();
 
 router.get('/:branch_id', (req, res) => {
     console.log("service " + req.params.branch_id);

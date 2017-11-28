@@ -45,9 +45,9 @@
                 <li (click)="onToggle()" routerLink="/reservation" routerLinkActive="nav-active-link-admin">
                     <a><i class="fa fa-home" aria-hidden="true"></i>Reservation</a>
                 </li>
-                <li (click)="onToggle()" routerLink="/branch" routerLinkActive="nav-active-link-admin">
-                    <a><i class="fa fa-users" aria-hidden="true"></i>Branch</a>
-                </li>
+                <li (click)="onToggle()" routerLink="/dashboard" routerLinkActive="nav-active-link-admin">
+                    <a><i class="fa fa-bell-o" aria-hidden="true"></i>Dashboard</a>
+                </li> 
                 <li (click)="onToggle()" routerLink="/category" routerLinkActive="nav-active-link-admin">
                     <a><i class="fa fa-user-plus" aria-hidden="true"></i>Category</a>
                 </li>
@@ -57,20 +57,11 @@
                 <li (click)="onToggle()" routerLink="/createRoom" routerLinkActive="nav-active-link-admin">
                     <a><i class="fa fa-user-plus" aria-hidden="true"></i>Room</a>
                 </li>
-                <li routerLink="/reports" routerLinkActive="nav-active-link-admin">
-                    <a><i class="fa fa-bell-o" aria-hidden="true"></i>Reports</a>
-                </li>
-
-                <li (click)="onToggle()" routerLink="/persons" routerLinkActive="nav-active-link-admin">
-                    <a><i class="fa fa-user-plus" aria-hidden="true"></i>Person</a>
-                </li>
-
             </ul>
         </div>
     </section>
     <section class="col-lg-10 col-md-10 col-sm-12 col-xs-12" [ngClass]="{'try': roleID === 'anonymous'}">
         <router-outlet></router-outlet>
     </section>
-
 </section>
 <app-parking-footer></app-parking-footer>

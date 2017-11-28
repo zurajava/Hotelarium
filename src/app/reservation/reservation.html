@@ -513,7 +513,7 @@
                                                         <th>Payment Type</th>
                                                         <th>Receipt #</th>
                                                         <th>Comment</th>
-                                                        <th>Command</th>
+                                                        <th colspan="3" class="text-right">Command</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -542,9 +542,11 @@
                                                             <input type="text" class="form-control form-control-sm" id="additional_comment_p" [(ngModel)]="pay.additional_comment">
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
-                                                            <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
+                                                            <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button> 
                                                         </td>
+                                                        <td> 
+                                                                <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

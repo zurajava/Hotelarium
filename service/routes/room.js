@@ -2,8 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 var url = require("url");
-const pool = require('../dbmanager/dbmanager-mysql.js');
-var q = require('q');
+const Room = require('../model/room.js');
+var pool = new Room();
 
 router.get('/:branch_id', (req, res) => {
     console.log("get room promise: " + req.params.branch_id + " " + req.query.category_id);
@@ -59,5 +59,6 @@ router.put('/:id', (req, res) => {
             }
         });
 });
+
 
 module.exports = router;
