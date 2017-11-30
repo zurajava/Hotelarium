@@ -2,8 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 var url = require("url");
-const pool = require('../dbmanager/dbmanager-mysql.js');
-var q = require('q');
+const Payment = require('../model/payment.js');
+var pool = new Payment();
 
 router.post('/', (req, res) => {
     console.log("payment :", req.query.type);

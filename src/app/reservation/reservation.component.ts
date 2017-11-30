@@ -575,21 +575,21 @@ export class ReservationComponent implements OnInit {
     if (pay.source == "RESERVATION") {
       var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null);
       this.reservationService.addPaymentToReservation(p).then(data => {
-        if (data.json().success === true) {
+        if (data.success === true) {
           this.toastr.success("Payment Added");
           this.getReservationByIdLocal(id.reservation_id.toString());
         } else {
-          this.toastr.error(data.json().error);
+          this.toastr.error(data.error);
         }
       });
     } else if (pay.source == "SERVICE") {
       var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'SERVICE', pay.receipt, pay.additional_comment, pay.service_id, null, null, null, null, null, null);
       this.reservationService.addPaymentToService(p).then(data => {
-        if (data.json().success === true) {
+        if (data.success === true) {
           this.toastr.success("Payment Added");
           this.getReservationByIdLocal(id.reservation_id.toString());
         } else {
-          this.toastr.error(data.json().error);
+          this.toastr.error(data.error);
         }
       });
     }

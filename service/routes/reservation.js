@@ -2,8 +2,11 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 var url = require("url");
-const pool = require('../dbmanager/dbmanager-mysql.js');
-var q = require('q');
+//const pool = require('../dbmanager/dbmanager-mysql.js');
+//var q = require('q');
+
+const Reservation = require('../model/reservation.js');
+var pool = new Reservation();
 
 router.post('/', (req, res) => {
     console.log("add reservation : " + req.body);
