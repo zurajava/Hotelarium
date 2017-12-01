@@ -121,6 +121,8 @@ export class ReservationDetail {
     public service_payd_amount: number;
     public service_price: number;
 
+    public status_name:string;
+    public payment_status_name:string;
 
     public pay_type: string;
     public receipt: string;
@@ -186,6 +188,7 @@ export class ReservationServices {
     public frequency: string;
     public additional_comment: string;
     public payment_status: string;
+    public payment_status_name: string;
     public service_name: string;
     public price: number;
     public service_payd: number;

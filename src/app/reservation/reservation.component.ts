@@ -122,6 +122,7 @@ export class ReservationComponent implements OnInit {
     this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
       this.intl.formatDate(this.dateTo, 'yyyy-MM-dd'), this.reserv, this.checkIn, this.checkOut, this.personalNo).then(data => {
         this.data = data.data;
+        console.log(JSON.stringify(this.data));
         for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
           if (this.data[i].rooms.length > 0) {
             for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category

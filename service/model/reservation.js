@@ -4,7 +4,7 @@ var q = require('q');
 class Reservation {
 
     checkReservation(data) {
-        console.log("Reservation,checkReservation ", data.room_id, data.start_date, data.start_date, data.end_date, data.end_date);
+        console.log("Reservation, checkReservation ", data.room_id, data.start_date, data.start_date, data.end_date, data.end_date);
         return new Promise(function (resolve, reject) {
             if (data.end_date <= data.start_date) {
                 reject("CheckIn date should be less than CheckOut date");
@@ -29,7 +29,7 @@ class Reservation {
         });
     }
     registerReservation(reservation) {
-        console.log("Reservation,registerReservation ", reservation);
+        console.log("Reservation, registerReservation ", reservation);
         var person = reservation.person;
         var deferred = q.defer();
         this.registerPersonLocal(person.first_name, person.last_name, person.personal_no, person.email, person.gender, person.phone, person.company, person.company_name, person.company_code)
@@ -79,7 +79,7 @@ class Reservation {
         return deferred.promise;
     }
     registerReservationOne(id, reservation) {
-        console.log("Reservation,registerReservation One ", id);
+        console.log("Reservation, registerReservation One ", id);
         var deferred = q.defer();
         this.registerReservationDetailsLocal(id, reservation).then(data => {
             reservation.id = data;
@@ -405,9 +405,9 @@ class Reservation {
             ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full, ' +
             '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'RESERVATION\' AND (p.service_id IS NULL OR p.service_id =0)) AS reservation_payd_amount, ' +
             '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'SERVICE\' AND p.service_id IS NOT NULL) AS service_payd_amount, ' +
-            ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id) AS service_price' +
+            ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id) AS service_price ,s.name as status_name ,p.name as payment_status_name' +
             ' FROM reservation_detail r ' +
-            ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id  where reservation_id=?';
+            ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id inner join reservation_status s on r.status_id=s.id inner join payment_status p on p.id=r.payment_status where reservation_id=?';
         pool.getConnection(function (err, connection) {
             connection.query(query, [reservation_id], function (error, row, fields) {
                 connection.release();
@@ -476,10 +476,10 @@ class Reservation {
     getReservationsServices(reservation_id) {
         var deferred = q.defer();
         var categoryData;
-        var query = 'SELECT r.*, s.name as service_name, s.price as price,' +
+        var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, ' +
             '(SELECT IFNULL(SUM(p.amount),0)  ' +
             'FROM payment p where p.reservation_id=r.reservation_id and p.source=\'SERVICE\' and p.service_id=s.id) as service_payd  ' +
-            'FROM reservation_service r inner join service s on r.service_id=s.id where  reservation_id=?';
+            'FROM reservation_service r inner join service s on r.service_id=s.id inner join payment_status p on r.payment_status=p.id where  reservation_id=?';
         pool.getConnection(function (err, connection) {
             connection.query(query, [reservation_id], function (error, row, fields) {
                 connection.release();
