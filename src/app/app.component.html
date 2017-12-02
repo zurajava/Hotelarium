@@ -1,6 +1,6 @@
 <app-parking-header (onToggle)="onToggle($event)"></app-parking-header>
 <section class="hero row">
-    <section class="col-lg-2 col-md-2 col-sm-12 col-xs-12 navigation noPadding" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'"
+    <section class="col-lg-1 col-md-1 col-sm-12 col-xs-12 navigation noPadding" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'"
         [ngClass]="{'activeMenu' : toggleState}">
 
         <div>
@@ -60,7 +60,7 @@
             </ul>
         </div>
     </section>
-    <section class="col-lg-10 col-md-10 col-sm-12 col-xs-12" [ngClass]="{'try': roleID === 'anonymous'}">
+    <section class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [ngClass]="{'try': roleID === 'anonymous'}">
         <router-outlet></router-outlet>
     </section>
 </section>
