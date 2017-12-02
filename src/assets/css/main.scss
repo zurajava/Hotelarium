@@ -120,17 +120,26 @@ body {
     width: 100%;
     z-index: 10;
     &__left {
+        margin-top: 12px;
         .toggle_menu {
-            display: none;
             outline: none;
+            display: block;
+            float: left;
+            margin-right: 10px;
+            padding: 0;
+            background: 0 0;
+            border: 0;
+            text-align: center;
+            cursor: pointer;
+            color: white;
+            font-size: 22px;
         }
         h1 {
             margin: 0;
             font-size: 12px;
             color: #fff;
-          // text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 20px;
+            margin-top: 12px;
         }
     }
     &__right {
@@ -211,8 +220,12 @@ body {
         }
     }
     .header__left {
-        margin-top: 10px;
+        margin-top: 12px;
         h1 {
+            margin: 0;
+            font-size: 12px;
+            color: #fff;
+            letter-spacing: 1px;
             margin-top: 12px;
         }
         .toggle_menu {
