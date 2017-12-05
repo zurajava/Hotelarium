@@ -379,10 +379,10 @@
                                             />
                                         </td>
                                         <td>
-                                            <span class="badge badge-success">{{res.status_name}}</span>
+                                            <span class="label pull-right bg-yellow">{{res.status_name}}</span>
                                         </td>
                                         <td>
-                                            <span class="badge badge-danger">{{res.payment_status_name}}</span>
+                                            <span class="label pull-right bg-green">{{res.payment_status_name}}</span>
                                         </td>
                                         <td>
                                             <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-info btn-sm" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
@@ -471,7 +471,7 @@
                                                                         (input)="service.additional_comment= $event.target.value">
                                                                 </td>
                                                                 <td>
-                                                                    <span class="badge badge-danger">{{service.payment_status_name}}</span>
+                                                                    <span class="label pull-right bg-green">{{service.payment_status_name}}</span>
                                                                 </td>
                                                                 <td class="text-right">
                                                                     <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationService(service,res.id)">Save</button>
@@ -505,7 +505,7 @@
                                                 <tbody>
                                                     <tr *ngFor="let pay of res.availablePayments; let i = index">
                                                         <td>
-                                                            <span class="badge badge-success">{{pay.source}}</span>
+                                                            <span class="label pull-right bg-green">{{pay.source}}</span>
                                                         </td>
                                                         <td>{{pay.day_count}}</td>
                                                         <td>{{pay.room_prise}}</td>

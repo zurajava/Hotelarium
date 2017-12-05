@@ -52,7 +52,7 @@
                     <i class="fa fa-user-plus"></i><span>User Managment</span></a>
             </li>
         </ul>
-        <ul *ngIf="roleID === 'RESIDENT'" class="row sidenav list-group">
+        <ul *ngIf="roleID === 'RESIDENT'" class="sidebar-menu" data-widget="tree">
             <li routerLink="/reservation">
                 <a>
                     <i class="fa fa-table"></i><span>Reservation</span></a>
