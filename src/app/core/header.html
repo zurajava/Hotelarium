@@ -1,24 +1,28 @@
-<section class="header row" *ngIf="roleID != 'anonymous'" [ngClass]="{'adminHeader': roleID === 'ADMIN' || roleID === 'RESIDENT'}">
-    <div class="header__left col-xs-6 col-sm-6 col-lg-6 col-md-6 header__left">
-        <button type="button" id="toggleMenu" class="toggle_menu" (click)="toggleMenu()">
-            <i class="fa fa-bars"></i>
-        </button>
-        <h1>Hotelarium</h1>
-    </div>
-    <div class="header__right col-xs-6 col-sm-6 col-lg-6 col-md-6 header__right">
-        <div class="row">
-            <div class="col-9">
-            </div>
-            <div class="col-3">
-                <ul class="list-group">
-                    <li class="list-group-item active">
-                        <a (click)="logout()" >
-                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            Logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
+<header class="main-header"> 
+    <a class="logo"> 
+      <span class="logo-mini"><b>H</b>M</span> 
+      <span class="logo-lg"><b>Hotel</b>Managment</span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation"> 
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a> 
+      <div class="navbar-custom-menu" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'">
+        <ul class="nav navbar-nav"> 
+          <li class="dropdown user user-menu"> 
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+              <img src="./assets/admintemplate/user2-160x160.jpg" class="user-image" alt="User Image"> 
+              <span class="hidden-xs">{{roleID}}</span>
+            </a>
+            <ul class="dropdown-menu"> 
+              <li class="user-footer"> 
+                <div class="pull-right">
+                  <a (click)="logout()" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li> 
+        </ul>
+      </div>
+    </nav>
+  </header> 
