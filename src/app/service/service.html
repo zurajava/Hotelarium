@@ -36,9 +36,11 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">
-              <button type="submit" class="btn btn-primary btn-sm" (click)="saveService()">{{btnText}}</button>
-              <button type="submit" class="btn btn-warning btn-sm" (click)="resetService()">Reset</button>
+            <td>
+              <button type="submit" class="btn btn-block btn-primary btn-xs" (click)="saveService()">{{btnText}}</button>
+            </td>
+            <td>
+              <button type="submit" class="btn btn-block btn-warning btn-xs" (click)="resetService()">Reset</button>
             </td>
           </tr>
         </tbody>
@@ -68,8 +70,10 @@
               <td>{{it.price}}</td>
               <td>{{it.type}}</td>
               <td>
-                <button type="button" class="btn btn-success btn-sm" (click)="editService(it)">Edit</button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteService(it)">Delete</button>
+                <button type="button" class="btn btn-block btn-success btn-xs" (click)="editService(it)">Edit</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-block btn-danger btn-xs" (click)="deleteService(it)">Delete</button>
               </td>
             </tr>
           </tbody>

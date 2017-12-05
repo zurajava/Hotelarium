@@ -83,10 +83,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <button type="submit" class="btn btn-primary btn-sm" (click)="saveRoom()">{{btnText}}</button>
-                            <button type="submit" class="btn btn-warning btn-sm" (click)="resetRoom()">Reset</button>
-                        </td>
+                        <th>
+                            <a class="btn btn-block btn-primary btn-xs" (click)="saveRoom()">{{btnText}}</a>
+                        </th>
+                        <th>
+                            <a class="btn btn-block btn-warning btn-xs" (click)="resetRoom()">Reset</a>
+                        </th>
                     </tr>
                 </tbody>
             </table>
@@ -127,8 +129,10 @@
                             <td>{{it.tag}}</td>
                             <td>{{it.description}}</td>
                             <td>
-                                <button type="button" class="btn btn-success btn-sm" (click)="editRoom(it)">Edit</button>
-                                <button type="button" class="btn btn-danger btn-sm" (click)="deleteRoom(it)">Delete</button>
+                                <a class="btn btn-block btn-success btn-xs" (click)="editRoom(it)">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-block btn-danger btn-xs" (click)="deleteRoom(it)">Delete</a>
                             </td>
                         </tr>
                     </tbody>

@@ -27,9 +27,11 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">
-              <button type="submit" class="btn btn-primary btn-sm" (click)="saveCategory()">{{btnText}}</button>
-              <button type="submit" class="btn btn-warning btn-sm" (click)="resetCategory()">Reset</button>
+            <td>
+              <button type="submit" class="btn btn-block btn-primary btn-xs" (click)="saveCategory()">{{btnText}}</button>
+            </td>
+            <td>
+              <button type="submit" class="btn btn-block btn-warning btn-xs" (click)="resetCategory()">Reset</button>
             </td>
           </tr>
         </tbody>
@@ -54,13 +56,12 @@
               <td>{{it.name}}</td>
               <td>{{it.description}}</td>
               <td>{{it.parking}}</td>
+
               <td>
-                <div class="row">
-                  <div class="col-12">
-                    <button type="button" class="btn btn-success btn-sm" (click)="editCategory(it)">Edit</button>
-                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(it)">Delete</button>
-                  </div>
-                </div>
+                <button type="button" class="btn btn-block btn-success btn-xs" (click)="editCategory(it)">Edit</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-block btn-danger btn-xs" (click)="deleteCategory(it)">Delete</button>
               </td>
             </tr>
           </tbody>

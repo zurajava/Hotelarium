@@ -15,32 +15,18 @@
                         <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm" id="person_no" placeholder="Personal #" [(ngModel)]="personalNo">
+                        <input type="text" id="person_no" class="form-control" placeholder="Personal #" [(ngModel)]="personalNo">
                     </th>
                     <th>
-                        <div>
-                            <div class="form-check form-check-inline has-success">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" id="checkboxSuccess" [(ngModel)]="reserv">Reserved
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline has-warning">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" id="checkboxWarning" [(ngModel)]="checkIn">Check In
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline has-primary">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" id="checkboxDanger" [(ngModel)]="checkOut">Check Out
-                                </label>
-                            </div>
-                        </div>
+                        <input type="checkbox" id="checkboxSuccess" [(ngModel)]="reserv">Reserved 
+                        <input type="checkbox" id="checkboxWarning" [(ngModel)]="checkIn">Check In 
+                        <input type="checkbox" id="checkboxDanger" [(ngModel)]="checkOut">Check Out
                     </th>
                     <th>
-                        <button type="button" class="btn btn-primary btn-sm" (click)="filterRezervation()">Filter</button>
+                        <button type="button" class="btn btn-block btn-primary btn-xs" (click)="filterRezervation()">Filter</button>
                     </th>
                     <th>
-                        <button type="button" class="btn btn-warning btn-sm" (click)="closeRezervation()">Close</button>
+                        <button type="button" class="btn btn-block btn-warning btn-xs" (click)="closeRezervation()">Close</button>
                     </th>
                 </tr>
             </table>
@@ -117,7 +103,7 @@
                                         <th style="width:10%" class="text-left">Extra Person</th>
                                         <th style="width:15%" class="text-left">Comment</th>
                                         <th style="width:15%" class="text-left" colspan="2">
-                                            <button type="button" class="btn btn-success btn-sm" (click)="addReservation()">Reservation</button>
+                                            <button type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">Reservation</button>
                                         </th>
                                     </tr>
                                 </div>
@@ -170,10 +156,10 @@
                                             />
                                         </td>
                                         <td style="width:140px">
-                                            <button type="button" class="btn btn-info btn-sm" (click)="showDetails(res)">Details</button>
+                                            <button type="button" class="btn btn-block btn-info btn-xs" (click)="showDetails(res)">Details</button>
                                         </td>
                                         <td style="width:140px" class="text-right">
-                                            <button type="button" class="btn btn-danger btn-sm" (click)="removeReservation(res)">Remove</button>
+                                            <button type="button" class="btn btn-block btn-danger btn-xs" (click)="removeReservation(res)">Remove</button>
                                         </td>
                                         <div *ngIf="res.showMoreInfo" style="display:block;">
                                             <div class="row">
@@ -185,7 +171,7 @@
                                                                     <h6 class="card-title">Guest List</h6>
                                                                 </th>
                                                                 <th colspan="2" class="text-right">
-                                                                    <button type="button" class="btn btn-success btn-sm" (click)="addPersonToReservationPerson(res)">Person</button>
+                                                                    <button type="button" class="btn btn-block btn-success btn-xs" (click)="addPersonToReservationPerson(res)">Person</button>
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -204,7 +190,7 @@
                                                                         (input)="person.last_name = $event.target.value">
                                                                 </td>
                                                                 <td class="text-right">
-                                                                    <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPerson(res,person)">DEL</button>
+                                                                    <button type="button" class="btn btn-block btn-danger btn-xs" (click)="removeReservationPerson(res,person)">DEL</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -218,7 +204,7 @@
                                                                     <h6 class="card-title">Service Information</h6>
                                                                 </th>
                                                                 <th colspan="2" class="text-right">
-                                                                    <button type="button" class="btn btn-success btn-sm" (click)="addServiceToReservationService(res)">Service</button>
+                                                                    <button type="button" class="btn btn-block btn-success btn-xs" (click)="addServiceToReservationService(res)">Service</button>
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -239,7 +225,7 @@
                                                                         (input)="service.additional_comment = $event.target.value">
                                                                 </td>
                                                                 <td class="text-right">
-                                                                    <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationService(res,service)">DEL</button>
+                                                                    <button type="button" class="btn btn-block btn-danger btn-xs" (click)="removeReservationService(res,service)">DEL</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -254,8 +240,8 @@
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <button type="button" class="btn btn-primary btn-sm" (click)="reserve()">Reserve</button>
-                    <button type="button" class="btn btn-warning btn-sm" (click)="checkin()">Check In</button>
+                    <button type="button" class="btn btn-block btn-primary btn-xs" (click)="reserve()">Reserve</button>
+                    <button type="button" class="btn btn-block btn-warning btn-xs" (click)="checkin()">Check In</button>
                 </div>
             </div>
             <!-- Edit Reservation -->
@@ -542,17 +528,17 @@
                                                             <input type="text" class="form-control form-control-sm" id="additional_comment_p" [(ngModel)]="pay.additional_comment">
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button> 
+                                                            <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
                                                         </td>
-                                                        <td> 
-                                                                <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
-                                                            </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                             <table class="table table-sm">
                                                 <thead>
-                                                    <tr  style="background-color: #f0f4c3">
+                                                    <tr style="background-color: #f0f4c3">
                                                         <th>Reservation Price
                                                             <input type="number" class="form-control form-control-sm" id="price_full" name="{{'price_full'+i}}" [(ngModel)]="res.price_full"
                                                                 disabled="true">
@@ -600,7 +586,7 @@
 
                                             <table class="table table-sm">
                                                 <thead>
-                                                    <tr  style="background-color: #f0f4c3">
+                                                    <tr style="background-color: #f0f4c3">
                                                         <th>Type</th>
                                                         <th>Source</th>
                                                         <th>Ticket</th>

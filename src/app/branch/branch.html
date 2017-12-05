@@ -39,9 +39,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <button type="submit" class="btn btn-primary btn-sm" (click)="saveBranch()">{{btnText}}</button>
-                            <button type="submit" class="btn btn-warning btn-sm" (click)="resetBranch()">Reset</button>
+                        <td>
+                            <button type="submit" class="btn btn-block btn-primary btn-xs" (click)="saveBranch()">{{btnText}}</button>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-block btn-warning btn-xs" (click)="resetBranch()">Reset</button>
                         </td>
                     </tr>
                 </tbody>
@@ -73,8 +75,10 @@
                             <td>{{it.mail}}</td>
                             <td>{{it.phone}}</td>
                             <td>
-                                <button type="button" class="btn btn-success btn-sm" (click)="editBranch(it)">Edit</button>
-                                <button type="button" class="btn btn-danger btn-sm" (click)="deleteBranch(it)">Delete</button>
+                                <button type="button" class="btn btn-block btn-success btn-xs" (click)="editBranch(it)">Edit</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-block btn-danger btn-xs" (click)="deleteBranch(it)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
