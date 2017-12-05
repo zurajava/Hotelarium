@@ -13,64 +13,65 @@
         </div>
 
         <ul *ngIf="roleID === 'ADMIN'" class="sidebar-menu" data-widget="tree">
-            <li class="active" routerLink="/reservation">
+            <li routerLink="/reservation">
                 <a>
-                    <i class="fa fa-table"></i>Reservation</a>
+                    <i class="fa fa-table"></i><span>Reservation</span>
+                </a>
             </li>
             <li routerLink="/dashboard">
                 <a>
-                    <i class="fa fa-dashboard"></i>Dashboard</a>
+                    <i class="fa fa-dashboard"></i><span>Dashboard</span></a>
             </li>
             <li routerLink="/branch">
                 <a>
-                    <i class="fa fa-users"></i>Branch</a>
+                    <i class="fa fa-users"></i><span>Branch</span></a>
             </li>
             <li routerLink="/category">
                 <a>
-                    <i class="fa fa-user-plus"></i>Category</a>
+                    <i class="fa fa-user-plus"></i><span>Category</span></a>
             </li>
             <li routerLink="/roomService">
                 <a>
-                    <i class="fa fa-user-plus"></i>Service</a>
+                    <i class="fa fa-user-plus"></i><span>Service</span></a>
             </li>
             <li routerLink="/createRoom">
                 <a>
-                    <i class="fa fa-user-plus"></i>Room</a>
+                    <i class="fa fa-user-plus"></i><span>Room</span></a>
             </li>
             <li routerLink="/reports">
                 <a>
-                    <i class="fa fa-bell-o"></i>Reports</a>
+                    <i class="fa fa-bell-o"></i><span>Reports</span></a>
             </li>
 
             <li routerLink="/persons">
                 <a>
-                    <i class="fa fa-user-plus"></i>Person</a>
+                    <i class="fa fa-user-plus"></i><span>Person</span></a>
             </li>
             <li routerLink="/usermanagment">
                 <a>
-                    <i class="fa fa-user-plus"></i>User Managment</a>
+                    <i class="fa fa-user-plus"></i><span>User Managment</span></a>
             </li>
         </ul>
         <ul *ngIf="roleID === 'RESIDENT'" class="row sidenav list-group">
-            <li class="active" routerLink="/reservation">
+            <li routerLink="/reservation">
                 <a>
-                    <i class="fa fa-table"></i>Reservation</a>
+                    <i class="fa fa-table"></i><span>Reservation</span></a>
             </li>
             <li routerLink="/dashboard">
                 <a>
-                    <i class="fa fa-dashboard"></i>Dashboard</a>
+                    <i class="fa fa-dashboard"></i><span>Dashboard</span></a>
             </li>
             <li routerLink="/category">
                 <a>
-                    <i class="fa fa-user-plus"></i>Category</a>
+                    <i class="fa fa-user-plus"></i><span>Category</span></a>
             </li>
             <li routerLink="/roomService">
                 <a>
-                    <i class="fa fa-user-plus"></i>Service</a>
+                    <i class="fa fa-user-plus"></i><span>Service</span></a>
             </li>
             <li routerLink="/createRoom">
                 <a>
-                    <i class="fa fa-user-plus"></i>Room</a>
+                    <i class="fa fa-user-plus"></i><span>Room</span></a>
             </li>
         </ul>
     </section>
