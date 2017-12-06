@@ -1,60 +1,71 @@
-<section class="viewOwner">
-    <div class="card">
-        <div class="card-header">
-            <kendo-dropdownlist [data]="userOrganisation" [textField]="'name'" [valueField]="'id'" [value]="orgSelectedValue" [valuePrimitive]="true"
-                (valueChange)="orgValueChange($event)">
-            </kendo-dropdownlist>
-        </div>
-        <div class="card-block">
-            <table class="table table-sm table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" id="email" [(ngModel)]="selectedBranch.name">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Adress</th>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" id="pwd2" [(ngModel)]="selectedBranch.address">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Mail</th>
-                        <td>
-                            <input type="email" class="form-control form-control-sm" id="pwd3" [(ngModel)]="selectedBranch.mail">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Phone</th>
-                        <td>
-                            <input type="tel" class="form-control form-control-sm" id="pwd4" [(ngModel)]="selectedBranch.phone">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" id="pwd1" [(ngModel)]="selectedBranch.description">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button type="submit" class="btn btn-block btn-primary btn-xs" (click)="saveBranch()">{{btnText}}</button>
-                        </td>
-                        <td>
-                            <button type="submit" class="btn btn-block btn-warning btn-xs" (click)="resetBranch()">Reset</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                List Of Branch
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <form class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label" style="text-align: left">Organisation</label>
+
+                                <div class="col-sm-10">
+                                    <select class="form-control select2 input-sm" id="id_n_service_id222" name="id_n_service_id222" [(ngModel)]="orgSelectedValue"
+                                        (ngModelChange)="orgValueChange($event)">
+                                        <option *ngFor="let x of userOrganisation" [value]="x.id">{{x.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="text-align: left">Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control form-control-sm" id="email" name="email" [(ngModel)]="selectedBranch.name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="text-align: left">Adress</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control form-control-sm" id="pwd2" name="pwd2" [(ngModel)]="selectedBranch.address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="text-align: left">Mail</label>
+                            <div class="col-sm-4">
+                                <input type="email" class="form-control form-control-sm" id="pwd3" name="pwd3" [(ngModel)]="selectedBranch.mail">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="text-align: left">Phone</label>
+                            <div class="col-sm-4">
+                                <input type="tel" class="form-control form-control-sm" id="pwd4" name="pwd4" [(ngModel)]="selectedBranch.phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="text-align: left">Description</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control form-control-sm" id="pwd1" name="pwd1" [(ngModel)]="selectedBranch.description">
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary btn-xs" (click)="saveBranch()">{{btnText}}</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-warning pull-right btn-xs" (click)="resetBranch()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="card-block">
-                <table class="table table-sm table-bordered table-striped">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">List Of branch</h3>
+                </div>
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -75,10 +86,12 @@
                             <td>{{it.mail}}</td>
                             <td>{{it.phone}}</td>
                             <td>
-                                <button type="button" class="btn btn-block btn-success btn-xs" (click)="editBranch(it)">Edit</button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-block btn-danger btn-xs" (click)="deleteBranch(it)">Delete</button>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-block btn-success btn-xs" (click)="editBranch(it)">Edit</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-block btn-danger btn-xs" (click)="deleteBranch(it)">Delete</button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

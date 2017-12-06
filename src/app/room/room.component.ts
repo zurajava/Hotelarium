@@ -35,7 +35,7 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
     this.selectedRoom = new Room('', '', null, null, null, null, null, null, '', '', '');
-    this.btnText = "ADD"
+    this.btnText = "ADD";
     this.roomService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;

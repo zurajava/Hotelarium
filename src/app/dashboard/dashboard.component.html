@@ -1,12 +1,94 @@
-<section class="viewOwner"> 
-  <div class="card">
-    <div class="card-header">
-      <kendo-dropdownlist [data]="userBranch" [textField]="'name'" [valueField]="'id'" [value]="brSelectedValue" [valuePrimitive]="true"
-        (valueChange)="brValueChange($event)">
-      </kendo-dropdownlist>
-    </div>
-    <div class="card">
-      <div>
+<section class="content">
+  <div class="box box-solid">
+    <div class="box-body">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label" style="text-align: left">Branch</label>
+                <div class="col-sm-10">
+                  <select class="form-control select2 input-sm" id="id_n_service_id222" name="id_n_service_id222" [(ngModel)]="brSelectedValue"
+                    (ngModelChange)="brValueChange($event)">
+                    <option *ngFor="let x of userBranch" [value]="x.id">{{x.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Reservation</span>
+              <span class="info-box-number">12</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+              <span class="progress-description">
+                70% Increase in 30 Days
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-aqua">
+            <span class="info-box-icon">
+              <i class="fa fa-bookmark-o"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Check In</span>
+              <span class="info-box-number">41</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+              <span class="progress-description">
+                70% Increase in 30 Days
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-green">
+            <span class="info-box-icon">
+              <i class="fa fa-thumbs-o-up"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Check Out</span>
+              <span class="info-box-number">41,410</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+              <span class="progress-description">
+                70% Increase in 30 Days
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-red">
+            <span class="info-box-icon">
+              <i class="fa fa-comments-o"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Payment</span>
+              <span class="info-box-number">41</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+              <span class="progress-description">
+                70% Increase in 30 Days
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
           [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
       </div>

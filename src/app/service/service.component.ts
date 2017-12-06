@@ -47,7 +47,7 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit() {
     this.selectedService = new Service('', '', null, '');
-    this.btnText = "ADD"
+    this.btnText = "ADD";
     this.serviceService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
