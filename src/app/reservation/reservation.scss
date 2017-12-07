@@ -129,3 +129,13 @@
 .odd  {
     background-color: #9e9d24; 
 }  
+.top_row {
+    display: table;
+    width: 100%;
+}
+
+.top_row > div {
+    display: table-cell;
+    width: 5%;
+    padding-right: 8px;
+}

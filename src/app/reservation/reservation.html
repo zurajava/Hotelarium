@@ -93,163 +93,165 @@
                             </div>
                         </form>
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-striped">
-                                <thead>
-                                    <div style="width: 100%;">
-                                        <tr class="bg-warning">
-                                            <th style="width:10%" class="text-center">Category</th>
-                                            <th style="width:10%" class="text-center">Room No</th>
-                                            <th style="width:10%" class="text-center">Start Date</th>
-                                            <th style="width:10%" class="text-center">End Date</th>
-                                            <th style="width:10%" class="text-center">Adult</th>
-                                            <th style="width:10%" class="text-center">Child</th>
-                                            <th style="width:15%" class="text-left">Additional Bed</th>
-                                            <th style="width:10%" class="text-left">Extra Person</th>
-                                            <th style="width:15%" class="text-left">Comment</th>
-                                            <th style="width:15%" class="text-left" colspan="2">
-                                                <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>RoomNo</th>
+                                        <th>StartDate</th>
+                                        <th>EndDate</th>
+                                        <th>Adult</th>
+                                        <th>Child</th>
+                                        <th>Adt. Bed</th>
+                                        <th>Ex. Person</th>
+                                        <th>Comment</th>
+                                        <th>
+                                            <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">
                                                     <i class="fa fa-fw fa-plus-square"></i>
                                                 </a>
-                                            </th>
-                                        </tr>
-                                    </div>
-                                </thead>
+                                        </th>
+                                    </tr>
+                                </tbody>
                                 <tbody>
                                     <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index;let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
-                                        <div style="width: 100%;">
-                                            <td>
-                                                <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                                    [(value)]="res.category_id" (valueChange)="categoryValueChange($event,res)">
-                                                </kendo-combobox>
-                                            </td>
-                                            <td>
-                                                <kendo-combobox style="width:140px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                                    [(value)]="res.room_id">
-                                                </kendo-combobox>
-                                            </td>
-                                            <td>
-                                                <kendo-datepicker style="width:140px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
-                                                    name="nstart_date"></kendo-datepicker>
-                                            </td>
-                                            <td>
-                                                <kendo-datepicker style="width:140px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
-                                                    name="nend_date"></kendo-datepicker>
-                                            </td>
 
+                                        <td colspan="10">
+                                            <div class="top_row">
+                                                <div>
+                                                    <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                                        [(value)]="res.category_id" (valueChange)="categoryValueChange($event,res)">
+                                                    </kendo-combobox>
+                                                </div>
+                                                <div>
+                                                    <kendo-combobox style="width:140px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                                        [(value)]="res.room_id">
+                                                    </kendo-combobox>
+                                                </div>
+                                                <div>
+                                                    <kendo-datepicker style="width:140px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
+                                                        name="nstart_date"></kendo-datepicker>
+                                                </div>
+                                                <div>
+                                                    <kendo-datepicker style="width:140px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
+                                                        name="nend_date"></kendo-datepicker>
+                                                </div>
+                                                <div>
+                                                    <kendo-numerictextbox style="width:140px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
+                                                <div>
+                                                    <kendo-numerictextbox style="width:140px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
+                                                <div>
 
-                                            <td>
-                                                <kendo-numerictextbox style="width:140px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                </kendo-numerictextbox>
-                                            </td>
-                                            <td>
-                                                <kendo-numerictextbox style="width:140px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                </kendo-numerictextbox>
+                                                    <kendo-numerictextbox style="width:140px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                                        [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
 
-                                            </td>
-                                            <td>
-                                                <kendo-numerictextbox style="width:140px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
-                                                    [format]="'n0'">
-                                                </kendo-numerictextbox>
-
-                                            </td>
-                                            <td>
-                                                <kendo-numerictextbox style="width:140px" id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
-                                                    [format]="'n0'">
-                                                </kendo-numerictextbox>
-                                            </td>
-                                            <td>
-                                                <input kendoTextBox style="width:140px" id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value"
-                                                />
-                                            </td>
-                                            <td style="width:140px">
-                                                <button type="button" class="btn btn-block btn-info btn-xs" (click)="showDetails(res)">Details</button>
-                                            </td>
-                                            <td style="width:140px" class="text-right">
-                                                <a (click)="removeReservation(res)">
+                                                <div>
+                                                    <kendo-numerictextbox style="width:140px" id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                                        [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
+                                                <div>
+                                                    <input kendoTextBox style="width:140px" id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <button type="button" class="btn btn-block btn-info btn-xs" (click)="showDetails(res)">Details</button>
+                                                </div>
+                                                <div>
+                                                    <a (click)="removeReservation(res)">
                                                     <i class="fa fa-fw fa-trash"></i>
-                                                </a>
-                                            </td>
+                                                </a></div>
 
-                                            <div *ngIf="res.showMoreInfo" style="display:block;">
-                                                <div class="col-md-6">
-                                                    <div class="box">
-                                                        <div class="box-header">
-                                                            <h3 class="box-title">
-                                                                <small class="label pull-right bg-green">Guest List</small>
-                                                            </h3>
+                                            </div>
+                                            <div class="top_row">
+                                                <div class="box-body">
+                                                    <div *ngIf="res.showMoreInfo" style="display:block;">
+                                                        <div class="col-md-6">
+                                                            <div class="box">
+                                                                <div class="box-header">
+                                                                    <h3 class="box-title">
+                                                                        <small class="label pull-right bg-green">Guest List</small>
+                                                                    </h3>
 
-                                                            <div class="box-tools">
-                                                                <a type="button" class="btn btn-block btn-success btn-xs" (click)="addPersonToReservationPerson(res)">
+                                                                    <div class="box-tools">
+                                                                        <a type="button" class="btn btn-block btn-success btn-xs" (click)="addPersonToReservationPerson(res)">
                                                                     <i class="fa fa-fw fa-plus-square"></i>
                                                                 </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="box-body no-padding">
-                                                            <table class="table table-striped">
-                                                                <tbody>
-                                                                    <tr *ngFor="let person of res.reservationPerson; let i = index">
-                                                                        <td>
-                                                                            <input type="text" class="form-control input-sm" id="n_person_id" placeholder="Personal #" [value]="person.person_id" (input)="person.person_id = $event.target.value">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control input-sm" id="n_first_name" placeholder="First Name" [value]="person.first_name" (input)="person.first_name = $event.target.value">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control input-sm" id="n_last_name" placeholder="Last Name" [value]="person.last_name" (input)="person.last_name = $event.target.value">
-                                                                        </td>
-                                                                        <td class="text-right">
-                                                                            <a (click)="removeReservationPerson(res,person)">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="box-body no-padding">
+                                                                    <table class="table table-striped">
+                                                                        <tbody>
+                                                                            <tr *ngFor="let person of res.reservationPerson; let i = index">
+                                                                                <td>
+                                                                                    <input type="text" class="form-control input-sm" id="n_person_id" placeholder="Personal #" [value]="person.person_id" (input)="person.person_id = $event.target.value">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" class="form-control input-sm" id="n_first_name" placeholder="First Name" [value]="person.first_name" (input)="person.first_name = $event.target.value">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" class="form-control input-sm" id="n_last_name" placeholder="Last Name" [value]="person.last_name" (input)="person.last_name = $event.target.value">
+                                                                                </td>
+                                                                                <td class="text-right">
+                                                                                    <a (click)="removeReservationPerson(res,person)">
                                                                                 <i class="fa fa-fw fa-trash"></i>
                                                                             </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="box">
-                                                        <div class="box-header">
-                                                            <h3 class="box-title">
-                                                                <small class="label pull-right bg-green">Service Information</small>
-                                                            </h3>
-                                                            <div class="box-tools">
-                                                                <a type="button" class="btn btn-block btn-success btn-xs" (click)="addServiceToReservationService(res)">
-                                                                    <i class="fa fa-fw fa-plus-square"></i>
-                                                                </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="box-body no-padding">
-                                                            <table class="table table-striped">
-                                                                <tbody>
-                                                                    <tr *ngFor="let service of res.reservationService; let i = index">
-                                                                        <td>
-                                                                            <select class="form-control select2 input-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id"
-                                                                                (ngModelChange)="serviceValueChange($event,service)">
+                                                        <div class="col-md-6">
+                                                            <div class="box">
+                                                                <div class="box-header">
+                                                                    <h3 class="box-title">
+                                                                        <small class="label pull-right bg-green">Service Information</small>
+                                                                    </h3>
+                                                                    <div class="box-tools">
+                                                                        <a type="button" class="btn btn-block btn-success btn-xs" (click)="addServiceToReservationService(res)">
+                                                                    <i class="fa fa-fw fa-plus-square"></i>
+                                                                </a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="box-body no-padding">
+                                                                    <table class="table table-striped">
+                                                                        <tbody>
+                                                                            <tr *ngFor="let service of res.reservationService; let i = index">
+                                                                                <td>
+                                                                                    <select class="form-control select2 input-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id"
+                                                                                        (ngModelChange)="serviceValueChange($event,service)">
                                                                                 <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
                                                                             </select>
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control input-sm" id="n_frequency" placeholder="Frequency" [value]="service.frequency" (input)="service.frequency = $event.target.value">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control input-sm" id="n_comment" placeholder="Comment" [value]="service.additional_comment"
-                                                                                (input)="service.additional_comment = $event.target.value">
-                                                                        </td>
-                                                                        <td class="text-right">
-                                                                            <a (click)="removeReservationService(res,service)">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" class="form-control input-sm" id="n_frequency" placeholder="Frequency" [value]="service.frequency" (input)="service.frequency = $event.target.value">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" class="form-control input-sm" id="n_comment" placeholder="Comment" [value]="service.additional_comment"
+                                                                                        (input)="service.additional_comment = $event.target.value">
+                                                                                </td>
+                                                                                <td class="text-right">
+                                                                                    <a (click)="removeReservationService(res,service)">
                                                                                 <i class="fa fa-fw fa-trash"></i>
                                                                             </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
