@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="./assets/admintemplate/AdminLTE.min.css">
     <link rel="stylesheet" href="./assets/admintemplate/skin-blue.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <link rel="stylesheet" href="./assets/admintemplate/daterangepicker.css">
+    <link rel="stylesheet" href="./assets/admintemplate/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="./assets/admintemplate/all.css">
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -35,6 +39,37 @@
     <script src="./assets/admintemplate/jquery.min.js"></script>
     <script src="./assets/admintemplate/bootstrap.min.js"></script>
     <script src="./assets/admintemplate/adminlte.min.js"></script>
+    <script src="./assets/admintemplate/daterangepicker.js"></script>
+    <script src="./assets/admintemplate/bootstrap-datepicker.min.js"></script>
+    <script src="./assets/admintemplate/icheck.min.js"></script>
+    <script>
+        $(function () {
+            $('#datepickerFrom').datepicker({
+                autoclose: true,
+                format: 'yyyy-MM-dd'
+            })
+
+
+            $('#datepickerTo').datepicker({
+                autoclose: true,
+                format: 'yyyy-MM-dd'
+            })
+            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue',
+                radioClass: 'iradio_minimal-blue'
+            })
+            //Red color scheme for iCheck
+            $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                checkboxClass: 'icheckbox_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            })
+            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            })
+
+        })
+    </script>
 </body>
 
 </html>

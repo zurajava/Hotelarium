@@ -79,7 +79,6 @@ export class ReservationService {
       .catch(this.handleError);
   }
   getReservation(branch_id: String, start_date: string, end_date: string, reserv, checkIn, checkOut, person_no: string) {
-    console.log("R", reserv, "C", checkIn, "O", checkOut);
     var state = '(5)';
     if (reserv && checkIn && checkOut) {
       state = '(1,2,4)';

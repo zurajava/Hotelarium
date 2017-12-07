@@ -121,8 +121,7 @@ export class ReservationComponent implements OnInit {
     this.dateRange = datesArray;
     this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
       this.intl.formatDate(this.dateTo, 'yyyy-MM-dd'), this.reserv, this.checkIn, this.checkOut, this.personalNo).then(data => {
-        this.data = data.data;
-        console.log(JSON.stringify(this.data));
+        this.data = data.data; 
         for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
           if (this.data[i].rooms.length > 0) {
             for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category
@@ -172,7 +171,7 @@ export class ReservationComponent implements OnInit {
       });
   }
   filterRezervation() {
-    console.log("filterRezervation");
+    console.log("filterRezervation", this.dateFrom, this.dateTo);
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
     this.fillDataRange();
   }
