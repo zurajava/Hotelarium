@@ -8,13 +8,46 @@
     margin: 0 auto;
 }
 .RESERVED{
-    background-color:aqua;
+    background-color:#00a65a !important;
+    display: inline-block;
+    min-width: 100%;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 10px;
 }
 .CHECK_IN{
-    background-color: #eb7475;
+    background-color: #f39c12 !important;
+    display: inline-block;
+    min-width: 100%;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 10px;
 }
 .CHECKED_OUT{
-    background-color: #94b0e7;
+    background-color: #3c8dbc !important;
+    display: inline-block;
+    min-width: 100%;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 10px;
 }
 .FREE{
     background-color: white;
