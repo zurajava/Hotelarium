@@ -10,9 +10,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from './model';
 import { AuthService } from './../core/auth.service';
 
-
-
-
 @Component({
   moduleId: module.id,
   selector: 'app-category',
@@ -70,7 +67,7 @@ export class CategoryComponent implements OnInit {
     this.selectedCategory = category;
   }
   public deleteCategory(category: Category) {
-    this.categoryService.deleteCategory(category.id).subscribe(data => {
+    this.categoryService.deleteCategory(category.id, category.branch_id).subscribe(data => {
       this.loadData(this.brSelectedValue);
     });
   }

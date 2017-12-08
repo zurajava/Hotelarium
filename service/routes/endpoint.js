@@ -6,9 +6,8 @@ const pool = require('../dbmanager/dbmanager-mysql.js');
 var q = require('q');
 
 router.post('/authenticate', (req, res) => {
-  console.log("authenticate");
+  console.log("Route, Authenticate");
   pool.getUserByUserName(req.body.username, req.body.password, function (err, data) {
-    console.log(req.body.username + ' ' + req.body.password)
     if (err) {
       res.json(err);
     } else {
@@ -29,7 +28,7 @@ router.post('/authenticate', (req, res) => {
 });
 
 router.post('/changePassword', (req, res) => {
-  console.log("authenticate :", req.body.username, req.body.password, req.body.newPassword);
+  console.log("Route, Authenticate");
   pool.getUserByUserName(req.body.username, req.body.password, function (err, data) {
     console.log(req.body.username + ' ' + req.body.password)
     if (err) {
@@ -42,7 +41,7 @@ router.post('/changePassword', (req, res) => {
 });
 
 router.use(function (req, res, next) {
-  console.log("middleware : " + req.url + " : " + req.method);
+  console.log("Route, Middleware : ", req.url);
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     jwt.verify(token, 'ilovescotchyscotch', function (err, decoded) {
@@ -50,12 +49,9 @@ router.use(function (req, res, next) {
         return res.json({ success: false, message: 'Authentication expire, please sing-in again' });
       } else {
         var pathname = url.parse(req.url).pathname.split("/")[1];
-        console.log(decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname);
         req.decoded = decoded;
-        if (pathname != 'userBranch' && pathname != 'userOrganisation') {
-          console.log("Restcrictec path", decoded.id + " " + decoded.user_name + " " + decoded.role + " " + pathname + " " + req.method);
-          pool.getUserPermission(decoded.id, pathname, req.method).then(data => {
-            console.log("user permission", data, data.length);
+        if (pathname != 'userBranch' && pathname != 'userOrganisation' && pathname != 'branch') {
+          pool.getUserPermission(decoded.id, pathname, req.method, req.headers['branch_id']).then(data => {
             if (data.length === 0) {
               return res.status(200).send({
                 success: false,
@@ -69,7 +65,6 @@ router.use(function (req, res, next) {
               success: false,
               message: 'Perrmission denid for resource = ' + pathname + ', action = ' + req.method
             });
-
           });
         } else {
           next();
@@ -85,7 +80,7 @@ router.use(function (req, res, next) {
 });
 
 router.get('/userBranch/:id', (req, res) => {
-  console.log("userBranch : " + req.params.id);
+  console.log("Route, UserBranch");
   pool.getUserBranch(req.params.id, function (err, data) {
     if (err) {
       res.json({
@@ -95,11 +90,10 @@ router.get('/userBranch/:id', (req, res) => {
       res.json({ success: true, message: 'OK', branch: data });
     }
   });
-
 });
 
 router.get('/userOrganisation/:id', (req, res) => {
-  console.log("userOrganisation");
+  console.log("Route, UserOrganisation");
   pool.getUserOrganisation(req.params.id, function (err, data) {
     if (err) {
       res.json({

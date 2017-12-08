@@ -6,7 +6,7 @@ var pool = new Branch();
 
 
 router.get('/:org_id', (req, res) => {
-    console.log("branch " + req.params.org_id);
+    console.log("Route, Branch");
     pool.getBranch(req.params.org_id, function (err, data) {
         if (err) {
             res.json({
@@ -20,8 +20,7 @@ router.get('/:org_id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    console.log("add branch : " + req.body.name);
-
+    console.log("Route, AddBranch");
     pool.registerBranch(req.body.name, req.body.description, req.body.address, req.body.org_id, req.body.mail, req.body.phone).then(data => {
         res.json({ success: true, message: 'OK', room: data });
     }).catch(error => {
@@ -32,7 +31,7 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    console.log("delete branch : " + req.params.id);
+    console.log("Route, DeleteBranch");
     pool.deleteBranch(req.params.id).then(data => {
         res.json({ success: true, message: 'OK', branch_id: data });
     }).catch(error => {
@@ -43,6 +42,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    console.log("Route, UpdateBranch");
     pool.updateBranch(req.params.id, req.body.name, req.body.description, req.body.address, req.body.org_id, req.body.mail, req.body.phone, function (err, data) {
         if (err) {
             res.json({

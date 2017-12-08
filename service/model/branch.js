@@ -3,7 +3,7 @@ var q = require('q');
 
 class Branch {
     getBranch(org_id, callback) {
-        console.log("getBranch", org_id);
+        console.log("Branch, GetBranch", org_id);
         pool.getConnection(function (err, connection) {
             connection.query('SELECT b.*,o.name as org_name FROM branch b inner join organisation o on b.org_id=o.id where b.org_id=?', [org_id], function (error, row, fields) {
                 connection.release();
@@ -18,7 +18,7 @@ class Branch {
     }
 
     registerBranch(name, description, address, org_id, mail, phone) {
-        console.log("registerBranch", name);
+        console.log("Branch, RegisterBranch", name, description, address, org_id, mail, phone);
         var deferred = q.defer();
         this.registerBranchLocal(name, description, address, org_id, mail, phone).then(data => {
             return new Promise(function (resolve, reject) {
@@ -44,7 +44,7 @@ class Branch {
         return deferred.promise;
     }
     deleteBranch(id) {
-        console.log("deleteBranch", id);
+        console.log("Branch, DeleteBranch", id);
         var deferred = q.defer();
         this.deleteUserBranchLocal(id).then(data => {
             this.deleteBranchLocal(id).then(data => {
@@ -59,7 +59,7 @@ class Branch {
     }
 
     updateBranch(id, name, description, address, org_id, mail, phone, callback) {
-        console.log("updateBranch", id);
+        console.log("Branch, UpdateBranch", id, name, description, address, org_id, mail, phone);
         pool.getConnection(function (err, connection) {
             connection.query('update branch set name=?, description=?, address=?, org_id=?, update_date=current_timestamp,mail=?, phone=? where id=?',
                 [name, description, address, org_id, mail, phone, id],
@@ -75,7 +75,6 @@ class Branch {
     }
 
     registerBranchLocal(name, description, address, org_id, mail, phone) {
-        console.log("registerBranchLocal", name);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query('insert into branch(create_date,name,description,address,org_id,mail,phone) values(current_timestamp,?,?,?,?,?,?)',
@@ -94,7 +93,6 @@ class Branch {
     }
 
     deleteBranchLocal(id) {
-        console.log("deleteBranchLocal", id);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query('delete from branch where id=?',
@@ -112,7 +110,6 @@ class Branch {
         })
     }
     deleteUserBranchLocal(id) {
-        console.log("deleteUserBranchLocal", id);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query('delete from user_branch where branch_id=?',

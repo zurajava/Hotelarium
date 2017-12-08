@@ -17,6 +17,7 @@ export class RoomService {
         const headers = new Headers();
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
+        headers.append("branch_id", branch_id.toString());
         headers.append('Content-Type', 'application/json');
         return this.http.get('/service/room/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
             .catch(this.handleError);
@@ -28,23 +29,24 @@ export class RoomService {
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append("x-access-token", key);
-        console.log(body);
+        headers.append("branch_id", data.branch_id);
         return this.http.post('/service/room', body, { headers: headers }).catch(this.handleError);
-
     }
     editRoom(data: Room) {
         const headers = new Headers();
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
+        headers.append("branch_id", data.branch_id);
         return this.http.put('/service/room/' + data.id, JSON.stringify(data), { headers: headers }).catch(this.handleError);
     }
 
-    deleteRoom(id: number) {
+    deleteRoom(id: number,branch_id:string) {
         const headers = new Headers();
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
+        headers.append("branch_id", branch_id);
         return this.http.delete('/service/room/' + id, { headers: headers }).catch(this.handleError);
 
     }

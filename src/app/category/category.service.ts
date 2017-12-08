@@ -16,6 +16,7 @@ export class CategoryService {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id.toString());
     headers.append('Content-Type', 'application/json');
     return this.http.get('/service/category/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
       .catch(this.handleError);
@@ -27,6 +28,7 @@ export class CategoryService {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", data.branch_id);
     headers.append("x-access-token", key);
     console.log(body);
     return this.http.post('/service/category', body, { headers: headers }).catch(this.handleError);
@@ -36,14 +38,16 @@ export class CategoryService {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
+    headers.append("branch_id", data.branch_id);
     headers.append('Content-Type', 'application/json');
     return this.http.put('/service/category/' + data.id, JSON.stringify(data), { headers: headers }).catch(this.handleError);
   }
 
-  deleteCategory(id: number) {
+  deleteCategory(id: number, branch_id: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     headers.append('Content-Type', 'application/json');
     return this.http.delete('/service/category/' + id, { headers: headers }).catch(this.handleError);
 

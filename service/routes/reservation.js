@@ -152,9 +152,8 @@ router.put('/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    console.log("get reservation : " + req.query.start_date + " " + req.query.end_date + " " + req.query.branch_id + " " + req.query.state + " " + req.query.person_no);
+    console.log("Route, GetReservation");
     var reserv = req.body;
-
     pool.getReservation(req.query.branch_id, req.query.start_date, req.query.end_date, req.query.state, req.query.person_no).then(data => {
         return res.json({ success: true, message: 'OK', data: data });
     }).catch(function (error) {

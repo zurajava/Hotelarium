@@ -73,7 +73,7 @@ export class RoomComponent implements OnInit {
     this.selectedRoom = category;
   }
   public deleteRoom(category: Room) {
-    this.roomService.deleteRoom(category.id).subscribe(data => {
+    this.roomService.deleteRoom(category.id, category.branch_id).subscribe(data => {
       if (data.json().success === true) {
         this.loadData(this.brSelectedValue);
         this.toastr.success("Room delete");
@@ -82,13 +82,13 @@ export class RoomComponent implements OnInit {
       }
     });
   }
-  public saveRoom() { 
+  public saveRoom() {
     this.selectedRoom.branch_id = this.brSelectedValue.toString();
     if (this.selectedRoom.room_no == null || this.selectedRoom.room_no.length <= 0) {
       this.toastr.error("room_no is required");
       return;
     }
-    if (this.btnText == "ADD") { 
+    if (this.btnText == "ADD") {
       this.roomService.addRoom(this.selectedRoom).subscribe(data => {
         if (data.json().success === true) {
           this.loadData(this.brSelectedValue);
@@ -97,7 +97,7 @@ export class RoomComponent implements OnInit {
           this.toastr.error(data.json().message);
         }
       });
-    } else if (this.btnText == "Update") { 
+    } else if (this.btnText == "Update") {
       this.roomService.editRoom(this.selectedRoom).subscribe(data => {
         if (data.json().success === true) {
           this.loadData(this.brSelectedValue);

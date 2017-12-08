@@ -81,7 +81,7 @@ export class ServiceComponent implements OnInit {
     this.selectedService = category;
   }
   public deleteService(category: Service) {
-    this.serviceService.deleteService(category.id).subscribe(data => {
+    this.serviceService.deleteService(category.id, category.branch_id).subscribe(data => {
       this.loadData(this.brSelectedValue);
     });
   }

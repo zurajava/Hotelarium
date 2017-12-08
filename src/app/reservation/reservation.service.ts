@@ -11,23 +11,23 @@ import { ReservationInfo, ReservationDetail, ReservationPerson, ReservationServi
 export class ReservationService {
 
   constructor(private http: Http) {
-
   }
-  addReservation(data: ReservationInfo) {
+  addReservation(data: ReservationInfo, branch_id: string) {
     const body = JSON.stringify(data);
     console.log("addReservation", body);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.post('/service/reservation', body, { headers: headers }).catch(this.handleError);
-
   }
   getCategory(branch_id: number) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", branch_id.toString());
     return this.http.get('/service/category/' + branch_id, { headers: headers })
       .catch(this.handleError);
   }
@@ -36,6 +36,7 @@ export class ReservationService {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", branch_id.toString());
     return this.http.get('/service/service/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
       .catch(this.handleError);
   }
@@ -44,6 +45,7 @@ export class ReservationService {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", branch_id.toString());
     var query;
     if (category_id == null) {
       query = '/service/room/' + branch_id;
@@ -69,15 +71,6 @@ export class ReservationService {
     return this.http.get('/service/userOrganisation/' + user_id, { headers: headers })
       .catch(this.handleError);
   }
-
-  getPerson(person_no: string) {
-    const headers = new Headers();
-    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
-    headers.append("x-access-token", key);
-    headers.append('Content-Type', 'application/json');
-    return this.http.get('/service/person?person_no' + person_no, { headers: headers })
-      .catch(this.handleError);
-  }
   getReservation(branch_id: String, start_date: string, end_date: string, reserv, checkIn, checkOut, person_no: string) {
     var state = '(5)';
     if (reserv && checkIn && checkOut) {
@@ -100,15 +93,17 @@ export class ReservationService {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", branch_id.toString());
     return this.http.get('/service/reservation?start_date=' + start_date + '&end_date=' + end_date + '&branch_id=' + branch_id + '&state=' + state + '&person_no=' + person_no, { headers: headers }).toPromise().then(response => {
       return response.json();
     }).catch(this.handleError);
   }
-  getReservationById(id: String) {
+  getReservationById(id: String, branch_id: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", branch_id);
     return this.http.get('/service/reservation/' + id, { headers: headers }).toPromise().then(response => {
       return response.json();
     }).catch(this.handleError);
@@ -117,7 +112,7 @@ export class ReservationService {
   private handleError(error: any) {
     return Observable.throw(error.json());
   }
-  addReservationToExsting(data: ReservationDetail, id: number) {
+  addReservationToExsting(data: ReservationDetail, id: number, branch_id: string) {
     //TO DO
     data.payment_status = "1";
     const body = JSON.stringify(data);
@@ -125,80 +120,79 @@ export class ReservationService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.post('/service/reservation/' + id.toString() + '?type=1', body, { headers: headers }).catch(this.handleError);
-
   }
-  addReservationPersonToExstingReservation(data: ReservationPerson, id: number) {
+  addReservationPersonToExstingReservation(data: ReservationPerson, id: number, branch_id: string) {
     const body = JSON.stringify(data);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.post('/service/reservation/' + id.toString() + '?type=2', body, { headers: headers }).catch(this.handleError);
-
   }
-  addReservationServiceToExstingReservation(data: ReservationServices, id: number) {
+  addReservationServiceToExstingReservation(data: ReservationServices, id: number, branch_id: string) {
     const body = JSON.stringify(data);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.post('/service/reservation/' + id.toString() + '?type=3', body, { headers: headers }).catch(this.handleError);
-
   }
-  deleteReservation(id: number) {
+  deleteReservation(id: number, branch_id: string) {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.delete('/service/reservation/' + id.toString() + '?type=1', { headers: headers }).catch(this.handleError);
-
   }
-  deleteReservationService(id: number, service_id: number) {
+  deleteReservationService(id: number, service_id: number, branch_id: string) {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.delete('/service/reservation/' + id.toString() + '?type=3&service_id=' + service_id.toString(), { headers: headers }).catch(this.handleError);
-
   }
-  deleteReservationPerson(id: number, person_no: string) {
+  deleteReservationPerson(id: number, person_no: string, branch_id: string) {
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
+    headers.append("branch_id", branch_id);
     return this.http.delete('/service/reservation/' + id.toString() + '?type=2&person_no=' + person_no, { headers: headers }).catch(this.handleError);
-
   }
-  updateReservation(id: number, status_id: string) {
+  updateReservation(id: number, status_id: string, branch_id: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
+    headers.append("branch_id", branch_id);
     return this.http.put('/service/reservation/' + id.toString() + '?type=' + status_id + '&token=' + key, { headers: headers }).catch(this.handleError);
-
   }
 
-  addPaymentToReservation(payment: Payment) {
+  addPaymentToReservation(payment: Payment, branch_id: string) {
     const body = JSON.stringify(payment);
     console.log("addPaymentToReservation", body);
-
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
-
+    headers.append("branch_id", branch_id);
     return this.http.post('/service/payment?type=1', body, { headers: headers }).toPromise().then(response => {
       return response.json();
     }).catch(this.handleError);
   }
-  addPaymentToService(payment: Payment) {
+  addPaymentToService(payment: Payment, branch_id: string) {
     const body = JSON.stringify(payment);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append("x-access-token", key);
-
+    headers.append("branch_id", branch_id);
     return this.http.post('/service/payment?type=2', body, { headers: headers }).toPromise().then(response => {
       return response.json();
     }).catch(this.handleError);
