@@ -20,12 +20,14 @@
                             <input type="text" id="person_no" class="form-control input-sm" placeholder="Personal #" [(ngModel)]="personalNo" style="width:65%">
                         </div>
                         <div class="col-sm-2">
-                            <input type="checkbox" id="checkboxSuccess" class="minimal" [(ngModel)]="reserv">
                             <i class="fa fa-fw fa-lock"></i>
-                            <input type="checkbox" id="checkboxWarning" class="flat-red" [(ngModel)]="checkIn">
+                            <input type="checkbox" [(ngModel)]="reserv">
+
                             <i class="fa fa-fw fa-hotel"></i>
-                            <input type="checkbox" id="checkboxDanger" class="minimal-red" [(ngModel)]="checkOut">
+                            <input type="checkbox" [(ngModel)]="checkIn">
+
                             <i class="fa fa-fw fa-calendar"></i>
+                            <input type="checkbox" [(ngModel)]="checkOut">
                         </div>
                         <div class="col-sm-1">
                             <button type="button" class="btn btn-block btn-primary btn-xs" (click)="filterRezervation()">Filter</button>
@@ -107,8 +109,8 @@
                                         <th>Comment</th>
                                         <th>
                                             <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">
-                                                    <i class="fa fa-fw fa-plus-square"></i>
-                                                </a>
+                                                <i class="fa fa-fw fa-plus-square"></i>
+                                            </a>
                                         </th>
                                     </tr>
                                 </tbody>
@@ -164,8 +166,9 @@
                                                 </div>
                                                 <div>
                                                     <a (click)="removeReservation(res)">
-                                                    <i class="fa fa-fw fa-trash"></i>
-                                                </a></div>
+                                                        <i class="fa fa-fw fa-trash"></i>
+                                                    </a>
+                                                </div>
 
                                             </div>
                                             <div class="top_row">
@@ -180,8 +183,8 @@
 
                                                                     <div class="box-tools">
                                                                         <a type="button" class="btn btn-block btn-success btn-xs" (click)="addPersonToReservationPerson(res)">
-                                                                    <i class="fa fa-fw fa-plus-square"></i>
-                                                                </a>
+                                                                            <i class="fa fa-fw fa-plus-square"></i>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                                 <div class="box-body no-padding">
@@ -199,8 +202,8 @@
                                                                                 </td>
                                                                                 <td class="text-right">
                                                                                     <a (click)="removeReservationPerson(res,person)">
-                                                                                <i class="fa fa-fw fa-trash"></i>
-                                                                            </a>
+                                                                                        <i class="fa fa-fw fa-trash"></i>
+                                                                                    </a>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -216,8 +219,8 @@
                                                                     </h3>
                                                                     <div class="box-tools">
                                                                         <a type="button" class="btn btn-block btn-success btn-xs" (click)="addServiceToReservationService(res)">
-                                                                    <i class="fa fa-fw fa-plus-square"></i>
-                                                                </a>
+                                                                            <i class="fa fa-fw fa-plus-square"></i>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                                 <div class="box-body no-padding">
@@ -227,8 +230,8 @@
                                                                                 <td>
                                                                                     <select class="form-control select2 input-sm" id="id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id"
                                                                                         (ngModelChange)="serviceValueChange($event,service)">
-                                                                                <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
-                                                                            </select>
+                                                                                        <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
+                                                                                    </select>
                                                                                 </td>
                                                                                 <td>
                                                                                     <input type="text" class="form-control input-sm" id="n_frequency" placeholder="Frequency" [value]="service.frequency" (input)="service.frequency = $event.target.value">
@@ -239,8 +242,8 @@
                                                                                 </td>
                                                                                 <td class="text-right">
                                                                                     <a (click)="removeReservationService(res,service)">
-                                                                                <i class="fa fa-fw fa-trash"></i>
-                                                                            </a>
+                                                                                        <i class="fa fa-fw fa-trash"></i>
+                                                                                    </a>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -267,420 +270,464 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-block">
-                        <!-- Register Reservation -->
-                        <!-- Edit Reservation -->
-                        <div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
-                            <div class="card-block">
-                                <table class="table table-sm table-bordered table-striped">
-                                    <tbody>
-                                        <tr>
-                                            <td>Title</td>
-                                            <td>
-                                                <select class="form-control form-control-sm" id="exampleSelect111" placeholder="Title" [(ngModel)]="reservationInfoEdit.person.gender">
-                                                    <option>Title</option>
-                                                    <option>Mr</option>
-                                                    <option>Mrs</option>
-                                                    <option>Ms</option>
-                                                </select>
-                                            </td>
-                                            <td>First Name</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="smFormGroupInput22" placeholder="First Name" [(ngModel)]="reservationInfoEdit.person.first_name">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Last Name</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="smFormGroupInput23" placeholder="Last Name" [(ngModel)]="reservationInfoEdit.person.last_name">
-                                            </td>
-                                            <td>Personal #</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="smFormGroupInput24" placeholder="Personal #" [(ngModel)]="reservationInfoEdit.person.personal_no">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Email</td>
-                                            <td>
-                                                <input type="email" class="form-control form-control-sm" id="smFormGroupInput1" placeholder="you@mail.com" [(ngModel)]="reservationInfoEdit.person.email">
-                                            </td>
-                                            <td>Phone</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="smFormGroupInput2" placeholder="Phone" [(ngModel)]="reservationInfoEdit.person.phone">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Company</td>
-                                            <td>
-                                                <select class="form-control form-control-sm" placeholder="Company" id="exampleSelect11" [(ngModel)]="reservationInfoEdit.person.company">
-                                                    <option>Company</option>
-                                                    <option>YES</option>
-                                                    <option>NO</option>
-                                                </select>
-                                            </td>
-                                            <td>Code</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="smFormGroupInput4" placeholder="Code" [(ngModel)]="reservationInfoEdit.person.company_code">
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="1">Company Name</td>
-                                            <td colspan="3">
-                                                <input type="text" class="form-control form-control-sm" id="smFormGroupInput5" placeholder="Company Name" [(ngModel)]="reservationInfoEdit.person.company_name">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+
+                <div *ngIf="showReservationPayment && reservationInfoEdit" class="reservation-container">
+                    <div class="box-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="exampleSelect111" class="col-sm-4 control-label" style="text-align: left">Title</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control select2 input-sm" id="exampleSelect111" name="exampleSelect111" placeholder="Title" [(ngModel)]="reservationInfoEdit.person.gender">
+                                            <option>Title</option>
+                                            <option>Mr</option>
+                                            <option>Mrs</option>
+                                            <option>Ms</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="smFormGroupInput22" class="col-sm-4 control-label" style="text-align: left">First Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control input-sm" name="smFormGroupInput22" id="smFormGroupInput22" placeholder="First Name"
+                                            [(ngModel)]="reservationInfoEdit.person.first_name">
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="smFormGroupInput23" class="col-sm-4 control-label" style="text-align: left">Last Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control input-sm" name="smFormGroupInput23" id="smFormGroupInput23" placeholder="Last Name"
+                                            [(ngModel)]="reservationInfoEdit.person.last_name">
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="smFormGroupInput24" class="col-sm-4 control-label" style="text-align: left">Personal #</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control input-sm" name="smFormGroupInput24" id="smFormGroupInput24" placeholder="Personal #"
+                                            [(ngModel)]="reservationInfoEdit.person.personal_no">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="container-fluid">
-                                <div class="card">
-                                    <table class="table table-sm table-responsive">
-                                        <thead>
-                                            <div style="width: 100%;">
-                                                <tr class="bg-warning">
-                                                    <th style="width:10%" class="text-center">Category</th>
-                                                    <th style="width:10%" class="text-center">Room No</th>
-                                                    <th style="width:10%" class="text-center">Start Date</th>
-                                                    <th style="width:10%" class="text-center">End Date</th>
-                                                    <th style="width:10%" class="text-center">Adult</th>
-                                                    <th style="width:10%" class="text-center">Child</th>
-                                                    <th style="width:15%" class="text-left">Additional Bed</th>
-                                                    <th style="width:10%" class="text-left">Extra Person</th>
-                                                    <th style="width:15%" class="text-left">Comment</th>
-                                                    <th style="width:15%" class="text-left" colspan="2">Status</th>
-                                                    <th style="width:15%" class="text-left" colspan="7">
-                                                        <button type="button" class="btn btn-success btn-sm" (click)="addReservationToExisting()">Reservation</button>
-                                                    </th>
-                                                </tr>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="smFormGroupInput1" class="col-sm-4 control-label" style="text-align: left">Email</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" class="form-control input-sm" id="smFormGroupInput1" name="smFormGroupInput1" placeholder="you@mail.com"
+                                            [(ngModel)]="reservationInfoEdit.person.email">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="smFormGroupInput2" class="col-sm-4 control-label" style="text-align: left">Phone</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control input-sm" id="smFormGroupInput2" name="smFormGroupInput2" placeholder="Phone" [(ngModel)]="reservationInfoEdit.person.phone">
+
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="exampleSelect11" class="col-sm-4 control-label" style="text-align: left">Company</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control select2 input-sm" placeholder="Company" id="exampleSelect11" name="exampleSelect11" [(ngModel)]="reservationInfoEdit.person.company">
+                                            <option>Company</option>
+                                            <option>YES</option>
+                                            <option>NO</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="smFormGroupInput4" class="col-sm-4 control-label" style="text-align: left">Code</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control input-sm" id="smFormGroupInput4" name="smFormGroupInput4" placeholder="Code" [(ngModel)]="reservationInfoEdit.person.company_code">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="smFormGroupInput5" class="col-sm-3 control-label" style="text-align: left">Company Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control input-sm" id="smFormGroupInput5" name="smFormGroupInput5" placeholder="Company Name"
+                                            [(ngModel)]="reservationInfoEdit.person.company_name">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Room No</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Adult</th>
+                                    <th>Child</th>
+                                    <th>Additional Bed</th>
+                                    <th>Extra Person</th>
+                                    <th>Comment</th>
+                                    <th>Status</th>
+                                    <th>
+                                        <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservationToExisting()">
+                                            <i class="fa fa-fw fa-plus-square"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index;let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
+
+                                    <td colspan="11">
+                                        <div class="top_row">
+                                            <div>
+                                                <kendo-combobox style="width:120px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                                    [(value)]="res.category_id" (valueChange)="categoryValueChangeEdit($event,res)">
+                                                </kendo-combobox>
                                             </div>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index;let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
-                                                <div style="width: 100%;">
-                                                    <td>
-                                                        <kendo-combobox style="width:120px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                                            [(value)]="res.category_id" (valueChange)="categoryValueChangeEdit($event,res)">
-                                                        </kendo-combobox>
-                                                    </td>
-                                                    <td>
-                                                        <kendo-combobox style="width:120px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                                            [(value)]="res.room_id">
-                                                        </kendo-combobox>
-                                                    </td>
-                                                    <td>
-                                                        <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
-                                                            name="nstart_date">
-                                                        </kendo-datepicker>
-                                                    </td>
-                                                    <td>
-                                                        <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
-                                                            name="nend_date">
-                                                        </kendo-datepicker>
-                                                    </td>
-                                                    <td>
-                                                        <kendo-numerictextbox style="width:120px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                        </kendo-numerictextbox>
-                                                    </td>
-                                                    <td>
-                                                        <kendo-numerictextbox style="width:120px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                        </kendo-numerictextbox>
+                                            <div>
+                                                <kendo-combobox style="width:120px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                                    [(value)]="res.room_id">
+                                                </kendo-combobox>
+                                            </div>
+                                            <div>
+                                                <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
+                                                    name="nstart_date">
+                                                </kendo-datepicker>
+                                            </div>
+                                            <div>
+                                                <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
+                                                    name="nend_date">
+                                                </kendo-datepicker>
+                                            </div>
+                                            <div>
+                                                <kendo-numerictextbox style="width:120px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                </kendo-numerictextbox>
+                                            </div>
+                                            <div>
+                                                <kendo-numerictextbox style="width:120px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                </kendo-numerictextbox>
+                                            </div>
 
-                                                    </td>
-                                                    <td>
-                                                        <kendo-numerictextbox style="width:120px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
-                                                            [format]="'n0'">
-                                                        </kendo-numerictextbox>
+                                            <div>
+                                                <kendo-numerictextbox style="width:120px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                                    [format]="'n0'">
+                                                </kendo-numerictextbox>
+                                            </div>
+                                            <div>
+                                                <kendo-numerictextbox style="width:120px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                                    [format]="'n0'">
+                                                </kendo-numerictextbox>
+                                            </div>
 
-                                                    </td>
-                                                    <td>
-                                                        <kendo-numerictextbox style="width:120px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
-                                                            [format]="'n0'">
-                                                        </kendo-numerictextbox>
+                                            <div>
+                                                <input kendoTextBox style="width:120px" id="adsedit" name="commentEdit" [value]="res.comment" (input)="res.comment = $event.target.value"
+                                                />
+                                            </div>
+                                            <div>
+                                                <span class="label label-primary">{{res.status_name}}</span>
+                                            </div>
+                                            <div>
+                                                <span class="label label-warning">{{res.payment_status_name}}</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-block btn-info btn-xs" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
+                                            </div>
+                                            <div>
+                                                <button type="button" *ngIf="res.showReserveButton" class="btn btn-block btn-info btn-xs" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
+                                            </div>
+                                            <div>
+                                                <button type="button" *ngIf="res.showCheckInButton" class="btn btn-block btn-warning btn-xs" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-block btn-warning btn-xs" (click)="showDetailsEdit(res)">Details</button>
+                                            </div>
+                                            <div>
+                                                <a (click)="showPaymentInfo(res)">
+                                                    <i class="fa fa-fw fa-paypal"></i>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <button type="button" *ngIf="res.showUpdateButton" class="btn btn-block btn-warning btn-xs" (click)="removeReservationExisting(res)">Update</button>
+                                            </div>
+                                            <div>
+                                                <a (click)="removeReservationExisting(res)">
+                                                    <i class="fa fa-fw fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div *ngIf="res.showMoreInfo">
+                                                <div class="col-md-6">
+                                                    <div class="box">
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">
+                                                                <small class="label pull-right bg-green">Guest List</small>
+                                                            </h3>
 
-                                                    </td>
-                                                    <td>
-                                                        <input kendoTextBox style="width:120px" id="adsedit" name="commentEdit" [value]="res.comment" (input)="res.comment = $event.target.value"
-                                                        />
-                                                    </td>
-                                                    <td>
-                                                        <span class="label pull-right bg-yellow">{{res.status_name}}</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="label pull-right bg-green">{{res.payment_status_name}}</span>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-info btn-sm" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" *ngIf="res.showReserveButton" class="btn btn-info btn-sm" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" *ngIf="res.showCheckInButton" class="btn btn-warning btn-sm" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-warning btn-sm" (click)="showDetailsEdit(res)">Details</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-warning btn-sm" (click)="showPaymentInfo(res)">Payment</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" *ngIf="res.showUpdateButton" class="btn btn-warning btn-sm" (click)="removeReservationExisting(res)">Update</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationExisting(res)">Remove</button>
-                                                    </td>
-                                                    <div *ngIf="res.showMoreInfo">
-                                                        <div class="row">
-                                                            <div class="col-5">
-                                                                <table class="table table-sm">
-                                                                    <thead>
-                                                                        <tr style="background-color: #f0f4c3">
-                                                                            <th colspan="2" class="text-left">
-                                                                                <h6 class="card-title">Guest List</h6>
-                                                                            </th>
-                                                                            <th colspan="3" class="text-right">
-                                                                                <button type="button" class="btn btn-success btn-sm" (click)="addPersonToReservationPersonExisting(res)">Person</button>
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr *ngFor="let person of res.reservationPerson; let i = index">
-                                                                            <td>
-                                                                                <input type="text" class="form-control form-control-sm" id="id_person_id" placeholder="Personal #" [value]="person.person_id"
-                                                                                    (input)="person.person_id = $event.target.value">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" class="form-control form-control-sm" id="id_first_name" placeholder="First Name" [value]="person.first_name"
-                                                                                    (input)="person.first_name = $event.target.value">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" class="form-control form-control-sm" id="id_last_name" placeholder="Last Name" [value]="person.last_name"
-                                                                                    (input)="person.last_name = $event.target.value">
-                                                                            </td>
-                                                                            <td class="text-right">
-                                                                                <button *ngIf="person.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationPerson(person,res.id)">Save</button>
-                                                                            </td>
-                                                                            <td class="text-right">
-                                                                                <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationPersonExisting(res,person)">DEL</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                            <div class="col-7">
-                                                                <table class="table table-sm">
-                                                                    <thead>
-                                                                        <tr style="background-color: #f0f4c3">
-                                                                            <th colspan="3" class="text-left">
-                                                                                <h6 class="card-title">Service Information</h6>
-                                                                            </th>
-                                                                            <th colspan="3" class="text-right">
-                                                                                <button type="button" class="btn btn-success btn-sm" (click)="addServiceToReservationServiceExisting(res)">Service</button>
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr *ngFor="let service of res.reservationService; let i = index">
-                                                                            <td>
-                                                                                <select class="form-control form-control-sm" id="e_id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id">
-                                                                                    <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" class="form-control form-control-sm" id="id_service_id1" placeholder="Frequency" [value]="service.frequency"
-                                                                                    (input)="service.frequency= $event.target.value">
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="text" class="form-control form-control-sm" id="id_service_id2" placeholder="Comment" [value]="service.additional_comment"
-                                                                                    (input)="service.additional_comment= $event.target.value">
-                                                                            </td>
-                                                                            <td>
-                                                                                <span class="label pull-right bg-green">{{service.payment_status_name}}</span>
-                                                                            </td>
-                                                                            <td class="text-right">
-                                                                                <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-sm" (click)="saveReservationService(service,res.id)">Save</button>
-                                                                            </td>
-                                                                            <td class="text-right">
-                                                                                <button type="button" class="btn btn-danger btn-sm" (click)="removeReservationServiceExisting(res,service)">Del</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                            <div class="box-tools">
+                                                                <a type="button" class="btn btn-block btn-success btn-xs" (click)="addPersonToReservationPersonExisting(res)">
+                                                                    <i class="fa fa-fw fa-plus-square"></i>
+                                                                </a>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div *ngIf="res.expandPayment">
-                                                        <table class="table table-sm">
-                                                            <thead>
-                                                                <tr style="background-color: #f0f4c3">
-                                                                    <th>Type</th>
-                                                                    <th>Day Count</th>
-                                                                    <th>Reservation Prise</th>
-                                                                    <th>Additional Bad Price</th>
-                                                                    <th>Extra Person Price</th>
-                                                                    <th>Payd Amount</th>
-                                                                    <th>Amount Full</th>
-                                                                    <th>Payment Type</th>
-                                                                    <th>Receipt #</th>
-                                                                    <th>Comment</th>
-                                                                    <th colspan="3" class="text-right">Command</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr *ngFor="let pay of res.availablePayments; let i = index">
-                                                                    <td>
-                                                                        <span class="label pull-right bg-green">{{pay.source}}</span>
-                                                                    </td>
-                                                                    <td>{{pay.day_count}}</td>
-                                                                    <td>{{pay.room_prise}}</td>
-                                                                    <td>{{pay.additional_bad_price}}</td>
-                                                                    <td>{{pay.extra_person_price}}</td>
-                                                                    <td>{{pay.payd_amount}}</td>
-                                                                    <td>
-                                                                        <input type="number" class="form-control form-control-sm" id="amount_full_p" [(ngModel)]="pay.price_full">
-                                                                    </td>
-                                                                    <td>
-                                                                        <select class="form-control form-control-sm" id="exampleSelect111aas_p" [(ngModel)]="pay.pay_type">
-                                                                            <option>Card</option>
-                                                                            <option>Cash</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control form-control-sm" id="receipt_p" [(ngModel)]="pay.receipt">
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control form-control-sm" id="additional_comment_p" [(ngModel)]="pay.additional_comment">
-                                                                    </td>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservation(res,pay)">Pay</button>
-                                                                    </td>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <table class="table table-sm">
-                                                            <thead>
-                                                                <tr style="background-color: #f0f4c3">
-                                                                    <th>Reservation Price
-                                                                        <input type="number" class="form-control form-control-sm" id="price_full" name="{{'price_full'+i}}" [(ngModel)]="res.price_full"
-                                                                            disabled="true">
-                                                                    </th>
-                                                                    <th>Payd
-                                                                        <input type="number" class="form-control form-control-sm" id="reservation_payd_amount" name="{{'reservation_payd_amount'+i}}"
-                                                                            [(ngModel)]="res.reservation_payd_amount" disabled="true">
-                                                                    </th>
-                                                                    <th>Service Price
-                                                                        <input type="number" class="form-control form-control-sm" id="service_price" name="{{'service_price'+i}}" [(ngModel)]="res.service_price"
-                                                                            disabled="true">
-                                                                    </th>
-                                                                    <th>Payd
-                                                                        <input type="number" class="form-control form-control-sm" id="service_payd_amount" name="{{'service_payd_amount'+i}}" [(ngModel)]="res.service_payd_amount"
-                                                                            disabled="true">
-                                                                    </th>
-                                                                    <th>Total
-                                                                        <input type="number" class="form-control form-control-sm" id="amount_full" name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full"
-                                                                            disabled="true">
-                                                                    </th>
-                                                                    <th>
-                                                                        Type
-                                                                        <select class="form-control form-control-sm" name="{{'payTymes'+i}}" id="exampleSelect111aas" [(ngModel)]="res.pay_type">
-                                                                            <option>Card</option>
-                                                                            <option>Cash</option>
-                                                                        </select>
-                                                                    </th>
-                                                                    <th>
-                                                                        Receipt
-                                                                        <input type="text" class="form-control form-control-sm" id="receipt" name="{{'receipt'+i}}" [(ngModel)]="res.receipt">
-                                                                    </th>
-                                                                    <th>
-                                                                        Comment
-                                                                        <input type="text" class="form-control form-control-sm" id="paymentComment" name="{{'paymentComment'+i}}" [(ngModel)]="res.paymentComment">
-                                                                    </th>
-                                                                    <th>
-                                                                        <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservationAll(res,pay)">Payment All</button>
-                                                                    </th>
-                                                                    <th>
-                                                                        <button type="button" class="btn btn-warning btn-sm" (click)="generateInvoise(res)">Invoise</button>
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                        </table>
-
-                                                        <table class="table table-sm">
-                                                            <thead>
-                                                                <tr style="background-color: #f0f4c3">
-                                                                    <th>Type</th>
-                                                                    <th>Source</th>
-                                                                    <th>Ticket</th>
-                                                                    <th>Additional Comment</th>
-                                                                    <th>Service</th>
-                                                                    <th>Amount</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr *ngFor="let pay of res.payment; let i = index">
-                                                                    <td>
-                                                                        {{pay.type}}
-                                                                    </td>
-                                                                    <td>{{pay.source}}
-                                                                    </td>
-                                                                    <td>{{pay.ticket}}
-                                                                    </td>
-                                                                    <td>{{pay.additional_comment}}
-                                                                    </td>
-                                                                    <td>{{pay.service_id}}</td>
-                                                                    <td>{{pay.amount}}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                        <div class="box-body no-padding">
+                                                            <table class="table table-striped">
+                                                                <tbody>
+                                                                    <tr *ngFor="let person of res.reservationPerson; let i = index">
+                                                                        <td>
+                                                                            <input type="text" class="form-control input-sm" id="id_person_id" placeholder="Personal #" [value]="person.person_id" (input)="person.person_id = $event.target.value">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control input-sm" id="id_first_name" placeholder="First Name" [value]="person.first_name"
+                                                                                (input)="person.first_name = $event.target.value">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control input-sm" id="id_last_name" placeholder="Last Name" [value]="person.last_name" (input)="person.last_name = $event.target.value">
+                                                                        </td>
+                                                                        <td class="text-right">
+                                                                            <button *ngIf="person.showSave" type="button" class="btn btn-block btn-warning btn-xs" (click)="saveReservationPerson(person,res.id)">Save</button>
+                                                                        </td>
+                                                                        <td class="text-right">
+                                                                            <a (click)="removeReservationPersonExisting(res,person)">
+                                                                                <i class="fa fa-fw fa-trash"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="container-fluid">
-                                <div>
-                                    <button type="button" class="btn btn-primary btn-sm" (click)="updateAllReservation()">CheckIn All</button>
-                                    <button type="button" class="btn btn-warning btn-sm" (click)="paymentReservationAll()">Payment All</button>
-                                </div>
-                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="box">
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">
+                                                                <small class="label pull-right bg-green">Service Information</small>
+                                                            </h3>
+                                                            <div class="box-tools">
+                                                                <a type="button" class="btn btn-block btn-success btn-xs" (click)="addServiceToReservationServiceExisting(res)">
+                                                                    <i class="fa fa-fw fa-plus-square"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body no-padding">
+                                                            <table class="table table-striped">
+                                                                <tbody>
+                                                                    <tr *ngFor="let service of res.reservationService; let i = index">
+                                                                        <td>
+                                                                            <select class="form-control select2 input-sm" id="e_id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id">
+                                                                                <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control input-sm" id="id_service_id1" placeholder="Frequency" [value]="service.frequency"
+                                                                                (input)="service.frequency= $event.target.value">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control input-sm" id="id_service_id2" placeholder="Comment" [value]="service.additional_comment"
+                                                                                (input)="service.additional_comment= $event.target.value">
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="label pull-right bg-green">{{service.payment_status_name}}</span>
+                                                                        </td>
+                                                                        <td class="text-right">
+                                                                            <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-block  btn-xs" (click)="saveReservationService(service,res.id)">Save</button>
+                                                                        </td>
+                                                                        <td class="text-right">
+                                                                            <a (click)="removeReservationServiceExisting(res,service)">
+                                                                                <i class="fa fa-fw fa-trash"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div *ngIf="res.expandPayment">
+                                                <div class="col-md-12">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type</th>
+                                                                <th>Day Count</th>
+                                                                <th>Reservation Prise</th>
+                                                                <th>Additional Bad Price</th>
+                                                                <th>Extra Person Price</th>
+                                                                <th>Payd Amount</th>
+                                                                <th>Amount Full</th>
+                                                                <th>Payment Type</th>
+                                                                <th>Receipt #</th>
+                                                                <th>Comment</th>
+                                                                <th colspan="3" class="text-right">Command</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let pay of res.availablePayments; let i = index">
+                                                                <td>
+                                                                    <span class="badge bg-light-blue">{{pay.source}}</span>
+                                                                </td>
+                                                                <td>{{pay.day_count}}</td>
+                                                                <td>{{pay.room_prise}}</td>
+                                                                <td>{{pay.additional_bad_price}}</td>
+                                                                <td>{{pay.extra_person_price}}</td>
+                                                                <td>{{pay.payd_amount}}</td>
+                                                                <td>
+                                                                    <input type="number" class="form-control input-sm" id="amount_full_p" [(ngModel)]="pay.price_full">
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-control select2 input-sm" id="exampleSelect111aas_p" [(ngModel)]="pay.pay_type">
+                                                                        <option>Card</option>
+                                                                        <option>Cash</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control input-sm" id="receipt_p" [(ngModel)]="pay.receipt">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control input-sm" id="additional_comment_p" [(ngModel)]="pay.additional_comment">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="paymentReservation(res,pay)">Pay</button>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="generateInvoise(res)">Invoise</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                                <div class="col-md-12">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Reservation Price
+                                                                    <input type="number" class="form-control input-sm" id="price_full" name="{{'price_full'+i}}" [(ngModel)]="res.price_full"
+                                                                        disabled="true">
+                                                                </th>
+                                                                <th>Payd
+                                                                    <input type="number" class="form-control input-sm" id="reservation_payd_amount" name="{{'reservation_payd_amount'+i}}" [(ngModel)]="res.reservation_payd_amount"
+                                                                        disabled="true">
+                                                                </th>
+                                                                <th>Service Price
+                                                                    <input type="number" class="form-control input-sm" id="service_price" name="{{'service_price'+i}}" [(ngModel)]="res.service_price"
+                                                                        disabled="true">
+                                                                </th>
+                                                                <th>Payd
+                                                                    <input type="number" class="form-control input-sm" id="service_payd_amount" name="{{'service_payd_amount'+i}}" [(ngModel)]="res.service_payd_amount"
+                                                                        disabled="true">
+                                                                </th>
+                                                                <th>Total
+                                                                    <input type="number" class="form-control input-sm" id="amount_full" name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full"
+                                                                        disabled="true">
+                                                                </th>
+                                                                <th>
+                                                                    Type
+                                                                    <select class="form-control select2 input-sm" name="{{'payTymes'+i}}" id="exampleSelect111aas" [(ngModel)]="res.pay_type">
+                                                                        <option>Card</option>
+                                                                        <option>Cash</option>
+                                                                    </select>
+                                                                </th>
+                                                                <th>
+                                                                    Receipt
+                                                                    <input type="text" class="form-control input-sm" id="receipt" name="{{'receipt'+i}}" [(ngModel)]="res.receipt">
+                                                                </th>
+                                                                <th>
+                                                                    Comment
+                                                                    <input type="text" class="form-control input-sm" id="paymentComment" name="{{'paymentComment'+i}}" [(ngModel)]="res.paymentComment">
+                                                                </th>
+                                                                <th>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="paymentReservationAll(res,pay)">Payment All</button>
+                                                                </th>
+                                                                <th>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="generateInvoise(res)">Invoise</button>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type</th>
+                                                                <th>Source</th>
+                                                                <th>Ticket</th>
+                                                                <th>Additional Comment</th>
+                                                                <th>Service</th>
+                                                                <th>Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let pay of res.payment; let i = index">
+                                                                <td>
+                                                                    {{pay.type}}
+                                                                </td>
+                                                                <td>{{pay.source}}
+                                                                </td>
+                                                                <td>{{pay.ticket}}
+                                                                </td>
+                                                                <td>{{pay.additional_comment}}
+                                                                </td>
+                                                                <td>{{pay.service_id}}</td>
+                                                                <td>{{pay.amount}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-block btn-primary btn-xs" (click)="updateAllReservation()">CheckIn All</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-block btn-warning btn-xs pull-right" (click)="paymentReservationAll()">Payment All</button>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="timeline-container">
-                                <table class="time_table_class">
-                                    <thead>
-                                        <tr>
-                                            <th>ოთახები</th>
-                                            <th *ngFor="let dateSingle of dateRange">
-                                                <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
-                                                <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
-                                                <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody *ngFor="let caterory of data">
-                                        <tr class="reservation_category">
-                                            <td [colSpan]="segment">{{ caterory.name }}</td>
-                                        </tr>
-                                        <tr *ngFor="let room of caterory.rooms">
-                                            <td class="reservation_room_no">{{room.room_no}}</td>
-                                            <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.id,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.id,schedule.reservation_id)"
-                                                [className]="schedule.status" *ngFor="let schedule of room.reservations">
-                                                {{schedule?.firstName}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <div class="timeline-container">
+                        <table class="time_table_class">
+                            <thead>
+                                <tr>
+                                    <th>ოთახები</th>
+                                    <th *ngFor="let dateSingle of dateRange">
+                                        <div class="date-dt-bold">{{dateSingle | date:'dd'}}</div>
+                                        <div class="date-dt-lite">{{dateSingle | date:'MMM'|uppercase}}</div>
+                                        <div class="date-dt-lite">{{dateSingle | date:'EEE'|uppercase}}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let caterory of data">
+                                <tr class="reservation_category">
+                                    <td [colSpan]="segment">{{ caterory.name }}</td>
+                                </tr>
+                                <tr *ngFor="let room of caterory.rooms">
+                                    <td class="reservation_room_no">{{room.room_no}}</td>
+                                    <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.id,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.id,schedule.reservation_id)"
+                                        [className]="schedule.status" *ngFor="let schedule of room.reservations">
+                                        {{schedule?.firstName}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

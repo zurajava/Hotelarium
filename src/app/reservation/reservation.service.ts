@@ -95,6 +95,7 @@ export class ReservationService {
     } else if (checkOut) {
       state = '(4)';
     }
+    console.log(reserv, checkIn, checkOut, state);
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);

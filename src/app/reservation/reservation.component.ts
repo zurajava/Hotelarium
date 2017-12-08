@@ -57,12 +57,12 @@ export class ReservationComponent implements OnInit {
   public dateFrom: Date;
   public dateTo: Date;
   public personalNo: string;
-  public reserv: boolean = true;
-  public checkIn: boolean = true;
-  public checkOut: boolean = false;
+  public reserv: Boolean = true;
+  public checkIn: Boolean = true;
+  public checkOut: Boolean = false;
   public userBranch: Array<any>;
   public brSelectedValue: number;
-
+  saveUsername: Boolean = true;
   public reservationInfoEdit: ReservationInfo;
 
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private reservationService: ReservationService, private authservice: AuthService, private intl: IntlService) {
@@ -121,7 +121,7 @@ export class ReservationComponent implements OnInit {
     this.dateRange = datesArray;
     this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
       this.intl.formatDate(this.dateTo, 'yyyy-MM-dd'), this.reserv, this.checkIn, this.checkOut, this.personalNo).then(data => {
-        this.data = data.data; 
+        this.data = data.data;
         for (var i = 0; i < this.data.length; i++) { // Loop Through Categories
           if (this.data[i].rooms.length > 0) {
             for (var j = 0; j < this.data[i].rooms.length; j++) { // Loop Through Rooms from Category
