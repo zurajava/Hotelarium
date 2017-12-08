@@ -481,11 +481,11 @@ export class ReservationComponent implements OnInit {
     }
     this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
       console.log("addReservation", data.json(), data.json().success);
-      if (data.json().success === true) {
+      if (data.success === true) {
         this.toastr.success("Reservation Added");
         this.fillDataRange();
       } else {
-        this.toastr.error(data.json().error);
+        this.toastr.error(data.error);
       }
     });
   }
