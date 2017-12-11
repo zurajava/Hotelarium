@@ -95,81 +95,102 @@
                             </div>
                         </form>
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th>Category</th>
-                                        <th>RoomNo</th>
-                                        <th>StartDate</th>
-                                        <th>EndDate</th>
-                                        <th>Adult</th>
-                                        <th>Child</th>
-                                        <th>Adt. Bed</th>
-                                        <th>Ex. Person</th>
-                                        <th>Comment</th>
-                                        <th>
-                                            <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">
+
+                            <div class="box-header">
+                                <h3 class="box-title">
+                                    <small class="label pull-right bg-green">Reservation Info</small>
+                                </h3>
+
+                                <div class="box-tools">
+                                    <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">
                                                 <i class="fa fa-fw fa-plus-square"></i>
                                             </a>
-                                        </th>
-                                    </tr>
-                                </tbody>
+                                </div>
+                            </div>
+
+                            <table class="table table-bordered">
                                 <tbody>
                                     <tr *ngFor="let res of reservationInfo.reservation.reservationDetail; let i = index;let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
-
                                         <td colspan="10">
                                             <div class="top_row">
                                                 <div>
-                                                    <kendo-combobox style="width:140px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                                        [(value)]="res.category_id" (valueChange)="categoryValueChange($event,res)">
-                                                    </kendo-combobox>
+                                                    <div class="form-group">
+                                                        <label>Category</label>
+                                                        <kendo-combobox style="width:100%" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                                            [(value)]="res.category_id" (valueChange)="categoryValueChange($event,res)">
+                                                        </kendo-combobox>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <kendo-combobox style="width:140px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                                        [(value)]="res.room_id">
-                                                    </kendo-combobox>
+                                                    <div class="form-group">
+                                                        <label>RoomNo</label>
+                                                        <kendo-combobox style="width:100%" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                                            [(value)]="res.room_id">
+                                                        </kendo-combobox>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <kendo-datepicker style="width:140px" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
-                                                        name="nstart_date"></kendo-datepicker>
+                                                    <div class="form-group">
+                                                        <label>StartDate</label>
+                                                        <kendo-datepicker style="width:100%" [(value)]="res.start_date" (valueChange)="handleChangeStartDate($event,i)" id="start_date"
+                                                            name="nstart_date"></kendo-datepicker>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <kendo-datepicker style="width:140px" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
-                                                        name="nend_date"></kendo-datepicker>
+                                                    <div class="form-group">
+                                                        <label>EndDate</label>
+                                                        <kendo-datepicker style="width:100%" [(value)]="res.end_date" (valueChange)="handleChangeEndDate($event,i)" id="end_date"
+                                                            name="nend_date"></kendo-datepicker>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <kendo-numerictextbox style="width:140px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                    </kendo-numerictextbox>
+                                                    <div class="form-group">
+                                                        <label>Adult</label>
+                                                        <kendo-numerictextbox style="width:100%" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                        </kendo-numerictextbox>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <kendo-numerictextbox style="width:140px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                    </kendo-numerictextbox>
+                                                    <div class="form-group">
+                                                        <label>Child</label>
+                                                        <kendo-numerictextbox style="width:100%" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                        </kendo-numerictextbox>
+                                                    </div>
                                                 </div>
                                                 <div>
-
-                                                    <kendo-numerictextbox style="width:140px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
-                                                        [format]="'n0'">
-                                                    </kendo-numerictextbox>
-                                                </div>
-
-                                                <div>
-                                                    <kendo-numerictextbox style="width:140px" id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
-                                                        [format]="'n0'">
-                                                    </kendo-numerictextbox>
+                                                    <div class="form-group">
+                                                        <label>Adt. Bed</label>
+                                                        <kendo-numerictextbox style="width:100%" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                                            [format]="'n0'">
+                                                        </kendo-numerictextbox>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <input kendoTextBox style="width:140px" id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value"
-                                                    />
+                                                    <div class="form-group">
+                                                        <label>Ex. Person</label>
+                                                        <kendo-numerictextbox style="width:100%" id="adsaaaa" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                                            [format]="'n0'">
+                                                        </kendo-numerictextbox>
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <button type="button" class="btn btn-block btn-info btn-xs" (click)="showDetails(res)">Details</button>
+                                                    <div class="form-group">
+                                                        <label>Comment</label>
+                                                        <input kendoTextBox style="width:100%" id="adsa" name="comment" [value]="res.comment" (input)="res.comment = $event.target.value"
+                                                        />
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <a (click)="removeReservation(res)">
+                                                    <div class="form-group">
+                                                        <label>Command</label><br/>
+                                                        <a (click)="showDetails(res)">
+                                                            <i class="fa fa-fw fa-female"></i>
+                                                        </a>
+                                                        <a (click)="removeReservation(res)">
                                                         <i class="fa fa-fw fa-trash"></i>
                                                     </a>
+                                                    </div>
                                                 </div>
-
                                             </div>
                                             <div class="top_row">
                                                 <div class="box-body">
@@ -722,8 +743,8 @@
                                 <tr *ngFor="let room of caterory.rooms">
                                     <td class="reservation_room_no">{{room.room_no}}</td>
                                     <td [colSpan]="schedule?.dayDiff" (click)="openReservationForm(schedule.isAvailable,room.id,schedule.startDate,schedule.endDate,schedule.currentDate,schedule.status,caterory.id,schedule.reservation_id)"
-                                         *ngFor="let schedule of room.reservations">
-                                       <span [className]="schedule.status">{{schedule?.firstName}}</span>
+                                        *ngFor="let schedule of room.reservations">
+                                        <span [className]="schedule.status">{{schedule?.firstName}}</span>
                                     </td>
                                 </tr>
                             </tbody>
