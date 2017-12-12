@@ -382,106 +382,121 @@
 
 
                     <div class="box-body table-responsive no-padding">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Room No</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Adult</th>
-                                    <th>Child</th>
-                                    <th>Additional Bed</th>
-                                    <th>Extra Person</th>
-                                    <th>Comment</th>
-                                    <th>Status</th>
-                                    <th>
-                                        <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservationToExisting()">
+                        <div class="box-header">
+                            <h3 class="box-title">
+                                <small class="label pull-right bg-green">Reservation Info</small>
+                            </h3>
+
+                            <div class="box-tools">
+                                <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservationToExisting()">
                                             <i class="fa fa-fw fa-plus-square"></i>
                                         </a>
-                                    </th>
-                                </tr>
-                            </thead>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
                             <tbody>
                                 <tr *ngFor="let res of reservationInfoEdit.reservation.reservationDetail; let i = index;let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
 
                                     <td colspan="11">
                                         <div class="top_row">
                                             <div>
-                                                <kendo-combobox style="width:120px" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
-                                                    [(value)]="res.category_id" (valueChange)="categoryValueChangeEdit($event,res)">
-                                                </kendo-combobox>
+                                                <div class="form-group">
+                                                    <label>Category</label>
+                                                    <kendo-combobox style="width:100%" name="category" [data]="category" [textField]="'name'" [valueField]="'id'" [valuePrimitive]="true"
+                                                        [(value)]="res.category_id" (valueChange)="categoryValueChangeEdit($event,res)">
+                                                    </kendo-combobox>
+                                                </div>
+
                                             </div>
                                             <div>
-                                                <kendo-combobox style="width:120px" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
-                                                    [(value)]="res.room_id">
-                                                </kendo-combobox>
+                                                <div class="form-group">
+                                                    <label>RoomNo</label>
+                                                    <kendo-combobox style="width:100%" name="room" [data]="res.room" [textField]="'room_no'" [valueField]="'id'" [valuePrimitive]="true"
+                                                        [(value)]="res.room_id">
+                                                    </kendo-combobox>
+                                                </div>
                                             </div>
                                             <div>
-                                                <kendo-datepicker style="width:120px" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
-                                                    name="nstart_date">
-                                                </kendo-datepicker>
+                                                <div class="form-group">
+                                                    <label>StartDate</label>
+                                                    <kendo-datepicker style="width:100%" [(value)]="res.start_date" (valueChange)="handleChangeStartDateEdit($event,i)" id="start_date"
+                                                        name="nstart_date">
+                                                    </kendo-datepicker>
+                                                </div>
                                             </div>
                                             <div>
-                                                <kendo-datepicker style="width:120px" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
-                                                    name="nend_date">
-                                                </kendo-datepicker>
+                                                <div class="form-group">
+                                                    <label>EndDate</label>
+                                                    <kendo-datepicker style="width:100%" [(value)]="res.end_date" (valueChange)="handleChangeEndDateEdit($event,i)" id="end_date"
+                                                        name="nend_date">
+                                                    </kendo-datepicker>
+                                                </div>
                                             </div>
                                             <div>
-                                                <kendo-numerictextbox style="width:120px" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                </kendo-numerictextbox>
+                                                <div class="form-group">
+                                                    <label>Adult</label>
+                                                    <kendo-numerictextbox style="width:100%" id="ad" [(value)]="res.adult" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
                                             </div>
                                             <div>
-                                                <kendo-numerictextbox style="width:120px" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
-                                                </kendo-numerictextbox>
+                                                <div class="form-group">
+                                                    <label>Child</label>
+                                                    <kendo-numerictextbox style="width:100%" id="ada" [(value)]="res.child" [min]="0" [max]="100" [autoCorrect]="true" [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
                                             </div>
 
                                             <div>
-                                                <kendo-numerictextbox style="width:120px" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
-                                                    [format]="'n0'">
-                                                </kendo-numerictextbox>
+                                                <div class="form-group">
+                                                    <label>Adt. Bed</label>
+                                                    <kendo-numerictextbox style="width:100%" id="ads" [(value)]="res.additional_bed" [min]="0" [max]="100" [autoCorrect]="true"
+                                                        [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
                                             </div>
                                             <div>
-                                                <kendo-numerictextbox style="width:120px" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
-                                                    [format]="'n0'">
-                                                </kendo-numerictextbox>
+                                                <div class="form-group">
+                                                    <label>Ex. Person</label>
+                                                    <kendo-numerictextbox style="width:100%" id="ads" [(value)]="res.extra_person" [min]="0" [max]="100" [autoCorrect]="true"
+                                                        [format]="'n0'">
+                                                    </kendo-numerictextbox>
+                                                </div>
                                             </div>
 
                                             <div>
-                                                <input kendoTextBox style="width:120px" id="adsedit" name="commentEdit" [value]="res.comment" (input)="res.comment = $event.target.value"
-                                                />
+                                                <div class="form-group">
+                                                    <label>Comment</label>
+                                                    <input kendoTextBox style="width:100%" id="adsedit" name="commentEdit" [value]="res.comment" (input)="res.comment = $event.target.value"
+                                                    />
+                                                </div>
                                             </div>
                                             <div>
-                                                <span class="label label-primary">{{res.status_name}}</span>
+                                                <div class="form-group">
+                                                    <label>Status</label><br/>
+                                                    <span class="label label-primary">{{res.status_name}}</span>
+                                                    <span class="label label-warning">{{res.payment_status_name}}</span>
+                                                </div>
                                             </div>
                                             <div>
-                                                <span class="label label-warning">{{res.payment_status_name}}</span>
+                                                <div class="form-group">
+                                                    <label>Command</label><br/>
+                                                    <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-block btn-info btn-xs" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
+                                                    <button type="button" *ngIf="res.showReserveButton" class="btn btn-block btn-info btn-xs" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
+                                                    <button type="button" *ngIf="res.showCheckInButton" class="btn btn-block btn-warning btn-xs" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
+                                                    <a (click)="removeReservationExisting(res)">
+                                                    <i class="fa fa-fw fa-trash"></i>
+                                                </a>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-block btn-info btn-xs" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
-                                            </div>
-                                            <div>
-                                                <button type="button" *ngIf="res.showReserveButton" class="btn btn-block btn-info btn-xs" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
-                                            </div>
-                                            <div>
-                                                <button type="button" *ngIf="res.showCheckInButton" class="btn btn-block btn-warning btn-xs" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
-                                            </div>
-                                            <div>
+                                            <!--<div>
                                                 <button type="button" class="btn btn-block btn-warning btn-xs" (click)="showDetailsEdit(res)">Details</button>
-                                            </div>
-                                            <div>
+                                            </div>-->
+                                            <!--  <div>
                                                 <a (click)="showPaymentInfo(res)">
                                                     <i class="fa fa-fw fa-paypal"></i>
                                                 </a>
-                                            </div>
-                                            <div>
-                                                <button type="button" *ngIf="res.showUpdateButton" class="btn btn-block btn-warning btn-xs" (click)="removeReservationExisting(res)">Update</button>
-                                            </div>
-                                            <div>
-                                                <a (click)="removeReservationExisting(res)">
-                                                    <i class="fa fa-fw fa-trash"></i>
-                                                </a>
-                                            </div>
+                                            </div>-->
                                         </div>
                                         <div class="box-body">
                                             <div *ngIf="res.showMoreInfo">

@@ -401,7 +401,7 @@ export class ReservationComponent implements OnInit {
       }
     }
     this.reservationService.addReservationToExsting(id, reservationId, this.brSelectedValue.toString()).subscribe(data => {
-      if (data.json().success === true) {
+      if (data.success === true) {
         id.id = data.json().data;
         var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
         if (index > -1) {
@@ -414,7 +414,7 @@ export class ReservationComponent implements OnInit {
         this.fillDataRange();
         this.getReservationByIdLocal(reservationId.toString());
       } else {
-        this.toastr.error(data.json().message);
+        this.toastr.error(data.message);
       }
     });
   }
@@ -425,7 +425,7 @@ export class ReservationComponent implements OnInit {
       id.reservationService[i].payment_status = "1";
     }
     this.reservationService.addReservationToExsting(id, reservationId, this.brSelectedValue.toString()).subscribe(data => {
-      if (data.json().success === true) {
+      if (data.success === true) {
         id.id = data.json().data;
         var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
         if (index > -1) {
@@ -437,7 +437,7 @@ export class ReservationComponent implements OnInit {
         id.showPaymentCheckInButton = true;
         this.fillDataRange();
       } else {
-        this.toastr.error(data.json().message);
+        this.toastr.error(data.message);
       }
     });
   }
@@ -481,11 +481,11 @@ export class ReservationComponent implements OnInit {
     }
     this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
       console.log("addReservation", data.json(), data.json().success);
-      if (data.success === true) {
+      if (data.json().success === true) {
         this.toastr.success("Reservation Added");
         this.fillDataRange();
       } else {
-        this.toastr.error(data.error);
+        this.toastr.error(data.json().message + " " + data.json().error);
       }
     });
   }
@@ -502,11 +502,11 @@ export class ReservationComponent implements OnInit {
     }
     this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
       console.log("addReservation", data.json(), data.json().success);
-      if (data.json().success === true) {
+      if (data.success === true) {
         this.toastr.success("Reservation Added");
         this.fillDataRange();
       } else {
-        this.toastr.error(data.json().error);
+        this.toastr.error(data.error);
       }
     });
   }
