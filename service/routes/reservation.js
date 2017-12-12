@@ -9,7 +9,7 @@ const Reservation = require('../model/reservation.js');
 var pool = new Reservation();
 
 router.post('/', (req, res) => {
-    console.log("add reservation : " + req.body);
+    console.log("Route, RegistertReservation");
     var reserv = req.body;
     if (reserv == null || reserv.person == null || reserv.reservation == null || reserv.reservation.reservationDetail == null || reserv.reservation.reservationDetail.length == 0) {
         return res.json({
@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
 });
 
 router.post('/:id', (req, res) => {
-    console.log("add reservation one : " + req.params.id, req.query.type);
+    console.log("Route, AddReservationOne");
     var reserv = req.body;
     if (req.params.id == null || reserv == null) {
         return res.json({
@@ -77,7 +77,7 @@ router.post('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    console.log("delete reservation : " + req.params.id, req.query.type);
+    console.log("Route, DeleteReservation");
     var reserv = req.body;
     if (req.params.id == null) {
         return res.json({
@@ -118,7 +118,7 @@ router.delete('/:id', (req, res) => {
 
 
 router.put('/:id', (req, res) => {
-    console.log("update reservation : " + req.params.id, req.query.type);
+    console.log("Route, UpdateReservation");
     var reserv = req.body;
     if (req.params.id == null) {
         return res.json({
@@ -164,7 +164,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    console.log("get reservation by id: " + req.params.id);
+    console.log("Route, GetReservationById");
     var reserv = req.body;
 
     pool.getReservationById(req.params.id).then(data => {
@@ -177,7 +177,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/statistic/:branch_id', (req, res) => {
-    console.log("get reservation statistic: " + req.params.branch_id);
+    console.log("Route, GetReservationStatistic");
     pool.getReservationStatistic(req.params.branch_id).then(data => {
         return res.json({ success: true, message: 'OK', data: data });
     }).catch(function (error) {

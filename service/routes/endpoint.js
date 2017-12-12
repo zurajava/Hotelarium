@@ -51,7 +51,8 @@ router.use(function (req, res, next) {
         var pathname = url.parse(req.url).pathname.split("/")[1];
         req.decoded = decoded;
         if (pathname != 'userBranch' && pathname != 'userOrganisation' && pathname != 'branch') {
-          pool.getUserPermission(decoded.id, pathname, req.method, req.headers['branch_id']).then(data => {
+          var branchId = req.body.branch_id || req.query.branch_id || req.headers['branch_id'];
+          pool.getUserPermission(decoded.id, pathname, req.method, branchId).then(data => {
             if (data.length === 0) {
               return res.status(200).send({
                 success: false,

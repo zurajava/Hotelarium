@@ -171,7 +171,8 @@ export class ReservationService {
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
     headers.append("branch_id", branch_id);
-    return this.http.put('/service/reservation/' + id.toString() + '?type=' + status_id + '&token=' + key, { headers: headers }).catch(this.handleError);
+    return this.http.put('/service/reservation/' + id.toString() + '?type=' + status_id + '&token=' + key + '&branch_id=' + branch_id,
+      { headers: headers }).catch(this.handleError);
   }
 
   addPaymentToReservation(payment: Payment, branch_id: string) {

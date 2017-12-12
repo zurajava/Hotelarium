@@ -484,14 +484,12 @@
                                                     <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-block btn-info btn-xs" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
                                                     <button type="button" *ngIf="res.showReserveButton" class="btn btn-block btn-info btn-xs" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
                                                     <button type="button" *ngIf="res.showCheckInButton" class="btn btn-block btn-warning btn-xs" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
+                                                    <button type="button" class="btn btn-block btn-warning btn-xs" (click)="showDetailsEdit(res)">Details</button>
                                                     <a (click)="removeReservationExisting(res)">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </a>
                                                 </div>
-                                            </div>
-                                            <!--<div>
-                                                <button type="button" class="btn btn-block btn-warning btn-xs" (click)="showDetailsEdit(res)">Details</button>
-                                            </div>-->
+                                            </div> 
                                             <!--  <div>
                                                 <a (click)="showPaymentInfo(res)">
                                                     <i class="fa fa-fw fa-paypal"></i>

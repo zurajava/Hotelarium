@@ -12,6 +12,7 @@ import { Room } from '../room/model.js';
 import { IntlService } from '@progress/kendo-angular-intl';
 import { SafeHtml } from "@angular/platform-browser";
 import * as jsPDF from 'jspdf'
+import { Console } from '@angular/core/src/console';
 
 enableProdMode();
 @Component({
@@ -347,6 +348,7 @@ export class ReservationComponent implements OnInit {
       this.reservationService.updateReservation(id.id, "2", this.brSelectedValue.toString()).subscribe(data => {
         if (data.json().success === true) {
           id.status_id = "2";
+          id.status_name = "CHECK_IN";
           this.fillDataRange();
           this.toastr.success("Reservation status change : RESERVED TO CHECK-IN");
         } else {
@@ -358,6 +360,7 @@ export class ReservationComponent implements OnInit {
         this.reservationService.updateReservation(id.id, "3", this.brSelectedValue.toString()).subscribe(data => {
           if (data.json().success === true) {
             id.status_id = "4";
+            id.status_name = "CHECKED_OUT";
             this.fillDataRange();
             this.toastr.success("Reservation status change : CHECK-IN TO CHECK-OUT");
           } else {
@@ -401,7 +404,8 @@ export class ReservationComponent implements OnInit {
       }
     }
     this.reservationService.addReservationToExsting(id, reservationId, this.brSelectedValue.toString()).subscribe(data => {
-      if (data.success === true) {
+      console.log(data);
+      if (data.json().success === true) {
         id.id = data.json().data;
         var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
         if (index > -1) {
@@ -414,7 +418,7 @@ export class ReservationComponent implements OnInit {
         this.fillDataRange();
         this.getReservationByIdLocal(reservationId.toString());
       } else {
-        this.toastr.error(data.message);
+        this.toastr.error(data.json().message + " " + data.json().error);
       }
     });
   }

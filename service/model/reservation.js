@@ -101,7 +101,6 @@ class Reservation {
             if (reservation.reservationService != null) {
                 reservationServicePromise = reservation.reservationService.map(service => {
                     return this.registerReservationServiceLocal(reservation.id, service).then(serviceData => {
-                        console.log(serviceData);
                         return serviceData;
                     })
                 });
@@ -137,7 +136,7 @@ class Reservation {
     }
 
     getReservation(branch_id, start_date, end_date, state, person_no) {
-        console.log("Reservation, getReservation", branch_id, start_date, end_date, state, person_no);
+        console.log("Reservation, GetReservation", branch_id, start_date, end_date, state, person_no);
         var deferred = q.defer();
         this.getCategory(branch_id)
             .then(categories => {
@@ -175,7 +174,7 @@ class Reservation {
 
 
     getReservationById(id) {
-        console.log("Reservation, getReservationById", id);
+        console.log("Reservation, GetReservationById", id);
         var deferred = q.defer();
         this.getReservationByIdL(id).then(reservation => {
             return this.getReservationsDetails(reservation[0].id).then(reservations => {
@@ -293,7 +292,6 @@ class Reservation {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("registerReservationServiceLocal", error.code);
                             reject(error);
                         } else {
                             resolve("OK");
@@ -422,7 +420,7 @@ class Reservation {
     }
 
     getPayment(reservation_id, source, service_id, type) {
-        console.log("getPayment", source);
+        console.log("Model, GetPayment", source);
         // type = 1 reservation and service, type = 2 service,
         if (type == "1") {
             var deferred = q.defer();
@@ -433,7 +431,6 @@ class Reservation {
                     if (err) {
                         deferred.reject(err);
                     } else {
-                        console.log("a", row);
                         deferred.resolve(row);
                     }
                 });
@@ -448,7 +445,6 @@ class Reservation {
                     if (err) {
                         deferred.reject(err);
                     } else {
-                        console.log("a", row);
                         deferred.resolve(row);
                     }
                 });
@@ -464,7 +460,6 @@ class Reservation {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("deleteReservationServiceLocal", error.code);
                             reject(error);
                         } else {
                             resolve("OK");
@@ -534,7 +529,6 @@ class Reservation {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("deleteReservationServiceLocal", error.code);
                             reject(error);
                         } else {
                             resolve("OK");
@@ -553,7 +547,6 @@ class Reservation {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("deleteReservationPersonLocal", error.code);
                             reject(error);
                         } else {
                             resolve("OK");
@@ -570,7 +563,6 @@ class Reservation {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("deleteReservationPersonLocal", error.code);
                             reject(error);
                         } else {
                             resolve("OK");
@@ -605,7 +597,6 @@ class Reservation {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("registerReservationServiceLocal", error.code);
                             reject(error);
                         } else {
                             resolve("OK");
