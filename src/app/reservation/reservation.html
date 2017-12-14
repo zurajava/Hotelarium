@@ -103,8 +103,8 @@
 
                                 <div class="box-tools">
                                     <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservation()">
-                                                <i class="fa fa-fw fa-plus-square"></i>
-                                            </a>
+                                        <i class="fa fa-fw fa-plus-square"></i>
+                                    </a>
                                 </div>
                             </div>
 
@@ -182,13 +182,14 @@
                                                 </div>
                                                 <div>
                                                     <div class="form-group">
-                                                        <label>Command</label><br/>
+                                                        <label>Command</label>
+                                                        <br/>
                                                         <a (click)="showDetails(res)">
                                                             <i class="fa fa-fw fa-female"></i>
                                                         </a>
                                                         <a (click)="removeReservation(res)">
-                                                        <i class="fa fa-fw fa-trash"></i>
-                                                    </a>
+                                                            <i class="fa fa-fw fa-trash"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -255,7 +256,7 @@
                                                                                     </select>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="text" class="form-control input-sm" id="n_frequency" placeholder="Frequency" [value]="service.frequency" (input)="service.frequency = $event.target.value">
+                                                                                    <span class="label label-primary">{{service.frequency}}</span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <input type="text" class="form-control input-sm" id="n_comment" placeholder="Comment" [value]="service.additional_comment"
@@ -389,8 +390,8 @@
 
                             <div class="box-tools">
                                 <a type="button" class="btn btn-block btn-success btn-xs" (click)="addReservationToExisting()">
-                                            <i class="fa fa-fw fa-plus-square"></i>
-                                        </a>
+                                    <i class="fa fa-fw fa-plus-square"></i>
+                                </a>
                             </div>
                         </div>
                         <table class="table table-bordered">
@@ -473,23 +474,25 @@
                                             </div>
                                             <div>
                                                 <div class="form-group">
-                                                    <label>Status</label><br/>
+                                                    <label>Status</label>
+                                                    <br/>
                                                     <span class="label label-primary">{{res.status_name}}</span>
                                                     <span class="label label-warning">{{res.payment_status_name}}</span>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div class="form-group">
-                                                    <label>Command</label><br/>
+                                                    <label>Command</label>
+                                                    <br/>
                                                     <button type="button" *ngIf="res.showPaymentCheckInButton" class="btn btn-block btn-info btn-xs" (click)="updateReservation(res)">{{ res.status_id == 1 ? 'CheckIn' : 'CheckOut'}}</button>
                                                     <button type="button" *ngIf="res.showReserveButton" class="btn btn-block btn-info btn-xs" (click)="saveReservationReserve(res,reservationInfoEdit.reservation.id)">Reserve</button>
                                                     <button type="button" *ngIf="res.showCheckInButton" class="btn btn-block btn-warning btn-xs" (click)="saveReservationCheckIn(res,reservationInfoEdit.reservation.id)">CheckIn</button>
                                                     <button type="button" class="btn btn-block btn-warning btn-xs" (click)="showDetailsEdit(res)">Details</button>
                                                     <a (click)="removeReservationExisting(res)">
-                                                    <i class="fa fa-fw fa-trash"></i>
-                                                </a>
+                                                        <i class="fa fa-fw fa-trash"></i>
+                                                    </a>
                                                 </div>
-                                            </div> 
+                                            </div>
                                             <!--  <div>
                                                 <a (click)="showPaymentInfo(res)">
                                                     <i class="fa fa-fw fa-paypal"></i>
@@ -556,13 +559,13 @@
                                                                 <tbody>
                                                                     <tr *ngFor="let service of res.reservationService; let i = index">
                                                                         <td>
-                                                                            <select class="form-control select2 input-sm" id="e_id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id">
+                                                                            <select class="form-control select2 input-sm" id="e_id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id"
+                                                                            (ngModelChange)="serviceValueChangeEdit($event,service)">
                                                                                 <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
                                                                             </select>
                                                                         </td>
                                                                         <td>
-                                                                            <input type="text" class="form-control input-sm" id="id_service_id1" placeholder="Frequency" [value]="service.frequency"
-                                                                                (input)="service.frequency= $event.target.value">
+                                                                                <span class="label label-primary">{{service.frequency}}</span>
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" class="form-control input-sm" id="id_service_id2" placeholder="Comment" [value]="service.additional_comment"
