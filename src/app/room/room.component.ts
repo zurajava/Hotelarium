@@ -53,7 +53,10 @@ export class RoomComponent implements OnInit {
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
-    this.loadData(this.brSelectedValue);
+    this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
+      this.room_category = data.json().category;
+      this.loadData(this.brSelectedValue);
+    });
   }
   public brCategoryValueChange(value: any): void {
     var priceValue;
