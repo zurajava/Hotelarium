@@ -41,7 +41,7 @@ export class RoomService {
         return this.http.put('/service/room/' + data.id, JSON.stringify(data), { headers: headers }).catch(this.handleError);
     }
 
-    deleteRoom(id: number,branch_id:string) {
+    deleteRoom(id: number, branch_id: string) {
         const headers = new Headers();
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
@@ -63,6 +63,7 @@ export class RoomService {
         let key = JSON.parse(localStorage.getItem("parkingUser")).token;
         headers.append("x-access-token", key);
         headers.append('Content-Type', 'application/json');
+        headers.append("branch_id", branch_id.toString());
         return this.http.get('/service/category/' + branch_id + '?currenttimestamp=' + new Date(), { headers: headers })
             .catch(this.handleError);
     }
