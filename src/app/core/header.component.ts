@@ -13,21 +13,26 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
 
     roleID: any;
+    user_name:any;
     @Output() onToggle = new EventEmitter<boolean>();
     menuToggle = false;
     subscription: Subscription;
     constructor(private router: Router, private authservice: AuthService) {
         this.getRoleID();
+        this.getUserName();
 
         this.subscription = authservice.userLoggedIn$.subscribe(
             data => {
                 this.getRoleID();
+                this.getUserName();
             });
     }
 
     getRoleID() {
         this.roleID = this.authservice.getRoleID();
-
+    }
+    getUserName() {
+        this.user_name = this.authservice.getUserName();
     }
 
     logout() {
@@ -40,5 +45,4 @@ export class HeaderComponent {
         this.menuToggle = !this.menuToggle;
         this.onToggle.emit(this.menuToggle);
     }
-
 }

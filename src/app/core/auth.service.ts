@@ -11,6 +11,7 @@ export class AuthService {
     isLoggedIn = false;
     roleID = 'anonymous';
     user_id = 'anonymous';
+    user_name = 'anonymous';
 
 
     // Service message commands
@@ -60,7 +61,19 @@ export class AuthService {
         } else {
             this.user_id = 'anonymous';
         }
-        return this.user_id
+        return this.user_id;
+
+    }
+    getUserName() {
+        let parkingUser = JSON.parse(localStorage.getItem('parkingUser'));
+        let user_name = parkingUser && parkingUser.user_name;
+
+        if (user_name != undefined) {
+            this.user_name = user_name;
+        } else {
+            this.user_name = 'anonymous';
+        }
+        return this.user_name;
 
     }
 }

@@ -9,14 +9,16 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class AppComponent {
   roleID: any;
+  user_name: any;
   subscription: Subscription;
   toggleState = false;
   constructor(private authservice: AuthService) {
     this.getRoleID();
-
+    this.getUserName();
     this.subscription = authservice.userLoggedIn$.subscribe(
       data => {
         this.getRoleID();
+        this.getUserName();
       });
   }
 
@@ -24,7 +26,10 @@ export class AppComponent {
     this.roleID = this.authservice.getRoleID();
 
   }
+  getUserName() {
+    this.user_name = this.authservice.getUserName();
 
+  }
   onToggle(toggleState: boolean) {
 
     this.toggleState = !this.toggleState;
