@@ -582,53 +582,59 @@ export class ReservationComponent implements OnInit {
     doc.save(res.id.toString() + '-invoice.pdf');
   }
   paymentReservation(id: ReservationDetail, pay: Payment) {
-    if (pay.source == "RESERVATION") {
-      var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null);
-      this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
-        if (data.success === true) {
-          this.toastr.success("Payment Added");
-          this.getReservationByIdLocal(id.reservation_id.toString());
-        } else {
-          this.toastr.error(data.error);
-        }
-      });
-    } else if (pay.source == "SERVICE") {
-      var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'SERVICE', pay.receipt, pay.additional_comment, pay.service_id, null, null, null, null, null, null);
-      this.reservationService.addPaymentToService(p, this.brSelectedValue.toString()).then(data => {
-        if (data.success === true) {
-          this.toastr.success("Payment Added");
-          this.getReservationByIdLocal(id.reservation_id.toString());
-        } else {
-          this.toastr.error(data.error);
-        }
-      });
+    if (id.payment_status == "3") {
+      this.toastr.error("Reservationis already payed");
+    } else {
+      if (pay.source == "RESERVATION") {
+        var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null);
+        this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
+          if (data.success === true) {
+            this.toastr.success("Payment Added");
+            this.getReservationByIdLocal(id.reservation_id.toString());
+          } else {
+            this.toastr.error(data.error);
+          }
+        });
+      } else if (pay.source == "SERVICE") {
+        var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'SERVICE', pay.receipt, pay.additional_comment, pay.service_id, null, null, null, null, null, null);
+        this.reservationService.addPaymentToService(p, this.brSelectedValue.toString()).then(data => {
+          if (data.success === true) {
+            this.toastr.success("Payment Added");
+            this.getReservationByIdLocal(id.reservation_id.toString());
+          } else {
+            this.toastr.error(data.error);
+          }
+        });
+      }
     }
   }
   paymentReservationAll(id: ReservationDetail, pay: Payment) {
-    let roomPromises = id.availablePayments.map(payment => {
-      console.log("MAP", payment);
-      if (payment.source == "RESERVATION") {
-        var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'RESERVATION', id.receipt, id.paymentComment,
-          null, null, payment.additional_bad_price, payment.extra_person_price, null, null, null);
+    if (id.payment_status == "3") {
+      this.toastr.error("Reservationis already payed");
+    } else {
+      let roomPromises = id.availablePayments.map(payment => {
+        console.log("MAP", payment);
+        if (payment.source == "RESERVATION") {
+          var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'RESERVATION', id.receipt, id.paymentComment,
+            null, null, payment.additional_bad_price, payment.extra_person_price, null, null, null);
+          this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
+            return data;
+          });
+        } else if (payment.source == "SERVICE") {
+          var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'SERVICE', id.receipt, id.paymentComment, payment.service_id,
+            null, null, null, null, null, null);
+          this.reservationService.addPaymentToService(p, this.brSelectedValue.toString()).then(data => {
+            return data;
+          });
+        }
+      });
+      Promise.all(roomPromises).then(data => {
+        this.getReservationByIdLocal(id.reservation_id.toString());
+      }).catch(error => {
+        this.toastr.error(error);
+      });
+    }
 
-        this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
-          return data;
-        });
-      } else if (payment.source == "SERVICE") {
-        var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'SERVICE', id.receipt, id.paymentComment, payment.service_id,
-          null, null, null, null, null, null);
-
-        this.reservationService.addPaymentToService(p, this.brSelectedValue.toString()).then(data => {
-          return data;
-        });
-      }
-    });
-
-    Promise.all(roomPromises).then(data => {
-      this.getReservationByIdLocal(id.reservation_id.toString());
-    }).catch(error => {
-      this.toastr.error(error);
-    });
   }
   public getReservationByIdLocal(id: String) {
     console.log("getReservationByIdLocal", id);
