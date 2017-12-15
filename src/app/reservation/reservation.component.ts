@@ -4,14 +4,17 @@ import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/co
 import { Router, RouterModule } from '@angular/router';
 import { NgForm, FormsModule } from '@angular/forms';
 import * as moment from 'moment';
-import { ReservationInfo, Person, ReservationDetail, Reservation, Schedule, ReservationPerson, ReservationServices, Payment } from './model';
+import {
+  ReservationInfo, Person, ReservationDetail, Reservation, Schedule,
+  ReservationPerson, ReservationServices, Payment
+} from './model';
 import { AuthService } from './../core/auth.service';
 import { Category } from '../category/model.js';
 import { Service } from '../service/model.js';
 import { Room } from '../room/model.js';
 import { IntlService } from '@progress/kendo-angular-intl';
-import { SafeHtml } from "@angular/platform-browser";
-import * as jsPDF from 'jspdf'
+import { SafeHtml } from '@angular/platform-browser';
+import * as jsPDF from 'jspdf';
 import { Console } from '@angular/core/src/console';
 
 enableProdMode();
@@ -218,7 +221,7 @@ export class ReservationComponent implements OnInit {
         });
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
           this.serviceData = data.json().service;
-          this.getReservationByIdLocal(reservation_id);          
+          this.getReservationByIdLocal(reservation_id);
         });
       });
     }
@@ -238,7 +241,6 @@ export class ReservationComponent implements OnInit {
     }
   }
   removeReservationExisting(id: ReservationDetail) {
-    console.log("removeReservationExisting", id);
     if (id.id != null) {
       this.reservationService.deleteReservation(id.id, this.brSelectedValue.toString()).subscribe(data => {
         if (data.json().success === true) {
@@ -262,7 +264,6 @@ export class ReservationComponent implements OnInit {
   }
 
   removeReservationPerson(id: ReservationDetail, person: ReservationPerson) {
-    console.log("removeReservationPerson");
     var index = this.reservationInfo.reservation.reservationDetail.indexOf(id, 0);
     if (index > -1) {
       var indexPerson = this.reservationInfo.reservation.reservationDetail[index].reservationPerson.indexOf(person, 0);
@@ -287,8 +288,6 @@ export class ReservationComponent implements OnInit {
         this.toastr.error(data.json().message);
       }
     })
-
-
   }
   removeReservationService(id: ReservationDetail, service: ReservationServices) {
     console.log("removeReservationService");
@@ -301,7 +300,6 @@ export class ReservationComponent implements OnInit {
     }
   }
   removeReservationServiceExisting(id: ReservationDetail, service: ReservationServices) {
-    console.log("removeReservationServiceExisting");
     if (service.service_id != null) {
       this.reservationService.deleteReservationService(id.id, service.service_id, this.brSelectedValue.toString()).subscribe(data => {
         if (data.json().success === true) {
@@ -313,6 +311,7 @@ export class ReservationComponent implements OnInit {
             }
           }
           this.toastr.success("Reservation service deleted");
+          this.getReservationByIdLocal(id.reservation_id.toString());
         } else {
           this.toastr.error(data.json().message);
         }
@@ -554,13 +553,13 @@ export class ReservationComponent implements OnInit {
     });
 
   }
-  saveReservationService(service: ReservationServices, id: number) {
-    console.log("saveReservationService", service, id);
-    this.reservationService.addReservationServiceToExstingReservation(service, id, this.brSelectedValue.toString()).subscribe(data => {
+  saveReservationService(service: ReservationServices, reservationDetailId: number, reservationId: number) {
+    console.log("saveReservationService", service, reservationDetailId, reservationId);
+    this.reservationService.addReservationServiceToExstingReservation(service, reservationDetailId, this.brSelectedValue.toString()).subscribe(data => {
       if (data.json().success === true) {
         service.showSave = false;
         this.toastr.success("Reservation Service Added");
-        this.getReservationByIdLocal(id.toString());
+        this.getReservationByIdLocal(reservationId.toString());
       } else {
         this.toastr.error(data.json().message + " " + data.json().error);
       }
@@ -632,6 +631,7 @@ export class ReservationComponent implements OnInit {
     });
   }
   public getReservationByIdLocal(id: String) {
+    console.log("getReservationByIdLocal", id);
     this.reservationService.getReservationById(id, this.brSelectedValue.toString()).then(data => {
       if (data.success === true) {
         this.reservationInfoEdit = data.data;
@@ -669,7 +669,6 @@ export class ReservationComponent implements OnInit {
           }
           this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
         }
-        console.log(JSON.stringify(data.data));
       } else {
         this.toastr.error(data.message);
       }

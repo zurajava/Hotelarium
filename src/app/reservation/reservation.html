@@ -560,12 +560,12 @@
                                                                     <tr *ngFor="let service of res.reservationService; let i = index">
                                                                         <td>
                                                                             <select class="form-control select2 input-sm" id="e_id_n_service_id222" placeholder="Service" [(ngModel)]="service.service_id"
-                                                                            (ngModelChange)="serviceValueChangeEdit($event,service)">
+                                                                                (ngModelChange)="serviceValueChangeEdit($event,service)">
                                                                                 <option *ngFor="let x of serviceData" [value]="x.id">{{x.name}}</option>
                                                                             </select>
                                                                         </td>
                                                                         <td>
-                                                                                <span class="label label-primary">{{service.frequency}}</span>
+                                                                            <span class="label label-primary">{{service.frequency}}</span>
                                                                         </td>
                                                                         <td>
                                                                             <input type="text" class="form-control input-sm" id="id_service_id2" placeholder="Comment" [value]="service.additional_comment"
@@ -575,7 +575,7 @@
                                                                             <span class="label pull-right bg-green">{{service.payment_status_name}}</span>
                                                                         </td>
                                                                         <td class="text-right">
-                                                                            <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-block  btn-xs" (click)="saveReservationService(service,res.id)">Save</button>
+                                                                            <button *ngIf="service.showSave" type="button" class="btn btn-warning btn-block  btn-xs" (click)="saveReservationService(service,res.id,res.reservation_id)">Save</button>
                                                                         </td>
                                                                         <td class="text-right">
                                                                             <a (click)="removeReservationServiceExisting(res,service)">

@@ -166,7 +166,6 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     console.log("Route, GetReservationById");
     var reserv = req.body;
-
     pool.getReservationById(req.params.id).then(data => {
         return res.json({ success: true, message: 'OK', data: data });
     }).catch(function (error) {
