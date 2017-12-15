@@ -6,7 +6,7 @@ const Service = require('../model/service.js');
 var pool = new Service();
 
 router.get('/:branch_id', (req, res) => {
-    console.log("service " + req.params.branch_id);
+    console.log("Route, GetService");
     pool.getService(req.params.branch_id, function (err, data) {
         if (err) {
             res.json({
@@ -16,7 +16,6 @@ router.get('/:branch_id', (req, res) => {
             res.json({ success: true, message: 'OK', service: data });
         }
     });
-
 });
 
 router.post('/', (req, res) => {

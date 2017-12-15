@@ -174,7 +174,7 @@ class Reservation {
 
 
     getReservationById(id) {
-        console.log("Reservation, GetReservationById", id);
+        console.log("Model, GetReservationById", id);
         var deferred = q.defer();
         this.getReservationByIdL(id).then(reservation => {
             return this.getReservationsDetails(reservation[0].id).then(reservations => {
@@ -284,7 +284,7 @@ class Reservation {
         return deferred.promise;
     }
     registerReservationService(id, service) {
-        console.log("Register Reservation Service", id);
+        console.log("Register Reservation Service", id, service);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
@@ -378,6 +378,7 @@ class Reservation {
         return deferred.promise;
     }
     getReservationByIdL(id) {
+        console.log("Model, GetReservationByIdLocal", id);
         var deferred = q.defer();
         var query = 'SELECT * FROM reservation  where id=?';
         pool.getConnection(function (err, connection) {
@@ -393,7 +394,7 @@ class Reservation {
         return deferred.promise;
     }
     getReservationsDetails(reservation_id) {
-        console.log("getReservationsDetails", reservation_id);
+        console.log("Model, GetReservationsDetails", reservation_id);
         var deferred = q.defer();
         var categoryData;
         var query = 'SELECT r.*,c.id as category_id,c.name as category_name ,o.price,o.additional_bad_price, o.extra_person_price,datediff(r.end_date, r.start_date) as day_count,' +
@@ -420,7 +421,7 @@ class Reservation {
     }
 
     getPayment(reservation_id, source, service_id, type) {
-        console.log("Model, GetPayment", source);
+        console.log("Model, GetPayment", reservation_id, source, service_id, type);
         // type = 1 reservation and service, type = 2 service,
         if (type == "1") {
             var deferred = q.defer();
@@ -452,7 +453,8 @@ class Reservation {
             return deferred.promise;
         }
     }
-    deleteReservationServiceLocal(id, service_id) {
+    deleteReservationService(id, service_id) {
+        console.log("Model, deleteReservationService", id, service_id);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
                 connection.query('delete from reservation_service where reservation_id=? and service_id=?',
@@ -469,6 +471,7 @@ class Reservation {
         })
     }
     getReservationsServices(reservation_id) {
+        console.log("Model, GetReservationsServices", reservation_id);
         var deferred = q.defer();
         var categoryData;
         var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, ' +
@@ -489,6 +492,7 @@ class Reservation {
     }
 
     getReservationsPersons(reservation_id) {
+        console.log("Model, GetReservationsPersons", reservation_id);
         var deferred = q.defer();
         var categoryData;
         var query = 'SELECT * FROM reservation_person where reservation_id=?';
@@ -506,6 +510,7 @@ class Reservation {
     }
 
     getPersonByPersonalNo(personal_no) {
+        console.log("Model, GetPersonByPersonalNo", personal_no);
         var deferred = q.defer();
         var categoryData;
         var query = 'SELECT * FROM  person where personal_no=?';

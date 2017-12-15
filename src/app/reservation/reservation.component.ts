@@ -219,9 +219,9 @@ export class ReservationComponent implements OnInit {
         });
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
           this.serviceData = data.json().service;
+          this.getReservationByIdLocal(reservation_id);          
         });
       });
-      this.getReservationByIdLocal(reservation_id);
     }
   }
   addReservation() {
@@ -548,8 +548,9 @@ export class ReservationComponent implements OnInit {
       if (data.json().success === true) {
         person.showSave = false;
         this.toastr.success("Reservation Person Added");
+        this.getReservationByIdLocal(id.toString());
       } else {
-        this.toastr.error(data.json().error);
+        this.toastr.error(data.json().message + " " + data.json().error);
       }
     });
 
@@ -558,11 +559,11 @@ export class ReservationComponent implements OnInit {
     console.log("saveReservationService", service, id);
     this.reservationService.addReservationServiceToExstingReservation(service, id, this.brSelectedValue.toString()).subscribe(data => {
       if (data.json().success === true) {
-        this.getReservationByIdLocal(id.toString());
         service.showSave = false;
         this.toastr.success("Reservation Service Added");
+        this.getReservationByIdLocal(id.toString());
       } else {
-        this.toastr.error(data.json().error);
+        this.toastr.error(data.json().message + " " + data.json().error);
       }
     });
   }

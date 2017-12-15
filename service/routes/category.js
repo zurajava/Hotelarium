@@ -6,7 +6,7 @@ const Category = require('../model/category.js');
 var pool = new Category(); 
 
 router.get('/:branch_id', (req, res) => {
-    console.log("category " + req.params.branch_id);
+    console.log("Route, GetCategory ");
     pool.getCategory(req.params.branch_id, function (err, data) {
         if (err) {
             res.json({

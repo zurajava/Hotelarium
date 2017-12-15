@@ -77,7 +77,7 @@ router.post('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    console.log("Route, DeleteReservation");
+    console.log("Route, DeleteReservation", req.query.type);
     var reserv = req.body;
     if (req.params.id == null) {
         return res.json({
@@ -104,7 +104,7 @@ router.delete('/:id', (req, res) => {
             });
         });
     } else if (req.query.type == 3) {
-        pool.deleteReservationServiceLocal(req.params.id, req.query.service_id).then(data => {
+        pool.deleteReservationService(req.params.id, req.query.service_id).then(data => {
             return res.json({ success: true, message: 'OK', data: data });
         }).catch(error => {
             console.log("error", error);
