@@ -134,37 +134,108 @@ class Reservation {
             });
         })
     }
+    getConnection() {
+        console.log("Model, GetConnection");
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                if (err) {
+                    console.log("Model, GetConnection", err);
+                    reject(err);
+                } else {
+                    resolve(connection);
+                }
+            });
+        })
+    }
+    getCategoryLocal(branch_id, connection) {
+        console.log("Model, GetCategoryLocal", branch_id);
+        var deferred = q.defer();
+        var categoryData;
+        var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
+        connection.query(query, [branch_id], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(row);
+            }
+        });
+        return deferred.promise;
+    }
+    getRoomLocal(branch_id, categoryID, connection) {
+        console.log("Model, GetRoomLocal", branch_id, categoryID);
+        var deferred = q.defer();
+        var roomData;
+        var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
+        connection.query(roomSql, [branch_id, categoryID], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(row);
+            }
+        });
+        return deferred.promise;
+    }
+    getReservationDetailsLocal(room_id, start_date, end_date, state, personal_no, connection) {
+        console.log("Model, GetgetReservationDetailsLocal", room_id, start_date, end_date, state, personal_no);
+        var deferred = q.defer();
+        var reservationData;
+        if (personal_no == null || personal_no == undefined) {
+            personal_no = "";
+        }
+        var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
+            ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email , ro.price ,ro.additional_bad_price, ro.extra_person_price ' +
+            ' FROM reservation_detail d ' +
+            ' inner join reservation_status s on d.status_id=s.id ' +
+            ' inner join room ro on ro.id=d.room_id ' +
+            ' inner join reservation a on d.reservation_id=a.id ' +
+            ' inner join person p on a.person_no=p.personal_no ' +
+            ' where d.room_id=? and d.start_date >=? and d.start_date<=? and d.status_id in ' + state + ' and a.person_no like ?  order by d.start_date asc';
+        connection.query(reservationSql, [room_id, start_date, end_date, ['%' + personal_no + '%']], function (error, row, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(row);
+            }
+        });
+        return deferred.promise;
+    }
 
     getReservation(branch_id, start_date, end_date, state, person_no) {
         console.log("Model, GetReservation", branch_id, start_date, end_date, state, person_no);
         var deferred = q.defer();
-        this.getCategory(branch_id)
-            .then(categories => {
-                let roomPromises = categories.map(category => {
-                    return this.getRoom(branch_id, category.id)
-                        .then(rooms => Object.assign({}, category, { rooms }))
-                });
-                return Promise.all(roomPromises)
-            })
-            .then(category_rooms => {
-                let finalPromise = category_rooms.map(category => {
-                    let reservationPromises = category.rooms.map(room => {
-                        return this.getReservationL(room.id, start_date, end_date, state, person_no)
-                            .then(reservations => Object.assign({}, room, { reservations }))
+        this.getConnection().then(connection => {
+            this.getCategoryLocal(branch_id, connection)
+                .then(categories => {
+                    let roomPromises = categories.map(category => {
+                        return this.getRoomLocal(branch_id, category.id, connection)
+                            .then(rooms => Object.assign({}, category, { rooms }))
+                    });
+                    return Promise.all(roomPromises)
+                }).then(category_rooms => {
+                    let finalPromise = category_rooms.map(category => {
+                        let reservationPromises = category.rooms.map(room => {
+                            return this.getReservationDetailsLocal(room.id, start_date, end_date, state, person_no, connection)
+                                .then(reservations => Object.assign({}, room, { reservations }))
+                        })
+                        return Promise.all(reservationPromises)
+                            .then(room_reservations => {
+                                return Object.assign({}, category, { rooms: room_reservations })
+                            });
                     })
-                    return Promise.all(reservationPromises)
-                        .then(room_reservations => {
-                            return Object.assign({}, category, { rooms: room_reservations })
-                        });
+                    return Promise.all(finalPromise)
                 })
-                return Promise.all(finalPromise)
-            })
-            .then(data => {
-                deferred.resolve(data);
-            })
-            .catch(function (err) {
-                deferred.reject(err);
-            });
+                .then(data => {
+                    connection.release();
+                    deferred.resolve(data);
+                })
+                .catch(function (err) {
+                    connection.release();
+                    deferred.reject(err);
+                });
+        }).catch(err => {
+            connection.release();
+            deferred.reject(err);
+        });
         return deferred.promise;
     }
 
@@ -305,69 +376,6 @@ class Reservation {
                 connection.release();
                 if (error) {
                     deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-    getCategory(branch_id) {
-        console.log("Model, GetCategory", branch_id);
-        var deferred = q.defer();
-        var categoryData;
-        var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [branch_id], function (error, row, fields) {
-                connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-
-    getRoom(branch_id, categoryID) {
-        console.log("Model, GetRoom", branch_id, categoryID);
-        var deferred = q.defer();
-        var roomData;
-        var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(roomSql, [branch_id, categoryID], function (error, row, fields) {
-                connection.release();
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-
-    getReservationL(room_id, start_date, end_date, state, personal_no) {
-        console.log("Model, GetgetReservationDetails", room_id, start_date, end_date, state, personal_no);
-        var deferred = q.defer();
-        var reservationData;
-        if (personal_no == null || personal_no == undefined) {
-            personal_no = "";
-        }
-        var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
-            ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email , ro.price ,ro.additional_bad_price, ro.extra_person_price ' +
-            ' FROM reservation_detail d ' +
-            ' inner join reservation_status s on d.status_id=s.id ' +
-            ' inner join room ro on ro.id=d.room_id ' +
-            ' inner join reservation a on d.reservation_id=a.id ' +
-            ' inner join person p on a.person_no=p.personal_no ' +
-            ' where d.room_id=? and d.start_date >=? and d.start_date<=? and d.status_id in ' + state + ' and a.person_no like ?  order by d.start_date asc';
-        pool.getConnection(function (err, connection) {
-            connection.query(reservationSql, [room_id, start_date, end_date, ['%' + personal_no + '%']], function (error, row, fields) {
-                connection.release();
-                if (err) {
-                    deferred.reject(err);
                 } else {
                     deferred.resolve(row);
                 }
