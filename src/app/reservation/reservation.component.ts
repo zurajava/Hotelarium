@@ -81,13 +81,12 @@ export class ReservationComponent implements OnInit {
     this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id
+        this.brSelectedValue = this.userBranch[0].id;
         this.fillDataRange();
       } else {
         this.toastr.error(data.json().message);
       }
     });
-
   }
 
   public brValueChange(value: any): void {

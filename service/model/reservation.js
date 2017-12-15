@@ -136,7 +136,7 @@ class Reservation {
     }
 
     getReservation(branch_id, start_date, end_date, state, person_no) {
-        console.log("Reservation, GetReservation", branch_id, start_date, end_date, state, person_no);
+        console.log("Model, GetReservation", branch_id, start_date, end_date, state, person_no);
         var deferred = q.defer();
         this.getCategory(branch_id)
             .then(categories => {
@@ -144,18 +144,14 @@ class Reservation {
                     return this.getRoom(branch_id, category.id)
                         .then(rooms => Object.assign({}, category, { rooms }))
                 });
-
                 return Promise.all(roomPromises)
             })
             .then(category_rooms => {
-
                 let finalPromise = category_rooms.map(category => {
-
                     let reservationPromises = category.rooms.map(room => {
                         return this.getReservationL(room.id, start_date, end_date, state, person_no)
                             .then(reservations => Object.assign({}, room, { reservations }))
                     })
-
                     return Promise.all(reservationPromises)
                         .then(room_reservations => {
                             return Object.assign({}, category, { rooms: room_reservations })
@@ -171,7 +167,6 @@ class Reservation {
             });
         return deferred.promise;
     }
-
 
     getReservationById(id) {
         console.log("Model, GetReservationById", id);
@@ -318,6 +313,7 @@ class Reservation {
         return deferred.promise;
     }
     getCategory(branch_id) {
+        console.log("Model, GetCategory", branch_id);
         var deferred = q.defer();
         var categoryData;
         var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
@@ -335,6 +331,7 @@ class Reservation {
     }
 
     getRoom(branch_id, categoryID) {
+        console.log("Model, GetRoom", branch_id, categoryID);
         var deferred = q.defer();
         var roomData;
         var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
@@ -352,6 +349,7 @@ class Reservation {
     }
 
     getReservationL(room_id, start_date, end_date, state, personal_no) {
+        console.log("Model, GetgetReservationDetails", room_id, start_date, end_date, state, personal_no);
         var deferred = q.defer();
         var reservationData;
         if (personal_no == null || personal_no == undefined) {
