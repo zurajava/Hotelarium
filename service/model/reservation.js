@@ -415,65 +415,7 @@ class Reservation {
         }).catch(err => {
             connection.release();
             deferred.reject(err);
-        })
-        /*this.getReservationByIdL(id).then(reservation => {
-            return this.getReservationsDetails(reservation[0].id).then(reservations => {
-                return Object.assign({}, reservation[0], { reservationDetail: reservations });
-            })
-        }).then(reservationData => {
-            let reservationDataPromise = reservationData.reservationDetail.map(data => {
-                return this.getPayment(data.id, "RESERVATION", null, "1").then(payment => {
-                    return Object.assign({}, data, { payment })
-                });
-            })
-            return Promise.all(reservationDataPromise).then(data => {
-                return Object.assign({}, reservationData, { reservationDetail: data })
-            });
-
-        }).then(reservationsService => {
-            let finalPromiseService = reservationsService.reservationDetail.map(reservationdetail => {
-                return this.getReservationsServices(reservationdetail.id)
-                    .then(reservationService => Object.assign({}, reservationdetail, { reservationService }));
-            });
-
-            return Promise.all(finalPromiseService)
-                .then(data => Object.assign({}, reservationsService, { reservationDetail: data }));
-
-            return Promise.all(finalPromiseService);
-        }).then(reservationsServicePayment => {
-            let reservationsServicePaymentPromise = reservationsServicePayment.reservationDetail.map(reservationDetail => {
-                let reservationsServicePaymentPromiseLocal = reservationDetail.reservationService.map(service => {
-                    return this.getPayment(service.reservation_id, "SERVICE", service.service_id, "2").then(payment => {
-                        return Object.assign({}, service, { payment });
-                    })
-                })
-                return Promise.all(reservationsServicePaymentPromiseLocal).then(data => {
-                    return Object.assign({}, reservationDetail, { reservationService: data });
-                });
-            });
-            return Promise.all(reservationsServicePaymentPromise).then(data => {
-                return Object.assign({}, reservationsServicePayment, { reservationDetail: data });
-            });
-        }).then(reservationsPerson => {
-            let finalPromisePersone = reservationsPerson.reservationDetail.map(reservationdetail => {
-                return this.getReservationsPersons(reservationdetail.id)
-                    .then(reservationPerson => Object.assign({}, reservationdetail, { reservationPerson }));
-            });
-            return Promise.all(finalPromisePersone)
-                .then(data => Object.assign({}, reservationsPerson, { reservationDetail: data }));
-
-            return Promise.all(finalPromisePersone);
-        }).then(reservationPerson => {
-            return this.getPersonByPersonalNo(reservationPerson.person_no).then(data => {
-                let person = data[0];
-                let reservation = { "reservation": reservationPerson };
-                return Object.assign({}, reservation, { person });
-            })
-        }).then(reservations => {
-            deferred.resolve(reservations);
-        }).catch(function (err) {
-            deferred.reject(err);
-        });*/
+        });
         return deferred.promise;
     }
 
@@ -557,82 +499,6 @@ class Reservation {
         });
         return deferred.promise;
     }
-    getReservationByIdL(id) {
-        console.log("Model, GetReservationByIdLocal", id);
-        var deferred = q.defer();
-        var query = 'SELECT * FROM reservation  where id=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [id], function (error, row, fields) {
-                connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-    getReservationsDetails(reservation_id) {
-        console.log("Model, GetReservationsDetails", reservation_id);
-        var deferred = q.defer();
-        var categoryData;
-        var query = 'SELECT r.*,c.id as category_id,c.name as category_name ,o.price,o.additional_bad_price, o.extra_person_price,datediff(r.end_date, r.start_date) as day_count,' +
-            'o.price * datediff(r.end_date, r.start_date) as reservation_prise_full,' +
-            'r.additional_bed * o.additional_bad_price as additional_bad_price_full,' +
-            'o.extra_person_price * r.extra_person as extra_person_price_full,' +
-            ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full, ' +
-            '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'RESERVATION\' AND (p.service_id IS NULL OR p.service_id =0)) AS reservation_payd_amount, ' +
-            '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'SERVICE\' AND p.service_id IS NOT NULL) AS service_payd_amount, ' +
-            ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id) AS service_price ,s.name as status_name ,p.name as payment_status_name' +
-            ' FROM reservation_detail r ' +
-            ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id inner join reservation_status s on r.status_id=s.id inner join payment_status p on p.id=r.payment_status where reservation_id=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [reservation_id], function (error, row, fields) {
-                connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-
-    getPayment(reservation_id, source, service_id, type) {
-        console.log("Model, GetPayment", reservation_id, source, service_id, type);
-        // type = 1 reservation and service, type = 2 service,
-        if (type == "1") {
-            var deferred = q.defer();
-            var roomSql = 'SELECT * FROM  payment where reservation_id=?';
-            pool.getConnection(function (err, connection) {
-                connection.query(roomSql, [reservation_id], function (error, row, fields) {
-                    connection.release();
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(row);
-                    }
-                });
-            });
-            return deferred.promise;
-        } else if (type == "2") {
-            var deferred = q.defer();
-            var roomSql = 'SELECT * FROM  payment where reservation_id=? and source in (?) and (service_id=? or service_id is null or service_id =0)';
-            pool.getConnection(function (err, connection) {
-                connection.query(roomSql, [reservation_id, source, service_id], function (error, row, fields) {
-                    connection.release();
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(row);
-                    }
-                });
-            });
-            return deferred.promise;
-        }
-    }
     deleteReservationService(id, service_id) {
         console.log("Model, deleteReservationService", id, service_id);
         return new Promise(function (resolve, reject) {
@@ -650,62 +516,6 @@ class Reservation {
             });
         })
     }
-    getReservationsServices(reservation_id) {
-        console.log("Model, GetReservationsServices", reservation_id);
-        var deferred = q.defer();
-        var categoryData;
-        var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, ' +
-            '(SELECT IFNULL(SUM(p.amount),0)  ' +
-            'FROM payment p where p.reservation_id=r.reservation_id and p.source=\'SERVICE\' and p.service_id=s.id) as service_payd  ' +
-            'FROM reservation_service r inner join service s on r.service_id=s.id inner join payment_status p on r.payment_status=p.id where  reservation_id=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [reservation_id], function (error, row, fields) {
-                connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-
-    getReservationsPersons(reservation_id) {
-        console.log("Model, GetReservationsPersons", reservation_id);
-        var deferred = q.defer();
-        var categoryData;
-        var query = 'SELECT * FROM reservation_person where reservation_id=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [reservation_id], function (error, row, fields) {
-                connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
-
-    getPersonByPersonalNo(personal_no) {
-        console.log("Model, GetPersonByPersonalNo", personal_no);
-        var deferred = q.defer();
-        var categoryData;
-        var query = 'SELECT * FROM  person where personal_no=?';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [personal_no], function (error, row, fields) {
-                connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
-        });
-        return deferred.promise;
-    }
 
     deleteReservationServiceLocal(id) {
         return new Promise(function (resolve, reject) {
@@ -722,7 +532,6 @@ class Reservation {
             });
         })
     }
-
 
     deleteReservationPersonLocal(id, person_id) {
         return new Promise(function (resolve, reject) {
