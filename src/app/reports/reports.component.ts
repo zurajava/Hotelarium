@@ -44,6 +44,7 @@ export class ReportsComponent implements OnInit {
     // TO DO 
   }
 
-
+  filterRezervation() { }
+  closeRezervation() { }
 
 }
