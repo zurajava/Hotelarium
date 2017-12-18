@@ -6,27 +6,23 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 
-
 @Injectable()
 export class ReportsService {
 
-    constructor(private http:Http) {
+  constructor(private http: Http) {
 
-    }
+  }
 
-    requestDetails() {
-         const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-          let key = JSON.parse(localStorage.getItem("parkingUser")).token;
-          headers.append("Authorization", "Bearer " + key);
-          return this.http.get(AppSettings.API_ENDPOINT+'/amenity/book',{headers:headers})
-          .map((data:Response)=> {
-            return data.json()
-          })
-          .catch(this.handleError);
-    }
-    
-     private handleError(error:any) {
-        return Observable.throw(error.json());
-    }
+  getUserBranch(user_id: string) {
+    const headers = new Headers();
+    let key = JSON.parse(localStorage.getItem("parkingUser")).token;
+    headers.append("x-access-token", key);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('/service/userBranch/' + user_id, { headers: headers })
+      .catch(this.handleError);
+  }
+
+  private handleError(error: any) {
+    return Observable.throw(error.json());
+  }
 }

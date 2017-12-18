@@ -1,5 +1,5 @@
-<app-parking-header (onToggle)="onToggle($event)" ></app-parking-header>
-<aside class="main-sidebar" >
+<app-parking-header (onToggle)="onToggle($event)"></app-parking-header>
+<aside class="main-sidebar">
     <section class="sidebar" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'">
         <div class="user-panel">
             <div class="pull-left image">
@@ -15,63 +15,105 @@
         <ul *ngIf="roleID === 'ADMIN'" class="sidebar-menu" data-widget="tree">
             <li routerLink="/reservation">
                 <a>
-                    <i class="fa fa-table"></i><span>Reservation</span>
+                    <i class="fa fa-table"></i>
+                    <span>Reservation</span>
                 </a>
             </li>
             <li routerLink="/dashboard">
                 <a>
-                    <i class="fa fa-dashboard"></i><span>Dashboard</span></a>
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
             </li>
             <li routerLink="/branch">
                 <a>
-                    <i class="fa fa-users"></i><span>Branch</span></a>
+                    <i class="fa fa-users"></i>
+                    <span>Branch</span>
+                </a>
             </li>
             <li routerLink="/category">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Category</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Category</span>
+                </a>
             </li>
             <li routerLink="/roomService">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Service</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Service</span>
+                </a>
             </li>
             <li routerLink="/createRoom">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Room</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Room</span>
+                </a>
             </li>
-            <li routerLink="/reports">
-                <a>
-                    <i class="fa fa-bell-o"></i><span>Reports</span></a>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-table"></i>
+                    <span>Reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li routerLink="/reports">
+                        <a>
+                            <i class="fa fa-fw fa-paypal"></i>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+
             </li>
 
             <li routerLink="/persons">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Person</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Person</span>
+                </a>
             </li>
             <li routerLink="/usermanagment">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>User Managment</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>User Managment</span>
+                </a>
             </li>
         </ul>
         <ul *ngIf="roleID === 'RESIDENT'" class="sidebar-menu" data-widget="tree">
             <li routerLink="/reservation">
                 <a>
-                    <i class="fa fa-table"></i><span>Reservation</span></a>
+                    <i class="fa fa-table"></i>
+                    <span>Reservation</span>
+                </a>
             </li>
             <li routerLink="/dashboard">
                 <a>
-                    <i class="fa fa-dashboard"></i><span>Dashboard</span></a>
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
             </li>
             <li routerLink="/category">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Category</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Category</span>
+                </a>
             </li>
             <li routerLink="/roomService">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Service</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Service</span>
+                </a>
             </li>
             <li routerLink="/createRoom">
                 <a>
-                    <i class="fa fa-user-plus"></i><span>Room</span></a>
+                    <i class="fa fa-user-plus"></i>
+                    <span>Room</span>
+                </a>
             </li>
         </ul>
     </section>

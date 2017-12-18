@@ -1,6 +1,35 @@
-<section class="amenitiesRequest">
-    <div class="commonHeadingAdmin">
-        <h1>Reports</h1>
-        <h2></h2>
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <div class="box-body">
+                        <div class="col-sm-2">
+                            <select class="form-control select2 input-sm" id="id_n_service_id2221" name="id_n_service_id2221" [(ngModel)]="brSelectedValue"
+                                (ngModelChange)="brValueChange($event)" style="width:70%">
+                                <option *ngFor="let x of userBranch" [value]="x.id">{{x.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
+                        </div>
+                        <div class="col-sm-2">
+                            <kendo-datepicker [(value)]="dateTo" id="dateTo" name="ndateTo"></kendo-datepicker>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-block btn-primary btn-xs" (click)="filterRezervation()">Filter</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-block btn-warning btn-xs" (click)="closeRezervation()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="box-body">
+                    dfg
+                </div>
+            </div>
+        </div>
     </div>
 </section>

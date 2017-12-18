@@ -12,6 +12,7 @@ const serviceEndPoint = require('./service/routes/service');
 const roomEndPoint = require('./service/routes/room');
 const reservationEndPoint = require('./service/routes/reservation');
 const paymentEndPoint = require('./service/routes/payment');
+const raportEndPoint = require('./service/routes/report');
 
 process.on('uncaughtException', function (err) {
   console.error(err);
@@ -35,6 +36,7 @@ app.use('/service/service', serviceEndPoint);
 app.use('/service/room', roomEndPoint);
 app.use('/service/reservation', reservationEndPoint);
 app.use('/service/payment', paymentEndPoint);
+app.use('/service/report', raportEndPoint); 
 
 // For all GET requests, send back index.html
 // so that PathLocationStrategy can be used
