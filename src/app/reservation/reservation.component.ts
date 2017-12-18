@@ -478,46 +478,57 @@ export class ReservationComponent implements OnInit {
 
   }
   reserve() {
-    console.log(JSON.stringify(this.reservationInfo));
-    for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
-      this.reservationInfo.reservation.reservationDetail[i].status_id = "1";
-      this.reservationInfo.reservation.reservationDetail[i].payment_status = "1";
-      if (this.reservationInfo.reservation.reservationDetail[i].reservationService != null) {
-        for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
-          this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+    var isValid = this.validateReservationInfo(this.reservationInfo);
+    if (isValid) {
+      for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
+        this.reservationInfo.reservation.reservationDetail[i].status_id = "1";
+        this.reservationInfo.reservation.reservationDetail[i].payment_status = "1";
+        if (this.reservationInfo.reservation.reservationDetail[i].reservationService != null) {
+          for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
+            this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+          }
         }
       }
+      this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
+        if (data.json().success === true) {
+          this.toastr.success("Reservation Added");
+          this.fillDataRange();
+        } else {
+          this.toastr.error(data.json().message + " " + data.json().error);
+        }
+      });
     }
-    this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
-      console.log("addReservation", data.json(), data.json().success);
-      if (data.json().success === true) {
-        this.toastr.success("Reservation Added");
-        this.fillDataRange();
-      } else {
-        this.toastr.error(data.json().message + " " + data.json().error);
-      }
-    });
   }
   checkin() {
-    console.log(JSON.stringify(this.reservationInfo));
-    for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
-      this.reservationInfo.reservation.reservationDetail[i].status_id = "2";
-      this.reservationInfo.reservation.reservationDetail[i].payment_status = "1";
-      if (this.reservationInfo.reservation.reservationDetail[i].reservationService != null) {
-        for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
-          this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+    var isValid = this.validateReservationInfo(this.reservationInfo);
+    if (isValid) {
+      for (var i = 0; i < this.reservationInfo.reservation.reservationDetail.length; i++) {
+        this.reservationInfo.reservation.reservationDetail[i].status_id = "2";
+        this.reservationInfo.reservation.reservationDetail[i].payment_status = "1";
+        if (this.reservationInfo.reservation.reservationDetail[i].reservationService != null) {
+          for (var j = 0; j < this.reservationInfo.reservation.reservationDetail[i].reservationService.length; j++) {
+            this.reservationInfo.reservation.reservationDetail[i].reservationService[j].payment_status = "1";
+          }
         }
       }
+      this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
+        if (data.success === true) {
+          this.toastr.success("Reservation Added");
+          this.fillDataRange();
+        } else {
+          this.toastr.error(data.json().message + " " + data.json().error);
+        }
+      });
     }
-    this.reservationService.addReservation(this.reservationInfo, this.brSelectedValue.toString()).subscribe(data => {
-      console.log("addReservation", data.json(), data.json().success);
-      if (data.success === true) {
-        this.toastr.success("Reservation Added");
-        this.fillDataRange();
-      } else {
-        this.toastr.error(data.error);
-      }
-    });
+  }
+  validateReservationInfo(reservationInfo: ReservationInfo) {
+    console.log("Start validate reservationInfo", reservationInfo);
+    var isValid = true;
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(reservationInfo.person.email)) {
+      this.toastr.error("Mail Format Error " + reservationInfo.person.email);
+      isValid = false;
+    }
+    return isValid;
   }
   showPaymentInfo(reservation: ReservationDetail) {
     console.log("showPaymentInfo", reservation);
