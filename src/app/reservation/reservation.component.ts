@@ -77,7 +77,7 @@ export class ReservationComponent implements OnInit {
     this.dateTo.setDate(this.dateTo.getDate() + 30);
     this.personalNo = '';
     this.segment = Math.round(Math.abs((this.dateTo.getTime() - this.dateFrom.getTime()) / (24 * 60 * 60 * 1000)));
-    this.reservationInfo = new ReservationInfo(new Person(null, null, '', '', '', 'Title', '', new Date(), ''), new Reservation(null, null, null, null, null,
+    this.reservationInfo = new ReservationInfo(new Person(null, '', '', '', '', 'Title', '', new Date(), ''), new Reservation(null, null, null, null, null,
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
   ngOnInit() {
@@ -525,9 +525,48 @@ export class ReservationComponent implements OnInit {
     console.log("Start validate reservationInfo", reservationInfo);
     var isValid = true;
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(reservationInfo.person.email)) {
-      this.toastr.error("Mail Format Error " + reservationInfo.person.email);
+      this.toastr.error("Invalid Mail " + reservationInfo.person.email);
       isValid = false;
     }
+    if (!/^[-+]?\d{9,13}$/.test(reservationInfo.person.phone)) {
+      this.toastr.error("Invalid Phone " + reservationInfo.person.phone);
+      isValid = false;
+    }
+    if (!/^[-+]?\d{9,11}$/.test(reservationInfo.person.personal_no)) {
+      this.toastr.error("Invalid Passport # " + reservationInfo.person.personal_no);
+      isValid = false;
+    }
+    if (!/^.{1,50}$/.test(reservationInfo.person.first_name)) {
+      this.toastr.error("Invalid Name " + reservationInfo.person.first_name);
+      isValid = false;
+    }
+    if (!/^.{1,50}$/.test(reservationInfo.person.last_name)) {
+      this.toastr.error("Invalid Surname " + reservationInfo.person.last_name);
+      isValid = false;
+    }
+    if (reservationInfo.reservation.reservationDetail.length > 0) {
+      for (let i = 0; i < reservationInfo.reservation.reservationDetail.length; i++) {
+        if (reservationInfo.reservation.reservationDetail[i].reservationPerson != null &&
+          reservationInfo.reservation.reservationDetail[i].reservationPerson.length > 0) {
+          for (let j = 0; j < reservationInfo.reservation.reservationDetail[i].reservationPerson.length; j++) {
+            if (!/^[-+]?\d{9,11}$/.test(reservationInfo.reservation.reservationDetail[i].reservationPerson[j].person_id)) {
+              this.toastr.error("Invalid Guest Passport # " +
+                reservationInfo.reservation.reservationDetail[i].reservationPerson[j].person_id);
+              isValid = false;
+            }
+            if (!/^.{1,50}$/.test(reservationInfo.reservation.reservationDetail[i].reservationPerson[j].first_name)) {
+              this.toastr.error("Invalid Guest Name " + reservationInfo.reservation.reservationDetail[i].reservationPerson[j].first_name);
+              isValid = false;
+            }
+            if (!/^.{1,50}$/.test(reservationInfo.reservation.reservationDetail[i].reservationPerson[j].last_name)) {
+              this.toastr.error("Invalid Guest Surname " + reservationInfo.reservation.reservationDetail[i].reservationPerson[j].last_name);
+              isValid = false;
+            }
+          }
+        }
+      }
+    }
+
     return isValid;
   }
   showPaymentInfo(reservation: ReservationDetail) {

@@ -52,18 +52,18 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control input-sm" id="smFormGroupInput22" name="smFormGroupInput22" placeholder="First Name"
-                                        [(ngModel)]="reservationInfo.person.first_name">
+                                    <input type="text" class="form-control input-sm" id="smFormGroupInput22" name="smFormGroupInput22" placeholder="Name" 
+                                    [(ngModel)]="reservationInfo.person.first_name">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control input-sm" id="smFormGroupInput23" name="smFormGroupInput23" placeholder="Last Name"
+                                    <input type="text" class="form-control input-sm" id="smFormGroupInput23" name="smFormGroupInput23" placeholder="Surname"
                                         [(ngModel)]="reservationInfo.person.last_name">
 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control input-sm" id="smFormGroupInput24" name="smFormGroupInput24" placeholder="Personal #"
+                                    <input type="text" class="form-control input-sm" id="smFormGroupInput24" name="smFormGroupInput24" placeholder="Passport #"
                                         [(ngModel)]="reservationInfo.person.personal_no">
                                 </div>
                                 <div class="col-sm-4">
@@ -214,13 +214,13 @@
                                                                         <tbody>
                                                                             <tr *ngFor="let person of res.reservationPerson; let i = index">
                                                                                 <td>
-                                                                                    <input type="text" class="form-control input-sm" id="n_person_id" placeholder="Personal #" [value]="person.person_id" (input)="person.person_id = $event.target.value">
+                                                                                    <input type="text" class="form-control input-sm" id="n_person_id" placeholder="Passport #" [value]="person.person_id" (input)="person.person_id = $event.target.value">
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="text" class="form-control input-sm" id="n_first_name" placeholder="First Name" [value]="person.first_name" (input)="person.first_name = $event.target.value">
+                                                                                    <input type="text" class="form-control input-sm" id="n_first_name" placeholder="Name" [value]="person.first_name" (input)="person.first_name = $event.target.value">
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="text" class="form-control input-sm" id="n_last_name" placeholder="Last Name" [value]="person.last_name" (input)="person.last_name = $event.target.value">
+                                                                                    <input type="text" class="form-control input-sm" id="n_last_name" placeholder="Surname" [value]="person.last_name" (input)="person.last_name = $event.target.value">
                                                                                 </td>
                                                                                 <td class="text-right">
                                                                                     <a (click)="removeReservationPerson(res,person)">

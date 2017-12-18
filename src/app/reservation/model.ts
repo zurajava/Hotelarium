@@ -2,7 +2,7 @@ import { Room } from '../room/model.js';
 
 export class Person {
     public id: number;
-    public personal_no: number;
+    public personal_no: string;
     public first_name: string;
     public last_name: string;
     public email: string;
@@ -15,7 +15,7 @@ export class Person {
     public company_code: string;
 
 
-    constructor(id: number, personal_no: number, first_name: string, last_name: string, email: string, gender: string, address: string, birthdate: Date, phone: string) {
+    constructor(id: number, personal_no: string, first_name: string, last_name: string, email: string, gender: string, address: string, birthdate: Date, phone: string) {
         this.id = id;
         this.personal_no = personal_no;
         this.first_name = first_name;
