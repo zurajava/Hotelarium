@@ -18,6 +18,7 @@ import { CategoryModule } from './category/category.module';
 import { ServiceModule } from './service/service.module';
 import { ProfileModule } from './profile/profile.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SalesModule } from './sales/sales.module';
 
 @NgModule({
   declarations: [
@@ -38,8 +39,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UsersModule,
     CategoryModule,
     ServiceModule,
-    ProfileModule
-
+    ProfileModule,
+    SalesModule
   ],
   providers: [AuthGuard, AuthService, AdminGuard],
   bootstrap: [AppComponent]
