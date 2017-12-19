@@ -15,6 +15,6 @@ import { Router, RouterModule } from '@angular/router';
     exports: [RouterModule]
 })
 
-export class amenitiesRequestRouting {
+export class ReportRouting {
 
 }
