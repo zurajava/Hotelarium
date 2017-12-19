@@ -6,6 +6,9 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from './../core/auth.service';
 import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { PaymentReport } from './model';
+import { IntlService } from '@progress/kendo-angular-intl';
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -19,9 +22,9 @@ export class ReportsComponent implements OnInit {
   public dateTo: Date;
   public userBranch: Array<any>;
   public brSelectedValue: number;
-
+  public data: Array<PaymentReport>;
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef,
-    private reportsService: ReportsService, private modalService: NgbModal, private authservice: AuthService, ) {
+    private reportsService: ReportsService, private modalService: NgbModal, private authservice: AuthService, private intl: IntlService) {
     this.toastr.setRootViewContainerRef(vcr);
     this.dateTo = new Date();
     this.dateFrom = new Date();
@@ -34,6 +37,24 @@ export class ReportsComponent implements OnInit {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id;
+        this.reportsService.getPaymentReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+          this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+            if (data.success === true) {
+              this.data = data.payments;
+              $(function () {
+                $("#example1").DataTable({
+                  'paging': true,
+                  'lengthChange': true,
+                  'searching': false,
+                  'ordering': true,
+                  'info': true,
+                  'autoWidth': false
+                });
+              });
+            } else {
+              this.toastr.error(data.json().message);
+            }
+          });
       } else {
         this.toastr.error(data.json().message);
       }
@@ -41,10 +62,24 @@ export class ReportsComponent implements OnInit {
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
-    // TO DO 
+    this.loadRezervationPayment();
   }
 
-  filterRezervation() { }
-  closeRezervation() { }
+  filterRezervation() {
+    this.loadRezervationPayment();
+  }
+
+  loadRezervationPayment() {
+    console.log("loadRezervationPayment");
+    this.data = null;
+    this.reportsService.getPaymentReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+        if (data.success === true) {
+          this.data = data.payments;
+        } else {
+          this.toastr.error(data.json().message);
+        }
+      });
+  }
 
 }

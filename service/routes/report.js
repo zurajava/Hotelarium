@@ -7,7 +7,7 @@ var pool = new Report();
 
 router.get('/payment/:branch_id', (req, res) => {
     console.log("Route, GetPayment");
-    pool.getPaymentReport(req.params.branch_id).then(data => {
+    pool.getPaymentReport(req.params.branch_id, req.query.datefrom, req.query.dateto).then(data => {
         res.json({ success: true, message: 'OK', payments: data });
     }).catch(error => {
         res.json({

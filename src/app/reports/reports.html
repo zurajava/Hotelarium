@@ -19,15 +19,47 @@
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-block btn-primary btn-xs" (click)="filterRezervation()">Filter</button>
                         </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-block btn-warning btn-xs" (click)="closeRezervation()">Close</button>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="box box-primary">
                 <div class="box-body">
-                    dfg
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ID</th>
+                                <th>ResID</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Source</th>
+                                <th>Ticket</th>
+                                <th>Comment</th>
+                                <th>Bad Price</th>
+                                <th>Person Price</th>
+                                <th>Service Name</th>
+                                <th>Room No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let payment of data; let i = index">
+                                <td>{{i}}</td>
+                                <td>{{payment.id}}</td>
+                                <td>{{payment.reservation_id}}</td>
+                                <td>{{payment.amount}}</td>
+                                <td>{{payment.create_date}}</td>
+                                <td>{{payment.type}}</td>
+                                <td>{{payment.source}}</td>
+                                <td>{{payment.ticket}}</td>
+                                <td>{{payment.additional_comment}}</td>
+                                <td>{{payment.additional_bad_price}}</td>
+                                <td>{{payment.extra_person_price}}</td>
+                                <td>{{payment.service_name}}</td>
+                                <td>{{payment.room_no}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
