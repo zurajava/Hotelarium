@@ -28,35 +28,21 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>ID</th>
-                                <th>ResID</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Source</th>
-                                <th>Ticket</th>
-                                <th>Comment</th>
-                                <th>Bad Price</th>
-                                <th>Person Price</th>
-                                <th>Service Name</th>
-                                <th>Room No</th>
+                                <th>Month</th>
+                                <th>Category</th>
+                                <th>Room</th>
+                                <th>Action</th>
+                                <th>Count</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let payment of data; let i = index">
+                            <tr *ngFor="let sale of data; let i = index">
                                 <td>{{i}}</td>
-                                <td>{{payment.id}}</td>
-                                <td>{{payment.reservation_id}}</td>
-                                <td>{{payment.amount}}</td>
-                                <td>{{payment.create_date}}</td>
-                                <td>{{payment.type}}</td>
-                                <td>{{payment.source}}</td>
-                                <td>{{payment.ticket}}</td>
-                                <td>{{payment.additional_comment}}</td>
-                                <td>{{payment.additional_bad_price}}</td>
-                                <td>{{payment.extra_person_price}}</td>
-                                <td>{{payment.service_name}}</td>
-                                <td>{{payment.room_no}}</td>
+                                <td>{{sale.month}}</td>
+                                <td>{{sale.category}}</td>
+                                <td>{{sale.room}}</td>
+                                <td>{{sale.action}}</td>
+                                <td>{{sale.count}}</td>
                             </tr>
                         </tbody>
                     </table>

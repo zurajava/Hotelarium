@@ -7,6 +7,7 @@ import { AuthService } from './../core/auth.service';
 import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IntlService } from '@progress/kendo-angular-intl';
+import { Sale } from './model';
 declare var $: any;
 
 @Component({
@@ -21,6 +22,7 @@ export class SalesComponent implements OnInit {
   public dateTo: Date;
   public userBranch: Array<any>;
   public brSelectedValue: number;
+  public data: Array<Sale>;
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef,
     private reportsService: SalesService, private modalService: NgbModal, private authservice: AuthService, private intl: IntlService) {
     this.toastr.setRootViewContainerRef(vcr);
@@ -35,6 +37,25 @@ export class SalesComponent implements OnInit {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id;
+        this.reportsService.getSalesReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+          this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+            if (data.success === true) {
+              this.data = data.sales;
+              console.log(this.data);
+              $(function () {
+                $("#example1").DataTable({
+                  'paging': false,
+                  'lengthChange': false,
+                  'searching': false,
+                  'ordering': false,
+                  'info': false,
+                  'autoWidth': false
+                });
+              });
+            } else {
+              this.toastr.error(data.json().message);
+            }
+          });
 
       }
     });
@@ -49,6 +70,14 @@ export class SalesComponent implements OnInit {
   }
 
   loadRezervationPayment() {
+    this.reportsService.getSalesReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+        if (data.success === true) {
+          this.data = data.sales;
+        } else {
+          this.toastr.error(data.json().message);
+        }
+      });
   }
 
 }

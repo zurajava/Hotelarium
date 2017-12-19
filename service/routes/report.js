@@ -16,5 +16,16 @@ router.get('/payment/:branch_id', (req, res) => {
     });
 
 });
+router.get('/sales/:branch_id', (req, res) => {
+    console.log("Route, GetPayment");
+    pool.getSalesReport(req.params.branch_id, req.query.datefrom, req.query.dateto).then(data => {
+        res.json({ success: true, message: 'OK', sales: data });
+    }).catch(error => {
+        res.json({
+            success: false, message: 'Error while load sales report', error: error
+        });
+    });
+
+});
 
 module.exports = router;

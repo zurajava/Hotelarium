@@ -22,13 +22,13 @@ export class SalesService {
       .catch(this.handleError);
   }
 
-  getPaymentReport(branch_id: string, datefrom: string, dateto: string) {
+  getSalesReport(branch_id: string, datefrom: string, dateto: string) {
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
     headers.append('Content-Type', 'application/json');
     headers.append("branch_id", branch_id.toString());
-    return this.http.get('/service/report/payment/' + branch_id + '?datefrom=' + datefrom + '&dateto=' + dateto, { headers: headers }).toPromise().then(response => {
+    return this.http.get('/service/report/sales/' + branch_id + '?datefrom=' + datefrom + '&dateto=' + dateto, { headers: headers }).toPromise().then(response => {
       return response.json();
     }).catch(this.handleError);
   }
