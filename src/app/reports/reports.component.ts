@@ -43,11 +43,11 @@ export class ReportsComponent implements OnInit {
               this.data = data.payments;
               $(function () {
                 $("#example1").DataTable({
-                  'paging': true,
-                  'lengthChange': true,
+                  'paging': false,
+                  'lengthChange': false,
                   'searching': false,
-                  'ordering': true,
-                  'info': true,
+                  'ordering': false,
+                  'info': false,
                   'autoWidth': false
                 });
               });
@@ -70,8 +70,8 @@ export class ReportsComponent implements OnInit {
   }
 
   loadRezervationPayment() {
-    console.log("loadRezervationPayment");
     this.data = null;
+
     this.reportsService.getPaymentReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
       this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
         if (data.success === true) {
