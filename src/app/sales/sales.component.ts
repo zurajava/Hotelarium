@@ -79,5 +79,7 @@ export class SalesComponent implements OnInit {
         }
       });
   }
-
+  exportSales() {
+    console.log("exportSales");
+  }
 }

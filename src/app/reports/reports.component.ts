@@ -184,4 +184,14 @@ export class ReportsComponent implements OnInit {
       });
   }
 
+  exportPayment() {
+    console.log("exportPayment");
+  }
+  exportPaymentOwerall() {
+    console.log("exportPaymentOwerall");
+  }
+  exportPaymenttDetailed() {
+    console.log("exportPaymenttDetailed");
+  }
+
 }
