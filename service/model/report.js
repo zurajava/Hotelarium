@@ -40,5 +40,41 @@ class Report {
         });
     }
 
+
+    getPaymentOverall(branch_id, date_from, date_to) {
+        console.log("Model, GetPaymentOverall", branch_id, date_from, date_to);
+        var sql = 'SELECT MONTHNAME(p.create_date) AS month,p.source AS incomeType,SUM(p.amount) AS amount FROM payment p INNER JOIN reservation_detail s ON p.reservation_id = s.id ' +
+            ' INNER JOIN room r ON s.room_id = r.id WHERE r.branch_id = ? AND r.create_date >= ? AND r.create_date <= ? GROUP BY MONTHNAME(p.create_date) , p.source ';
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(sql, [branch_id, date_from, date_to], function (error, row, fields) {
+                    connection.release();
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(row);
+                    }
+                });
+            });
+        });
+    }
+    getPaymentDetailed(branch_id, date_from, date_to) {
+        console.log("Model, GetPaymentDetailed", branch_id, date_from, date_to);
+        var sql = 'SELECT MONTHNAME(p.create_date) AS month, p.source AS incomeType,c.name as subType, SUM(p.amount) AS amount FROM payment p INNER JOIN reservation_detail s ON p.reservation_id = s.id' +
+            ' INNER JOIN room r ON s.room_id = r.id inner join category c on c.id=r.category_id WHERE  r.branch_id = ? AND r.create_date >= ?AND r.create_date <= ?' +
+            ' GROUP BY MONTHNAME(p.create_date) , p.source ';
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(sql, [branch_id, date_from, date_to], function (error, row, fields) {
+                    connection.release();
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(row);
+                    }
+                });
+            });
+        });
+    }
 }
 module.exports = Report;

@@ -16,3 +16,20 @@ export class PaymentReport {
     constructor() {
     }
 }
+export class PaymentOverall {
+    public month: string;
+    public incomeType: string;
+    public amount: string;
+
+    constructor() {
+    }
+}
+export class PaymentDetailed {
+    public month: string;
+    public incomeType: string;
+    public subType: string;
+    public amount: string;
+
+    constructor() {
+    }
+}

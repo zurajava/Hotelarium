@@ -28,8 +28,8 @@ export class SalesComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);
     this.dateTo = new Date();
     this.dateFrom = new Date();
-    this.dateFrom.setDate(this.dateFrom.getDate() - 5);
-    this.dateTo.setDate(this.dateTo.getDate() + 30);
+    this.dateFrom.setDate(this.dateFrom.getDate() - 30);
+    this.dateTo.setDate(this.dateTo.getDate() + 2);
   }
 
   ngOnInit() {

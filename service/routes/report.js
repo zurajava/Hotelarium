@@ -28,4 +28,28 @@ router.get('/sales/:branch_id', (req, res) => {
 
 });
 
+router.get('/paymentOverall/:branch_id', (req, res) => {
+    console.log("Route, PaymentOverall");
+    pool.getPaymentOverall(req.params.branch_id, req.query.datefrom, req.query.dateto).then(data => {
+        res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+        res.json({
+            success: false, message: 'Error while load sales report', error: error
+        });
+    });
+
+});
+
+router.get('/paymentDetailed/:branch_id', (req, res) => {
+    console.log("Route, GetPaymentDetailed");
+    pool.getPaymentDetailed(req.params.branch_id, req.query.datefrom, req.query.dateto).then(data => {
+        res.json({ success: true, message: 'OK', data: data });
+    }).catch(error => {
+        res.json({
+            success: false, message: 'Error while load sales report', error: error
+        });
+    });
+
+});
+
 module.exports = router;
