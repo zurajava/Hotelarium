@@ -186,12 +186,15 @@ export class ReportsComponent implements OnInit {
 
   exportPayment() {
     console.log("exportPayment");
+    this.reportsService.exportAsExcelFile(this.data, 'payment');
   }
   exportPaymentOwerall() {
     console.log("exportPaymentOwerall");
+    this.reportsService.exportAsExcelFile(this.paymentOverall, 'payment_overall');
   }
   exportPaymenttDetailed() {
     console.log("exportPaymenttDetailed");
+    this.reportsService.exportAsExcelFile(this.paymentDetailed, 'payment_detailed');
   }
 
 }

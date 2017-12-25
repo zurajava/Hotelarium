@@ -81,5 +81,6 @@ export class SalesComponent implements OnInit {
   }
   exportSales() {
     console.log("exportSales");
+    this.reportsService.exportAsExcelFile(this.data, 'sales');
   }
 }
