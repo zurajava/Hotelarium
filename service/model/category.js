@@ -5,7 +5,7 @@ class Category {
     getCategory(branch_id, callback) {
         console.log("Model, GetCategory ", branch_id);
         pool.getConnection(function (err, connection) {
-            connection.query('SELECT c.*, b.name as branch_name FROM category c inner join branch b on c.branch_id=b.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+            connection.query('SELECT c.*, b.name as branch_name FROM category c inner join branch b on c.branch_id=b.id  where c.branch_id=? and c.status=1', [branch_id], function (error, row, fields) {
                 connection.release();
                 if (error) {
                     throw error;
@@ -40,7 +40,7 @@ class Category {
     deleteCategory(id, callback) {
         console.log("Category, deleteCategory ", id);
         pool.getConnection(function (err, connection) {
-            connection.query('delete from category where id=?', [id], function (error, row, fields) {
+            connection.query('update category set status=0 where id=?', [id], function (error, row, fields) {
                 connection.release();
                 if (error) {
                     throw error;

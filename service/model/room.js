@@ -6,7 +6,7 @@ class Room {
         console.log("Model, GetRoom", branch_id, category_id);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=? and (c.category_id=? or ? is null)',
+                connection.query('SELECT c.*, t.name as category_name, b.name as branch_name FROM room c inner join branch b on c.branch_id=b.id inner join category t on c.category_id=t.id  where c.branch_id=? and c.status=1 and (c.category_id=? or ? is null)',
                     [branch_id, category_id, category_id], function (error, row, fields) {
                         connection.release();
                         if (err) {
@@ -39,7 +39,7 @@ class Room {
     deleteRoom(id, callback) {
         console.log("Model, DeleteRoom", id);
         pool.getConnection(function (err, connection) {
-            connection.query('delete from room where id=?', [id], function (error, row, fields) {
+            connection.query('update room set status=0 where id=?', [id], function (error, row, fields) {
                 connection.release();
                 if (error) {
                     throw error;

@@ -5,7 +5,7 @@ class Service {
     getService(branch_id, callback) {
         console.log("Model, GetService", branch_id);
         pool.getConnection(function (err, connection) {
-            connection.query('SELECT c.*, b.name as branch_name FROM service c inner join branch b on c.branch_id=b.id  where c.branch_id=?', [branch_id], function (error, row, fields) {
+            connection.query('SELECT c.*, b.name as branch_name FROM service c inner join branch b on c.branch_id=b.id  where c.branch_id=? and c.status=1', [branch_id], function (error, row, fields) {
                 connection.release();
                 if (error) {
                     throw error;
@@ -35,7 +35,7 @@ class Service {
     deleteService(id, callback) {
         console.log("Service, deleteService  ", id);
         pool.getConnection(function (err, connection) {
-            connection.query('delete from service where id=?', [id], function (error, row, fields) {
+            connection.query('update service set status=0 where id=?', [id], function (error, row, fields) {
                 connection.release();
                 if (error) {
                     throw error;

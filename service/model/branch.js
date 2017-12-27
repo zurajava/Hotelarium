@@ -5,7 +5,7 @@ class Branch {
     getBranch(org_id, callback) {
         console.log("Branch, GetBranch", org_id);
         pool.getConnection(function (err, connection) {
-            connection.query('SELECT b.*,o.name as org_name FROM branch b inner join organisation o on b.org_id=o.id where b.org_id=?', [org_id], function (error, row, fields) {
+            connection.query('SELECT b.*,o.name as org_name FROM branch b inner join organisation o on b.org_id=o.id where b.org_id=? and b.status=1', [org_id], function (error, row, fields) {
                 connection.release();
                 if (error) {
                     throw error;
@@ -95,7 +95,7 @@ class Branch {
     deleteBranchLocal(id) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('delete from branch where id=?',
+                connection.query('update branch set status=0 where id=?',
                     [id],
                     function (error, results, fields) {
                         connection.release();
