@@ -76,7 +76,6 @@ export class Reservation {
     public personal_no: number;
     public status_id: string;
     public payment_status_id: string;
-    public payment_type: string;
     public comment: string;
     public res_type: string;
     public reservationDetail: Array<ReservationDetail>;

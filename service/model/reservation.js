@@ -10,7 +10,8 @@ class Reservation {
                 reject("CheckIn date should be less than CheckOut date");
             }
             var categoryData;
-            var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and r.status=1 and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
+            var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  ' +
+                ' where t.room_id=? and r.status=1 and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
                 ' or (?>DATE(t.start_date)  and ? <=DATE(t.end_date) ))';
             pool.getConnection(function (err, connection) {
                 connection.query(query, [data.room_id, data.start_date, data.start_date, data.end_date, data.end_date], function (error, row, fields) {
@@ -182,7 +183,7 @@ class Reservation {
         if (personal_no == null || personal_no == undefined) {
             personal_no = "";
         }
-        var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.payment_type,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
+        var reservationSql = 'SELECT d.id,d.comment,d.create_date,d.update_date,d.room_id,ro.room_no,d.status_id,d.start_date,d.end_date, ' +
             ' s.name as status_name,a.id as reservation_id,a.person_no as person_no, p.first_name,p.last_name,p.email , ro.price ,ro.additional_bad_price, ro.extra_person_price ' +
             ' FROM reservation_detail d ' +
             ' inner join reservation_status s on d.status_id=s.id ' +
@@ -262,11 +263,11 @@ class Reservation {
             'r.additional_bed * o.additional_bad_price as additional_bad_price_full,' +
             'o.extra_person_price * r.extra_person as extra_person_price_full,' +
             ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full, ' +
-            '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'RESERVATION\' AND (p.service_id IS NULL OR p.service_id =0)) AS reservation_payd_amount, ' +
-            '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'SERVICE\' AND p.service_id IS NOT NULL) AS service_payd_amount, ' +
-            ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id) AS service_price ,s.name as status_name ,p.name as payment_status_name' +
+            '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'RESERVATION\' AND p.status = 1 AND (p.service_id IS NULL OR p.service_id =0)) AS reservation_payd_amount, ' +
+            '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'SERVICE\' AND p.status = 1 AND p.service_id IS NOT NULL) AS service_payd_amount, ' +
+            ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id and rs.status=1) AS service_price ,s.name as status_name ,p.name as payment_status_name' +
             ' FROM reservation_detail r ' +
-            ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id inner join reservation_status s on r.status_id=s.id inner join payment_status p on p.id=r.payment_status where reservation_id=?';
+            ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id inner join reservation_status s on r.status_id=s.id inner join payment_status p on p.id=r.payment_status where reservation_id=? and status_id in (1,2,3,4) ';
 
         connection.query(query, [reservation_id], function (error, row, fields) {
             if (error) {
@@ -282,7 +283,7 @@ class Reservation {
         // type = 1 reservation and service, type = 2 service,
         if (type == "1") {
             var deferred = q.defer();
-            var roomSql = 'SELECT * FROM  payment where reservation_id=?';
+            var roomSql = 'SELECT * FROM  payment where reservation_id=? and status=1';
             connection.query(roomSql, [reservation_id], function (error, row, fields) {
                 if (error) {
                     deferred.reject(error);
@@ -293,7 +294,7 @@ class Reservation {
             return deferred.promise;
         } else if (type == "2") {
             var deferred = q.defer();
-            var roomSql = 'SELECT * FROM  payment where reservation_id=? and source in (?) and (service_id=? or service_id is null or service_id =0)';
+            var roomSql = 'SELECT * FROM  payment where status=1 and reservation_id=? and source in (?) and (service_id=? or service_id is null or service_id =0)';
             connection.query(roomSql, [reservation_id, source, service_id], function (error, row, fields) {
                 if (error) {
                     deferred.reject(error);
@@ -311,7 +312,7 @@ class Reservation {
         var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, ' +
             '(SELECT IFNULL(SUM(p.amount),0)  ' +
             'FROM payment p where p.reservation_id=r.reservation_id and p.source=\'SERVICE\' and p.service_id=s.id) as service_payd  ' +
-            'FROM reservation_service r inner join service s on r.service_id=s.id inner join payment_status p on r.payment_status=p.id where  reservation_id=?';
+            'FROM reservation_service r inner join service s on r.service_id=s.id inner join payment_status p on r.payment_status=p.id where  reservation_id = ? and r.status = 1';
         connection.query(query, [reservation_id], function (error, row, fields) {
             if (error) {
                 deferred.reject(error);
@@ -325,7 +326,7 @@ class Reservation {
         console.log("Model, GetReservationsByIdPersonsLocal", reservation_id);
         var deferred = q.defer();
         var categoryData;
-        var query = 'SELECT * FROM reservation_person where reservation_id=?';
+        var query = 'SELECT * FROM reservation_person where reservation_id=? and status = 1';
         connection.query(query, [reservation_id], function (error, row, fields) {
             if (error) {
                 deferred.reject(error);
@@ -500,28 +501,68 @@ class Reservation {
         });
         return deferred.promise;
     }
-    deleteReservationService(id, service_id) {
-        console.log("Model, deleteReservationService", id, service_id);
+
+    deleteReservationServiceByServiceId(id, service_id, connection) {
+        console.log("Model, DeleteReservationServiceByServiceId", id, service_id);
         return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query('delete from reservation_service where reservation_id=? and service_id=?',
-                    [id, service_id],
-                    function (error, results, fields) {
-                        connection.release();
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve("OK");
-                        }
-                    });
-            });
+            connection.query('update reservation_service set status= 0  where reservation_id=? and service_id=?',
+                [id, service_id],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
         })
     }
 
+    deleteReservationServicePayment(id, service_id, connection) {
+        console.log("deleteReservationServicePayment", id, service_id);
+        return new Promise(function (resolve, reject) {
+            connection.query('update payment set status = 0 where reservation_id = ? and service_id=?',
+                [id, service_id],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
+        })
+    }
+    deleteReservationServiceAndPayment(id, service_id) {
+        console.log("Model, deleteReservationServiceAndPayment", id, service_id);
+        var deferred = q.defer();
+        this.getConnection().then(connection => {
+            this.deleteReservationServiceByServiceId(id, service_id, connection)
+                .then(data => {
+                    this.deleteReservationServicePayment(id, service_id, connection).then(data => {
+                        connection.release();
+                        deferred.resolve(data);
+                    }).catch(error => {
+                        connection.release();
+                        deferred.reject(err);
+                    })
+                }).then(data => {
+                    connection.release();
+                    deferred.resolve(data);
+                })
+                .catch(function (err) {
+                    connection.release();
+                    deferred.reject(err);
+                });
+        }).catch(err => {
+            connection.release();
+            deferred.reject(err);
+        });
+        return deferred.promise;
+    }
+     
     deleteReservationServiceLocal(id) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('delete from reservation_service where reservation_id=?', [id],
+                connection.query('update reservation_service set status= 0 where reservation_id=?', [id],
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
@@ -534,10 +575,11 @@ class Reservation {
         })
     }
 
-    deleteReservationPersonLocal(id, person_id) {
+    deleteReservationPerson(id, person_id) {
+        console.log("Model, deleteReservationPerson", id, person_id);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('delete FROM reservation_person where reservation_id=? and person_id=?',
+                connection.query('update reservation_person set status = 0 where reservation_id=? and person_id=?',
                     [id, person_id],
                     function (error, results, fields) {
                         connection.release();
@@ -553,7 +595,7 @@ class Reservation {
     deleteReservationPersonLocal(id) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('delete FROM reservation_person where reservation_id=?',
+                connection.query('update reservation_person set status = 0 where reservation_id=?',
                     [id],
                     function (error, results, fields) {
                         connection.release();
@@ -570,7 +612,7 @@ class Reservation {
         console.log("deleteReservationPaymentLocal", id);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('DELETE FROM  payment where reservation_id=?',
+                connection.query('update payment set status = 0 where reservation_id = ?',
                     [id],
                     function (error, results, fields) {
                         connection.release();
@@ -587,7 +629,7 @@ class Reservation {
     deleteReservationLocal(id) {
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('delete FROM reservation_detail where id=?; ',
+                connection.query('update reservation_detail set status_id = 5 , update_date= current_timestamp where id=?; ',
                     [id],
                     function (error, results, fields) {
                         connection.release();
@@ -642,13 +684,12 @@ class Reservation {
     }
 
     registerReservationDetailsLocal(reservID, data) {
-        console.log("Register Reservation Details Local", reservID);
+        console.log("Register Reservation Details Local", reservID, data.adult, data.child, data.additional_bed);
         var deferred = q.defer();
         pool.getConnection(function (err, connection) {
-            connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,payment_type,adult,child,additional_bed,' +
-                ' payment_status,extra_person,comment)values(?,current_timestamp,?,?,?,?,?,?,?,?,?,?,?)',
-                [reservID, data.room_id, data.status_id, data.start_date, data.end_date,
-                    data.payment_type, data.adult, data.child, data.additional_bed, 1, data.extra_person, data.comment],
+            connection.query('insert into reservation_detail (reservation_id,create_date,room_id,status_id,start_date,end_date,adult,child,additional_bed,' +
+                ' payment_status,extra_person,comment)values(?,current_timestamp,?,?,?,?,?,?,?,?,?,?)',
+                [reservID, data.room_id, data.status_id, data.start_date, data.end_date, data.adult || 0, data.child || 0, data.additional_bed || 0, 1, data.extra_person || 0, data.comment || ''],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {

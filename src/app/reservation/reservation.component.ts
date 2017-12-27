@@ -532,7 +532,7 @@ export class ReservationComponent implements OnInit {
       this.toastr.error("Invalid Phone " + reservationInfo.person.phone);
       isValid = false;
     }
-    if (!/^[-+]?\d{9,11}$/.test(reservationInfo.person.personal_no)) {
+    if (!/^.{9,11}$/.test(reservationInfo.person.personal_no)) {
       this.toastr.error("Invalid Passport # " + reservationInfo.person.personal_no);
       isValid = false;
     }
@@ -549,7 +549,7 @@ export class ReservationComponent implements OnInit {
         if (reservationInfo.reservation.reservationDetail[i].reservationPerson != null &&
           reservationInfo.reservation.reservationDetail[i].reservationPerson.length > 0) {
           for (let j = 0; j < reservationInfo.reservation.reservationDetail[i].reservationPerson.length; j++) {
-            if (!/^[-+]?\d{9,11}$/.test(reservationInfo.reservation.reservationDetail[i].reservationPerson[j].person_id)) {
+            if (!/^.{9,11}$/.test(reservationInfo.reservation.reservationDetail[i].reservationPerson[j].person_id)) {
               this.toastr.error("Invalid Guest Passport # " +
                 reservationInfo.reservation.reservationDetail[i].reservationPerson[j].person_id);
               isValid = false;

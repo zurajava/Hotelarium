@@ -95,7 +95,7 @@ router.delete('/:id', (req, res) => {
             });
         });
     } else if (req.query.type == 2) {
-        pool.deleteReservationPersonLocal(req.params.id, req.query.person_no).then(data => {
+        pool.deleteReservationPerson(req.params.id, req.query.person_no).then(data => {
             return res.json({ success: true, message: 'OK', data: data });
         }).catch(error => {
             console.log("error", error);
@@ -104,7 +104,7 @@ router.delete('/:id', (req, res) => {
             });
         });
     } else if (req.query.type == 3) {
-        pool.deleteReservationService(req.params.id, req.query.service_id).then(data => {
+        pool.deleteReservationServiceAndPayment(req.params.id, req.query.service_id).then(data => {
             return res.json({ success: true, message: 'OK', data: data });
         }).catch(error => {
             console.log("error", error);
