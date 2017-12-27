@@ -10,7 +10,7 @@ class Reservation {
                 reject("CheckIn date should be less than CheckOut date");
             }
             var categoryData;
-            var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
+            var query = 'SELECT  count(1) as count,max(r.room_no) as room_no FROM reservation_detail t inner join room r on t.room_id=r.id  where t.room_id=? and r.status=1 and t.status_id in(1,2,3) and ((?>=DATE(t.start_date)  and ?<DATE(t.end_date) ) ' +
                 ' or (?>DATE(t.start_date)  and ? <=DATE(t.end_date) ))';
             pool.getConnection(function (err, connection) {
                 connection.query(query, [data.room_id, data.start_date, data.start_date, data.end_date, data.end_date], function (error, row, fields) {
@@ -151,7 +151,7 @@ class Reservation {
         console.log("Model, GetCategoryLocal", branch_id);
         var deferred = q.defer();
         var categoryData;
-        var query = 'SELECT id,name,price,currency FROM category  where branch_id=?';
+        var query = 'SELECT id, name, price FROM category  where branch_id=? and status=1';
         connection.query(query, [branch_id], function (error, row, fields) {
             if (error) {
                 deferred.reject(error);
@@ -165,7 +165,7 @@ class Reservation {
         console.log("Model, GetRoomLocal", branch_id, categoryID);
         var deferred = q.defer();
         var roomData;
-        var roomSql = 'SELECT id,room_no,name,price,currency FROM room  where branch_id=? and category_id=?';
+        var roomSql = 'SELECT id, room_no, name, price FROM room  where branch_id=? and category_id=? and status=1';
         connection.query(roomSql, [branch_id, categoryID], function (error, row, fields) {
             if (error) {
                 deferred.reject(error);
@@ -192,6 +192,7 @@ class Reservation {
             ' where d.room_id=? and d.start_date >=? and d.start_date<=? and d.status_id in ' + state + ' and a.person_no like ?  order by d.start_date asc';
         connection.query(reservationSql, [room_id, start_date, end_date, ['%' + personal_no + '%']], function (error, row, fields) {
             if (error) {
+                console.log(error);
                 deferred.reject(error);
             } else {
                 deferred.resolve(row);

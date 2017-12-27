@@ -21,7 +21,7 @@ router.get('/:branch_id', (req, res) => {
 
 router.post('/', (req, res) => {
     console.log("add category : " + req.body.name + ' ' + req.body.parking);
-    pool.registerCategory(req.body.name, req.body.price, req.body.currency, req.body.description, req.body.branch_id, req.body.parking, function (err, data) {
+    pool.registerCategory(req.body.name, req.body.price, req.body.description, req.body.branch_id, req.body.parking, function (err, data) {
         if (err) {
             res.json({
                 success: false, message: 'Error while register category', error: err
@@ -49,7 +49,7 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
     console.log("update category : " + req.params.id + ' ' + req.body.parking);
-    pool.updateCategory(req.params.id, req.body.name, req.body.price, req.body.currency, req.body.description, req.body.branch_id, req.body.parking, function (err, data) {
+    pool.updateCategory(req.params.id, req.body.name, req.body.price, req.body.description, req.body.branch_id, req.body.parking, function (err, data) {
         if (err) {
             res.json({
                 success: false, message: 'Error while update category', error: err

@@ -7,7 +7,6 @@ export class Service {
     public branch_id: string;
     public branch_name: string;
     public price: number;
-    public currency: string;
     public type: string;
     constructor(name: string, description: string, price: number, type: string) {
         this.name = name;

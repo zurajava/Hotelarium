@@ -18,13 +18,13 @@ class Room {
             });
         });
     }
-    registerRoom(name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag,
+    registerRoom(name, price, room_no, description, branch_id, category_id, smoke, wifi, tag,
         additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
-        console.log("Model, RegisterRoom: ", name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag,
+        console.log("Model, RegisterRoom: ", name, price, room_no, description, branch_id, category_id, smoke, wifi, tag,
             additional_bad, additional_bad_price, extra_person, extra_person_price);
         pool.getConnection(function (err, connection) {
-            connection.query('insert into room(create_date,name,price, currency,room_no,description,branch_id,category_id,smoke,wifi,tag,additional_bad,additional_bad_price,extra_person,extra_person_price) values(current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                [name, price, currency, room_no, description, branch_id, category_id, smoke, wifi, tag,
+            connection.query('insert into room(create_date,name,price, room_no,description,branch_id,category_id,smoke,wifi,tag,additional_bad,additional_bad_price,extra_person,extra_person_price) values(current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                [name, price, room_no, description, branch_id, category_id, smoke, wifi, tag,
                     additional_bad, additional_bad_price, extra_person, extra_person_price], function (error, row, fields) {
                         connection.release();
                         if (error) {
@@ -49,13 +49,13 @@ class Room {
             });
         });
     }
-    updateRoom(id, name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag,
+    updateRoom(id, name, price, room_no, description, branch_id, category_name, smoke, wifi, tag,
         additional_bad, additional_bad_price, extra_person, extra_person_price, callback) {
-        console.log("Model, UpdateRoom: ", id, name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag,
+        console.log("Model, UpdateRoom: ", id, name, price, room_no, description, branch_id, category_name, smoke, wifi, tag,
             additional_bad, additional_bad_price, extra_person, extra_person_price);
         pool.getConnection(function (err, connection) {
-            connection.query('update room set name=?,price=?, currency=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=?,additional_bad=?, additional_bad_price=?, extra_person=?,extra_person_price=? where id=?',
-                [name, price, currency, room_no, description, branch_id, category_name, smoke, wifi, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, id],
+            connection.query('update room set name=?,price=?, room_no=?, description=?,  branch_id=?, update_date=current_timestamp,category_id=? ,smoke=?, wifi=?, tag=?,additional_bad=?, additional_bad_price=?, extra_person=?,extra_person_price=? where id=?',
+                [name, price, room_no, description, branch_id, category_name, smoke, wifi, tag, additional_bad, additional_bad_price, extra_person, extra_person_price, id],
                 function (error, row, fields) {
                     connection.release();
                     if (error) {

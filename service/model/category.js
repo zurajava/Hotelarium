@@ -15,7 +15,7 @@ class Category {
             });
         });
     }
-    registerCategory(name, price, currency, description, branch_id, parking, callback) {
+    registerCategory(name, price, description, branch_id, parking, callback) {
         console.log("Category, registerCategory ", name);
         var parkingValue;
         if (parking === true) {
@@ -24,8 +24,8 @@ class Category {
             parkingValue = 'NO';
         }
         pool.getConnection(function (err, connection) {
-            connection.query('insert into category(create_date,name,price, currency,description,branch_id,parking) values(current_timestamp,?,?,?,?,?,?)',
-                [name, price, currency, description, branch_id, parkingValue],
+            connection.query('insert into category(create_date,name,price,description,branch_id,parking) values(current_timestamp,?,?,?,?,?)',
+                [name, price, description, branch_id, parkingValue],
                 function (error, row, fields) {
                     connection.release();
                     if (error) {
@@ -51,11 +51,11 @@ class Category {
         });
     }
 
-    updateCategory(id, name, price, currency, description, branch_id, parking, callback) {
+    updateCategory(id, name, price, description, branch_id, parking, callback) {
         console.log("Category, updateCategory ", id);
         pool.getConnection(function (err, connection) {
-            connection.query('update category set name=?,price=?, currency=?, description=?,  branch_id=?, update_date=current_timestamp ,parking =? where id=?',
-                [name, price, currency, description, branch_id, parking, id],
+            connection.query('update category set name=?, price=?, description=?, branch_id=?, update_date=current_timestamp ,parking =? where id=?',
+                [name, price, description, branch_id, parking, id],
                 function (error, row, fields) {
                     connection.release();
                     if (error) {

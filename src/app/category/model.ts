@@ -6,8 +6,7 @@ export class Category {
     public description: string;
     public branch_id: string;
     public branch_name: string;
-    public price: number;
-    public currency: string;
+    public price: number; 
     public parking: string;
     public parkingForm: boolean;
 
