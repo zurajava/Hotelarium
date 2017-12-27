@@ -86,7 +86,7 @@ router.delete('/:id', (req, res) => {
     }
     //delete reservation 1 - reservation, 2- person 3 - service
     if (req.query.type == 1) {
-        pool.deleteReservation(req.params.id).then(data => {
+        pool.deleteReservationFull(req.params.id).then(data => {
             return res.json({ success: true, message: 'OK', data: data });
         }).catch(error => {
             console.log("error", error);

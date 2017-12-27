@@ -243,12 +243,15 @@ export class ReservationComponent implements OnInit {
   removeReservationExisting(id: ReservationDetail) {
     if (id.id != null) {
       this.reservationService.deleteReservation(id.id, this.brSelectedValue.toString()).subscribe(data => {
+        console.log("del", data);
         if (data.json().success === true) {
           var index = this.reservationInfoEdit.reservation.reservationDetail.indexOf(id, 0);
           if (index > -1) {
             this.reservationInfoEdit.reservation.reservationDetail.splice(index, 1);
           }
           this.fillDataRange();
+          this.showReservation = false;
+          this.showReservationPayment = false;
           this.toastr.success("Reservation deleted");
         } else {
           this.toastr.error(data.json().message);

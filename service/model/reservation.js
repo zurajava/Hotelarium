@@ -431,7 +431,7 @@ class Reservation {
         }
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('update reservation_detail set status_id=? where id=? and status_id=?',
+                connection.query('update reservation_detail set status_id=?,update_date=current_timestamp where id=? and status_id=?',
                     [status_id, id, existing_status],
                     function (error, results, fields) {
                         connection.release();
@@ -444,62 +444,87 @@ class Reservation {
             });
         })
     }
-
-    deleteReservation(id) {
-        console.log("Reservation, deleteReservation", id)
-        var deferred = q.defer();
-        this.deleteReservationServiceLocal(id).then(data => {
-            this.deleteReservationPersonLocal(id).then(person => {
-                return person;
-            });
-        }).then(data => {
-            this.deleteReservationPaymentLocal(id).then(payment => {
-                return payment;
-            })
-        }).then(data => {
-            this.deleteReservationLocal(id).then(data => {
-                return "OK";
-            })
-        }).then(data => {
-            deferred.resolve("OK");
-        }).catch(error => {
-            deferred.reject(error);
-        })
-        return deferred.promise;
-    }
-    registerReservationService(id, service) {
-        console.log("Register Reservation Service", id, service);
+    deleteReservationServiceLocal(id, connection) {
+        console.log("Model, DeleteReservationServiceLocal", id);
         return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
-                    [id, service.service_id, service.frequency, service.additional_comment],
-                    function (error, results, fields) {
-                        connection.release();
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve("OK");
-                        }
-                    });
-            });
+            connection.query('update reservation_service set status= 0 where reservation_id=?', [id],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
         })
     }
-    getReservationStatistic(branch_id) {
-        console.log("Reservation, getReservationStatistic", branch_id);
+    deleteReservationPersonLocal(id, connection) {
+        console.log("Model, DeleteReservationPersonLocal", id);
+        return new Promise(function (resolve, reject) {
+            connection.query('update reservation_person set status = 0 where reservation_id=?',
+                [id],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
+        })
+    }
+    deleteReservationPaymentLocal(id, connection) {
+        console.log("Model, DeleteReservationPaymentLocal", id);
+        return new Promise(function (resolve, reject) {
+            connection.query('update payment set status = 0 where reservation_id = ?',
+                [id],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
+        })
+    }
+    deleteReservationLocal(id, connection) {
+        console.log("Model, DeleteReservationDetailLocal", id);
+        return new Promise(function (resolve, reject) {
+            connection.query('update reservation_detail set status_id = 5 , update_date= current_timestamp where id=?; ', [id],
+                function (error, results, fields) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve("OK");
+                    }
+                });
+        })
+    }
+    deleteReservationFull(id) {
+        console.log("Reservation, DeleteReservationFull", id)
         var deferred = q.defer();
-        var query = 'SELECT CONCAT(YEAR(a.start_date), \'-\', SUBSTRING(MONTHNAME(a.start_date), 1, 3)) AS date, SUM(a.day_count) AS count FROM (SELECT d.start_date AS start_date,DATEDIFF(d.end_date, d.start_date) AS day_count ' +
-            ' FROM reservation_detail d  INNER JOIN room r ON d.room_id = r.id  WHERE  r.branch_id = ? ORDER BY d.start_date) a GROUP BY CONCAT(YEAR(a.start_date), \'-\',   SUBSTRING(MONTHNAME(a.start_date), 1, 3))';
-        pool.getConnection(function (err, connection) {
-            connection.query(query, [branch_id], function (error, row, fields) {
+        this.getConnection().then(connection => {
+            this.deleteReservationServiceLocal(id, connection).then(data => {
+                this.deleteReservationPersonLocal(id, connection).then(person => {
+                    return person;
+                });
+            }).then(data => {
+                this.deleteReservationPaymentLocal(id, connection).then(payment => {
+                    return payment;
+                })
+            }).then(data => {
+                this.deleteReservationLocal(id, connection).then(data => {
+                    connection.release();
+                    deferred.resolve("OK");
+                })
+            }).catch(err => {
                 connection.release();
-                if (error) {
-                    deferred.reject(error);
-                } else {
-                    deferred.resolve(row);
-                }
-            });
+                deferred.reject(err);
+            })
+        }).catch(err => {
+            connection.release();
+            deferred.reject(err);
         });
         return deferred.promise;
+
     }
 
     deleteReservationServiceByServiceId(id, service_id, connection) {
@@ -558,22 +583,6 @@ class Reservation {
         });
         return deferred.promise;
     }
-     
-    deleteReservationServiceLocal(id) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query('update reservation_service set status= 0 where reservation_id=?', [id],
-                    function (error, results, fields) {
-                        connection.release();
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve("OK");
-                        }
-                    });
-            });
-        })
-    }
 
     deleteReservationPerson(id, person_id) {
         console.log("Model, deleteReservationPerson", id, person_id);
@@ -592,45 +601,13 @@ class Reservation {
             });
         })
     }
-    deleteReservationPersonLocal(id) {
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query('update reservation_person set status = 0 where reservation_id=?',
-                    [id],
-                    function (error, results, fields) {
-                        connection.release();
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve("OK");
-                        }
-                    });
-            });
-        })
-    }
-    deleteReservationPaymentLocal(id) {
-        console.log("deleteReservationPaymentLocal", id);
-        return new Promise(function (resolve, reject) {
-            pool.getConnection(function (err, connection) {
-                connection.query('update payment set status = 0 where reservation_id = ?',
-                    [id],
-                    function (error, results, fields) {
-                        connection.release();
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve("OK");
-                        }
-                    });
-            });
-        })
-    }
 
-    deleteReservationLocal(id) {
+    registerReservationService(id, service) {
+        console.log("Register Reservation Service", id, service);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('update reservation_detail set status_id = 5 , update_date= current_timestamp where id=?; ',
-                    [id],
+                connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
+                    [id, service.service_id, service.frequency, service.additional_comment],
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
@@ -641,6 +618,23 @@ class Reservation {
                     });
             });
         })
+    }
+    getReservationStatistic(branch_id) {
+        console.log("Reservation, getReservationStatistic", branch_id);
+        var deferred = q.defer();
+        var query = 'SELECT CONCAT(YEAR(a.start_date), \'-\', SUBSTRING(MONTHNAME(a.start_date), 1, 3)) AS date, SUM(a.day_count) AS count FROM (SELECT d.start_date AS start_date,DATEDIFF(d.end_date, d.start_date) AS day_count ' +
+            ' FROM reservation_detail d  INNER JOIN room r ON d.room_id = r.id  WHERE  r.branch_id = ? ORDER BY d.start_date) a GROUP BY CONCAT(YEAR(a.start_date), \'-\',   SUBSTRING(MONTHNAME(a.start_date), 1, 3))';
+        pool.getConnection(function (err, connection) {
+            connection.query(query, [branch_id], function (error, row, fields) {
+                connection.release();
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve(row);
+                }
+            });
+        });
+        return deferred.promise;
     }
 
     registerPersonLocal(first_name, last_name, personal_no, email, gender, phone, company, company_name, company_code) {
