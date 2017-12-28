@@ -595,11 +595,12 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Type</th>
+                                                                <th>Name</th>
                                                                 <th>Day/s</th>
-                                                                <th>Full Price</th>
-                                                                <th>Additional Bad Price</th>
-                                                                <th>Extra Person Price</th>
-                                                                <th>Payd Amount</th>
+                                                                <th>Price</th>
+                                                                <!--<th>Additional Bad Price</th>
+                                                                <th>Extra Person Price</th>-->
+                                                                <th>Payd</th>
                                                                 <th>Amount Full</th>
                                                                 <th>Payment Type</th>
                                                                 <th>Receipt #</th>
@@ -610,12 +611,15 @@
                                                         <tbody>
                                                             <tr *ngFor="let pay of res.availablePayments; let i = index">
                                                                 <td>
-                                                                    <span class="badge bg-light-blue">{{pay.source}}</span>
+                                                                    <span class="label label-primary">{{pay.source}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="label label-success">{{pay.service_name}}</span>
                                                                 </td>
                                                                 <td>{{pay.day_count}}</td>
-                                                                <td>{{pay.room_prise}}</td>
-                                                                <td>{{pay.additional_bad_price}}</td>
-                                                                <td>{{pay.extra_person_price}}</td>
+                                                                <td>{{pay.room_prise+pay.additional_bad_price+pay.extra_person_price}}</td>
+                                                                <!--<td>{{pay.additional_bad_price}}</td>
+                                                                <td>{{pay.extra_person_price}}</td>-->
                                                                 <td>{{pay.payd_amount}}</td>
                                                                 <td>
                                                                     <input type="number" class="form-control input-sm" id="amount_full_p" [(ngModel)]="pay.price_full">
@@ -695,7 +699,7 @@
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Type</th>
+                                                                <th>Payment Type</th>
                                                                 <th>Source</th>
                                                                 <th>Ticket</th>
                                                                 <th>Additional Comment</th>

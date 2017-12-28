@@ -38,7 +38,7 @@ export class Payment {
     public ticket: String;
     public additional_comment: String;
     public service_id: number;
-
+    public service_name: String;
     public room_prise: number;
     public additional_bad_price: number;
     public extra_person_price: number;
@@ -50,7 +50,7 @@ export class Payment {
     public receipt: String;
 
     constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: String, source: String, ticket: String, additional_comment: String, service_id: number,
-        room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number) {
+        room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number,service_name:String) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.amount = amount;
@@ -67,6 +67,7 @@ export class Payment {
         this.day_count = day_count;
         this.payd_amount = payd_amount;
         this.price_full = price_full;
+        this.service_name = service_name;
     }
 }
 export class Reservation {
