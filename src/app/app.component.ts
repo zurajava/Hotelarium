@@ -30,8 +30,4 @@ export class AppComponent {
     this.user_name = this.authservice.getUserName();
 
   }
-  onToggle(toggleState: boolean) {
-
-    this.toggleState = !this.toggleState;
-  }
 }

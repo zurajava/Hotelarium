@@ -1,4 +1,4 @@
-<app-parking-header (onToggle)="onToggle($event)"></app-parking-header>
+<app-parking-header></app-parking-header>
 <aside class="main-sidebar">
     <section class="sidebar" *ngIf="roleID === 'ADMIN' || roleID === 'RESIDENT'">
         <div class="user-panel">
@@ -33,26 +33,26 @@
             </li>
             <li routerLink="/category">
                 <a>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-th"></i>
                     <span>Category</span>
                 </a>
             </li>
             <li routerLink="/roomService">
                 <a>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-laptop"></i>
                     <span>Service</span>
                 </a>
             </li>
             <li routerLink="/createRoom">
                 <a>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-calendar"></i>
                     <span>Room</span>
                 </a>
             </li>
 
             <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-table"></i>
+                <a href="/reports">
+                    <i class="fa fa-book"></i>
                     <span>Reports</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -102,25 +102,25 @@
             </li>
             <li routerLink="/category">
                 <a>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-th"></i>
                     <span>Category</span>
                 </a>
             </li>
             <li routerLink="/roomService">
                 <a>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-laptop"></i>
                     <span>Service</span>
                 </a>
             </li>
             <li routerLink="/createRoom">
                 <a>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-calendar"></i>
                     <span>Room</span>
                 </a>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-table"></i>
+                    <i class="fa fa-book"></i>
                     <span>Reports</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
