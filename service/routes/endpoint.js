@@ -7,24 +7,23 @@ var q = require('q');
 
 router.post('/authenticate', (req, res) => {
   console.log("Route, Authenticate");
-  pool.getUserByUserName(req.body.username, req.body.password, function (err, data) {
-    if (err) {
-      res.json(err);
-    } else {
+  pool.getUserByUserName(req.body.username, req.body.password)
+    .then(data => {
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (data.password.toUpperCase() != req.body.password.toUpperCase()) {
+      } else if (data[0].password.toUpperCase() != req.body.password.toUpperCase()) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
-        var token = jwt.sign(data, 'ilovescotchyscotch', { expiresIn: "3d" });
+        var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: "3d" });
         res.json({
           success: true,
-          user: data,
+          user: data[0],
           token: token
         });
       }
-    }
-  });
+    }).catch(error => {
+      res.json({ success: false, message: error });
+    });
 });
 
 router.post('/changePassword', (req, res) => {

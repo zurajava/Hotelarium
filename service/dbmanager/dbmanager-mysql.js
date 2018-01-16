@@ -12,18 +12,22 @@ var pool = mysql.createPool({
     multipleStatements: true
 });
 
-pool.getUserByUserName = function (username, password, callback) {
+pool.getUserByUserName = function (username, password) {
     console.log("Model, GetUserName", username);
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM users where user_name=?', [username], function (error, row, fields) {
-            connection.release();
-            if (error) {
-                throw error;
-            } else {
-                callback(null, row[0]);
-            }
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (err, connection) {
+            connection.query('SELECT * FROM users where user_name=?',
+                [username],
+                function (error, results, fields) {
+                    connection.release();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                });
         });
-    });
+    })
 }
 pool.getUserOrganisation = function (user_id, callback) {
     console.log("Model, GetUserOrganisation", user_id);
