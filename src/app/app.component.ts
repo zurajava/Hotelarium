@@ -20,17 +20,19 @@ export class AppComponent {
     this.getRoleID();
     this.getUserName();
     this.isUserLogdIn();
-    console.log("AppComponent", this.isLoggedIn);
+    console.log("AppComponent1", this.isLoggedIn);
     this.subscription = authservice.userLoggedIn$.subscribe(
       data => {
         this.getRoleID();
         this.getUserName();
         this.isUserLogdIn();
-        console.log("Load1 Branch");
-        this.loadBranchLis();
+        console.log("AppComponent2");
+        if (this.isLoggedIn) {
+          this.loadBranchLis();
+        }
       });
     if (this.isLoggedIn) {
-      console.log("Load2 Branch");
+      console.log("AppComponent3");
       this.loadBranchLis();
     }
   }

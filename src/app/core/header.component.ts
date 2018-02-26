@@ -14,8 +14,6 @@ export class HeaderComponent {
 
     roleID: any;
     user_name:any;
-    @Output() onToggle = new EventEmitter<boolean>();
-    menuToggle = false;
     subscription: Subscription;
     constructor(private router: Router, private authservice: AuthService) {
         this.getRoleID();
@@ -39,10 +37,5 @@ export class HeaderComponent {
         this.authservice.logout();
         this.router.navigate(['/login']);
         this.authservice.announceLogin();
-    }
-
-    toggleMenu() {
-        this.menuToggle = !this.menuToggle;
-        this.onToggle.emit(this.menuToggle);
     }
 }

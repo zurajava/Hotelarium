@@ -28,10 +28,11 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Category 1");
     this.selectedCategory = new Category('', '', false);
     this.btnText = "ADD";
     this.subscription = this.authservice.getMessage().subscribe(message => {
-      console.log("Category", message);
+      console.log("Category 2", message);
       this.brSelectedValue = message;
       this.loadData(this.brSelectedValue);
     });
