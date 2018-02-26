@@ -1,6 +1,7 @@
 import { AuthService } from './core/auth.service';
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { CategoryService } from './category/category.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,10 @@ export class AppComponent {
   user_name: any;
   subscription: Subscription;
   toggleState = false;
-  constructor(private authservice: AuthService) {
+  public userBranch: Array<any>;
+  public brSelectedValue: number;
+
+  constructor(private categoryService: CategoryService, private authservice: AuthService) {
     this.getRoleID();
     this.getUserName();
     this.subscription = authservice.userLoggedIn$.subscribe(
@@ -20,6 +24,14 @@ export class AppComponent {
         this.getRoleID();
         this.getUserName();
       });
+
+    this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
+      if (data.json().success === true) {
+        this.userBranch = data.json().branch;
+        this.brSelectedValue = this.userBranch[0].id;
+        this.authservice.sendMessage(this.brSelectedValue);
+      }
+    });
   }
 
   getRoleID() {
@@ -29,5 +41,9 @@ export class AppComponent {
   getUserName() {
     this.user_name = this.authservice.getUserName();
 
+  }
+  public brValueChange(value: any): void {
+    this.brSelectedValue = value; 
+    this.authservice.sendMessage(this.brSelectedValue);
   }
 }

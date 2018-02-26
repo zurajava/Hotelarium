@@ -2,13 +2,13 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { CategoryService } from './category.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Router, RouterModule } from '@angular/router';
-
 import { Observable } from 'rxjs/Rx';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from './model';
 import { AuthService } from './../core/auth.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -17,10 +17,10 @@ import { AuthService } from './../core/auth.service';
   styleUrls: ['./category.scss']
 })
 export class CategoryComponent implements OnInit {
+  subscription: Subscription;
   public items: Category[];
   public selectedCategory: Category;
   public btnText: string;
-  public userBranch: Array<any>;
   public brSelectedValue: number;
 
   constructor(private categoryService: CategoryService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
@@ -30,15 +30,11 @@ export class CategoryComponent implements OnInit {
   ngOnInit() {
     this.selectedCategory = new Category('', '', false);
     this.btnText = "ADD";
-    this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      if (data.json().success === true) {
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id
-        this.loadData(this.brSelectedValue);
-      } else {
-        this.toastr.error(data.json().message);
-      }
+    this.subscription = this.authservice.getMessage().subscribe(message => {
+      this.brSelectedValue = message
+      this.loadData(this.brSelectedValue);
     });
+
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;
@@ -57,6 +53,7 @@ export class CategoryComponent implements OnInit {
           }
         }
       } else {
+        this.items = [];
         this.toastr.error(data.json().message);
       }
     });

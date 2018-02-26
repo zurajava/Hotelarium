@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ServiceService } from './service.service';
-
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Rx';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
@@ -17,6 +17,7 @@ import { AuthService } from './../core/auth.service';
   styleUrls: ['./service.scss']
 })
 export class ServiceComponent implements OnInit {
+  subscription: Subscription;
   public type: any[] = [{
     "typeId": "DURATIONALL",
     "typeName": "DURATIONALL"
@@ -37,8 +38,6 @@ export class ServiceComponent implements OnInit {
 
   public pageSize: number = 10;
   public skip: number = 0;
-
-  public userBranch: Array<any>;
   public brSelectedValue: number;
 
   constructor(private serviceService: ServiceService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
@@ -48,14 +47,9 @@ export class ServiceComponent implements OnInit {
   ngOnInit() {
     this.selectedService = new Service('', '', null, '');
     this.btnText = "ADD";
-    this.serviceService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      if (data.json().success === true) {
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id
-        this.loadData(this.brSelectedValue);
-      } else {
-        this.toastr.error(data.json().message);
-      }
+    this.subscription = this.authservice.getMessage().subscribe(message => {
+      this.brSelectedValue = message
+      this.loadData(this.brSelectedValue);
     });
   }
   public category(id: number): any {
@@ -71,6 +65,7 @@ export class ServiceComponent implements OnInit {
       if (data.json().success === true) {
         this.items = data.json().service;
       } else {
+        this.items = [];
         this.toastr.error(data.json().message);
       }
     });

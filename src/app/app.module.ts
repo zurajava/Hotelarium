@@ -19,6 +19,7 @@ import { ServiceModule } from './service/service.module';
 import { ProfileModule } from './profile/profile.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SalesModule } from './sales/sales.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SalesModule } from './sales/sales.module';
     CategoryModule,
     ServiceModule,
     ProfileModule,
-    SalesModule
+    SalesModule,
+    FormsModule
   ],
   providers: [AuthGuard, AuthService, AdminGuard],
   bootstrap: [AppComponent]

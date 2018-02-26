@@ -1,10 +1,9 @@
 import { Subject } from 'rxjs/Subject';
-
+import { Observable } from 'rxjs';
 
 export class AuthService {
+    private subject = new Subject<any>();
     private userLoggedInSource = new Subject<string>();
-
-    // Observable string streams
     userLoggedIn$ = this.userLoggedInSource.asObservable();
 
 
@@ -75,5 +74,17 @@ export class AuthService {
         }
         return this.user_name;
 
+    }
+
+    sendMessage(branch_id: number) {
+        this.subject.next(branch_id);
+    }
+
+    clearMessage() {
+        this.subject.next();
+    }
+
+    getMessage(): Observable<any> {
+        return this.subject.asObservable();
     }
 }

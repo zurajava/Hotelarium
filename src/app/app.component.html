@@ -11,6 +11,13 @@
                     <i class="fa fa-circle text-success"></i>{{user_name}}</a>
             </div>
         </div>
+        <form class="sidebar-form">
+
+            <select class="form-control select2 input-sm" id="id_n_service_id222" name="id_n_service_id222" [(ngModel)]="brSelectedValue"
+                (ngModelChange)="brValueChange($event)">
+                <option *ngFor="let x of userBranch" [value]="x.id">{{x.name}}</option>
+            </select>
+        </form>
 
         <ul *ngIf="roleID === 'ADMIN'" class="sidebar-menu" data-widget="tree">
             <li routerLink="/reservation">

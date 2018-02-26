@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Rx';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { State, process } from '@progress/kendo-data-query';
 import { AuthService } from './../core/auth.service';
-
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -19,14 +19,13 @@ import { AuthService } from './../core/auth.service';
 })
 
 export class RoomComponent implements OnInit {
+  subscription: Subscription;
   public items: Room[];
   public selectedRoom: Room;
   public btnText: string;
 
   public room_category: any[];
   public dataCategory: any[];
-
-  public userBranch: Array<any>;
   public brSelectedValue: number;
 
   constructor(private roomService: RoomService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
@@ -36,19 +35,13 @@ export class RoomComponent implements OnInit {
   ngOnInit() {
     this.selectedRoom = new Room('', '', null, null, null, null, null, null, '', '', '');
     this.btnText = "ADD";
-    this.roomService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      if (data.json().success === true) {
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id
-        this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
-          this.room_category = data.json().category;
-          this.loadData(this.brSelectedValue);
-        });
-      } else {
-        this.toastr.error(data.json().message);
-      }
 
-
+    this.subscription = this.authservice.getMessage().subscribe(message => {
+      this.brSelectedValue = message;
+      this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
+        this.room_category = data.json().category;
+        this.loadData(this.brSelectedValue);
+      });
     });
   }
   public brValueChange(value: any): void {
@@ -66,6 +59,7 @@ export class RoomComponent implements OnInit {
       if (data.json().success === true) {
         this.items = data.json().room;
       } else {
+        this.items = [];
         this.toastr.error(data.json().message);
       }
     });
