@@ -34,7 +34,6 @@ export class CategoryComponent implements OnInit {
       this.brSelectedValue = message
       this.loadData(this.brSelectedValue);
     });
-
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;

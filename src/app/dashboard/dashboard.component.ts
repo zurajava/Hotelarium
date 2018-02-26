@@ -3,6 +3,7 @@ import { DashboardService } from './dashboard.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { AuthService } from './../core/auth.service';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -13,6 +14,7 @@ import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 
 
 export class DashboardComponent implements OnInit {
+  subscription: Subscription;
   public userBranch: Array<any>;
   public brSelectedValue: number;
 
@@ -31,23 +33,16 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dashboardService.getUserBranch(this.authservice.getUserID()).then(data => {
-      console.log("ngOnInit");
-      if (data.success === true) {
-        this.userBranch = data.branch;
-        this.brSelectedValue = this.userBranch[0].id
-        this.dashboardService.getStatistic(this.brSelectedValue.toString()).then(data => {
-          var dataTemp = data.data;
-          for (var i = 0; i < dataTemp.length; i++) {
-            this.barChartLabels[i] = dataTemp[i].date;
-            this.barChartData[0].data[i] = dataTemp[i].count;
-          }
-          this.barChartData = this.barChartData.slice();
-          console.log("ngOnInit", JSON.stringify(this.barChartLabels), JSON.stringify(this.barChartData));
-        });
-      } else {
-        this.toastr.error(data.message);
-      }
+    this.subscription = this.authservice.getMessage().subscribe(message => {
+      this.brSelectedValue = message
+      this.dashboardService.getStatistic(this.brSelectedValue.toString()).then(data => {
+        var dataTemp = data.data;
+        for (var i = 0; i < dataTemp.length; i++) {
+          this.barChartLabels[i] = dataTemp[i].date;
+          this.barChartData[0].data[i] = dataTemp[i].count;
+        }
+        this.barChartData = this.barChartData.slice();
+      });
     });
   }
   public brValueChange(value: any): void {
@@ -63,7 +58,6 @@ export class DashboardComponent implements OnInit {
     });
   }
   public chartClicked(e: any): void {
-    console.log(e);
     this.barChartData = this.barChartData.slice();
   }
 
