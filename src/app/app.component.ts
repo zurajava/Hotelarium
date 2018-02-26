@@ -41,6 +41,7 @@ export class AppComponent {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
         this.brSelectedValue = this.userBranch[0].id;
+        this.authservice.setBranchId(this.brSelectedValue);
         this.authservice.sendMessage(this.brSelectedValue);
       }
     });

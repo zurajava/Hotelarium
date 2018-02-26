@@ -11,6 +11,7 @@ export class AuthService {
     roleID = 'anonymous';
     user_id = 'anonymous';
     user_name = 'anonymous';
+    branch_id: number;
 
 
     // Service message commands
@@ -86,5 +87,13 @@ export class AuthService {
 
     getMessage(): Observable<any> {
         return this.subject.asObservable();
+    }
+    setBranchId(branch_id) {
+        this.branch_id = branch_id;
+        console.log("SET",this.branch_id);
+    }
+    getBranchId() {
+        console.log("GET",this.branch_id);
+        return this.branch_id;
     }
 }

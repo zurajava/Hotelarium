@@ -1,6 +1,6 @@
 import { ReportsService } from './reports.service';
 import { ToastModule, ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './../core/auth.service';
@@ -18,7 +18,7 @@ declare var $: any;
   styleUrls: ['./reports.scss']
 })
 
-export class ReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public userBranch: Array<any>;
 
@@ -116,7 +116,9 @@ export class ReportsComponent implements OnInit {
           }
         });
     });
-
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   filterPayment() {
     this.loadRezervationPayment();

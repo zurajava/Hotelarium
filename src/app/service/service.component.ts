@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ServiceService } from './service.service';
@@ -16,7 +16,7 @@ import { AuthService } from './../core/auth.service';
   templateUrl: './service.html',
   styleUrls: ['./service.scss']
 })
-export class ServiceComponent implements OnInit {
+export class ServiceComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public type: any[] = [{
     "typeId": "DURATIONALL",
@@ -51,6 +51,9 @@ export class ServiceComponent implements OnInit {
       this.brSelectedValue = message
       this.loadData(this.brSelectedValue);
     });
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   public category(id: number): any {
     return this.type.find(x => x.typeId === id);

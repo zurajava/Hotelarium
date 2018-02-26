@@ -13,6 +13,7 @@ export class CategoryService {
   }
 
   getCategory(branch_id: number) {
+    if(branch_id ===undefined) return;
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);

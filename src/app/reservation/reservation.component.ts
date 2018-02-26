@@ -1,6 +1,6 @@
 import { ReservationService } from './reservation.service';
 import { ToastModule, ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Component, OnInit, ViewContainerRef, enableProdMode } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, enableProdMode, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgForm, FormsModule } from '@angular/forms';
 import * as moment from 'moment';
@@ -28,7 +28,7 @@ enableProdMode();
     { provide: 'Window', useValue: window }
   ]
 })
-export class ReservationComponent implements OnInit {
+export class ReservationComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public persons: Person[];
   public genders: Array<{ text: string }> = [
@@ -64,7 +64,7 @@ export class ReservationComponent implements OnInit {
   public personalNo: string;
   public reserv: Boolean = true;
   public checkIn: Boolean = true;
-  public checkOut: Boolean = false; 
+  public checkOut: Boolean = false;
   public brSelectedValue: number;
   saveUsername: Boolean = true;
   public reservationInfoEdit: ReservationInfo;
@@ -80,11 +80,14 @@ export class ReservationComponent implements OnInit {
     this.reservationInfo = new ReservationInfo(new Person(null, '', '', '', '', 'Title', '', new Date(), ''), new Reservation(null, null, null, null, null,
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
-  ngOnInit() { 
+  ngOnInit() {
     this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message; 
+      this.brSelectedValue = message;
       this.fillDataRange();
     });
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   public categoryValueChange(value: any, reservation: ReservationDetail): void {
     this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
@@ -165,7 +168,7 @@ export class ReservationComponent implements OnInit {
             }
           }
         } else {
-          this.data =[];
+          this.data = [];
           this.toastr.error(data.message);
         }
       });
@@ -695,7 +698,7 @@ export class ReservationComponent implements OnInit {
             ((this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full +
               this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full +
               this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full) -
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount),null);
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount), null);
           paymentList.push(p1);
 
           var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
@@ -720,7 +723,7 @@ export class ReservationComponent implements OnInit {
           }
           this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
         }
-        console.log("ReservationInfoEdit",JSON.stringify(this.reservationInfoEdit));
+        console.log("ReservationInfoEdit", JSON.stringify(this.reservationInfoEdit));
       } else {
         this.toastr.error(data.message);
       }

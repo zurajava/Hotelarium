@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./room.scss']
 })
 
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public items: Room[];
   public selectedRoom: Room;
@@ -43,6 +43,9 @@ export class RoomComponent implements OnInit {
         this.loadData(this.brSelectedValue);
       });
     });
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;

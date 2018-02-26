@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { CategoryService } from './category.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Router, RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './category.html',
   styleUrls: ['./category.scss']
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public items: Category[];
   public selectedCategory: Category;
@@ -25,6 +25,8 @@ export class CategoryComponent implements OnInit {
 
   constructor(private categoryService: CategoryService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
+    console.log("Category 0");
+
   }
 
   ngOnInit() {
@@ -36,6 +38,11 @@ export class CategoryComponent implements OnInit {
       this.brSelectedValue = message;
       this.loadData(this.brSelectedValue);
     });
+    this.brSelectedValue = this.authservice.getBranchId();
+    this.loadData(this.brSelectedValue);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;

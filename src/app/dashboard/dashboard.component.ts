@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public userBranch: Array<any>;
   public brSelectedValue: number;
@@ -44,6 +44,9 @@ export class DashboardComponent implements OnInit {
         this.barChartData = this.barChartData.slice();
       });
     });
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   public chartClicked(e: any): void {
     this.barChartData = this.barChartData.slice();
