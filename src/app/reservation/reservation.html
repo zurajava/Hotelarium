@@ -5,12 +5,6 @@
                 <div class="box-header with-border">
                     <div class="box-body">
                         <div class="col-sm-2">
-                            <select class="form-control select2 input-sm" id="id_n_service_id2221" name="id_n_service_id2221" [(ngModel)]="brSelectedValue"
-                                (ngModelChange)="brValueChange($event)" style="width:70%">
-                                <option *ngFor="let x of userBranch" [value]="x.id">{{x.name}}</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2">
                             <kendo-datepicker [(value)]="dateFrom" id="dateFrom" name="ndateFrom"></kendo-datepicker>
                         </div>
                         <div class="col-sm-2">

@@ -16,6 +16,7 @@ import { IntlService } from '@progress/kendo-angular-intl';
 import { SafeHtml } from '@angular/platform-browser';
 import * as jsPDF from 'jspdf';
 import { Console } from '@angular/core/src/console';
+import { Subscription } from 'rxjs/Subscription';
 
 enableProdMode();
 @Component({
@@ -28,7 +29,7 @@ enableProdMode();
   ]
 })
 export class ReservationComponent implements OnInit {
-
+  subscription: Subscription;
   public persons: Person[];
   public genders: Array<{ text: string }> = [
     { text: "Male" },
@@ -63,8 +64,7 @@ export class ReservationComponent implements OnInit {
   public personalNo: string;
   public reserv: Boolean = true;
   public checkIn: Boolean = true;
-  public checkOut: Boolean = false;
-  public userBranch: Array<any>;
+  public checkOut: Boolean = false; 
   public brSelectedValue: number;
   saveUsername: Boolean = true;
   public reservationInfoEdit: ReservationInfo;
@@ -80,22 +80,11 @@ export class ReservationComponent implements OnInit {
     this.reservationInfo = new ReservationInfo(new Person(null, '', '', '', '', 'Title', '', new Date(), ''), new Reservation(null, null, null, null, null,
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
-  ngOnInit() {
-    this.reservationService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      if (data.json().success === true) {
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id;
-        this.fillDataRange();
-      } else {
-        this.toastr.error(data.json().message);
-      }
+  ngOnInit() { 
+    this.subscription = this.authservice.getMessage().subscribe(message => {
+      this.brSelectedValue = message; 
+      this.fillDataRange();
     });
-  }
-
-  public brValueChange(value: any): void {
-    this.brSelectedValue = value;
-    // TO DO
-    this.fillDataRange();
   }
   public categoryValueChange(value: any, reservation: ReservationDetail): void {
     this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
@@ -176,6 +165,7 @@ export class ReservationComponent implements OnInit {
             }
           }
         } else {
+          this.data =[];
           this.toastr.error(data.message);
         }
       });
