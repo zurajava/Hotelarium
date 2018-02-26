@@ -33,16 +33,15 @@ export class LoginComponent {
         }
         this.loginservice.loginUser(this.loginUserDetails)
             .subscribe(
-            data => {
-                this.router.navigate(['reservation']);
-                console.log(data);
-                this.toastr.success(data);
-                this.authservice.login();
-                this.authservice.announceLogin();
-            },
-            error => {
-                this.toastr.error(error);
-            }
+                data => {
+                    this.router.navigate(['reservation']);
+                    this.toastr.success(data);
+                    this.authservice.login();
+                    this.authservice.announceLogin();
+                },
+                error => {
+                    this.toastr.error(error);
+                }
             )
     }
 

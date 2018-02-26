@@ -12,19 +12,29 @@ export class AppComponent {
   roleID: any;
   user_name: any;
   subscription: Subscription;
-  toggleState = false;
+  isLoggedIn: boolean;
   public userBranch: Array<any>;
   public brSelectedValue: number;
 
   constructor(private categoryService: CategoryService, private authservice: AuthService) {
     this.getRoleID();
     this.getUserName();
+    this.isUserLogdIn();
+    console.log("AppComponent", this.isLoggedIn);
     this.subscription = authservice.userLoggedIn$.subscribe(
       data => {
         this.getRoleID();
         this.getUserName();
+        this.isUserLogdIn();
+        console.log("Load1 Branch");
+        this.loadBranchLis();
       });
-
+    if (this.isLoggedIn) {
+      console.log("Load2 Branch");
+      this.loadBranchLis();
+    }
+  }
+  loadBranchLis() {
     this.categoryService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
       if (data.json().success === true) {
         this.userBranch = data.json().branch;
@@ -33,7 +43,6 @@ export class AppComponent {
       }
     });
   }
-
   getRoleID() {
     this.roleID = this.authservice.getRoleID();
 
@@ -42,8 +51,12 @@ export class AppComponent {
     this.user_name = this.authservice.getUserName();
 
   }
+  isUserLogdIn() {
+    this.isLoggedIn = this.authservice.getIsLoggedIn();
+
+  }
   public brValueChange(value: any): void {
-    this.brSelectedValue = value; 
+    this.brSelectedValue = value;
     this.authservice.sendMessage(this.brSelectedValue);
   }
 }

@@ -31,7 +31,8 @@ export class CategoryComponent implements OnInit {
     this.selectedCategory = new Category('', '', false);
     this.btnText = "ADD";
     this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message
+      console.log("Category", message);
+      this.brSelectedValue = message;
       this.loadData(this.brSelectedValue);
     });
   }
