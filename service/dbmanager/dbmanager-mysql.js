@@ -1,4 +1,6 @@
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
+var SALT_WORK_FACTOR = 10;
 var q = require('q');
 
 var pool = mysql.createPool({
@@ -27,6 +29,56 @@ pool.getUserByUserName = function (username, password) {
                     }
                 });
         });
+    })
+}
+
+pool.changePassword = function (username, password) {
+    console.log("Model, Change Password", username);
+    return new Promise(function (resolve, reject) {
+        bcrypt.genSalt(SALT_WORK_FACTOR)
+            .then(salt => {
+                return bcrypt.hash(password, salt);
+            }).then(hash => {
+                pool.getConnection(function (err, connection) {
+                    connection.query('update users set password=? where user_name=?',
+                        [hash, username],
+                        function (error, results, fields) {
+                            connection.release();
+                            if (error) {
+                                reject(error);
+                            } else {
+                                resolve(results);
+                            }
+                        });
+                });
+            }).catch(err => {
+                reject(err);
+            });
+    })
+}
+
+pool.registerUser = function (user_name, first_name, last_name, email, password) {
+    console.log("Model, Register User", user_name);
+    return new Promise(function (resolve, reject) {
+        bcrypt.genSalt(SALT_WORK_FACTOR)
+            .then(salt => {
+                return bcrypt.hash(password, salt);
+            }).then(hash => {
+                pool.getConnection(function (err, connection) {
+                    connection.query('insert into users(user_name,first_name,last_name,email,password,role,change_password)values(?,?,?,?,?,\'RESIDENT\',0)',
+                        [user_name, first_name, last_name, email, hash],
+                        function (error, results, fields) {
+                            connection.release();
+                            if (error) {
+                                reject(error);
+                            } else {
+                                resolve(results);
+                            }
+                        });
+                });
+            }).catch(err => {
+                reject(err);
+            });
     })
 }
 pool.getUserOrganisation = function (user_id, callback) {

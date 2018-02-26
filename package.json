@@ -62,7 +62,8 @@
     "rxjs": "^5.1.0",
     "xlsx": "^0.11.15",
     "xlsx-style": "^0.8.13",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "bcrypt": "^1.0.3"
   },
   "devDependencies": {
     "@angular/cli": "^1.2.4",

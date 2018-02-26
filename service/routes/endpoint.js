@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 var url = require("url");
 const pool = require('../dbmanager/dbmanager-mysql.js');
+const bcrypt = require('bcrypt');
 var q = require('q');
 
 router.post('/authenticate', (req, res) => {
@@ -11,7 +12,7 @@ router.post('/authenticate', (req, res) => {
     .then(data => {
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (data[0].password.toUpperCase() != req.body.password.toUpperCase()) {
+      } else if (!bcrypt.compare(data[0].password, req.body.password)) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
         var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: "3d" });
@@ -22,20 +23,27 @@ router.post('/authenticate', (req, res) => {
         });
       }
     }).catch(error => {
+      console.log("Error", error);
       res.json({ success: false, message: error });
     });
 });
 
 router.post('/changePassword', (req, res) => {
-  console.log("Route, Authenticate");
-  pool.getUserByUserName(req.body.username, req.body.password, function (err, data) {
-    console.log(req.body.username + ' ' + req.body.password)
-    if (err) {
-      res.json(err);
-    } else {
-      console.log(data.password);
+  console.log("Route, Change password", req.body.username, req.body.password);
+  pool.changePassword(req.body.username, req.body.password).then(data => {
+    res.json({ success: true, message: data.affectedRows });
+  }).catch(error => {
+    res.json(error);
+  });
+});
 
-    }
+router.post('/registerUser', (req, res) => {
+  console.log("Route, Register User", req.body.username, req.body.password);
+  pool.registerUser(req.body.username, req.body.first_name, req.body.last_name, req.body.email, req.body.password).then(data => {
+    console.log(data);
+    res.json({ success: true, message: data.affectedRows });
+  }).catch(error => {
+    res.json(error);
   });
 });
 
