@@ -45,18 +45,6 @@ export class DashboardComponent implements OnInit {
       });
     });
   }
-  public brValueChange(value: any): void {
-    this.brSelectedValue = value;
-    this.dashboardService.getStatistic(this.brSelectedValue.toString()).then(data => {
-      var dataTemp = data.data;
-      for (var i = 0; i < dataTemp.length; i++) {
-        this.barChartLabels[i] = dataTemp[i].date;
-        this.barChartData[0].data[i] = dataTemp[i].count;
-      }
-      this.barChartData = this.barChartData.slice();
-      console.log("ngOnInit", JSON.stringify(this.barChartLabels), JSON.stringify(this.barChartData));
-    });
-  }
   public chartClicked(e: any): void {
     this.barChartData = this.barChartData.slice();
   }
