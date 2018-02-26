@@ -17,15 +17,9 @@ class Category {
     }
     registerCategory(name, price, description, branch_id, parking, callback) {
         console.log("Category, registerCategory ", name);
-        var parkingValue;
-        if (parking === true) {
-            parkingValue = 'YES';
-        } else {
-            parkingValue = 'NO';
-        }
         pool.getConnection(function (err, connection) {
             connection.query('insert into category(create_date,name,price,description,branch_id,parking) values(current_timestamp,?,?,?,?,?)',
-                [name, price, description, branch_id, parkingValue],
+                [name, price, description, branch_id, parking],
                 function (error, row, fields) {
                     connection.release();
                     if (error) {

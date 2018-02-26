@@ -24,7 +24,6 @@ export class CategoryService {
 
   addCategory(data: Category) {
     const body = JSON.stringify(data);
-    console.log(body);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

@@ -73,7 +73,7 @@ export class CategoryComponent implements OnInit {
   }
   public saveCategory() {
     this.selectedCategory.branch_id = this.brSelectedValue.toString();
-    if (this.selectedCategory) {
+    if (this.selectedCategory.parkingForm === true) {
       this.selectedCategory.parking = "YES";
     } else {
       this.selectedCategory.parking = "NO";
