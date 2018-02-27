@@ -35,17 +35,23 @@ export class RoomComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedRoom = new Room('', '', null, null, null, null, null, null, '', '', '');
     this.btnText = "ADD";
-
-    this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message;
-      this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
-        this.room_category = data.json().category;
-        this.loadData(this.brSelectedValue);
+    this.brSelectedValue = this.authservice.getBranchId();
+    if (!this.brSelectedValue) {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message;
+        this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
+          this.room_category = data.json().category;
+          this.loadData(this.brSelectedValue);
+        });
       });
-    });
+    } else {
+      this.loadData(this.brSelectedValue);
+    }
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;

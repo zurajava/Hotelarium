@@ -58,64 +58,10 @@ export class ReportsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.authservice.getMessage().subscribe(message => {
       this.brSelectedValue = message;
-      this.reportsService.getPaymentReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
-        this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
-          if (data.success === true) {
-            this.data = data.payments;
-            console.log("this.data", this.data);
-            $(function () {
-              $("#example1").DataTable({
-                'paging': false,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': false,
-                'info': false,
-                'autoWidth': false
-              });
-            });
-          } else {
-            this.toastr.error(data.json().message);
-          }
-        });
-      this.reportsService.getPaymentOverall(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFromOverall, 'yyyy-MM-dd'),
-        this.intl.formatDate(this.dateToOverall, 'yyyy-MM-dd')).then(data => {
-          if (data.success === true) {
-            this.paymentOverall = data.data;
-            console.log("this.paymentOverall", this.paymentOverall);
-            $(function () {
-              $("#example2").DataTable({
-                'paging': false,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': false,
-                'info': false,
-                'autoWidth': false
-              });
-            });
-          } else {
-            this.toastr.error(data.json().message);
-          }
-        });
-      this.reportsService.getPaymentDetailed(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFromDetailed, 'yyyy-MM-dd'),
-        this.intl.formatDate(this.dateToDetailed, 'yyyy-MM-dd')).then(data => {
-          if (data.success === true) {
-            this.paymentDetailed = data.data;
-            console.log("this.paymentDetailed", this.paymentDetailed);
-            $(function () {
-              $("#example3").DataTable({
-                'paging': false,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': false,
-                'info': false,
-                'autoWidth': false
-              });
-            });
-          } else {
-            this.toastr.error(data.json().message);
-          }
-        });
+      this.loadData();
     });
+    this.brSelectedValue = this.authservice.getBranchId();
+    this.loadData();
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -128,6 +74,66 @@ export class ReportsComponent implements OnInit, OnDestroy {
   }
   filterPaymentOwerall() {
     this.loadRezervationPaymentOwerall();
+  }
+  loadData() {
+    this.reportsService.getPaymentReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+        if (data.success === true) {
+          this.data = data.payments;
+          console.log("this.data", this.data);
+          $(function () {
+            $("#example1").DataTable({
+              'paging': false,
+              'lengthChange': false,
+              'searching': false,
+              'ordering': false,
+              'info': false,
+              'autoWidth': false
+            });
+          });
+        } else {
+          this.toastr.error(data.json().message);
+        }
+      });
+    this.reportsService.getPaymentOverall(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFromOverall, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateToOverall, 'yyyy-MM-dd')).then(data => {
+        if (data.success === true) {
+          this.paymentOverall = data.data;
+          console.log("this.paymentOverall", this.paymentOverall);
+          $(function () {
+            $("#example2").DataTable({
+              'paging': false,
+              'lengthChange': false,
+              'searching': false,
+              'ordering': false,
+              'info': false,
+              'autoWidth': false
+            });
+          });
+        } else {
+          this.toastr.error(data.json().message);
+        }
+      });
+    this.reportsService.getPaymentDetailed(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFromDetailed, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateToDetailed, 'yyyy-MM-dd')).then(data => {
+        if (data.success === true) {
+          this.paymentDetailed = data.data;
+          console.log("this.paymentDetailed", this.paymentDetailed);
+          $(function () {
+            $("#example3").DataTable({
+              'paging': false,
+              'lengthChange': false,
+              'searching': false,
+              'ordering': false,
+              'info': false,
+              'autoWidth': false
+            });
+          });
+        } else {
+          this.toastr.error(data.json().message);
+        }
+      });
+
   }
   loadRezervationPayment() {
     this.data = null;

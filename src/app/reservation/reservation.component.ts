@@ -81,13 +81,20 @@ export class ReservationComponent implements OnInit, OnDestroy {
       [new ReservationDetail(null, null, null, null, null, null, null, null, null, null, [], [], null, false, false, true)]));
   }
   ngOnInit() {
-    this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message;
+    this.brSelectedValue = this.authservice.getBranchId();
+    if (!this.brSelectedValue) {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message;
+        this.fillDataRange();
+      });
+    } else {
       this.fillDataRange();
-    });
+    }
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   public categoryValueChange(value: any, reservation: ReservationDetail): void {
     this.reservationService.getRoom(this.brSelectedValue, value).subscribe(data => {
@@ -121,7 +128,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
       datesArray[i] = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000 * i));
     }
     this.dateRange = datesArray;
-    this.reservationService.getReservation(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+    this.reservationService.getReservation(this.brSelectedValue, this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
       this.intl.formatDate(this.dateTo, 'yyyy-MM-dd'), this.reserv, this.checkIn, this.checkOut, this.personalNo).then(data => {
         if (data.success === true) {
           this.data = data.data;

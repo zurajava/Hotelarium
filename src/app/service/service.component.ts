@@ -47,13 +47,20 @@ export class ServiceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedService = new Service('', '', null, '');
     this.btnText = "ADD";
-    this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message
+    this.brSelectedValue = this.authservice.getBranchId();
+    if (!this.brSelectedValue) {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message
+        this.loadData(this.brSelectedValue);
+      });
+    } else {
       this.loadData(this.brSelectedValue);
-    });
+    }
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   public category(id: number): any {
     return this.type.find(x => x.typeId === id);

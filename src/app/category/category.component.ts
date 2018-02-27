@@ -25,24 +25,29 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   constructor(private categoryService: CategoryService, public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
-    console.log("Category 0");
-
   }
 
   ngOnInit() {
-    console.log("Category 1");
+    console.log("ngOnInit");
     this.selectedCategory = new Category('', '', false);
     this.btnText = "ADD";
-    this.subscription = this.authservice.getMessage().subscribe(message => {
-      console.log("Category 2", message);
-      this.brSelectedValue = message;
-      this.loadData(this.brSelectedValue);
-    });
     this.brSelectedValue = this.authservice.getBranchId();
-    this.loadData(this.brSelectedValue);
+    console.log("Category", this.brSelectedValue);
+    if (!this.brSelectedValue) {
+      console.log("YES");
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message;
+        this.loadData(this.brSelectedValue);
+      });
+    } else {
+      console.log("NO");
+      this.loadData(this.brSelectedValue);
+    }
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   public brValueChange(value: any): void {
     this.brSelectedValue = value;

@@ -70,7 +70,7 @@ export class ReservationService {
     return this.http.get('/service/userOrganisation/' + user_id, { headers: headers })
       .catch(this.handleError);
   }
-  getReservation(branch_id: String, start_date: string, end_date: string, reserv, checkIn, checkOut, person_no: string) {
+  getReservation(branch_id: number, start_date: string, end_date: string, reserv, checkIn, checkOut, person_no: string) {
     var state = '(5)';
     if (reserv && checkIn && checkOut) {
       state = '(1,2,4)';

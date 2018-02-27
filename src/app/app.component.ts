@@ -20,19 +20,16 @@ export class AppComponent {
     this.getRoleID();
     this.getUserName();
     this.isUserLogdIn();
-    console.log("AppComponent1", this.isLoggedIn);
     this.subscription = authservice.userLoggedIn$.subscribe(
       data => {
         this.getRoleID();
         this.getUserName();
         this.isUserLogdIn();
-        console.log("AppComponent2");
         if (this.isLoggedIn) {
           this.loadBranchLis();
         }
       });
     if (this.isLoggedIn) {
-      console.log("AppComponent3");
       this.loadBranchLis();
     }
   }
@@ -59,6 +56,7 @@ export class AppComponent {
 
   }
   public brValueChange(value: any): void {
+    console.log("brValueChange", value);
     this.brSelectedValue = value;
     this.authservice.sendMessage(this.brSelectedValue);
   }

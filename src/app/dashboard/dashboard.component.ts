@@ -33,20 +33,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message
+    this.brSelectedValue = this.authservice.getBranchId();
+    if (!this.brSelectedValue) {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message
+        this.dashboardService.getStatistic(this.brSelectedValue.toString()).then(data => {
+          var dataTemp = data.data;
+          if (dataTemp) {
+            for (var i = 0; i < dataTemp.length; i++) {
+              this.barChartLabels[i] = dataTemp[i].date;
+              this.barChartData[0].data[i] = dataTemp[i].count;
+            }
+            this.barChartData = this.barChartData.slice();
+          }
+        });
+      });
+    } else {
       this.dashboardService.getStatistic(this.brSelectedValue.toString()).then(data => {
         var dataTemp = data.data;
-        for (var i = 0; i < dataTemp.length; i++) {
-          this.barChartLabels[i] = dataTemp[i].date;
-          this.barChartData[0].data[i] = dataTemp[i].count;
+        if (dataTemp) {
+          for (var i = 0; i < dataTemp.length; i++) {
+            this.barChartLabels[i] = dataTemp[i].date;
+            this.barChartData[0].data[i] = dataTemp[i].count;
+          }
+          this.barChartData = this.barChartData.slice();
         }
-        this.barChartData = this.barChartData.slice();
       });
-    });
+    }
+
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   public chartClicked(e: any): void {
     this.barChartData = this.barChartData.slice();
