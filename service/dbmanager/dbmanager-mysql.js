@@ -35,10 +35,11 @@ pool.getUserByUserName = function (username, password) {
 
 pool.changePassword = function (username, password) {
     console.log("Model, Change Password", username);
+    let pass = bcrypt.hashSync(password.toLowerCase(), 10);
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
             connection.query('update users set password=? where user_name=?',
-                [passwordHash.generate(password.toLowerCase()), username],
+                [pass, username],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {
@@ -56,7 +57,7 @@ pool.registerUser = function (user_name, first_name, last_name, email, password)
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (err, connection) {
             connection.query('insert into users(user_name,first_name,last_name,email,password,role,change_password)values(?,?,?,?,?,\'RESIDENT\',0)',
-                [user_name, first_name, last_name, email, passwordHash.generate(password.toLowerCase())],
+                [user_name, first_name, last_name, email, bcrypt.hashSync(password.toLowerCase(), 10)],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {

@@ -10,10 +10,10 @@ var q = require('q');
 router.post('/authenticate', (req, res) => {
   console.log("Route, Authenticate");
   pool.getUserByUserName(req.body.username, req.body.password)
-    .then(data => { 
+    .then(data => {
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (passwordHash.verify(req.body.password.toLowerCase(), data[0].password)) {
+      } else if (!bcrypt.compareSync(req.body.password.toLowerCase(), data[0].password)) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
         var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: "3d" });
