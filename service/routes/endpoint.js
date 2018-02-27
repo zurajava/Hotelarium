@@ -4,15 +4,16 @@ const router = express.Router();
 var url = require("url");
 const pool = require('../dbmanager/dbmanager-mysql.js');
 const bcrypt = require('bcrypt');
+var passwordHash = require('password-hash');
 var q = require('q');
 
 router.post('/authenticate', (req, res) => {
   console.log("Route, Authenticate");
   pool.getUserByUserName(req.body.username, req.body.password)
-    .then(data => {
+    .then(data => { 
       if (data.length == 0) {
         res.json({ success: false, message: 'Authentication failed. User not found.' });
-      } else if (!bcrypt.compare(data[0].password, req.body.password)) {
+      } else if (passwordHash.verify(req.body.password.toLowerCase(), data[0].password)) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
         var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: "3d" });
@@ -31,9 +32,13 @@ router.post('/authenticate', (req, res) => {
 router.post('/changePassword', (req, res) => {
   console.log("Route, Change password", req.body.username, req.body.password);
   pool.changePassword(req.body.username, req.body.password).then(data => {
-    res.json({ success: true, message: data.affectedRows });
+    if (data.affectedRows > 0) {
+      res.json({ success: true, message: "Password change" });
+    } else {
+      res.json({ success: false, message: 'User not found' });
+    }
   }).catch(error => {
-    res.json(error);
+    res.json({ success: false, message: error });
   });
 });
 

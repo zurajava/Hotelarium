@@ -1,23 +1,18 @@
-<section class="viewOwner">
-  <div class="commonHeadingAdmin">
-    <h1>Change Password</h1>
+<section class="content">
+  <div class="box box-solid">
+    <div class="box-body">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Change Password</h3>
+        </div>
+        <form class="form-signin" (ngSubmit)="changeUserPassword(login)" #login="ngForm">
+          <input type="password" class="form-control" placeholder="New Password" required autofocus ngModel name="password" #password="ngModel">
+          <input type="password" class="form-control" placeholder="Confirm New Password" required ngModel name="confirmpassword" #confirmpassword="ngModel">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">
+            Change Password</button>
+        </form>
+
+      </div>
+    </div>
   </div>
-  <table>
-    <tr>
-      <td><span>Old Password</span></td>
-      <td><input class="k-textbox" id="a" placeholder="Old Password" name="first_name" /></td>
-    </tr>
-    <tr>
-      <td><span>New Password</span></td>
-      <td><input class="k-textbox" id="aa" placeholder="New Password" name="last_name" /></td>
-    </tr>
-    <tr>
-      <td><span>Confirm Password</span></td>
-      <td><input class="k-textbox" id="aaa" placeholder="Confirm Password" name="email" /></td>
-    </tr>
-    <tr>
-      <td><button kendoButton [primary]="true">Clean</button></td>
-      <td><button kendoButton  [primary]="true">Change</button></td>
-    </tr>
-  </table>
 </section>

@@ -2,7 +2,8 @@ import { Component, Injectable, ViewContainerRef, Output, EventEmitter, OnInit }
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ProfileService } from './profile.service';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-
+import { NgForm } from '@angular/forms';
+import { AuthService } from './../core/auth.service';
 
 @Component({
   moduleId: module.id,
@@ -11,13 +12,32 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
   styleUrls: ['./profile.scss']
 })
 export class ProfileComponent implements OnInit {
-  public userinfo:any;
+  loginUserDetails: any = {};
 
-  constructor(private userService: ProfileService, public toastr: ToastsManager, vcr: ViewContainerRef, public http: Http) {
+  constructor(private rofileService: ProfileService, public toastr: ToastsManager, vcr: ViewContainerRef, public http: Http, private authservice: AuthService) {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
   }
-
+  changeUserPassword(login: NgForm) {
+    let username = this.authservice.getUserName();
+    this.loginUserDetails = {
+      username: username,
+      password: login.value.password
+    }    
+    if (login.value.password != login.value.confirmpassword) {
+      this.toastr.error("Password Mismatch");
+      return;
+    }
+    this.rofileService.changePassword(this.loginUserDetails)
+      .subscribe(
+        data => {
+          this.toastr.success(data);
+        },
+        error => {
+          this.toastr.error(error);
+        }
+      )
+  }
 }
