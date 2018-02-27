@@ -38,6 +38,7 @@
     "@swimlane/ngx-datatable": "^9.3.1",
     "@types/jspdf": "^1.1.31",
     "angular-cli-ghpages": "^0.5.1",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
@@ -57,13 +58,13 @@
     "ng2-toastr": "^4.0.1",
     "ngx-bootstrap": "^1.7.1",
     "node-sass": "^4.5.3",
+    "password-hash": "^1.2.2",
     "pg": "^6.4.1",
     "q": "^1.5.0",
     "rxjs": "^5.1.0",
     "xlsx": "^0.11.15",
     "xlsx-style": "^0.8.13",
-    "zone.js": "^0.8.4",
-    "bcrypt": "^1.0.3"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "^1.2.4",
