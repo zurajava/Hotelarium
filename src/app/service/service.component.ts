@@ -54,7 +54,11 @@ export class ServiceComponent implements OnInit, OnDestroy {
         this.loadData(this.brSelectedValue);
       });
     } else {
-      this.loadData(this.brSelectedValue);
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.loadData(message);
+      }
+      );
+      this.loadData(this.brSelectedValue); 
     }
   }
   ngOnDestroy() {

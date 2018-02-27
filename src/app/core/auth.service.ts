@@ -2,9 +2,8 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
 
 export class AuthService {
-    private subject = new Subject<any>();
-    private userLoggedInSource = new Subject<string>();
-    userLoggedIn$ = this.userLoggedInSource.asObservable();
+    private branchIdSource = new Subject<number>();
+    private userLoggedInSource = new Subject<any>();
 
 
     isLoggedIn = false;
@@ -12,13 +11,6 @@ export class AuthService {
     user_id = 'anonymous';
     user_name = 'anonymous';
     branch_id: number;
-
-
-    // Service message commands
-    announceLogin() {
-        this.userLoggedInSource.next();
-    }
-
 
     login() {
         this.isLoggedIn = true;
@@ -77,23 +69,36 @@ export class AuthService {
 
     }
 
+    setBranchId(branch_id) {
+        this.branch_id = branch_id;
+    }
+    getBranchId() {
+        return this.branch_id;
+    }
+
     sendMessage(branch_id: number) {
-        this.subject.next(branch_id);
+        this.branchIdSource.next(branch_id);
     }
 
     clearMessage() {
-        this.subject.next();
+        this.branchIdSource.next();
     }
 
     getMessage(): Observable<any> {
-        return this.subject.asObservable();
+        return this.branchIdSource.asObservable();
     }
-    setBranchId(branch_id) {
-        this.branch_id = branch_id;
-        console.log("SET",this.branch_id);
+
+    // ----------------------------------
+    sendUserLoggedInSource() {
+        this.userLoggedInSource.next();
     }
-    getBranchId() {
-        console.log("GET",this.branch_id);
-        return this.branch_id;
+
+    clearUserLoggedInSource() {
+        this.userLoggedInSource.next();
     }
+
+    getUserLoggedInSource(): Observable<any> {
+        return this.userLoggedInSource.asObservable();
+    }
+
 }

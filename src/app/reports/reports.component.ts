@@ -56,12 +56,19 @@ export class ReportsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.authservice.getMessage().subscribe(message => {
-      this.brSelectedValue = message;
-      this.loadData();
-    });
     this.brSelectedValue = this.authservice.getBranchId();
-    this.loadData();
+    if (!this.brSelectedValue) {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message
+        this.loadData();
+      });
+    } else {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.loadData();
+      }
+      );
+      this.loadData();
+    }
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

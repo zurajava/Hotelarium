@@ -88,6 +88,11 @@ export class ReservationComponent implements OnInit, OnDestroy {
         this.fillDataRange();
       });
     } else {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message;
+        this.fillDataRange();
+      }
+      );
       this.fillDataRange();
     }
   }

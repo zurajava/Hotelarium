@@ -1,6 +1,6 @@
 import { SalesService } from './sales.service';
 import { ToastModule, ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './../core/auth.service';
@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IntlService } from '@progress/kendo-angular-intl';
 import { Sale } from './model';
+import { Subscription } from 'rxjs/Subscription';
 declare var $: any;
 
 @Component({
@@ -17,10 +18,10 @@ declare var $: any;
   styleUrls: ['./sales.scss']
 })
 
-export class SalesComponent implements OnInit {
+export class SalesComponent implements OnInit, OnDestroy {
+  subscription: Subscription;
   public dateFrom: Date;
   public dateTo: Date;
-  public userBranch: Array<any>;
   public brSelectedValue: number;
   public data: Array<Sale>;
   constructor(public toastr: ToastsManager, vcr: ViewContainerRef,
@@ -33,36 +34,41 @@ export class SalesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.reportsService.getUserBranch(this.authservice.getUserID()).subscribe(data => {
-      if (data.json().success === true) {
-        this.userBranch = data.json().branch;
-        this.brSelectedValue = this.userBranch[0].id;
-        this.reportsService.getSalesReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
-          this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
-            if (data.success === true) {
-              this.data = data.sales;
-              console.log(this.data);
-              $(function () {
-                $("#example1").DataTable({
-                  'paging': false,
-                  'lengthChange': false,
-                  'searching': false,
-                  'ordering': false,
-                  'info': false,
-                  'autoWidth': false
-                });
-              });
-            } else {
-              this.toastr.error(data.json().message);
-            }
-          });
-
+    this.brSelectedValue = this.authservice.getBranchId();
+    if (!this.brSelectedValue) {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.brSelectedValue = message;
+        this.loadData();
+      });
+    } else {
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.loadData();
       }
-    });
+      );
+      this.loadData();
+    }
   }
-  public brValueChange(value: any): void {
-    this.brSelectedValue = value;
-    this.loadRezervationPayment();
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+  loadData() {
+    this.reportsService.getSalesReport(this.brSelectedValue.toString(), this.intl.formatDate(this.dateFrom, 'yyyy-MM-dd'),
+      this.intl.formatDate(this.dateTo, 'yyyy-MM-dd')).then(data => {
+        if (data.success === true) {
+          this.data = data.sales;
+          console.log(this.data);
+          $(function () {
+            $("#example1").DataTable({
+              'paging': false,
+              'lengthChange': false,
+              'searching': false,
+              'ordering': false,
+              'info': false,
+              'autoWidth': false
+            });
+          });
+        }
+      });
   }
 
   filterRezervation() {

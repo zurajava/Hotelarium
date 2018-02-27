@@ -20,7 +20,7 @@ export class AppComponent {
     this.getRoleID();
     this.getUserName();
     this.isUserLogdIn();
-    this.subscription = authservice.userLoggedIn$.subscribe(
+    this.subscription = authservice.getUserLoggedInSource().subscribe(
       data => {
         this.getRoleID();
         this.getUserName();

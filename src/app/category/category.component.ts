@@ -28,19 +28,19 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
     this.selectedCategory = new Category('', '', false);
     this.btnText = "ADD";
     this.brSelectedValue = this.authservice.getBranchId();
-    console.log("Category", this.brSelectedValue);
     if (!this.brSelectedValue) {
-      console.log("YES");
       this.subscription = this.authservice.getMessage().subscribe(message => {
         this.brSelectedValue = message;
         this.loadData(this.brSelectedValue);
       });
     } else {
-      console.log("NO");
+      this.subscription = this.authservice.getMessage().subscribe(message => {
+        this.loadData(message);
+      }
+      );
       this.loadData(this.brSelectedValue);
     }
   }

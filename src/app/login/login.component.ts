@@ -13,14 +13,11 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 
 export class LoginComponent {
-
-    loginUserDetails: any = {}; // Login user details available here
-    @Output() login: EventEmitter<any> = new EventEmitter<any>();
+    loginUserDetails: any = {};
 
     constructor(private loginservice: LoginService, public toastr: ToastsManager,
         vcr: ViewContainerRef, private router: Router, private authservice: AuthService) {
         this.toastr.setRootViewContainerRef(vcr);
-
         if (this.authservice.getIsLoggedIn() === true) {
             this.router.navigate(['reservation']);
         }
@@ -37,7 +34,7 @@ export class LoginComponent {
                     this.router.navigate(['reservation']);
                     this.toastr.success(data);
                     this.authservice.login();
-                    this.authservice.announceLogin();
+                    this.authservice.sendUserLoggedInSource();
                 },
                 error => {
                     this.toastr.error(error);
