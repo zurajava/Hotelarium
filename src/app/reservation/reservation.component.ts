@@ -160,14 +160,14 @@ export class ReservationComponent implements OnInit, OnDestroy {
                         sumDayFiff = sumDayFiff + diffDays;
                         break;
                       } else {
-                        sheduleArray[a - 1] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, current, true, "");
+                        sheduleArray[a - 1] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[d - 1], true, "");
                       }
                       d++;
                     }
                     sumDayFiff--;
                   }
                   for (a; a < this.segment - sumDayFiff; a++) {
-                    sheduleArray[a - 1] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[d + 1], true, "");
+                    sheduleArray[a - 1] = new Schedule("", 'FREE', new Date(), new Date(), "", "", "", 1, datesArray[d - 1], true, "");
                     d++;
                   }
                   this.data[i].rooms[j].reservations = sheduleArray;
@@ -198,8 +198,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
     if (isReservation) {
       this.showReservation = true;
       this.showReservationPayment = false;
-      starDate = new Date(this.intl.formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), (currentDate.getDate() - 2)), 'yyyy-MM-dd'));
-      endDate = new Date(this.intl.formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), (currentDate.getDate() + 1)), 'yyyy-MM-dd'));
+      starDate = new Date(this.intl.formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), (currentDate.getDate())), 'yyyy-MM-dd'));
+      endDate = new Date(this.intl.formatDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), (currentDate.getDate() + 3)), 'yyyy-MM-dd'));
 
       this.reservationService.getCategory(this.brSelectedValue).subscribe(data => {
         this.category = data.json().category;
@@ -530,7 +530,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
     }
   }
   validateReservationInfo(reservationInfo: ReservationInfo) {
-    console.log("Start validate reservationInfo", reservationInfo);
     var isValid = true;
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(reservationInfo.person.email)) {
       this.toastr.error("Invalid Mail " + reservationInfo.person.email);

@@ -46,10 +46,16 @@ export class RoomComponent implements OnInit, OnDestroy {
       });
     } else {
       this.subscription = this.authservice.getMessage().subscribe(message => {
-        this.loadData(message);
+        this.roomService.getCategory(message).subscribe(data => {
+          this.room_category = data.json().category;
+          this.loadData(message);
+        });
       }
       );
-      this.loadData(this.brSelectedValue); 
+      this.roomService.getCategory(this.brSelectedValue).subscribe(data => {
+        this.room_category = data.json().category;
+        this.loadData(this.brSelectedValue);
+      });
     }
   }
   ngOnDestroy() {

@@ -87,7 +87,6 @@ export class ReservationService {
     } else if (checkOut) {
       state = '(4)';
     }
-    console.log(reserv, checkIn, checkOut, state);
     const headers = new Headers();
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     headers.append("x-access-token", key);
@@ -176,7 +175,6 @@ export class ReservationService {
 
   addPaymentToReservation(payment: Payment, branch_id: string) {
     const body = JSON.stringify(payment);
-    console.log("addPaymentToReservation", body);
     let key = JSON.parse(localStorage.getItem("parkingUser")).token;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

@@ -16,6 +16,8 @@ router.post('/authenticate', (req, res) => {
       } else if (!bcrypt.compareSync(req.body.password.toLowerCase(), data[0].password)) {
         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
       } else {
+        delete data[0]['password'];
+        delete data[0]['birthday'];
         var token = jwt.sign(data[0], 'ilovescotchyscotch', { expiresIn: "3d" });
         res.json({
           success: true,
@@ -24,7 +26,6 @@ router.post('/authenticate', (req, res) => {
         });
       }
     }).catch(error => {
-      console.log("Error", error);
       res.json({ success: false, message: error });
     });
 });
@@ -45,7 +46,6 @@ router.post('/changePassword', (req, res) => {
 router.post('/registerUser', (req, res) => {
   console.log("Route, Register User", req.body.username, req.body.password);
   pool.registerUser(req.body.username, req.body.first_name, req.body.last_name, req.body.email, req.body.password).then(data => {
-    console.log(data);
     res.json({ success: true, message: data.affectedRows });
   }).catch(error => {
     res.json(error);
