@@ -15,6 +15,19 @@ var pool = mysql.createPool({
     multipleStatements: true
 });
 
+getConnection = function () {
+    console.log("Model, GetConnection");
+    var deferred = q.defer();
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log("Model, GetConnection", err);
+            deferred.reject(err);
+        } else {
+            deferred.resolve(connection);
+        }
+    });
+    return deferred.promise;
+}
 pool.getUserByUserName = function (username, password) {
     console.log("Model, GetUserName", username);
     return new Promise(function (resolve, reject) {
@@ -114,6 +127,81 @@ pool.getUserPermission = function (user_id, permission, action, branch_id) {
                     deferred.resolve(row);
                 }
             });
+    });
+    return deferred.promise;
+}
+
+getUserInfoLocal = function (connection) {
+    console.log("Model, Get User Info Local");
+    var deferred = q.defer();
+    connection.query('SELECT u.id,u.user_name,u.first_name,u.last_name,u.email,u.role FROM heroku_8c0c9eba2ff6cfd.users u',
+        function (error, results, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(results);
+            }
+        });
+    return deferred.promise;
+}
+getUserBranchLocal = function (connection, user_id) {
+    console.log("Model, Get User Branch Local");
+    var deferred = q.defer();
+    connection.query('SELECT u.user_id, u.branch_id, b.name FROM user_branch u INNER JOIN branch b ON u.branch_id = b.id where u.user_id=?', [user_id],
+        function (error, results, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(results);
+            }
+        });
+    return deferred.promise;
+}
+
+getUserOrganisationLocal = function (connection, user_id) {
+    console.log("Model, Get User Organisation Local");
+    var deferred = q.defer();
+    connection.query('SELECT u.user_id, u.org_id, o.name FROM user_organisation u INNER JOIN organisation o ON u.org_id = o.id where u.user_id=4', [user_id],
+        function (error, results, fields) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve(results);
+            }
+        });
+    return deferred.promise;
+}
+
+pool.getUserInfo = function () {
+    console.log("Model, Get User Info");
+    var deferred = q.defer();
+    getConnection().then(connection => {
+        getUserInfoLocal(connection).then(data => {
+            let branchpromise = data.map(user => {
+                return getUserBranchLocal(connection, user.id).then(branch => {
+
+                    return Object.assign({}, user, { branch });
+                })
+            });
+            return Promise.all(branchpromise);
+        }).then(data => {
+            let orgpromise = data.map(user => {
+                return getUserOrganisationLocal(connection, user.id).then(organisation => {
+
+                    return Object.assign({}, user, { organisation });
+                })
+            });
+            return Promise.all(orgpromise);
+        }).then(data => {
+            connection.release();
+            deferred.resolve(data);
+        }).catch(error => {
+            connection.release();
+            deferred.reject(err);
+        })
+    }).catch(err => {
+        connection.release();
+        deferred.reject(err);
     });
     return deferred.promise;
 }

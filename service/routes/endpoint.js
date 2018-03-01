@@ -52,6 +52,15 @@ router.post('/registerUser', (req, res) => {
   });
 });
 
+router.get('/userInfo', (req, res) => {
+  console.log("Route, Get User Info" );
+  pool.getUserInfo().then(data => {
+    res.json({ success: true, users: data });
+  }).catch(error => {
+    res.json(error);
+  });
+});
+
 router.use(function (req, res, next) {
   console.log("Route, Middleware : ", req.url);
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
