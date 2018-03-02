@@ -57,7 +57,7 @@ router.get('/userInfo', (req, res) => {
   pool.getUserInfo().then(data => {
     res.json({ success: true, users: data });
   }).catch(error => {
-    res.json(error);
+    res.json({ success: false, message: error });
   });
 });
 

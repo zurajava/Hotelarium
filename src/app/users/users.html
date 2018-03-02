@@ -1,3 +1,161 @@
-<p>
-  users works!
-</p>
+<section class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">User List</h3>
+        </div>
+        <div class="box-body">
+          <table class="table table-bordered">
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Name</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Show More</th>
+            </tr>
+            <tr *ngFor="let it of items; let i = index">
+              <td>{{it.id}} </td>
+              <td>{{it.user_name}}</td>
+              <td> {{it.first_name}} </td>
+              <td> {{it.last_name}} </td>
+              <td> {{it.email}} </td>
+              <td> {{it.role}} </td>
+              <td>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info" (click)="showDetails(it)">
+                  Show
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal modal-default fade" id="modal-info">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">User Branch/Organisation</h4>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <tr>
+                    <th>Branch ID</th>
+                    <th>Name</th>
+                  </tr>
+                  <tr *ngFor="let it of branche; let i = index">
+                    <td>{{it.branch_id}}</td>
+                    <td>{{it.name}}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <tr>
+                    <th>Organisation ID</th>
+                    <th>Name</th>
+                  </tr>
+                  <tr *ngFor="let it of organisation; let i = index">
+                    <td>{{it.org_id}}</td>
+                    <td>{{it.name}}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-success">
+        <div class="box-header">
+          <h3 class="box-title">Add Organisation</h3>
+        </div>
+        <div class="box-body no-padding">
+          <table class="table table-condensed">
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Task</th>
+              <th>Progress</th>
+              <th style="width: 40px">Label</th>
+            </tr>
+            <tr>
+              <td>1.</td>
+              <td>Update software</td>
+              <td>
+                <div class="progress progress-xs">
+                  <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-red">55%</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Add Branch To User</h3>
+        </div>
+        <div class="box-body no-padding">
+          <table class="table">
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Task</th>
+              <th>Progress</th>
+              <th style="width: 40px">Label</th>
+            </tr>
+            <tr>
+              <td>1.</td>
+              <td>Update software</td>
+              <td>
+                <div class="progress progress-xs">
+                  <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-red">55%</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Add Organisation To User</h3>
+        </div>
+        <div class="box-body no-padding">
+          <table class="table table-striped">
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Task</th>
+              <th>Progress</th>
+              <th style="width: 40px">Label</th>
+            </tr>
+            <tr>
+              <td>1.</td>
+              <td>Update software</td>
+              <td>
+                <div class="progress progress-xs">
+                  <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-red">55%</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
