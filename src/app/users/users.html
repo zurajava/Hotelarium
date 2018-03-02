@@ -51,6 +51,20 @@
                     <td>{{it.name}}</td>
                   </tr>
                 </table>
+                <div class="box-footer clearfix">
+                  <div class="pull-right">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label for="id_n_service_id222">Select Branch</label>
+                        <select class="form-control select2 input-sm" id="id_n_service_id222" name="id_n_service_id222" [(ngModel)]="selectedBranch"
+                          (ngModelChange)="orgValueChange($event)">
+                          <option *ngFor="let x of branchList" [value]="x.id">{{x.name}}</option>
+                        </select>
+                        <button type="button" class="btn btn-block btn-success btn-xs">ADD</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
               <div class="modal-body">
                 <table class="table">
@@ -63,6 +77,20 @@
                     <td>{{it.name}}</td>
                   </tr>
                 </table>
+                <div class="box-footer clearfix">
+                  <div class="pull-right">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label for="id_n_service_id222">Select Organisation</label>
+                        <select class="form-control select2 input-sm" id="id_n_service_id222" name="id_n_service_id222" [(ngModel)]="selectedOrganisation"
+                          (ngModelChange)="orgValueChange($event)">
+                          <option *ngFor="let x of organisationList" [value]="x.id">{{x.name}}</option>
+                        </select>
+                        <button type="button" class="btn btn-block btn-success btn-xs">ADD</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

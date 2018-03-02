@@ -159,9 +159,9 @@ getUserBranchLocal = function (connection, user_id) {
 }
 
 getUserOrganisationLocal = function (connection, user_id) {
-    console.log("Model, Get User Organisation Local");
+    console.log("Model, Get User Organisation Local", user_id);
     var deferred = q.defer();
-    connection.query('SELECT u.user_id, u.org_id, o.name FROM user_organisation u INNER JOIN organisation o ON u.org_id = o.id where u.user_id=4', [user_id],
+    connection.query('SELECT u.user_id, u.org_id, o.name FROM user_organisation u INNER JOIN organisation o ON u.org_id = o.id where u.user_id=?', [user_id],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error);
@@ -205,4 +205,79 @@ pool.getUserInfo = function () {
     });
     return deferred.promise;
 }
+pool.getOrganisation = function () {
+    console.log("Model, Get Organisation");
+    var deferred = q.defer();
+    getConnection().then(connection => {
+
+        connection.query('SELECT o.id,o.name FROM organisation o',
+            function (error, results, fields) {
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve(results);
+                }
+            });
+    }).catch(err => {
+        connection.release();
+        deferred.reject(err);
+    });
+    return deferred.promise;
+}
+pool.getBranches = function () {
+    console.log("Model, Get Branches");
+    var deferred = q.defer();
+    getConnection().then(connection => {
+        connection.query('SELECT b.id,b.name,b.org_id FROM branch b',
+            function (error, results, fields) {
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve(results);
+                }
+            });
+    }).catch(err => {
+        connection.release();
+        deferred.reject(err);
+    });
+    return deferred.promise;
+}
+
+pool.addBrancheToUser = function (user_id, branch_id) {
+    console.log("Model, Get Branches");
+    var deferred = q.defer();
+    getConnection().then(connection => {
+        connection.query('INSERT INTO  user_branch(user_id,branch_id)VALUES( ?,?)', [user_id, branch_id],
+            function (error, results, fields) {
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve(results);
+                }
+            });
+    }).catch(err => {
+        connection.release();
+        deferred.reject(err);
+    });
+    return deferred.promise;
+}
+pool.addOrganisationToUser = function (user_id, org_id) {
+    console.log("Model, Get Branches");
+    var deferred = q.defer();
+    getConnection().then(connection => {
+        connection.query('INSERT INTO  user_organisation(user_id,org_id)VALUES( ?,?)', [user_id, org_id],
+            function (error, results, fields) {
+                if (error) {
+                    deferred.reject(error);
+                } else {
+                    deferred.resolve(results);
+                }
+            });
+    }).catch(err => {
+        connection.release();
+        deferred.reject(err);
+    });
+    return deferred.promise;
+}
+
 module.exports = pool;

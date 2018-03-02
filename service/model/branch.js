@@ -21,20 +21,10 @@ class Branch {
         console.log("Branch, RegisterBranch", name, description, address, org_id, mail, phone);
         var deferred = q.defer();
         this.registerBranchLocal(name, description, address, org_id, mail, phone).then(data => {
-            return new Promise(function (resolve, reject) {
-                pool.getConnection(function (err, connection) {
-                    connection.query('insert into  user_branch(user_id,branch_id) values(?,?)',
-                        [4, data],
-                        function (error, results, fields) {
-                            connection.release();
-                            if (error) {
-                                console.log("assigneBranchToUserLocal roor", error.code);
-                                reject(error);
-                            } else {
-                                resolve(results);
-                            }
-                        });
-                });
+            this.registerBranchPermisstion(data).then(result => {
+                console.log("result", result);
+            }).catch(err => {
+                deferred.reject(err);
             })
         }).then(data => {
             deferred.resolve(data);
@@ -46,15 +36,16 @@ class Branch {
     deleteBranch(id) {
         console.log("Branch, DeleteBranch", id);
         var deferred = q.defer();
-        this.deleteUserBranchLocal(id).then(data => {
-            this.deleteBranchLocal(id).then(data => {
-                return data;
+        this.deleteBranchLocal(id)
+            .then(data => {
+                this.deleteBranchPermission(id).then(data => {
+                    return data;
+                });
+            }).then(data => {
+                deferred.resolve("OK");
+            }).catch(function (err) {
+                deferred.reject(err);
             });
-        }).then(data => {
-            deferred.resolve("OK");
-        }).catch(function (err) {
-            deferred.reject(err);
-        });
         return deferred.promise;
     }
 
@@ -100,7 +91,6 @@ class Branch {
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
-                            console.log("registerBranchLocal roor", error.code);
                             reject(error);
                         } else {
                             resolve(results.insertId);
@@ -120,6 +110,62 @@ class Branch {
                             console.log("delete branch error", error.code);
                             reject(error);
                         } else {
+                            resolve(results);
+                        }
+                    });
+            });
+        })
+    }
+
+    registerBranchPermisstion(branch_id) {
+        console.log("registerBranchPermisstion", branch_id);
+        let v1 = 'INSERT INTO permission(branch_id,name,action) VALUES ?';
+
+        var values = [
+            [branch_id, 'reservation', 'GET'],
+            [branch_id, 'reservation', 'POST'],
+            [branch_id, 'reservation', 'DELETE'],
+            [branch_id, 'reservation', 'PUT'],
+            [branch_id, 'room', 'GET'],
+            [branch_id, 'room', 'POST'],
+            [branch_id, 'room', 'DELETE'],
+            [branch_id, 'room', 'PUT'],
+            [branch_id, 'service', 'GET'],
+            [branch_id, 'service', 'POST'],
+            [branch_id, 'service', 'DELETE'],
+            [branch_id, 'service', 'PUT'],
+            [branch_id, 'category', 'GET'],
+            [branch_id, 'category', 'POST'],
+            [branch_id, 'category', 'DELETE'],
+            [branch_id, 'category', 'PUT'],
+            [branch_id, 'payment', 'POST']
+        ];
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query(v1, [values],
+                    function (error, results, fields) {
+                        connection.release();
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(results);
+                        }
+                    });
+            })
+        })
+    }
+    deleteBranchPermission(branch_id) {
+        console.log("deleteBranchPermission",branch_id);
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                connection.query('delete FROM permission  where branch_id=?',
+                    [branch_id],
+                    function (error, results, fields) {
+                        connection.release();
+                        if (error) {
+                            reject(error);
+                        } else {
+                            console.log(results);
                             resolve(results);
                         }
                     });

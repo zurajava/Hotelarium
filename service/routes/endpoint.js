@@ -53,9 +53,44 @@ router.post('/registerUser', (req, res) => {
 });
 
 router.get('/userInfo', (req, res) => {
-  console.log("Route, Get User Info" );
+  console.log("Route, Get User Info");
   pool.getUserInfo().then(data => {
     res.json({ success: true, users: data });
+  }).catch(error => {
+    res.json({ success: false, message: error });
+  });
+});
+router.get('/getOrganisation', (req, res) => {
+  console.log("Route, Get Organisation");
+  pool.getOrganisation().then(data => {
+    res.json({ success: true, organisation: data });
+  }).catch(error => {
+    res.json({ success: false, message: error });
+  });
+});
+
+router.get('/getBranches', (req, res) => {
+  console.log("Route, Get Branches");
+  pool.getBranches().then(data => {
+    res.json({ success: true, branches: data });
+  }).catch(error => {
+    res.json({ success: false, message: error });
+  });
+});
+
+router.post('/addBrancheToUser', (req, res) => {
+  console.log("Route, Add Branche To User", req.query.user_id, req.query.branch_id);
+  pool.addBrancheToUser(req.query.user_id, req.query.branch_id).then(data => {
+    res.json({ success: true, message: "OK" });
+  }).catch(error => {
+    res.json({ success: false, message: error });
+  });
+});
+
+router.post('/addOrganisationToUser', (req, res) => {
+  console.log("Route, Add Organisation To User", req.query.user_id, req.query.org_id);
+  pool.addOrganisationToUser(req.query.user_id, req.query.org_id).then(data => {
+    res.json({ success: true, message: "OK" });
   }).catch(error => {
     res.json({ success: false, message: error });
   });
