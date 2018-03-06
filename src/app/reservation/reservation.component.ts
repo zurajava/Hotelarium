@@ -709,7 +709,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
             ((this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full +
               this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full +
               this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full) -
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount), null);
+              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount), 
+              this.reservationInfoEdit.reservation.reservationDetail[i].category_name+ '-'+this.reservationInfoEdit.reservation.reservationDetail[i].room_no);
           paymentList.push(p1);
 
           var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
