@@ -644,7 +644,14 @@ export class ReservationComponent implements OnInit, OnDestroy {
     doc.text(20, 120, 'Service Payed Full: ' + res.service_payd_amount);
 
     doc.text(20, 140, 'Payed Full: ' + (res.reservation_payd_amount + res.service_payd_amount));
-    doc.autoPrint();
+    // doc.autoPrint();
+    doc.setProperties({
+      title: res.id + ' - invoise',
+      subject: 'Hotel Managment System',
+      author: 'HMS ',
+      keywords: 'holet, management',
+      creator: 'Hotel'
+    });
     window.open(doc.output('bloburl'), '_blank');
     // doc.save(res.id.toString() + '-invoice.pdf');
   }
