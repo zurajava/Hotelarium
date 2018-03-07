@@ -48,9 +48,10 @@ export class Payment {
 
     public pay_type: String;
     public receipt: String;
+    public status: String;
 
     constructor(id: number, reservation_id: number, amount: number, create_date: Date, type: String, source: String, ticket: String, additional_comment: String, service_id: number,
-        room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number,service_name:String) {
+        room_prise: number, additional_bad_price: number, extra_person_price: number, day_count: number, payd_amount: number, price_full: number, service_name: String, status: String) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.amount = amount;
@@ -68,6 +69,7 @@ export class Payment {
         this.payd_amount = payd_amount;
         this.price_full = price_full;
         this.service_name = service_name;
+        this.status = status;
     }
 }
 export class Reservation {
@@ -121,12 +123,12 @@ export class ReservationDetail {
     public service_payd_amount: number;
     public service_price: number;
 
-    public status_name:string;
-    public payment_status_name:string;
+    public status_name: string;
+    public payment_status_name: string;
 
     public pay_type: string;
     public receipt: string;
-    public paymentComment:string;
+    public paymentComment: string;
     public amount_full: number;
 
     public showMoreInfo: boolean = false;

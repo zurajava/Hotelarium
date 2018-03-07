@@ -592,7 +592,7 @@
                                                                 <th>Description</th>
                                                                 <th>Price</th>
                                                                 <th>Quantity</th>
-                                                                
+
                                                                 <!--<th>Additional Bad Price</th>
                                                                 <th>Extra Person Price</th>
                                                                 <th>Payd</th>-->
@@ -600,7 +600,7 @@
                                                                 <th>Sum Price</th>
                                                                 <th>Payment Type</th>
                                                                 <th>Receipt #</th>
-                                                               <!-- <th>Comment</th>-->
+                                                                <!-- <th>Comment</th>-->
                                                                 <th colspan="4" class="text-right">Command</th>
                                                             </tr>
                                                         </thead>
@@ -614,7 +614,7 @@
                                                                 </td>
                                                                 <td>{{pay.room_prise+pay.additional_bad_price+pay.extra_person_price}}</td>
                                                                 <td>{{pay.day_count}}</td>
-                                                                
+
                                                                 <!--<td>{{pay.additional_bad_price}}</td>
                                                                 <td>{{pay.extra_person_price}}</td>
                                                                 <td>{{pay.payd_amount}}</td>-->
@@ -641,16 +641,33 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4"><span class="badge bg-yellow">Price Full</span></td>
-                                                                <td><input type="number" class="form-control input-sm" id="amount_full" name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full"
-                                                                    disabled="true"></td>
-                                                                <td><select class="form-control select2 input-sm" name="{{'payTymes'+i}}" id="exampleSelect111aas" [(ngModel)]="res.pay_type">
-                                                                    <option>Card</option>
-                                                                    <option>Cash</option>
-                                                                </select></td>
-                                                                <td><input type="text" class="form-control input-sm" id="receipt" name="{{'receipt'+i}}" [(ngModel)]="res.receipt"></td>
-                                                                <td> <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="paymentReservationAll(res,pay)">PAY ALL</button></td>
-                                                                <td><button type="button" class="btn btn-warning btn-block  btn-xs" (click)="generateInvoise(res)">INVOICE</button></td>
+                                                                <td colspan="4">
+                                                                    <span class="badge bg-yellow">Price Full</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" class="form-control input-sm" id="amount_full"
+                                                                        name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full"
+                                                                        disabled="true">
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-control select2 input-sm" name="{{'payTymes'+i}}"
+                                                                        id="exampleSelect111aas" [(ngModel)]="res.pay_type">
+                                                                        <option>Card</option>
+                                                                        <option>Cash</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control input-sm" id="receipt"
+                                                                        name="{{'receipt'+i}}" [(ngModel)]="res.receipt">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs"
+                                                                        (click)="paymentReservationAll(res,pay)">PAY ALL</button>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs"
+                                                                        (click)="generateInvoise(res)">INVOICE</button>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

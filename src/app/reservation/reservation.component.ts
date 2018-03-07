@@ -639,11 +639,9 @@ export class ReservationComponent implements OnInit, OnDestroy {
     doc.save(res.id.toString() + '-invoice.pdf');
   }
   paymentReservation(id: ReservationDetail, pay: Payment) {
-    if (id.payment_status == "3") {
-      this.toastr.error("Reservationis already payed");
-    } else {
-      if (pay.source == "RESERVATION") {
-        var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null, null);
+    if (pay.source == "RESERVATION") {
+      if (pay.status !== 'PAYD') {
+        var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null, null, null);
         this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
           if (data.success === true) {
             this.toastr.success("Payment Added");
@@ -652,8 +650,12 @@ export class ReservationComponent implements OnInit, OnDestroy {
             this.toastr.error(data.error);
           }
         });
-      } else if (pay.source == "SERVICE") {
-        var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'SERVICE', pay.receipt, pay.additional_comment, pay.service_id, null, null, null, null, null, null, null);
+      } else {
+        this.toastr.error("Reservationis already payed");
+      }
+    } else if (pay.source == "SERVICE") {
+      if (pay.status !== 'PAYD') {
+        var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'SERVICE', pay.receipt, pay.additional_comment, pay.service_id, null, null, null, null, null, null, null, null);
         this.reservationService.addPaymentToService(p, this.brSelectedValue.toString()).then(data => {
           if (data.success === true) {
             this.toastr.success("Payment Added");
@@ -662,6 +664,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
             this.toastr.error(data.error);
           }
         });
+      } else {
+        this.toastr.error("Service already payed");
       }
     }
   }
@@ -673,13 +677,13 @@ export class ReservationComponent implements OnInit, OnDestroy {
         console.log("MAP", payment);
         if (payment.source == "RESERVATION") {
           var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'RESERVATION', id.receipt, id.paymentComment,
-            null, null, payment.additional_bad_price, payment.extra_person_price, null, null, null, null);
+            null, null, payment.additional_bad_price, payment.extra_person_price, null, null, null, null, null);
           this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
             return data;
           });
         } else if (payment.source == "SERVICE") {
           var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'SERVICE', id.receipt, id.paymentComment, payment.service_id,
-            null, null, null, null, null, null, null);
+            null, null, null, null, null, null, null, null);
           this.reservationService.addPaymentToService(p, this.brSelectedValue.toString()).then(data => {
             return data;
           });
@@ -694,46 +698,49 @@ export class ReservationComponent implements OnInit, OnDestroy {
 
   }
   public getReservationByIdLocal(id: String) {
-    console.log("getReservationByIdLocal", id);
     this.reservationService.getReservationById(id, this.brSelectedValue.toString()).then(data => {
       if (data.success === true) {
         this.reservationInfoEdit = data.data;
         for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
           var paymentList = Array<Payment>();
-          var p1 = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null,
-            this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full,
-            this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full,
-            this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full,
-            this.reservationInfoEdit.reservation.reservationDetail[i].day_count,
-            this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount,
-            ((this.reservationInfoEdit.reservation.reservationDetail[i].reservation_prise_full +
-              this.reservationInfoEdit.reservation.reservationDetail[i].additional_bad_price_full +
-              this.reservationInfoEdit.reservation.reservationDetail[i].extra_person_price_full) -
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount), 
-              this.reservationInfoEdit.reservation.reservationDetail[i].category_name+ '-'+this.reservationInfoEdit.reservation.reservationDetail[i].room_no);
-          paymentList.push(p1);
-
-          var sd = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].start_date, 'yyyy-MM-dd'));
-          var ed = new Date(this.intl.formatDate(this.reservationInfoEdit.reservation.reservationDetail[i].end_date, 'yyyy-MM-dd'));
-
-          this.reservationInfoEdit.reservation.reservationDetail[i].start_date = sd;
-          this.reservationInfoEdit.reservation.reservationDetail[i].end_date = ed;
-          this.reservationInfoEdit.reservation.reservationDetail[i].showMoreInfo = true;
-          this.reservationInfoEdit.reservation.reservationDetail[i].expandPayment = true;
-          this.reservationInfoEdit.reservation.reservationDetail[i].showPaymentCheckInButton = true;
-          this.reservationInfoEdit.reservation.reservationDetail[i].amount_full = (this.reservationInfoEdit.reservation.reservationDetail[i].price_full + this.reservationInfoEdit.reservation.reservationDetail[i].service_price) - (this.reservationInfoEdit.reservation.reservationDetail[i].reservation_payd_amount + this.reservationInfoEdit.reservation.reservationDetail[i].service_payd_amount);
-          this.reservationInfoEdit.reservation.reservationDetail[i].room = this.room;
-          for (var j = 0; j < this.reservationInfoEdit.reservation.reservationDetail[i].reservationService.length; j++) {
-            var p2 = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment',
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_id, (this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price -
-                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd), null, null, null,
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd,
-              (this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].price -
-                this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_payd),
-              this.reservationInfoEdit.reservation.reservationDetail[i].reservationService[j].service_name);
-            paymentList.push(p2);
+          var resDet = this.reservationInfoEdit.reservation.reservationDetail[i];
+          var status;
+          var priceFull = ((resDet.reservation_prise_full + resDet.additional_bad_price_full + resDet.extra_person_price_full) - resDet.reservation_payd_amount);
+          if (priceFull === 0) {
+            status = 'PAYD';
+          } else {
+            status = 'NOT_PAYD';
           }
-          this.reservationInfoEdit.reservation.reservationDetail[i].availablePayments = paymentList;
+
+          var reservationPay = new Payment(null, null, null, new Date(), null, 'RESERVATION', null, 'comment', null, resDet.reservation_prise_full, resDet.additional_bad_price_full,
+            resDet.extra_person_price_full, resDet.day_count, resDet.reservation_payd_amount,
+            priceFull, resDet.category_name + '-' + resDet.room_no, status);
+          paymentList.push(reservationPay);
+
+          var sd = new Date(this.intl.formatDate(resDet.start_date, 'yyyy-MM-dd'));
+          var ed = new Date(this.intl.formatDate(resDet.end_date, 'yyyy-MM-dd'));
+
+          resDet.start_date = sd;
+          resDet.end_date = ed;
+          resDet.showMoreInfo = true;
+          resDet.expandPayment = true;
+          resDet.showPaymentCheckInButton = true;
+          resDet.amount_full = (resDet.price_full + resDet.service_price) - (resDet.reservation_payd_amount + resDet.service_payd_amount);
+          resDet.room = this.room;
+          for (var j = 0; j < resDet.reservationService.length; j++) {
+            let serviceDet = resDet.reservationService[j];
+            var status;
+            var priceFull = (serviceDet.price - serviceDet.service_payd);
+            if (priceFull === 0) {
+              status = 'PAYD';
+            } else {
+              status = 'NOT_PAYD';
+            }
+            var servicePay = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment', serviceDet.service_id, (serviceDet.price - serviceDet.service_payd), null, null, null,
+              serviceDet.service_payd, priceFull, serviceDet.service_name, status);
+            paymentList.push(servicePay);
+          }
+          resDet.availablePayments = paymentList;
         }
         console.log("ReservationInfoEdit", JSON.stringify(this.reservationInfoEdit));
       } else {
