@@ -626,7 +626,13 @@ export class ReservationComponent implements OnInit, OnDestroy {
   public generateInvoise(res: ReservationDetail) {
     console.log("generateInvoise", JSON.stringify(res));
     var doc = new jsPDF();
+    doc.setFontSize(22);
     doc.text(20, 20, 'Hotel Managment System');
+    doc.setLineWidth(1);
+    doc.line(20, 25, 200, 25);
+
+
+    doc.setFontSize(16);
     doc.text(20, 40, 'Reservation Prise : ' + res.reservation_prise_full);
     doc.text(20, 50, 'Extra Person Prise : ' + res.extra_person_price_full);
     doc.text(20, 60, 'Additional Bad Prise : ' + res.additional_bad_price_full);
@@ -634,9 +640,13 @@ export class ReservationComponent implements OnInit, OnDestroy {
 
     doc.text(20, 90, 'Prise Full: ' + (res.service_price + res.price_full));
     doc.text(20, 100, 'Amount To Pay: ' + ((res.price_full + res.service_price) - (res.reservation_payd_amount + res.service_payd_amount)));
-    doc.text(20, 110, 'Payd Full: ' + res.reservation_payd_amount);
-    // Save the PDF
-    doc.save(res.id.toString() + '-invoice.pdf');
+    doc.text(20, 110, 'Reservation Payed Full: ' + res.reservation_payd_amount);
+    doc.text(20, 120, 'Service Payed Full: ' + res.service_payd_amount);
+
+    doc.text(20, 140, 'Payed Full: ' + (res.reservation_payd_amount + res.service_payd_amount));
+    doc.autoPrint();
+    window.open(doc.output('bloburl'), '_blank');
+    // doc.save(res.id.toString() + '-invoice.pdf');
   }
   paymentReservation(id: ReservationDetail, pay: Payment) {
     if (pay.source == "RESERVATION") {
