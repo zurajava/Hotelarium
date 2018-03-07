@@ -32,6 +32,7 @@ export class HeaderComponent implements OnDestroy {
     logout() {
         this.authservice.logout();
         this.router.navigate(['/login']);
+        this.authservice.setBranchId(null);
         this.authservice.sendUserLoggedInSource();
     }
     ngOnDestroy() {
