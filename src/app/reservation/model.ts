@@ -46,7 +46,7 @@ export class Payment {
     public payd_amount: number;
     public price_full: number;
 
-    public pay_type: String;
+    public pay_type: String = 'Cash';
     public receipt: String;
     public status: String;
 
@@ -126,7 +126,7 @@ export class ReservationDetail {
     public status_name: string;
     public payment_status_name: string;
 
-    public pay_type: string;
+    public pay_type: string = 'Cash';
     public receipt: string;
     public paymentComment: string;
     public amount_full: number;
@@ -195,7 +195,7 @@ export class ReservationServices {
     public price: number;
     public service_payd: number;
     public amount_full: number;
-    public pay_type: string;
+    public pay_type: string = 'Cash';
     public receipt: string;
 
     public showSave: boolean = false;

@@ -634,7 +634,7 @@
                                                                     <input type="text" class="form-control input-sm" id="additional_comment_p" [(ngModel)]="pay.additional_comment">
                                                                 </td>-->
                                                                 <td>
-                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="paymentReservation(res,pay)">PAY</button>
+                                                                    <button type="button" [disabled]="pay.status==='PAYD'" class="btn btn-warning btn-block  btn-xs" (click)="paymentReservation(res,pay)">PAY</button>
                                                                 </td>
                                                                 <td>
                                                                     <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="generateInvoise(res)">INVOICE</button>
@@ -645,34 +645,29 @@
                                                                     <span class="badge bg-yellow">Price Full</span>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" class="form-control input-sm" id="amount_full"
-                                                                        name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full"
+                                                                    <input type="number" class="form-control input-sm" id="amount_full" name="{{'amount_full'+i}}" [(ngModel)]="res.amount_full"
                                                                         disabled="true">
                                                                 </td>
                                                                 <td>
-                                                                    <select class="form-control select2 input-sm" name="{{'payTymes'+i}}"
-                                                                        id="exampleSelect111aas" [(ngModel)]="res.pay_type">
+                                                                    <select class="form-control select2 input-sm" name="{{'payTymes'+i}}" id="exampleSelect111aas" [(ngModel)]="res.pay_type">
                                                                         <option>Card</option>
                                                                         <option>Cash</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control input-sm" id="receipt"
-                                                                        name="{{'receipt'+i}}" [(ngModel)]="res.receipt">
+                                                                    <input type="text" class="form-control input-sm" id="receipt" name="{{'receipt'+i}}" [(ngModel)]="res.receipt">
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs"
-                                                                        (click)="paymentReservationAll(res,pay)">PAY ALL</button>
+                                                                    <button type="button" [disabled]="res.payment_status=='3'" class="btn btn-warning btn-block  btn-xs" (click)="paymentReservationAll(res,pay)">PAY ALL</button>
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs"
-                                                                        (click)="generateInvoise(res)">INVOICE</button>
+                                                                    <button type="button" class="btn btn-warning btn-block  btn-xs" (click)="generateInvoise(res)">INVOICE</button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <!--<div class="col-md-12">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -697,7 +692,7 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </td>

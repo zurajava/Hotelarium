@@ -658,6 +658,10 @@ export class ReservationComponent implements OnInit, OnDestroy {
   paymentReservation(id: ReservationDetail, pay: Payment) {
     if (pay.source == "RESERVATION") {
       if (pay.status !== 'PAYD') {
+        if (pay.pay_type === 'Card' && pay.receipt == undefined) {
+          this.toastr.error("Receipt is mandatry when payment type is 'CARD'");
+          return;
+        }
         var p = new Payment(id.id, id.id, pay.price_full, new Date(), pay.pay_type, 'RESERVATION', pay.receipt, pay.additional_comment, null, null, pay.additional_bad_price, pay.extra_person_price, null, null, null, null, null);
         this.reservationService.addPaymentToReservation(p, this.brSelectedValue.toString()).then(data => {
           if (data.success === true) {
@@ -691,7 +695,10 @@ export class ReservationComponent implements OnInit, OnDestroy {
       this.toastr.error("Reservationis already payed");
     } else {
       let roomPromises = id.availablePayments.map(payment => {
-        console.log("MAP", payment);
+        console.log(payment.pay_type, payment.receipt);
+        if (id.pay_type === 'Card' && id.receipt == undefined) {
+          return Promise.reject(new Error("Receipt is mandatry when payment type is \'CARD\'"));
+        }
         if (payment.source == "RESERVATION") {
           var p = new Payment(id.id, id.id, payment.price_full, new Date(), id.pay_type, 'RESERVATION', id.receipt, id.paymentComment,
             null, null, payment.additional_bad_price, payment.extra_person_price, null, null, null, null, null);
@@ -712,7 +719,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
         this.toastr.error(error);
       });
     }
-
   }
   public getReservationByIdLocal(id: String) {
     this.reservationService.getReservationById(id, this.brSelectedValue.toString()).then(data => {
@@ -721,6 +727,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
         for (var i = 0; i < this.reservationInfoEdit.reservation.reservationDetail.length; i++) {
           var paymentList = Array<Payment>();
           var resDet = this.reservationInfoEdit.reservation.reservationDetail[i];
+          resDet.pay_type = 'Cash';
           var status;
           var priceFull = ((resDet.reservation_prise_full + resDet.additional_bad_price_full + resDet.extra_person_price_full) - resDet.reservation_payd_amount);
           if (priceFull === 0) {
