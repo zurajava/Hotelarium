@@ -309,7 +309,7 @@ class Reservation {
         console.log("Model, GetReservationsByIdServicesLocal", reservation_id);
         var deferred = q.defer();
         var categoryData;
-        var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, ' +
+        var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, r.count as durationall_count,' +
             '(SELECT IFNULL(SUM(p.amount),0)  ' +
             'FROM payment p where p.reservation_id=r.reservation_id and p.source=\'SERVICE\' and p.service_id=s.id) as service_payd  ' +
             'FROM reservation_service r inner join service s on r.service_id=s.id inner join payment_status p on r.payment_status=p.id where  reservation_id = ? and r.status = 1';
@@ -606,8 +606,8 @@ class Reservation {
         console.log("Register Reservation Service", id, service);
         return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment)values (?,?,?,?)',
-                    [id, service.service_id, service.frequency, service.additional_comment],
+                connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment,count)values (?,?,?,?,?)',
+                    [id, service.service_id, service.frequency, service.additional_comment, service.durationall_count],
                     function (error, results, fields) {
                         connection.release();
                         if (error) {
@@ -700,8 +700,8 @@ class Reservation {
         console.log("Register Reservation Service Local", id, service);
         var deferred = q.defer();
         pool.getConnection(function (err, connection) {
-            connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment,payment_status)values (?,?,?,?,?)',
-                [id, service.service_id, service.frequency, service.additional_comment, service.payment_status],
+            connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment,payment_status,count)values (?,?,?,?,?,?)',
+                [id, service.service_id, service.frequency, service.additional_comment, service.payment_status,service.durationall_count],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {

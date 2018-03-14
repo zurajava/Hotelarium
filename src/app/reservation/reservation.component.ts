@@ -115,6 +115,14 @@ export class ReservationComponent implements OnInit, OnDestroy {
     for (var i = 0; i < this.serviceData.length; i++) {
       if (newValue == this.serviceData[i].id) {
         service.frequency = this.serviceData[i].type;
+        service.durationall_type = this.serviceData[i].durationall_type;
+        if (this.serviceData[i].type === 'DURATIONALL') {
+          service.dysplayName = this.serviceData[i].type + ' - ' + this.serviceData[i].durationall_count + ' - ' + this.serviceData[i].durationall_type;
+          service.durationall_count = this.serviceData[i].durationall_count;
+        } else {
+          service.dysplayName = this.serviceData[i].type;
+          service.durationall_count = 1;
+        }
       }
     }
   }
@@ -122,6 +130,14 @@ export class ReservationComponent implements OnInit, OnDestroy {
     for (var i = 0; i < this.serviceData.length; i++) {
       if (newValue == this.serviceData[i].id) {
         service.frequency = this.serviceData[i].type;
+        service.durationall_type = this.serviceData[i].durationall_type;
+        if (this.serviceData[i].type === 'DURATIONALL') {
+          service.dysplayName = this.serviceData[i].type + ' - ' + this.serviceData[i].durationall_count + ' - ' + this.serviceData[i].durationall_type;
+          service.durationall_count = this.serviceData[i].durationall_count;
+        } else {
+          service.dysplayName = this.serviceData[i].type;
+          service.durationall_count = 1;
+        }
       }
     }
   }
@@ -212,6 +228,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
           }
         }
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
+          console.log("serviceData", data.json().service);
           this.serviceData = data.json().service;
         });
       });
@@ -225,6 +242,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
           this.room = data.json().room;
         });
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
+          console.log("serviceData", data.json().service);
           this.serviceData = data.json().service;
           this.getReservationByIdLocal(reservation_id);
         });
