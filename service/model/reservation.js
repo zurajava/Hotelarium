@@ -265,7 +265,7 @@ class Reservation {
             ' (o.price * datediff(r.end_date, r.start_date)) +(r.additional_bed * o.additional_bad_price)+(o.extra_person_price * r.extra_person) as price_full, ' +
             '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'RESERVATION\' AND p.status = 1 AND (p.service_id IS NULL OR p.service_id =0)) AS reservation_payd_amount, ' +
             '(SELECT IFNULL(SUM(p.amount), 0) FROM  payment p WHERE p.reservation_id = r.id AND p.source = \'SERVICE\' AND p.status = 1 AND p.service_id IS NOT NULL) AS service_payd_amount, ' +
-            ' (SELECT  IFNULL(SUM(s.price), 0) FROM  reservation_service rs INNER JOIN  service s ON rs.service_id = s.id  WHERE reservation_id = r.id and rs.status=1) AS service_price ,s.name as status_name ,p.name as payment_status_name' +
+            ' (SELECT TRUNCATE(SUM(CASE WHEN s.type=\'DURATIONALL\' THEN IFNULL((s.price * rs.count) / s.durationall_count,0)ELSE IFNULL(s.price * rs.count, 0)END),2) AS service_price FROM reservation_service rs INNER JOIN service s ON rs.service_id = s.id WHERE reservation_id = r.id and rs.status=1) AS service_price ,s.name as status_name ,p.name as payment_status_name' +
             ' FROM reservation_detail r ' +
             ' inner join room o on r.room_id=o.id   inner join category c on o.category_id=c.id inner join reservation_status s on r.status_id=s.id inner join payment_status p on p.id=r.payment_status where reservation_id=? and status_id in (1,2,3,4) ';
 
@@ -309,7 +309,7 @@ class Reservation {
         console.log("Model, GetReservationsByIdServicesLocal", reservation_id);
         var deferred = q.defer();
         var categoryData;
-        var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, r.count as durationall_count,' +
+        var query = 'SELECT r.*, s.name as service_name, s.price as price,  p.name as payment_status_name, s.durationall_count as durationall_count, s.durationall_type AS durationall_type, ' +
             '(SELECT IFNULL(SUM(p.amount),0)  ' +
             'FROM payment p where p.reservation_id=r.reservation_id and p.source=\'SERVICE\' and p.service_id=s.id) as service_payd  ' +
             'FROM reservation_service r inner join service s on r.service_id=s.id inner join payment_status p on r.payment_status=p.id where  reservation_id = ? and r.status = 1';
@@ -701,7 +701,7 @@ class Reservation {
         var deferred = q.defer();
         pool.getConnection(function (err, connection) {
             connection.query('insert into reservation_service (reservation_id, service_id,frequency, additional_comment,payment_status,count)values (?,?,?,?,?,?)',
-                [id, service.service_id, service.frequency, service.additional_comment, service.payment_status,service.durationall_count],
+                [id, service.service_id, service.frequency, service.additional_comment, service.payment_status, service.durationall_count],
                 function (error, results, fields) {
                     connection.release();
                     if (error) {

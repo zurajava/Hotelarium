@@ -228,7 +228,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
           }
         }
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
-          console.log("serviceData", data.json().service);
           this.serviceData = data.json().service;
         });
       });
@@ -242,7 +241,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
           this.room = data.json().room;
         });
         this.reservationService.getService(this.brSelectedValue).subscribe(data => {
-          console.log("serviceData", data.json().service);
           this.serviceData = data.json().service;
           this.getReservationByIdLocal(reservation_id);
         });
@@ -772,14 +770,24 @@ export class ReservationComponent implements OnInit, OnDestroy {
           for (var j = 0; j < resDet.reservationService.length; j++) {
             let serviceDet = resDet.reservationService[j];
             var status;
-            var priceFull = (serviceDet.price - serviceDet.service_payd);
+            let priceFull;
+            let serviceName;
+            if (serviceDet.frequency === 'DURATIONALL') {
+              priceFull = (serviceDet.price * serviceDet.count / serviceDet.durationall_count) - serviceDet.service_payd;
+              serviceName = serviceDet.service_name + '-' + serviceDet.frequency + '-' + serviceDet.durationall_count + '-' + serviceDet.durationall_type;
+            } else {
+              priceFull = (serviceDet.price * serviceDet.count) - serviceDet.service_payd;
+              serviceName = serviceDet.service_name + '-' + serviceDet.frequency + '-' + serviceDet.count;
+            }
             if (priceFull === 0) {
               status = 'PAYD';
             } else {
               status = 'NOT_PAYD';
             }
-            var servicePay = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment', serviceDet.service_id, (serviceDet.price - serviceDet.service_payd), null, null, null,
-              serviceDet.service_payd, priceFull, serviceDet.service_name, status);
+            //  console.log(serviceDet, serviceDet.price, serviceDet.count, serviceDet.durationall_count, serviceDet.service_payd, serviceName);
+            var servicePay = new Payment(null, null, null, new Date(), null, 'SERVICE', null, 'comment', serviceDet.service_id,
+              serviceDet.price, null, null, serviceDet.count,
+              serviceDet.service_payd, priceFull, serviceName, status);
             paymentList.push(servicePay);
           }
           resDet.availablePayments = paymentList;

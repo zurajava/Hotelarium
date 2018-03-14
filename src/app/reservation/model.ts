@@ -203,6 +203,7 @@ export class ReservationServices {
     public payments: Array<Payment>;
     public durationall_type: string;
     public durationall_count: number;
+    public count: number;
     public dysplayName: string;
     constructor(service_id: number, frequency: string, additional_comment: string, service_name: string, price: number, service_payd: number, showSave: boolean) {
         this.service_id = service_id;
