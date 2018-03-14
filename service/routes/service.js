@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-var url = require("url"); 
+var url = require("url");
 const Service = require('../model/service.js');
 var pool = new Service();
 
@@ -20,7 +20,7 @@ router.get('/:branch_id', (req, res) => {
 
 router.post('/', (req, res) => {
     console.log("add service : " + req.body.name);
-    pool.registerService(req.body.name, req.body.price, req.body.description, req.body.branch_id, req.body.type, function (err, data) {
+    pool.registerService(req.body.name, req.body.price, req.body.description, req.body.branch_id, req.body.type, req.body.durationall_type, req.body.durationall_count, function (err, data) {
         if (err) {
             res.json({
                 success: false, message: 'Error while register service', error: err
@@ -45,7 +45,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    pool.updateService(req.params.id, req.body.name, req.body.price, req.body.description, req.body.branch_id, req.body.type, function (err, data) {
+    pool.updateService(req.params.id, req.body.name, req.body.price, req.body.description, req.body.branch_id, req.body.type, req.body.durationall_type, req.body.durationall_count, function (err, data) {
         if (err) {
             res.json({
                 success: false, message: 'Error while update service', error: err

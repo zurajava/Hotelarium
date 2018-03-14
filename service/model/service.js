@@ -16,11 +16,11 @@ class Service {
         });
     }
 
-    registerService(name, price, description, branch_id, type, callback) {
+    registerService(name, price, description, branch_id, type, durationall_type, durationall_count, callback) {
         console.log("Service, registerService  ", name);
         pool.getConnection(function (err, connection) {
-            connection.query('insert into service(create_date,name,price,description,branch_id,type) values(current_timestamp,?,?,?,?,?)',
-                [name, price, description, branch_id, type],
+            connection.query('insert into service(create_date,name,price,description,branch_id,type,durationall_type,durationall_count) values(current_timestamp,?,?,?,?,?,?,?)',
+                [name, price, description, branch_id, type, durationall_type, durationall_count],
                 function (error, row, fields) {
                     connection.release();
                     if (error) {
@@ -45,11 +45,11 @@ class Service {
             });
         });
     }
-    updateService(id, name, price, description, branch_id, type, callback) {
+    updateService(id, name, price, description, branch_id, type, durationall_type, durationall_count, callback) {
         console.log("Service, deleteService  ", id);
         pool.getConnection(function (err, connection) {
-            connection.query('update service set name=?,price=?, description=?,  branch_id=?, update_date=current_timestamp,type=? where id=?',
-                [name, price, description, branch_id, type, id],
+            connection.query('update service set name=?,price=?, description=?,  branch_id=?, update_date=current_timestamp,type=?,durationall_type=?, durationall_count=? where id=?',
+                [name, price, description, branch_id, type, durationall_type, durationall_count, id],
                 function (error, row, fields) {
                     connection.release();
                     if (error) {

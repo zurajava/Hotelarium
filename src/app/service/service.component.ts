@@ -58,7 +58,7 @@ export class ServiceComponent implements OnInit, OnDestroy {
         this.loadData(message);
       }
       );
-      this.loadData(this.brSelectedValue); 
+      this.loadData(this.brSelectedValue);
     }
   }
   ngOnDestroy() {
@@ -100,15 +100,19 @@ export class ServiceComponent implements OnInit, OnDestroy {
       this.toastr.error("Name is required");
       return;
     }
+    if (this.selectedService.type === 'DURATIONALL' && (this.selectedService.durationall_type == undefined || this.selectedService.durationall_count == undefined || this.selectedService.durationall_count == 0)) {
+      this.toastr.error("Incorrect parameter for 'DURATIONALL' service");
+      return;
+    }
     if (this.btnText == "ADD") {
       this.serviceService.addService(this.selectedService).subscribe(data => {
         this.loadData(this.brSelectedValue);
-        this.toastr.success("Branch Added");
+        this.toastr.success("Service Added");
       });
     } else if (this.btnText == "Update") {
       this.serviceService.editService(this.selectedService).subscribe(data => {
         this.loadData(this.brSelectedValue);
-        this.toastr.success("Branch Edited");
+        this.toastr.success("Service Edited");
       });
     }
   }
